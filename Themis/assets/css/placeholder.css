@@ -1,0 +1,37 @@
+﻿section .placeholderCSS{
+    text-align: center;
+}
+
+.placeholderCSS h1, .placeholderCSS p {
+    margin-top: 25px;
+    padding: 0 100px;
+}
+
+.sitPlatform {
+    position: relative;
+    width: 100%;
+    height: 554px;
+    margin-top: 50px;
+}
+
+.placeholderCSS .sitPlatform img {
+    position: absolute;
+    width: 400px;
+    left: 46.75%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+    filter: drop-shadow(0px 10px 5px black);
+}
+
+.placeholderCSS .sitPlatform .sitPlatform-circle {
+    position: absolute;
+    width: 500px;
+    height: 125px;
+    left: 48.5%;
+    bottom: 0;
+    transform: translate(-50%, -50%);
+    background-color: #232323;
+    border-radius: 100%;
+    filter: drop-shadow(0px 10px 5px black);
+}

@@ -1,0 +1,121 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="Themis.SiteMaster" %>
+
+<html lang="en" runat="server" id="htmlDoc">
+    <head runat="server">
+        <title runat="server" id="title"></title>
+        <asp:ContentPlaceHolder ID="HeadContent" runat="server"></asp:ContentPlaceHolder>
+        <meta charset="utf-8" />
+        <meta name="description" content="City/CWLP Portal Template">
+        <meta name="author" content="Application Development">
+        <meta name="viewport" content="width=device-width, maximum-scale=1, initial-scale=1, user-scalable=0" />
+        <link rel="manifest" href="/assets/images/icons/favicon/site.webmanifest">
+        <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/icons/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/icons/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/icons/favicon/favicon-16x16.png">
+        <script src="https://kit.fontawesome.com/e9883517ba.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <script type="text/javascript" src="/assets/js/global.js"></script>
+
+        <%--<link href="/assets/css/global.css" rel="stylesheet" />--%>
+
+        <link href="/assets/css/bootstrap-datetimepicker.css" rel="stylesheet" />
+        <link href="/assets/css/essentials.css" rel="stylesheet" type="text/css" />
+        <link href="/assets/css/layout.css" rel="stylesheet" type="text/css" />        
+        <link href="/assets/css/Custom.css" rel="stylesheet" type="text/css" />
+        <link href="/assets/plugins/jquery/jquery-ui.min.css" rel="stylesheet" />
+
+        <link href="/assets/css/color-mode.css" rel="stylesheet" type="text/css" id="color_scheme"/>
+        <link href="/assets/css/placeholder.css" rel="stylesheet" type="text/css"/>
+        <link href="/assets/plugins/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" />
+    </head>
+    
+    <body runat="server">
+        <div id="wrapper">
+            <header id="header">
+                <div class="row" style="display: flex; justify-content: space-between; align-items: center;">
+                    <div class="col-md-9" style="padding: 10px; font-weight: 600;">
+                        <a href="/Default.aspx">
+                            <img src="/assets/images/icons/favicon/apple-touch-icon.png" alt="Favicon" class="nav-logo">
+                            <asp:Label Text="&nbsp;&nbsp;&nbsp;Portal Template" runat="server" style="font-size: 38px; line-height: 1;"/>
+                        </a>
+                    </div>
+                    <div class="col-md-3 text-right normal-font" style="display: flex; justify-content: flex-end; align-items: center;">
+                        <div class="text-stack" style="display: flex; flex-direction: column;">
+                            <asp:Label ID="lblUser" Text="" runat="server"/>
+                            <asp:Label ID="lblTitle" Text="" runat="server" />
+                        </div>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <img id="imgUser" runat="server" class="user-avatar" alt="" src="/assets/images/icons/noavatar.jpg" height="60" />&nbsp;&nbsp;&nbsp;&nbsp;
+                    </div>
+                </div>
+            </header>
+            <aside id="aside">
+                <nav id="sideNav">
+                    <ul class="nav nav-list">
+                        <li id="HomeNav" runat="server">
+                            <%--ID needs to match the PAGE TITLE (AT TOP OF HTML DOC) with no spaces in order for active page styling to work--%>
+                            <a href="/Default.aspx" id="Home" runat="server" class="text-right"><i class="fas fa-house" style="float: left;"></i>Home</a>
+                        </li>
+                        <li id="li1" runat="server">
+                            <%--ID needs to match the PAGE TITLE (AT TOP OF HTML DOC) with no spaces in order for active page styling to work--%>
+                            <a href="/FormTemplate.aspx" id="FormTemplate" runat="server" class="text-right"><i class="fas fa-file-lines" style="float: left;"></i>Form Template</a>
+                        </li>
+                        <li id="li2" runat="server">
+                            <%--ID needs to match the PAGE TITLE (AT TOP OF HTML DOC) with no spaces in order for active page styling to work--%>
+                            <a href="/TableTemplate.aspx" id="TableTemplate" runat="server" class="text-right"><i class="fas fa-table" style="float: left;"></i>Table Template</a>
+                        </li>
+                        <li id="li4" runat="server" class="">
+                            <a href="#" class="text-right"><i class="fas fa-link" style="float: left;"></i>External Links</a>
+                            <ul class="fc">
+                                <li><a href="http://apps/appdevportal/" class="text-right" target="_blank"><i class="fas fa-link" style="float: left;"></i>Link 1</a></li>
+                                <li><a href="https://fontawesome.com/search?o=r&m=free" class="text-right" target="_blank"><i class="fas fa-link" style="float: left;"></i>Link 2</a></li>
+                                <li><a href="http://apps/adtool/" class="text-right" target="_blank"><i class="fas fa-link" style="float: left;"></i>Link 3</a></li>
+                            </ul>
+                        </li>
+
+
+
+                        <%--COLOR THEME SWITCHER NAV--%>
+                        <li id="ColorSwitcherNav" runat="server" class="">
+                            <a href="#" class="text-right" id="color-schemes-nav"><i class="fas fa-palette" style="float: left;"></i>Color Schemes</a>
+                            <ul class="fc">
+                                <li><button id="baseTheme" class="text-right" type="button" runat="server" onserverclick="Theme_ServerClick"><i class="fas fa-droplet" style="float: left;"></i>Black/White</button></li>
+                                <li><button id="redTheme" class="text-right" type="button" runat="server" onserverclick="Theme_ServerClick"><i class="fas fa-droplet" style="float: left;"></i>Red</button></li>
+                                <li><button id="orangeTheme" class="text-right" type="button" runat="server" onserverclick="Theme_ServerClick"><i class="fas fa-droplet" style="float: left;"></i>Orange</button></li>
+                                <li><button id="yellowTheme" class="text-right" type="button" runat="server" onserverclick="Theme_ServerClick"><i class="fas fa-droplet" style="float: left;"></i>Yellow</button></li>
+                                <li><button id="greenTheme" class="text-right" type="button" runat="server" onserverclick="Theme_ServerClick"><i class="fas fa-droplet" style="float: left;"></i>Green</button></li>
+                                <li><button id="blueTheme" class="text-right" type="button" runat="server" onserverclick="Theme_ServerClick"><i class="fas fa-droplet" style="float: left;"></i>Blue</button></li>
+                                <li><button id="cyanTheme" class="text-right" type="button" runat="server" onserverclick="Theme_ServerClick"><i class="fas fa-droplet" style="float: left;"></i>Cyan</button></li>
+                                <li><button id="purpleTheme" class="text-right" type="button" runat="server" onserverclick="Theme_ServerClick"><i class="fas fa-droplet" style="float: left;"></i>Purple</button></li>
+                            </ul>
+                        </li>
+                    </ul>
+
+
+
+                    <div class="color-mode-button">
+                        <button id="colorModeToggle" type="button" runat="server" onserverclick="colorModeToggle_ServerClick"></button>
+                    </div>
+                </nav>
+            </aside>    
+            <section id="middle">
+                <div id="content" class="dashboard padding-10">
+                    <form id="formMain" runat="server">
+                        <asp:ScriptManager runat="server" />
+                        <asp:ContentPlaceHolder ID="MainContent" runat="server">
+                        </asp:ContentPlaceHolder>
+                    </form>
+                </div>
+            </section>
+        </div>
+        <script type="text/javascript" src="/assets/js/custom.js"></script>
+        <script src="/assets/js/jQuery-2.2.0.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="/assets/js/app.js"></script>
+        <script type="text/javascript" src="/assets/js/moment.min.js"></script>
+        <script type="text/javascript" src="/assets/js/fullcalendar.min.js"></script>
+        <script type="text/javascript" src="/assets/js/jquery.slimscroll.min.js"></script>
+        <script type="text/javascript" src="/assets/plugins/moment.js"></script>
+        <script type="text/javascript" src="/assets/js/bootstrap-datetimepicker.js"></script>
+        <script type="text/javascript">var plugin_path = '/assets/plugins/';</script>
+    </body>
+</html>
