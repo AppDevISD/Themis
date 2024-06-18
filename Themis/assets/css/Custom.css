@@ -46,14 +46,14 @@ body {
     position: absolute;
     width: 100%;
     font-family: Garamond, serif;
-    font-size: 125px;
+    font-size: 100px;
     z-index: 100;
     filter: drop-shadow(3px 3px 0 black);
     bottom: 0;
 }
 
     #header {
-/*        filter: drop-shadow(238px 5px 5px #000000ac);*/
+
     }
 
     #header .row a {
