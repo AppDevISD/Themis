@@ -48,8 +48,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\AjaxControlToolkit.dll</HintPath>
     </Reference>
-    <Reference Include="ISD.ActiveDirectory">
-      <HintPath>..\..\SandBox\Sandbox\bin\ISD.ActiveDirectory.dll</HintPath>
+    <Reference Include="ISD.ActiveDirectory, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\ISD.ActiveDirectory.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -3789,7 +3790,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataLibrary\DataLibrary.csproj">
-      <Project>{510518ea-35ed-4135-8f86-7e7bbfcd1f35}</Project>
+      <Project>{9a8269e0-6171-480b-b0e1-20c0e28f0b2a}</Project>
       <Name>DataLibrary</Name>
     </ProjectReference>
   </ItemGroup>

@@ -5,6 +5,8 @@ VisualStudioVersion = 17.10.35004.147
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Themis", "Themis\Themis.csproj", "{9CEB6E2D-D238-4CFB-A148-2B5925D2A41A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLibrary", "DataLibrary\DataLibrary.csproj", "{9A8269E0-6171-480B-B0E1-20C0E28F0B2A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{9CEB6E2D-D238-4CFB-A148-2B5925D2A41A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9CEB6E2D-D238-4CFB-A148-2B5925D2A41A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9CEB6E2D-D238-4CFB-A148-2B5925D2A41A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A8269E0-6171-480B-B0E1-20C0E28F0B2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A8269E0-6171-480B-B0E1-20C0E28F0B2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A8269E0-6171-480B-B0E1-20C0E28F0B2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A8269E0-6171-480B-B0E1-20C0E28F0B2A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

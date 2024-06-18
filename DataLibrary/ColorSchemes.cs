@@ -43,6 +43,8 @@ namespace DataLibrary
                                         --table-stripe-light: #ffffff;
                                         --table-stripe-dark: #f1f1f1;
                                         --theme-icon-shade: brightness(75%);
+                                        --logo-tint: #3B68B9;
+                                        --logo-text-tint: #194FB1;
                                     }</style>");
             return colorTheme;
         }
@@ -66,6 +68,8 @@ namespace DataLibrary
                                         --table-stripe-light: #696969;
                                         --table-stripe-dark: #595959;
                                         --theme-icon-shade: brightness(100%);
+                                        --logo-tint: #3B68B9;
+                                        --logo-text-tint: #194FB1;
                                     }</style>");
             return colorTheme;
         }
@@ -92,6 +96,8 @@ namespace DataLibrary
                                         --table-stripe-light: #ffffff;
                                         --table-stripe-dark: #f1f1f1;
                                         --theme-icon-shade: brightness(75%);
+                                        --logo-tint: #3B68B9;
+                                        --logo-text-tint: #194FB1;
                                     }</style>");
             return colorTheme;
         }
@@ -115,6 +121,8 @@ namespace DataLibrary
                                         --table-stripe-light: #696969;
                                         --table-stripe-dark: #595959;
                                         --theme-icon-shade: brightness(100%);
+                                        --logo-tint: #3B68B9;
+                                        --logo-text-tint: #194FB1;
                                     }</style>");
             return colorTheme;
         }
@@ -141,6 +149,8 @@ namespace DataLibrary
                                         --table-stripe-light: #ffffff;
                                         --table-stripe-dark: #f1f1f1;
                                         --theme-icon-shade: brightness(75%);
+                                        --logo-tint: #3B68B9;
+                                        --logo-text-tint: #194FB1;
                                     }</style>");
             return colorTheme;
         }
@@ -164,6 +174,8 @@ namespace DataLibrary
                                         --table-stripe-light: #696969;
                                         --table-stripe-dark: #595959;
                                         --theme-icon-shade: brightness(100%);
+                                        --logo-tint: #3B68B9;
+                                        --logo-text-tint: #194FB1;
                                     }</style>");
             return colorTheme;
         }
@@ -190,6 +202,8 @@ namespace DataLibrary
                                         --table-stripe-light: #ffffff;
                                         --table-stripe-dark: #f1f1f1;
                                         --theme-icon-shade: brightness(75%);
+                                        --logo-tint: #3B68B9;
+                                        --logo-text-tint: #194FB1;
                                     }</style>");
             return colorTheme;
         }
@@ -213,6 +227,8 @@ namespace DataLibrary
                                         --table-stripe-light: #696969;
                                         --table-stripe-dark: #595959;
                                         --theme-icon-shade: brightness(100%);
+                                        --logo-tint: #3B68B9;
+                                        --logo-text-tint: #194FB1;
                                     }</style>");
             return colorTheme;
         }
@@ -239,6 +255,8 @@ namespace DataLibrary
                                         --table-stripe-light: #ffffff;
                                         --table-stripe-dark: #f1f1f1;
                                         --theme-icon-shade: brightness(75%);
+                                        --logo-tint: #3B68B9;
+                                        --logo-text-tint: #194FB1;
                                     }</style>");
             return colorTheme;
         }
@@ -262,6 +280,8 @@ namespace DataLibrary
                                         --table-stripe-light: #696969;
                                         --table-stripe-dark: #595959;
                                         --theme-icon-shade: brightness(100%);
+                                        --logo-tint: #3B68B9;
+                                        --logo-text-tint: #194FB1;
                                     }</style>");
             return colorTheme;
         }
@@ -288,6 +308,8 @@ namespace DataLibrary
                                         --table-stripe-light: #ffffff;
                                         --table-stripe-dark: #f1f1f1;
                                         --theme-icon-shade: brightness(75%);
+                                        --logo-tint: #3B68B9;
+                                        --logo-text-tint: #87b2ff;
                                     }</style>");
             return colorTheme;
         }
@@ -311,6 +333,8 @@ namespace DataLibrary
                                         --table-stripe-light: #696969;
                                         --table-stripe-dark: #595959;
                                         --theme-icon-shade: brightness(100%);
+                                        --logo-tint: #3B68B9;
+                                        --logo-text-tint: #87b2ff;
                                     }</style>");
             return colorTheme;
         }
@@ -337,6 +361,8 @@ namespace DataLibrary
                                         --table-stripe-light: #ffffff;
                                         --table-stripe-dark: #f1f1f1;
                                         --theme-icon-shade: brightness(75%);
+                                        --logo-tint: #3B68B9;
+                                        --logo-text-tint: #194FB1;
                                     }</style>");
             return colorTheme;
         }
@@ -360,6 +386,8 @@ namespace DataLibrary
                                         --table-stripe-light: #696969;
                                         --table-stripe-dark: #595959;
                                         --theme-icon-shade: brightness(100%);
+                                        --logo-tint: #3B68B9;
+                                        --logo-text-tint: #194FB1;
                                     }</style>");
             return colorTheme;
         }
@@ -386,6 +414,8 @@ namespace DataLibrary
                                         --table-stripe-light: #ffffff;
                                         --table-stripe-dark: #f1f1f1;
                                         --theme-icon-shade: brightness(75%);
+                                        --logo-tint: #3B68B9;
+                                        --logo-text-tint: #194FB1;
                                     }</style>");
             return colorTheme;
         }
@@ -409,6 +439,8 @@ namespace DataLibrary
                                         --table-stripe-light: #696969;
                                         --table-stripe-dark: #595959;
                                         --theme-icon-shade: brightness(100%);
+                                        --logo-tint: #3B68B9;
+                                        --logo-text-tint: #194FB1;
                                     }</style>");
             return colorTheme;
         }

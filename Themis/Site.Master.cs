@@ -28,11 +28,11 @@ namespace Themis
         private HtmlAnchor currentPage;
         public HttpCookie userThemeCookie;
         public HttpCookie userColorCookie;
-        LiteralControl lightModeStyle = new LiteralControl(ColorSchemes.Instance.BaseLight());
-        LiteralControl darkModeStyle = new LiteralControl(ColorSchemes.Instance.BaseDark());
+        LiteralControl lightModeStyle = new LiteralControl(ColorSchemes.Instance.BlueLight());
+        LiteralControl darkModeStyle = new LiteralControl(ColorSchemes.Instance.BlueDark());
 
 
-        private bool colorSwitcher = true;
+        private bool colorSwitcher = false;
 
         protected void Page_Init(object sender, EventArgs e)
         {

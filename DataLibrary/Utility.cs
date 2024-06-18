@@ -48,7 +48,6 @@ namespace DataLibrary
                         else { }
                         adu = ISDFactory.Instance.GetUserInformationByLoginName(strLoginID);
                         break;
-
                 }
 
             }

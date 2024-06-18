@@ -144,7 +144,13 @@ a {
         opacity: 1 !important;
     }
 
+.themis-logo::after {
+    background-color: Var(--logo-tint);
+}
 
+.themis-text {
+    color: Var(--logo-text-tint);
+}
 
 
 
