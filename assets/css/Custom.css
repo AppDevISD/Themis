@@ -1,0 +1,173 @@
+﻿/* fonts */
+@font-face {
+    font-family: "Lato";
+    src: local("Lato"), url("/assets/fonts/Lato-Regular.ttf") format('truetype'), url("/assets/fonts/Lato-Italic.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: "Bebas Neue";
+    src: local("Bebas Neue"), url("/assets/fonts/BebasNeue-Regular.otf") format('opentype'),
+}
+
+* {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100%;
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+}
+
+#header {
+    font-family: "Bebas Neue";
+}
+
+    #header {
+/*        filter: drop-shadow(238px 5px 5px #000000ac);*/
+    }
+
+    #header .row a {
+        filter: none !important;
+    }
+
+    #header .row a {
+        text-decoration: none !important;
+        display: flex;
+        align-items: center;
+        width: fit-content;
+    }
+
+    #header .normal-font {
+        font-family: "Lato", sans-serif;
+        font-size: 14px;
+    }
+
+.display-none {
+    display: none;
+}
+
+.modalBackground {
+    background-color: black;
+    opacity: 0.85;
+}
+
+.modalBackgroundLight {
+    background-color: black;
+    opacity: 0.60;
+}
+
+.RedBackground {
+    background-color: indianred !important;
+    color: rgba(0, 95, 255, 0.6) !important;
+}
+
+.AlternateButton111 {
+    text-align: left;
+    width: 100%;
+    font-size: 12px;
+    margin-left: 0px;
+    height: 30px;
+    background-color: rgb(218 236 247 / .8);
+    border: 1px solid #88c2e5;
+}
+
+    .AlternateButton111:hover {
+        border-color: #4b87ac;
+        background-color: rgb(218 236 247 / 0.00);
+        border: 1px solid #4b87ac;
+    }
+
+.foobar {
+    background-color: blue;
+    width: 200px;
+    font-size: 56px;
+}
+
+.nav-logo {
+    width: 60px;
+    margin-left: 20px;
+}
+
+.color-mode-button {
+    position: fixed;
+    bottom: 15px;
+    right: 20px;
+    font-size: 25pt;
+    transition: all 0.5s;
+}
+
+    .color-mode-button button {
+        text-decoration: none !important;
+        opacity: 0.15;
+        transition: all 0.5s;
+    }
+
+        .color-mode-button:hover, .color-mode-button button:hover, .color-mode-button button:focus {
+            background-color: transparent !important;
+            color: Var(--text-color) !important;
+            transition: all 0.5s;
+        }
+
+#aside {
+    filter: drop-shadow(5px 0px 5px #000000ac);
+}
+
+#aside nav ul li a:hover {
+    padding: 12px 30px 12px 30px !important;
+}
+
+#aside nav ul .fc li button {
+    transition: all .3s;
+}
+
+#aside nav ul .fc li a:hover, #aside nav ul .fc li button:hover{
+    padding: 6px 30px !important;
+}
+
+#aside nav ul li ul:before{
+    border-left: 2px dotted Var(--list-border) !important;
+}
+
+#aside nav ul li ul li:before {
+    border-top: 2px dotted Var(--list-border) !important;
+}
+
+#aside nav ul li:first-child a, #aside nav ul li:first-child button {
+    border-top: none !important;
+}
+
+#aside nav ul li ul li button {
+    width: 100%;
+}
+
+#aside nav ul .menu-open a {
+    border-bottom: rgba(0,0,0,0.1) 1px solid !important;
+}
+
+#aside nav ul .menu-open li a {
+    border-bottom: none !important;
+}
+
+.btn-adjust {
+    float: right !important;
+    margin-right: 15px !important;
+}
+
+.btn {
+    transition: all 0.25s !important;
+}
+
+
+
+.panel-heading {
+    padding: 10px 15px !important;
+    border-bottom: 1px solid transparent !important;
+    border-top-left-radius: 3px !important;
+    border-top-right-radius: 3px !important;
+}
+
+#middle div.panel-heading {
+    height: unset !important;
+}
