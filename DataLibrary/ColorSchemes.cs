@@ -43,6 +43,7 @@ namespace DataLibrary
                                         --table-stripe-light: #ffffff;
                                         --table-stripe-dark: #f1f1f1;
                                         --theme-icon-shade: brightness(75%);
+                                        --color-scheme: light;
                                         --logo-tint: #3B68B9;
                                         --logo-text-tint: #194FB1;
                                     }</style>");
@@ -68,6 +69,7 @@ namespace DataLibrary
                                         --table-stripe-light: #696969;
                                         --table-stripe-dark: #595959;
                                         --theme-icon-shade: brightness(100%);
+                                        --color-scheme: dark;
                                         --logo-tint: #3B68B9;
                                         --logo-text-tint: #194FB1;
                                     }</style>");
@@ -96,6 +98,7 @@ namespace DataLibrary
                                         --table-stripe-light: #ffffff;
                                         --table-stripe-dark: #f1f1f1;
                                         --theme-icon-shade: brightness(75%);
+                                        --color-scheme: light;
                                         --logo-tint: #3B68B9;
                                         --logo-text-tint: #194FB1;
                                     }</style>");
@@ -121,6 +124,7 @@ namespace DataLibrary
                                         --table-stripe-light: #696969;
                                         --table-stripe-dark: #595959;
                                         --theme-icon-shade: brightness(100%);
+                                        --color-scheme: dark;
                                         --logo-tint: #3B68B9;
                                         --logo-text-tint: #194FB1;
                                     }</style>");
@@ -149,6 +153,7 @@ namespace DataLibrary
                                         --table-stripe-light: #ffffff;
                                         --table-stripe-dark: #f1f1f1;
                                         --theme-icon-shade: brightness(75%);
+                                        --color-scheme: light;
                                         --logo-tint: #3B68B9;
                                         --logo-text-tint: #194FB1;
                                     }</style>");
@@ -174,6 +179,7 @@ namespace DataLibrary
                                         --table-stripe-light: #696969;
                                         --table-stripe-dark: #595959;
                                         --theme-icon-shade: brightness(100%);
+                                        --color-scheme: dark;
                                         --logo-tint: #3B68B9;
                                         --logo-text-tint: #194FB1;
                                     }</style>");
@@ -202,6 +208,7 @@ namespace DataLibrary
                                         --table-stripe-light: #ffffff;
                                         --table-stripe-dark: #f1f1f1;
                                         --theme-icon-shade: brightness(75%);
+                                        --color-scheme: light;
                                         --logo-tint: #3B68B9;
                                         --logo-text-tint: #194FB1;
                                     }</style>");
@@ -227,6 +234,7 @@ namespace DataLibrary
                                         --table-stripe-light: #696969;
                                         --table-stripe-dark: #595959;
                                         --theme-icon-shade: brightness(100%);
+                                        --color-scheme: dark;
                                         --logo-tint: #3B68B9;
                                         --logo-text-tint: #194FB1;
                                     }</style>");
@@ -255,6 +263,7 @@ namespace DataLibrary
                                         --table-stripe-light: #ffffff;
                                         --table-stripe-dark: #f1f1f1;
                                         --theme-icon-shade: brightness(75%);
+                                        --color-scheme: light;
                                         --logo-tint: #3B68B9;
                                         --logo-text-tint: #194FB1;
                                     }</style>");
@@ -280,6 +289,7 @@ namespace DataLibrary
                                         --table-stripe-light: #696969;
                                         --table-stripe-dark: #595959;
                                         --theme-icon-shade: brightness(100%);
+                                        --color-scheme: dark;
                                         --logo-tint: #3B68B9;
                                         --logo-text-tint: #194FB1;
                                     }</style>");
@@ -308,6 +318,7 @@ namespace DataLibrary
                                         --table-stripe-light: #ffffff;
                                         --table-stripe-dark: #f1f1f1;
                                         --theme-icon-shade: brightness(75%);
+                                        --color-scheme: light;
                                         --logo-tint: #3B68B9;
                                         --logo-text-tint: #87b2ff;
                                     }</style>");
@@ -333,6 +344,7 @@ namespace DataLibrary
                                         --table-stripe-light: #696969;
                                         --table-stripe-dark: #595959;
                                         --theme-icon-shade: brightness(100%);
+                                        --color-scheme: dark;
                                         --logo-tint: #3B68B9;
                                         --logo-text-tint: #87b2ff;
                                     }</style>");
@@ -361,6 +373,7 @@ namespace DataLibrary
                                         --table-stripe-light: #ffffff;
                                         --table-stripe-dark: #f1f1f1;
                                         --theme-icon-shade: brightness(75%);
+                                        --color-scheme: light;
                                         --logo-tint: #3B68B9;
                                         --logo-text-tint: #194FB1;
                                     }</style>");
@@ -386,6 +399,7 @@ namespace DataLibrary
                                         --table-stripe-light: #696969;
                                         --table-stripe-dark: #595959;
                                         --theme-icon-shade: brightness(100%);
+                                        --color-scheme: dark;
                                         --logo-tint: #3B68B9;
                                         --logo-text-tint: #194FB1;
                                     }</style>");
@@ -414,6 +428,7 @@ namespace DataLibrary
                                         --table-stripe-light: #ffffff;
                                         --table-stripe-dark: #f1f1f1;
                                         --theme-icon-shade: brightness(75%);
+                                        --color-scheme: light;
                                         --logo-tint: #3B68B9;
                                         --logo-text-tint: #194FB1;
                                     }</style>");
@@ -439,6 +454,7 @@ namespace DataLibrary
                                         --table-stripe-light: #696969;
                                         --table-stripe-dark: #595959;
                                         --theme-icon-shade: brightness(100%);
+                                        --color-scheme: dark;
                                         --logo-tint: #3B68B9;
                                         --logo-text-tint: #194FB1;
                                     }</style>");

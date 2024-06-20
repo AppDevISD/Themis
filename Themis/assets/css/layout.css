@@ -506,9 +506,9 @@ body.boxed #asidebg {
 		display:block !important;
 	}
 	#aside nav ul li ul li a, #aside nav ul li ul li button{
-		padding:6px 10px !important;
+		padding:8px 10px 6px 10px !important;
 		height:32px !important;
-		line-height:18px !important;
+/*		line-height:18px !important;*/
 	}
 		#aside nav ul li ul li a, #aside nav ul li ul li button {
 			border: 0;

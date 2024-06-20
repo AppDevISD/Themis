@@ -8,7 +8,7 @@
     <main>
         <section class="placeholderCSS">
             <div style="position: relative; height: 400px; margin-bottom: 50px;">
-                <h1 class="themis-text">ΤΗΣΜΙS</h1>
+                <h1 class="themis-text">THΣMIS</h1>
                 <div class="themis-logo" style="width: 400px; height: 400px; margin: 0;"></div>
             </div>
             

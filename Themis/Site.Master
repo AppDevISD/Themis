@@ -14,6 +14,7 @@
         <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/icons/favicon/favicon-16x16.png">
         <script src="https://kit.fontawesome.com/e9883517ba.js" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=GFS+Neohellenic:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
         <script type="text/javascript" src="/assets/js/global.js"></script>
 
         <%--<link href="/assets/css/global.css" rel="stylesheet" />--%>
@@ -35,10 +36,10 @@
                 <div class="row" style="display: flex; justify-content: space-between; align-items: center;">
                     <div class="col-md-9" style="padding: 10px; font-weight: 600;">
                         <a href="/Default.aspx">
-                            <div style="position: relative; width: 60px; height: 60px; margin-right: 20px;">
+                            <div style="position: relative; width: 60px; height: 60px;">
                                 <div class="themis-logo nav-logo" style="width: 60px; height: 60px;"></div>
                             </div>
-                            <asp:Label Text="&nbsp;&nbsp;&nbsp;THEMIS" runat="server" style="font-size: 38px; line-height: 1;"/>
+                            <asp:Label Text="&nbsp;&nbsp;&nbsp;THΣMIS" runat="server" style="font-size: 38px; line-height: 1; font-family: 'GFS Neohellenic', sans-serif; margin-top: 5px;"/>
                         </a>
                     </div>
                     <div class="col-md-3 text-right normal-font" style="display: flex; justify-content: flex-end; align-items: center;">
@@ -57,9 +58,15 @@
                             <%--ID needs to match the PAGE TITLE (AT TOP OF HTML DOC) with no spaces in order for active page styling to work--%>
                             <a href="/Default.aspx" id="Home" runat="server" class="text-right"><i class="fas fa-house" style="float: left;"></i>Home</a>
                         </li>
-                        <li id="li1" runat="server">
-                            <%--ID needs to match the PAGE TITLE (AT TOP OF HTML DOC) with no spaces in order for active page styling to work--%>
-                            <a href="/FormTemplate.aspx" id="FormTemplate" runat="server" class="text-right"><i class="fas fa-file-lines" style="float: left;"></i>Form Template</a>
+                         <%--ID needs to match the CLASS GROUP w/ "Menu" in order for active page styling to work--%>
+                        <li id="OrdinanceMenu" runat="server">
+                            <a href="#" runat="server" class="text-right"><i class="fas fa-gavel" style="float: left;"></i>Ordinance Tracking</a>
+                            <ul class="fc">
+                                <%--ID needs to match the PAGE TITLE (AT TOP OF HTML DOC) with no spaces in order for active page styling to work ALSO ADD MENU GROUP NAME TO START OF CLASS--%>
+                                <li><a href="#" class="text-right" target="_blank"><i class="fa-solid fa-file-lines" style="float: left;"></i>Ordinances</a></li>
+                                <%--ID needs to match the PAGE TITLE (AT TOP OF HTML DOC) with no spaces in order for active page styling to work ALSO ADD MENU GROUP NAME TO START OF CLASS--%>
+                                <li><a href="/OrdinanceRequest.aspx" id="OrdinanceRequest" class="Ordinance text-right" runat="server"><i class="fa-solid fa-square-plus" style="float: left;"></i>New Request</a></li>
+                            </ul>
                         </li>
                         <li id="li2" runat="server">
                             <%--ID needs to match the PAGE TITLE (AT TOP OF HTML DOC) with no spaces in order for active page styling to work--%>
@@ -109,7 +116,7 @@
                 </div>
             </section>
         </div>
-        <script type="text/javascript" src="/assets/js/custom.js"></script>
+        
         <script src="/assets/js/jQuery-2.2.0.min.js"></script>
         <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
         <script type="text/javascript" src="/assets/js/app.js"></script>
@@ -118,6 +125,7 @@
         <script type="text/javascript" src="/assets/js/jquery.slimscroll.min.js"></script>
         <script type="text/javascript" src="/assets/plugins/moment.js"></script>
         <script type="text/javascript" src="/assets/js/bootstrap-datetimepicker.js"></script>
+        <script type="text/javascript" src="/assets/js/custom.js"></script>
         <script type="text/javascript">var plugin_path = '/assets/plugins/';</script>
     </body>
 </html>

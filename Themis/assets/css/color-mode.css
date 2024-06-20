@@ -100,11 +100,27 @@ a {
 }
 
 /* FORMS */
-.form-control, .form-control:focus, div .form-label-group input:focus {
+
+.form-control, .form-control:focus, div .form-label-group input:focus, option{
     color: Var(--text-color) !important;
     background-color: Var(--form-bg) !important;
     border-color: Var(--active-bg) !important;
     box-shadow: 3px 3px 5px 0px #0000007b !important;
+    color-scheme: Var(--color-scheme) !important;
+}
+
+.gray-text, select option[value=""], input[type=date]:invalid, ::placeholder {
+    color: #b6b6b6ff !important;
+}
+
+select:disabled, .disabled-control {
+    border: none !important;
+    box-shadow: none !important;
+    filter: opacity(0.5) !important;
+}
+
+.disabled-control label {
+    color: gray !important;
 }
 
 

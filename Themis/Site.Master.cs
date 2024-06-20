@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Timers;
 using System.Web;
 using System.Web.Optimization;
 using System.Web.UI;
@@ -74,13 +75,22 @@ namespace Themis
             }
             currentPageObj = (Page)HttpContext.Current.Handler;
             currentPageString = currentPageObj.Title;
-            currentPage = (HtmlAnchor)Page.Master.FindControl(currentPageString.Replace(" ", string.Empty));
+            currentPageString = currentPageString.Replace(" ", string.Empty);
+            currentPage = (HtmlAnchor)Page.Master.FindControl(currentPageString);
 
             switch (currentPage)
             {
                 default:
-                    currentPage.Attributes.Add("class", "text-right active");
-                    break;
+                    string currentPageClassString = currentPage.Attributes["class"];
+                    string[] currentPageClassList = currentPageClassString.Split(' ');
+                    string currentPageGroup = currentPageClassList[0];
+                    currentPage.Attributes.Add("class", $"{currentPageClassString} active");
+                    HtmlGenericControl currentPageParent = (HtmlGenericControl)Page.Master.FindControl($"{currentPageGroup}Menu");
+                    if (currentPageParent != null)
+                    {
+                        currentPageParent.Attributes.Add("class", "menu-open");
+                    }
+            break;
                 case null:
                     currentPageString = "TITLE HAS NOT BEEN SET";
                     currentPageObj.Title = currentPageString;

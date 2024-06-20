@@ -45,11 +45,11 @@ body {
 .themis-text {
     position: absolute;
     width: 100%;
-    font-family: Garamond, serif;
-    font-size: 100px;
+    font-family: "GFS Neohellenic", sans-serif;
+    font-size: 125px;
     z-index: 100;
     filter: drop-shadow(3px 3px 0 black);
-    bottom: 0;
+    bottom: -25px;
 }
 
     #header {
@@ -151,7 +151,7 @@ body {
 }
 
 #aside nav ul .fc li a:hover, #aside nav ul .fc li button:hover{
-    padding: 6px 30px !important;
+    padding: 8px 30px 6px 30px !important;
 }
 
 #aside nav ul li ul:before{
@@ -200,6 +200,14 @@ body {
     height: unset !important;
 }
 
+.required-field {
+    color: red !important;
+    font-weight: 900;
+}
+
+select:disabled:hover {
+    cursor: default !important;
+}
 
 
 

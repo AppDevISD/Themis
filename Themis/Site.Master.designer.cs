@@ -96,22 +96,22 @@ namespace Themis
         protected global::System.Web.UI.HtmlControls.HtmlAnchor Home;
 
         /// <summary>
-        /// li1 control.
+        /// OrdinanceMenu control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl li1;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl OrdinanceMenu;
 
         /// <summary>
-        /// FormTemplate control.
+        /// OrdinanceRequest control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor FormTemplate;
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor OrdinanceRequest;
 
         /// <summary>
         /// li2 control.

@@ -1878,6 +1878,7 @@
     <Content Include="assets\images\backgrounds\blue.jpg" />
     <Content Include="assets\images\backgrounds\default.jpg" />
     <Content Include="assets\images\backgrounds\grey-noise-min.jpg" />
+    <Content Include="assets\images\backgrounds\scales-bg.png" />
     <Content Include="assets\images\flags\ad.png" />
     <Content Include="assets\images\flags\ae.png" />
     <Content Include="assets\images\flags\af.png" />
@@ -3528,6 +3529,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="FormTemplate.aspx" />
+    <Content Include="OrdinanceRequest.aspx" />
     <Content Include="TableTemplate.aspx" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -3744,6 +3746,13 @@
     </Compile>
     <Compile Include="FormTemplate.aspx.designer.cs">
       <DependentUpon>FormTemplate.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="OrdinanceRequest.aspx.cs">
+      <DependentUpon>OrdinanceRequest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="OrdinanceRequest.aspx.designer.cs">
+      <DependentUpon>OrdinanceRequest.aspx</DependentUpon>
     </Compile>
     <Compile Include="TableTemplate.aspx.cs">
       <DependentUpon>TableTemplate.aspx</DependentUpon>
