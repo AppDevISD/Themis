@@ -23,7 +23,7 @@
                </p>
 
                <p class="text-justify" style="color: gray;"><i class="fa-solid fa-asterisk"></i> = Required Field</p>
-               <div class="row border-top pt-4 mt-1">
+               <div class="row border-top border-bottom pt-4 mt-1">
                    <div class="col-12 col-sm-6 col-md-5">
                         <br />
                         <div class="form-label-group mb-3">
@@ -77,7 +77,7 @@
                         <br />
                     </div>
                </div>
-               <div class="row">
+               <div class="row border-bottom">
                    <div class="col-12 col-sm-6 col-md-12">
                        <div class="form-label-group mb-3">
                            <label for="epGroup">Emergency Passage <span class="required-field">*</span></label>
@@ -91,7 +91,7 @@
                        <br />
                    </div>
                </div>
-               <div class="row">
+               <div class="row border-bottom">
                     <div class="col-6 col-sm-4 col-md-4">
                         <br />
                         <div class="form-label-group mb-3">
@@ -106,7 +106,7 @@
                        <div class="alert alert-success noborder text-center weight-400 nomargin noradius" id="divSuccess" visible="false" runat="server" style="font-weight: 900 !important;">
                            Request Submitted!
                        </div>
-                       <div class="border-top pt-4 mt-1">
+                       <div class="pt-4 mt-1">
                            <br />
                            <asp:Button ID="TemplateFormSubmit" runat="server" type="submit" class="btn btn-primary btn-adjust" Text="Submit"></asp:Button> <%--ONCLICK--%>
                        </div>

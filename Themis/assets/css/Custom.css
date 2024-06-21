@@ -223,3 +223,10 @@ select:disabled:hover {
     margin-left: 5px;
 }
 
+.border-top {
+    border-top: 2px solid Var(--active-bg);
+}
+
+.border-bottom {
+    border-bottom: 2px solid Var(--active-bg);
+}
