@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="ColorSchemes.cs" />
     <Compile Include="Email.cs" />
+    <Compile Include="Employee.cs" />
     <Compile Include="Factory.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>

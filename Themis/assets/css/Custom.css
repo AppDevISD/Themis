@@ -209,5 +209,17 @@ select:disabled:hover {
     cursor: default !important;
 }
 
+#epGroup {
+    margin-bottom: 20px;
+}
 
+.radio-btn {
+    margin-right: 20px;
+}
+
+.radio-btn label {
+    font-size: 14px; 
+    font-weight: normal;
+    margin-left: 5px;
+}
 

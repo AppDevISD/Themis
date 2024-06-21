@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataLibrary;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -10,74 +11,113 @@ namespace Themis
 {
     public partial class OrdinanceRequest : System.Web.UI.Page
     {
-
         protected void Page_Load(object sender, EventArgs e)
         {
-            //Debug.WriteLine($"\n{dept_dd.SelectedItem.Value}");
             if (!Page.IsPostBack)
             {
                 GetAllDepartments();
             }
-            switch (dept_dd.SelectedItem.Value)
+            switch (department.SelectedItem.Value)
             {
                 case "":
-                    dept_dd.CssClass = "form-control gray-text";
+                    department.CssClass = "form-control gray-text";
                     break;
                 default:
-                    dept_dd.CssClass = "form-control";
+                    department.CssClass = "form-control";
                     break;
             }
         }
 
         protected void GetAllDepartments()
         {
-            //dept_dd.Items.Insert(1, new ListItem("Select...", ""));
-            dept_dd.Items.Insert(1, new ListItem("Budget and Management", "5"));
-            dept_dd.Items.Insert(2, new ListItem("City Clerk", "13"));
-            dept_dd.Items.Insert(3, new ListItem("City Council", "7"));
-            dept_dd.Items.Insert(4, new ListItem("City Treasurer", "12"));
-            dept_dd.Items.Insert(5, new ListItem("Community Relations", "16"));
-            dept_dd.Items.Insert(6, new ListItem("Convention and Visitor's Bureau", "14"));
-            dept_dd.Items.Insert(7, new ListItem("Corporation Counsel", "6"));
-            dept_dd.Items.Insert(8, new ListItem("Fire Department", "4"));
-            dept_dd.Items.Insert(9, new ListItem("Human Resources", "8"));
-            dept_dd.Items.Insert(10, new ListItem("Lincoln Library", "15"));
-            dept_dd.Items.Insert(11, new ListItem("Office of The Mayor", "10"));
-            dept_dd.Items.Insert(12, new ListItem("Planning and Economic Development", "1"));
-            dept_dd.Items.Insert(13, new ListItem("Police Department", "11"));
-            dept_dd.Items.Insert(14, new ListItem("Public Utilities", "3"));
-            dept_dd.Items.Insert(15, new ListItem("Public Works", "9"));
-
+            department.Items.Insert(0, new ListItem("Select Department...", "N/A"));
+            department.Items.Insert(1, new ListItem("Budget and Management", "5"));
+            department.Items.Insert(2, new ListItem("City Clerk", "13"));
+            department.Items.Insert(3, new ListItem("City Council", "7"));
+            department.Items.Insert(4, new ListItem("City Treasurer", "12"));
+            department.Items.Insert(5, new ListItem("Community Relations", "16"));
+            department.Items.Insert(6, new ListItem("Convention and Visitor's Bureau", "14"));
+            department.Items.Insert(7, new ListItem("Corporation Counsel", "6"));
+            department.Items.Insert(8, new ListItem("Fire Department", "4"));
+            department.Items.Insert(9, new ListItem("Human Resources", "8"));
+            department.Items.Insert(10, new ListItem("Lincoln Library", "15"));
+            department.Items.Insert(11, new ListItem("Office of The Mayor", "10"));
+            department.Items.Insert(12, new ListItem("Planning and Economic Development", "1"));
+            department.Items.Insert(13, new ListItem("Police Department", "11"));
+            department.Items.Insert(14, new ListItem("Public Utilities", "3"));
+            department.Items.Insert(15, new ListItem("Public Works", "9"));
         }
 
-        protected void dept_dd_SelectedIndexChanged(object sender, EventArgs e)
+        protected void department_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string currentClassAttr;
-            switch (dept_dd.SelectedItem.Value)
+            List<Division> lst = new List<Division>();
+            switch (department.SelectedValue)
             {
-                case "":
-                    currentClassAttr = div_div.Attributes["class"];
-                    div_div.Attributes.Add("class", $"{currentClassAttr} disabled-control");
-                    div_dd.Enabled = false;
+                case "N/A":
+                    lst = Factory.Instance.LoadDivisionsByDept(0);
+                    break;
+
+                default:
+                    lst = Factory.Instance.LoadDivisionsByDept(Convert.ToInt32(department.SelectedValue));
+                    break;
+            }
+
+            string currentClassAttr;
+            switch (department.SelectedItem.Value)
+            {
+                case "N/A":
+                    currentClassAttr = divisionDiv.Attributes["class"];
+                    divisionDiv.Attributes.Add("class", $"{currentClassAttr} disabled-control");
+                    division.Enabled = false;
                     break;
                 default:
-                    if (div_div.Attributes["class"].Contains("disabled-control"))
+                    if (divisionDiv.Attributes["class"].Contains("disabled-control") && lst.Count > 0)
                     {
-                        string[] currentClassAttrList = div_div.Attributes["class"].Split(' '); ;
+                        string[] currentClassAttrList = divisionDiv.Attributes["class"].Split(' '); ;
                         string disabledClassAttr = currentClassAttrList[2];
-                        currentClassAttr = div_div.Attributes["class"].Replace($" {disabledClassAttr}", "");
-                        div_div.Attributes.Remove("class");
-                        div_div.Attributes.Add("class", currentClassAttr);
-                        div_dd.Enabled = true;
+                        currentClassAttr = divisionDiv.Attributes["class"].Replace($" {disabledClassAttr}", "");
+                        divisionDiv.Attributes.Remove("class");
+                        divisionDiv.Attributes.Add("class", currentClassAttr);
+                        division.Enabled = true;
+                    }
+                    else if (lst.Count <= 0)
+                    {
+                        currentClassAttr = divisionDiv.Attributes["class"];
+                        divisionDiv.Attributes.Add("class", $"{currentClassAttr} disabled-control");
+                        division.Enabled = false;
                     }
                     break;
             }
-            
+
+            division.DataSource = lst;
+            division.DataTextField = "div_name";
+            division.DataValueField = "div_code";
+            division.DataBind();
+            division.Items.Insert(0, "Select Division...");
+            division.Focus();
         }
 
-        protected void div_dd_SelectedIndexChanged(object sender, EventArgs e)
+        protected void division_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        protected void epGroup_CheckedChanged(object sender, EventArgs e)
+        {
+            switch (epYes.Checked)
+            {
+                case true:
+                    epExplanation.Visible = true;
+                    epExplanation.Enabled = true;
+                    epLabel.Attributes.Remove("hidden");
+                    break;
+
+                case false:
+                    epExplanation.Visible = false;
+                    epExplanation.Enabled = false;
+                    epLabel.Attributes.Add("hidden", "hidden");
+                    break;
+            }
         }
     }
 }

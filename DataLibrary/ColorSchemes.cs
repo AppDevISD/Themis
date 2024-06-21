@@ -334,7 +334,7 @@ namespace DataLibrary
                                         --header-bg: #111111;
                                         --list-border: #474747;
                                         --active-txt: #ffffff;
-                                        --nav-text-color: #194FB1;
+                                        --nav-text-color: #4c82e6;
                                         --hover-bg: #194FB1;
                                         --hover-txt: #ffffff;
                                         --active-bg: #3B68B9;

@@ -100,6 +100,9 @@ a {
 }
 
 /* FORMS */
+input {
+    color-scheme: Var(--color-scheme) !important;
+}
 
 .form-control, .form-control:focus, div .form-label-group input:focus, option{
     color: Var(--text-color) !important;
@@ -167,7 +170,6 @@ select:disabled, .disabled-control {
 .themis-text {
     color: Var(--logo-text-tint);
 }
-
 
 
 

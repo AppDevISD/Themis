@@ -15,49 +15,49 @@ namespace Themis
     {
 
         /// <summary>
-        /// dept_dd control.
+        /// department control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList dept_dd;
+        protected global::System.Web.UI.WebControls.DropDownList department;
 
         /// <summary>
-        /// div_div control.
+        /// divisionDiv control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl div_div;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divisionDiv;
 
         /// <summary>
-        /// div_dd control.
+        /// division control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList div_dd;
+        protected global::System.Web.UI.WebControls.DropDownList division;
 
         /// <summary>
-        /// first_reading_date control.
+        /// firstReadingDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl first_reading_date;
+        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl firstReadingDate;
 
         /// <summary>
-        /// contact_name control.
+        /// contactName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText contact_name;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText contactName;
 
         /// <summary>
         /// tel1 control.
@@ -78,13 +78,49 @@ namespace Themis
         protected global::System.Web.UI.HtmlControls.HtmlInputText ext1;
 
         /// <summary>
-        /// emergency_passage control.
+        /// epYes control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox emergency_passage;
+        protected global::System.Web.UI.WebControls.RadioButton epYes;
+
+        /// <summary>
+        /// epNo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton epNo;
+
+        /// <summary>
+        /// epLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl epLabel;
+
+        /// <summary>
+        /// epExplanation control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox epExplanation;
+
+        /// <summary>
+        /// fiscalImpact control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText fiscalImpact;
 
         /// <summary>
         /// divSuccess control.

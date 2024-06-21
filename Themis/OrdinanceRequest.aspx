@@ -27,18 +27,18 @@
                    <div class="col-12 col-sm-6 col-md-5">
                         <br />
                         <div class="form-label-group mb-3">
-                            <label for="dept_dd">Office Requesting <span class="required-field">*</span></label>
-                            <asp:DropDownList ID="dept_dd" runat="server" AutoPostBack="true" OnSelectedIndexChanged="dept_dd_SelectedIndexChanged" CssClass="form-control">
-                                <asp:ListItem selected="true" hidden="false" Value="" Text="Select Department..."></asp:ListItem>
+                            <label for="department">Office Requesting <span class="required-field">*</span></label>
+                            <asp:DropDownList ID="department" runat="server" AutoPostBack="true" OnSelectedIndexChanged="department_SelectedIndexChanged" CssClass="form-control">
+                                <%--<asp:ListItem selected="true" hidden="false" Value="" Text="Select Department..."></asp:ListItem>--%>
                             </asp:DropDownList>
                         </div>
                         <br />
                     </div>
                    <div class="col-12 col-sm-6 col-md-5">
                         <br />
-                        <div id="div_div" class="form-label-group mb-3 disabled-control" runat="server">
-                            <label for="div_dd" >Division</label>
-                            <asp:DropDownList ID="div_dd" runat="server" AutoPostBack="true" OnSelectedIndexChanged="div_dd_SelectedIndexChanged" CssClass="form-control" Enabled="false">
+                        <div id="divisionDiv" class="form-label-group mb-3 disabled-control" runat="server">
+                            <label for="division" >Division</label>
+                            <asp:DropDownList ID="division" runat="server" AutoPostBack="false" OnSelectedIndexChanged="division_SelectedIndexChanged" CssClass="form-control" Enabled="false">
                                 <asp:ListItem selected="true">Select Division...</asp:ListItem>
                             </asp:DropDownList>
                         </div>
@@ -47,16 +47,16 @@
                    <div class="col-6 col-sm-6 col-md-2">
                         <br />
                         <div class="form-label-group mb-3">
-                            <label for="first_reading_date">Date of 1st Reading <span class="required-field">*</span></label>
-                            <input runat="server" id="first_reading_date" type="date" class="form-control" autocomplete="off" required>
+                            <label for="firstReadingDate">Date of 1st Reading <span class="required-field">*</span></label>
+                            <input runat="server" id="firstReadingDate" type="date" class="form-control" autocomplete="off" required>
                         </div>
                         <br />
                     </div>
                    <div class="col-6 col-sm-4 col-md-4">
                        <br />
                        <div class="form-label-group mb-3">
-                           <label for="contact_name">Contact Name <span class="required-field">*</span></label>
-                           <input runat="server" id="contact_name" type="text" class="form-control" placeholder="John Doe" autocomplete="off" required>
+                           <label for="contactName">Contact Name <span class="required-field">*</span></label>
+                           <input runat="server" id="contactName" type="text" class="form-control" placeholder="John Doe" autocomplete="off" required>
                        </div>
                        <br />
                    </div>
@@ -80,11 +80,26 @@
                <div class="row">
                    <div class="col-12 col-sm-6 col-md-12">
                        <div class="form-label-group mb-3">
-                           <label for="emergency_passage">Emergency Passage</label>
-                           <asp:TextBox ID="emergency_passage" runat="server" TextMode="MultiLine" Rows="6" CssClass="form-control" />
+                           <label for="epGroup">Emergency Passage <span class="required-field">*</span></label>
+                           <div id="epGroup">
+                               <asp:RadioButton runat="server" ID="epYes" GroupName="epGroup" Text="Yes" CssClass="radio-btn" OnCheckedChanged="epGroup_CheckedChanged" AutoPostBack="true" />
+                                <asp:RadioButton runat="server" ID="epNo" GroupName="epGroup" Text="No" CssClass="radio-btn" Checked="true" OnCheckedChanged="epGroup_CheckedChanged" AutoPostBack="true" />
+                           </div>
+                           <label runat="server" id="epLabel" for="epExplanation" hidden="hidden">If Yes, Explain Justification - See Attached Document <span class="required-field">*</span></label>
+                           <asp:TextBox ID="epExplanation" runat="server" TextMode="MultiLine" Rows="6" CssClass="form-control" Enabled="false" Visible="false" />
                        </div>
                        <br />
                    </div>
+               </div>
+               <div class="row">
+                    <div class="col-6 col-sm-4 col-md-4">
+                        <br />
+                        <div class="form-label-group mb-3">
+                            <label for="fiscalImpact">Fiscal Impact <span class="required-field">*</span></label>
+                            <input runat="server" id="fiscalImpact" type="text" class="form-control" placeholder="Placeholder" autocomplete="off" required>
+                        </div>
+                        <br />
+                    </div>
                </div>
                <div class="row">
                    <div class="col-12">
