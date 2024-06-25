@@ -21,7 +21,7 @@
 
         <link href="/assets/css/bootstrap-datetimepicker.css" rel="stylesheet" />
         <link href="/assets/css/essentials.css" rel="stylesheet" type="text/css" />
-        <link href="/assets/css/layout.css" rel="stylesheet" type="text/css" />        
+        <link href="/assets/css/layout.css" rel="stylesheet" type="text/css" />
         <link href="/assets/css/Custom.css" rel="stylesheet" type="text/css" />
         <link href="/assets/plugins/jquery/jquery-ui.min.css" rel="stylesheet" />
 

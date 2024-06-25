@@ -16,10 +16,11 @@ namespace Themis
             if (!Page.IsPostBack)
             {
                 GetAllDepartments();
+                GetAllPurchaseMethods();
             }
             switch (department.SelectedItem.Value)
             {
-                case "":
+                case "N/A":
                     department.CssClass = "form-control gray-text";
                     break;
                 default:
@@ -48,7 +49,7 @@ namespace Themis
             department.Items.Insert(15, new ListItem("Public Works", "9"));
         }
 
-        protected void department_SelectedIndexChanged(object sender, EventArgs e)
+        protected void DepartmentSelectedIndexChanged(object sender, EventArgs e)
         {
             List<Division> lst = new List<Division>();
             switch (department.SelectedValue)
@@ -73,7 +74,7 @@ namespace Themis
                 default:
                     if (divisionDiv.Attributes["class"].Contains("disabled-control") && lst.Count > 0)
                     {
-                        string[] currentClassAttrList = divisionDiv.Attributes["class"].Split(' '); ;
+                        string[] currentClassAttrList = divisionDiv.Attributes["class"].Split(' ');
                         string disabledClassAttr = currentClassAttrList[2];
                         currentClassAttr = divisionDiv.Attributes["class"].Replace($" {disabledClassAttr}", "");
                         divisionDiv.Attributes.Remove("class");
@@ -94,28 +95,98 @@ namespace Themis
             division.DataValueField = "div_code";
             division.DataBind();
             division.Items.Insert(0, "Select Division...");
+            division.Items[0].Value = "N/A";
             division.Focus();
         }
 
-        protected void division_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void epGroup_CheckedChanged(object sender, EventArgs e)
+        protected void EPGroupCheckedChanged(object sender, EventArgs e)
         {
             switch (epYes.Checked)
             {
                 case true:
                     epExplanation.Visible = true;
                     epExplanation.Enabled = true;
-                    epLabel.Attributes.Remove("hidden");
+                    epLabel.Visible = true;
                     break;
 
                 case false:
                     epExplanation.Visible = false;
                     epExplanation.Enabled = false;
-                    epLabel.Attributes.Add("hidden", "hidden");
+                    epLabel.Visible = false;
+                    break;
+            }
+        }
+
+        protected void ScopeGroupCheckedChanged(object sender, EventArgs e)
+        {
+            string currentChangeOrderDivAttr;
+            string currentAdditionalAmountDivAttr;
+            switch (scopeYes.Checked)
+            {
+                case true:
+                    changeOrderNumber.Enabled = true;
+                    additionalAmount.Enabled = true;
+
+                    if (changeOrderDiv.Attributes["class"].Contains("disabled-control"))
+                    {
+                        string[] currentClassAttrList = changeOrderDiv.Attributes["class"].Split(' ');
+                        string disabledClassAttr = currentClassAttrList[2];
+                        currentChangeOrderDivAttr = changeOrderDiv.Attributes["class"].Replace($" {disabledClassAttr}", "");
+                        changeOrderDiv.Attributes.Remove("class");
+                        changeOrderDiv.Attributes.Add("class", currentChangeOrderDivAttr);
+                    }
+                    if (additionalAmountDiv.Attributes["class"].Contains("disabled-control"))
+                    {
+                        string[] currentClassAttrList = additionalAmountDiv.Attributes["class"].Split(' ');
+                        string disabledClassAttr = currentClassAttrList[2];
+                        currentAdditionalAmountDivAttr = additionalAmountDiv.Attributes["class"].Replace($" {disabledClassAttr}", "");
+                        additionalAmountDiv.Attributes.Remove("class");
+                        additionalAmountDiv.Attributes.Add("class", currentAdditionalAmountDivAttr);
+                    }
+                    break;
+
+                case false:
+                    changeOrderNumber.Enabled = false;
+                    additionalAmount.Enabled = false;
+                    currentChangeOrderDivAttr = changeOrderDiv.Attributes["class"];
+                    changeOrderDiv.Attributes.Add("class", $"{currentChangeOrderDivAttr} disabled-control");
+                    currentAdditionalAmountDivAttr = additionalAmountDiv.Attributes["class"];
+                    additionalAmountDiv.Attributes.Add("class", $"{currentAdditionalAmountDivAttr} disabled-control");
+                    break;
+            }
+        }
+
+        protected void GetAllPurchaseMethods()
+        {
+            purchaseMethod.Items.Insert(0, new ListItem("Select Purchase Method...", "N/A"));
+            purchaseMethod.Items.Insert(1, new ListItem("Low Bid", "1"));
+            purchaseMethod.Items.Insert(2, new ListItem("Low Bid Meeting Specs", "2"));
+            purchaseMethod.Items.Insert(3, new ListItem("Low Evaluated Bid", "3"));
+            purchaseMethod.Items.Insert(4, new ListItem("Other", "4"));
+            purchaseMethod.Items.Insert(5, new ListItem("Exception", "5"));
+        }
+
+        protected void PurchaseMethodSelectedIndexChanged(object sender, EventArgs e)
+        {
+            string currentClassAttr;
+            switch (purchaseMethod.SelectedItem.Value)
+            {
+                default:
+                    currentClassAttr = otherExceptionDiv.Attributes["class"];
+                    otherExceptionDiv.Attributes.Add("class", $"{currentClassAttr} disabled-control");
+                    otherException.Enabled = false;
+                    break;
+                case "4":
+                case "5":
+                    if (otherExceptionDiv.Attributes["class"].Contains("disabled-control"))
+                    {
+                        string[] currentClassAttrList = otherExceptionDiv.Attributes["class"].Split(' ');
+                        string disabledClassAttr = currentClassAttrList[2];
+                        currentClassAttr = otherExceptionDiv.Attributes["class"].Replace($" {disabledClassAttr}", "");
+                        otherExceptionDiv.Attributes.Remove("class");
+                        otherExceptionDiv.Attributes.Add("class", currentClassAttr);
+                        otherException.Enabled = true;
+                    }
                     break;
             }
         }

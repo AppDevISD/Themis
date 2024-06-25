@@ -205,13 +205,13 @@ body {
     font-weight: 900;
 }
 
-select:disabled:hover {
+select:disabled:hover, .disabled-control input:hover {
     cursor: default !important;
 }
 
-#epGroup {
+/*#epGroup {
     margin-bottom: 20px;
-}
+}*/
 
 .radio-btn {
     margin-right: 20px;
@@ -229,4 +229,11 @@ select:disabled:hover {
 
 .border-bottom {
     border-bottom: 2px solid Var(--active-bg);
+}
+
+input[type=date]::-webkit-calendar-picker-indicator:hover, select:hover, .radio-btn:hover, input[type=radio]:hover, .radio-btn label:hover {
+    cursor: pointer !important;
+}
+input[type=date]:hover {
+    cursor: text !important;
 }

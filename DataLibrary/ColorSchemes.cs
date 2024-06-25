@@ -46,6 +46,8 @@ namespace DataLibrary
                                         --color-scheme: light;
                                         --logo-tint: #3B68B9;
                                         --logo-text-tint: #194FB1;
+                                        --inset-dark: #c4c4c4a9;
+                                        --inset-light: #e6e6e6;
                                     }</style>");
             return colorTheme;
         }
@@ -72,6 +74,8 @@ namespace DataLibrary
                                         --color-scheme: dark;
                                         --logo-tint: #3B68B9;
                                         --logo-text-tint: #194FB1;
+                                        --inset-dark: #0000007b;
+                                        --inset-light: #797979ff;
                                     }</style>");
             return colorTheme;
         }
@@ -101,6 +105,8 @@ namespace DataLibrary
                                         --color-scheme: light;
                                         --logo-tint: #3B68B9;
                                         --logo-text-tint: #194FB1;
+                                        --inset-dark: #c4c4c4a9;
+                                        --inset-light: #e6e6e6;
                                     }</style>");
             return colorTheme;
         }
@@ -127,6 +133,8 @@ namespace DataLibrary
                                         --color-scheme: dark;
                                         --logo-tint: #3B68B9;
                                         --logo-text-tint: #194FB1;
+                                        --inset-dark: #0000007b;
+                                        --inset-light: #797979ff;
                                     }</style>");
             return colorTheme;
         }
@@ -156,6 +164,8 @@ namespace DataLibrary
                                         --color-scheme: light;
                                         --logo-tint: #3B68B9;
                                         --logo-text-tint: #194FB1;
+                                        --inset-dark: #c4c4c4a9;
+                                        --inset-light: #e6e6e6;
                                     }</style>");
             return colorTheme;
         }
@@ -182,6 +192,8 @@ namespace DataLibrary
                                         --color-scheme: dark;
                                         --logo-tint: #3B68B9;
                                         --logo-text-tint: #194FB1;
+                                        --inset-dark: #0000007b;
+                                        --inset-light: #797979ff;
                                     }</style>");
             return colorTheme;
         }
@@ -211,6 +223,8 @@ namespace DataLibrary
                                         --color-scheme: light;
                                         --logo-tint: #3B68B9;
                                         --logo-text-tint: #194FB1;
+                                        --inset-dark: #c4c4c4a9;
+                                        --inset-light: #e6e6e6;
                                     }</style>");
             return colorTheme;
         }
@@ -237,6 +251,8 @@ namespace DataLibrary
                                         --color-scheme: dark;
                                         --logo-tint: #3B68B9;
                                         --logo-text-tint: #194FB1;
+                                        --inset-dark: #0000007b;
+                                        --inset-light: #797979ff;
                                     }</style>");
             return colorTheme;
         }
@@ -266,6 +282,8 @@ namespace DataLibrary
                                         --color-scheme: light;
                                         --logo-tint: #3B68B9;
                                         --logo-text-tint: #194FB1;
+                                        --inset-dark: #c4c4c4a9;
+                                        --inset-light: #e6e6e6;
                                     }</style>");
             return colorTheme;
         }
@@ -292,6 +310,8 @@ namespace DataLibrary
                                         --color-scheme: dark;
                                         --logo-tint: #3B68B9;
                                         --logo-text-tint: #194FB1;
+                                        --inset-dark: #0000007b;
+                                        --inset-light: #797979ff;
                                     }</style>");
             return colorTheme;
         }
@@ -321,6 +341,8 @@ namespace DataLibrary
                                         --color-scheme: light;
                                         --logo-tint: #3B68B9;
                                         --logo-text-tint: #87b2ff;
+                                        --inset-dark: #c4c4c4a9;
+                                        --inset-light: #e6e6e6;
                                     }</style>");
             return colorTheme;
         }
@@ -347,6 +369,8 @@ namespace DataLibrary
                                         --color-scheme: dark;
                                         --logo-tint: #3B68B9;
                                         --logo-text-tint: #87b2ff;
+                                        --inset-dark: #0000007b;
+                                        --inset-light: #797979ff;
                                     }</style>");
             return colorTheme;
         }
@@ -376,6 +400,8 @@ namespace DataLibrary
                                         --color-scheme: light;
                                         --logo-tint: #3B68B9;
                                         --logo-text-tint: #194FB1;
+                                        --inset-dark: #c4c4c4a9;
+                                        --inset-light: #e6e6e6;
                                     }</style>");
             return colorTheme;
         }
@@ -402,6 +428,8 @@ namespace DataLibrary
                                         --color-scheme: dark;
                                         --logo-tint: #3B68B9;
                                         --logo-text-tint: #194FB1;
+                                        --inset-dark: #0000007b;
+                                        --inset-light: #797979ff;
                                     }</style>");
             return colorTheme;
         }
@@ -431,6 +459,8 @@ namespace DataLibrary
                                         --color-scheme: light;
                                         --logo-tint: #3B68B9;
                                         --logo-text-tint: #194FB1;
+                                        --inset-dark: #c4c4c4a9;
+                                        --inset-light: #e6e6e6;
                                     }</style>");
             return colorTheme;
         }
@@ -457,6 +487,8 @@ namespace DataLibrary
                                         --color-scheme: dark;
                                         --logo-tint: #3B68B9;
                                         --logo-text-tint: #194FB1;
+                                        --inset-dark: #0000007b;
+                                        --inset-light: #797979ff;
                                     }</style>");
             return colorTheme;
         }

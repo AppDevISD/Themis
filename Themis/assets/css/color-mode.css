@@ -112,11 +112,18 @@ input {
     color-scheme: Var(--color-scheme) !important;
 }
 
-.gray-text, select option[value=""], input[type=date]:invalid, ::placeholder {
+.locked-field {
+    opacity: 0.75 !important;
+    color: darkgray !important;
+    border: none !important;
+    box-shadow: inset 3px 3px 0px 0px Var(--inset-dark), inset -3px -3px 0 0 Var(--inset-light) !important;
+}
+
+.gray-text, select option[value="N/A"], input[type=date]:invalid, ::placeholder {
     color: #b6b6b6ff !important;
 }
 
-select:disabled, .disabled-control {
+select:disabled, .disabled-control, .disabled-control input {
     border: none !important;
     box-shadow: none !important;
     filter: opacity(0.5) !important;
@@ -124,6 +131,10 @@ select:disabled, .disabled-control {
 
 .disabled-control label {
     color: gray !important;
+}
+
+.disabled-control .required-field {
+    display: none;
 }
 
 

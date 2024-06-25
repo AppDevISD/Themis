@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Ordinance Request" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="OrdinanceRequest.aspx.cs" Inherits="Themis.OrdinanceRequest" %>
+﻿<%@ Page Title="Ordinance Request" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="OrdinanceRequest.aspx.cs" Inherits="Themis.OrdinanceRequest" MaintainScrollPositionOnPostback="true"%>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server"></asp:Content>
 
@@ -21,15 +21,14 @@
                <p class="text-justify">
                    Et tellus suspendisse suscipit orci sit amet sem venenatis nec lobortis sem suscipit nullam nec imperdiet velit mauris eu nisi a felis imperdiet porta at ac nulla vivamus faucibus felis nec dolor pretium eget pellentesque dolor suscipit maecenas vitae enim arcu, at tincidunt nunc pellentesque eleifend vulputate lacus, vel semper sem ornare sit amet proin sem sapien, auctor vel faucibus id, aliquet vitae ipsum etiam auctor ultricies ante, at dapibus urna viverra sed nullam mi arcu, tempor vitae interdum a.
                </p>
-
                <p class="text-justify" style="color: gray;"><i class="fa-solid fa-asterisk"></i> = Required Field</p>
+
                <div class="row border-top border-bottom pt-4 mt-1">
                    <div class="col-12 col-sm-6 col-md-5">
                         <br />
                         <div class="form-label-group mb-3">
                             <label for="department">Office Requesting <span class="required-field">*</span></label>
-                            <asp:DropDownList ID="department" runat="server" AutoPostBack="true" OnSelectedIndexChanged="department_SelectedIndexChanged" CssClass="form-control">
-                                <%--<asp:ListItem selected="true" hidden="false" Value="" Text="Select Department..."></asp:ListItem>--%>
+                            <asp:DropDownList ID="department" runat="server" AutoPostBack="true" OnSelectedIndexChanged="DepartmentSelectedIndexChanged" CssClass="form-control">
                             </asp:DropDownList>
                         </div>
                         <br />
@@ -38,7 +37,7 @@
                         <br />
                         <div id="divisionDiv" class="form-label-group mb-3 disabled-control" runat="server">
                             <label for="division" >Division</label>
-                            <asp:DropDownList ID="division" runat="server" AutoPostBack="false" OnSelectedIndexChanged="division_SelectedIndexChanged" CssClass="form-control" Enabled="false">
+                            <asp:DropDownList ID="division" runat="server" AutoPostBack="false" CssClass="form-control" Enabled="false">
                                 <asp:ListItem selected="true">Select Division...</asp:ListItem>
                             </asp:DropDownList>
                         </div>
@@ -52,7 +51,7 @@
                         </div>
                         <br />
                     </div>
-                   <div class="col-6 col-sm-4 col-md-4">
+                   <div class="col-6 col-sm-4 col-md-9">
                        <br />
                        <div class="form-label-group mb-3">
                            <label for="contactName">Contact Name <span class="required-field">*</span></label>
@@ -64,7 +63,7 @@
                        <br />
                        <div class="form-label-group mb-3">
                            <label for="tel1">Phone Number <span class="required-field">*</span></label>
-                           <input runat="server" id="tel1" type="tel" class="form-control" placeholder="(555) 123-4567" minlength="14" maxlength="14" autocomplete="off" required>
+                           <input runat="server" id="tel1" type="tel" data-type="telephone" class="form-control" placeholder="(555) 555-5555" minlength="14" maxlength="14" autocomplete="off" required>
                        </div>
                        <br />
                    </div>
@@ -72,7 +71,7 @@
                         <br />
                         <div class="form-label-group mb-3">
                             <label for="ext1">Ext</label>
-                            <input runat="server" id="ext1" type="text" class="form-control" placeholder="x1234" autocomplete="off">
+                            <input runat="server" id="ext1" type="text" data-type="extension" class="form-control" placeholder="x1234" minlength="5" maxlength="5" autocomplete="off">
                         </div>
                         <br />
                     </div>
@@ -82,25 +81,129 @@
                        <div class="form-label-group mb-3">
                            <label for="epGroup">Emergency Passage <span class="required-field">*</span></label>
                            <div id="epGroup">
-                               <asp:RadioButton runat="server" ID="epYes" GroupName="epGroup" Text="Yes" CssClass="radio-btn" OnCheckedChanged="epGroup_CheckedChanged" AutoPostBack="true" />
-                                <asp:RadioButton runat="server" ID="epNo" GroupName="epGroup" Text="No" CssClass="radio-btn" Checked="true" OnCheckedChanged="epGroup_CheckedChanged" AutoPostBack="true" />
+                               <asp:RadioButton runat="server" ID="epYes" GroupName="epGroup" Text="Yes" CssClass="radio-btn" OnCheckedChanged="EPGroupCheckedChanged" AutoPostBack="true" />
+                                <asp:RadioButton runat="server" ID="epNo" GroupName="epGroup" Text="No" CssClass="radio-btn" Checked="true" OnCheckedChanged="EPGroupCheckedChanged" AutoPostBack="true" />
                            </div>
-                           <label runat="server" id="epLabel" for="epExplanation" hidden="hidden">If Yes, Explain Justification - See Attached Document <span class="required-field">*</span></label>
+                           <asp:Label runat="server" ID="epLabel" Visible="false"><label for="epExplanation" style="margin-top: 14px !important;">If Yes, Explain Justification - See Attached Document <span class="required-field">*</span></label></asp:Label>
                            <asp:TextBox ID="epExplanation" runat="server" TextMode="MultiLine" Rows="6" CssClass="form-control" Enabled="false" Visible="false" />
                        </div>
                        <br />
                    </div>
                </div>
                <div class="row border-bottom">
-                    <div class="col-6 col-sm-4 col-md-4">
-                        <br />
+                    <div class="col-6 col-sm-4 col-md-3">
                         <div class="form-label-group mb-3">
                             <label for="fiscalImpact">Fiscal Impact <span class="required-field">*</span></label>
-                            <input runat="server" id="fiscalImpact" type="text" class="form-control" placeholder="Placeholder" autocomplete="off" required>
+                            <input runat="server" id="fiscalImpact" type="text" data-type="currency" class="form-control" placeholder="$100,000.00" autocomplete="off" required>
+                        </div>
+                        <br />
+                    </div>
+                    <div class="col-6 col-sm-4 col-md-12">
+                        <br />
+                        <div class="form-label-group mb-3">
+                            <label for="suggestedTitle">Suggested Title <span class="required-field">*</span></label>
+                            <asp:TextBox ID="suggestedTitle" runat="server" TextMode="MultiLine" Rows="12" CssClass="form-control" />
                         </div>
                         <br />
                     </div>
                </div>
+               <div class="row border-bottom">
+                    <div class="col-6 col-sm-4 col-md-10">
+                        <div class="form-label-group mb-3">
+                            <label for="vendorName">Vendor Name <span class="required-field">*</span></label>
+                            <input runat="server" id="vendorName" type="text" class="form-control" placeholder="Vendor McVenderson & Associates" autocomplete="off" required>
+                        </div>
+                        <br />
+                    </div>
+                    <div class="col-6 col-sm-4 col-md-2">
+                        <div class="form-label-group mb-3">
+                            <label for="vendorNumber">Vendor Number <span class="required-field">*</span></label>
+                            <input runat="server" id="vendorNumber" type="text" class="form-control" placeholder="123456789" autocomplete="off" required>
+                        </div>
+                        <br />
+                    </div>
+                    <div class="col-6 col-sm-6 col-md-3">
+                         <br />
+                         <div class="form-label-group mb-3">
+                             <label for="termStartDate">Start Date <span class="required-field">*</span></label>
+                             <input runat="server" id="termStartDate" type="date" data-type="termStart" class="form-control" autocomplete="off" required>
+                         </div>
+                         <br />
+                    </div>
+                    <div class="col-6 col-sm-6 col-md-3">
+                         <br />
+                         <div class="form-label-group mb-3">
+                             <label for="termEndDate">End Date <span class="required-field">*</span></label>
+                             <input runat="server" id="termEndDate" type="date" data-type="termEnd" class="form-control" autocomplete="off" required>
+                         </div>
+                         <br />
+                    </div>
+                    <div class="col-6 col-sm-4 col-md-2">
+                        <br />
+                        <div class="form-label-group mb-3">
+                            <label for="contractTerm">Contract Term</label>
+                            <input runat="server" id="contractTerm" type="text" data-type="contractTerm" class="form-control locked-field" autocomplete="off" disabled="disabled" value="" placeholder="Calculating Term..." required>
+                        </div>
+                        <br />
+                    </div>
+                    <div class="col-6 col-sm-4 col-md-1">
+                        <br />
+                        <br />
+                    </div>
+                    <div class="col-6 col-sm-4 col-md-3">
+                        <br />
+                        <div class="form-label-group mb-3">
+                            <label for="contractAmount">Contract Amount <span class="required-field">*</span></label>
+                            <input runat="server" id="contractAmount" type="text" data-type="currency" class="form-control" placeholder="$100,000.00" autocomplete="off" required>
+                        </div>
+                        <br />
+                    </div>
+                </div>
+               <div class="row border-bottom">
+                   <div class="col-12 col-sm-6 col-md-12">
+                       <div class="form-label-group mb-3">
+                           <label for="scopeGroup">Change In Scope <span class="required-field">*</span></label>
+                           <div id="scopeGroup">
+                               <asp:RadioButton runat="server" ID="scopeYes" GroupName="scopeGroup" Text="Yes" CssClass="radio-btn" OnCheckedChanged="ScopeGroupCheckedChanged" AutoPostBack="true" />
+                                <asp:RadioButton runat="server" ID="scopeNo" GroupName="scopeGroup" Text="No" CssClass="radio-btn" OnCheckedChanged="ScopeGroupCheckedChanged" Checked="true" AutoPostBack="true" />
+                           </div>
+                       </div>
+                       <br />
+                   </div>
+                   <div class="col-12 col-sm-6 col-md-3">
+                        <div id="changeOrderDiv" class="form-label-group mb-3 disabled-control" runat="server">
+                            <label for="changeOrderNumber">Change Order Number <span class="required-field">*</span></label>
+                            <asp:TextBox ID="changeOrderNumber" runat="server" TextMode="SingleLine" CssClass="form-control" AutoCompleteType="None" placeholder="123456789" Enabled="false" />
+                        </div>
+                        <br />
+                    </div>
+                   <div class="col-12 col-sm-6 col-md-3">
+                        <div id="additionalAmountDiv" class="form-label-group mb-3 disabled-control" runat="server">
+                            <label for="additionalAmount">Additional Amount <span class="required-field">*</span></label>
+                            <asp:TextBox ID="additionalAmount" runat="server" data-type="currency" TextMode="SingleLine" CssClass="form-control" AutoCompleteType="None" placeholder="$100,000.00" Enabled="false" />
+                        </div>
+                        <br />
+                    </div>
+               </div>
+               <div class="row border-bottom pt-4 mt-1">
+                   <div class="col-12 col-sm-6 col-md-5">
+                        <br />
+                        <div class="form-label-group mb-3">
+                            <label for="purchaseMethod">Method of Purchase <span class="required-field">*</span></label>
+                            <asp:DropDownList ID="purchaseMethod" runat="server" OnSelectedIndexChanged="PurchaseMethodSelectedIndexChanged" AutoPostBack="true" CssClass="form-control">
+                            </asp:DropDownList>
+                        </div>
+                        <br />
+                    </div>
+                   <div class="col-12 col-sm-6 col-md-3">
+                       <br />
+                        <div id="otherExceptionDiv" class="form-label-group mb-3 disabled-control" runat="server">
+                            <label for="otherException">Other/Exception <span class="required-field">*</span></label>
+                            <asp:TextBox ID="otherException" runat="server" TextMode="SingleLine" CssClass="form-control" AutoCompleteType="None" Enabled="false" />
+                        </div>
+                        <br />
+                    </div>
+                </div>
                <div class="row">
                    <div class="col-12">
                        <div class="alert alert-success noborder text-center weight-400 nomargin noradius" id="divSuccess" visible="false" runat="server" style="font-weight: 900 !important;">
