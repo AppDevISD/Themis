@@ -1,0 +1,34 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="WebUI.Site" %>
+
+<!DOCTYPE html>
+<html lang="en">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="author" content="CWLP AppDev">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="Assets/Styles/Global.css" rel="stylesheet" />
+    <link rel="icon" href="Assets/Images/favicon.ico">
+        <title>Themis</title>
+</head>
+<body>
+    <form runat="server">
+        <asp:ScriptManager runat="server" />
+        <div class="sidebar">
+            <ul>
+                <li style="background-color: transparent; margin-bottom: 30px"></li>
+                <li><a href="Default.aspx"><i class="fas fa-house-damage"></i>Home</a></li>
+            </ul>
+        </div>
+        <div class="container">
+            <asp:ContentPlaceHolder ID="MainContent" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+    </form>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="Assets/Scripts/Global.js"></script>
+</body>
+</html>
