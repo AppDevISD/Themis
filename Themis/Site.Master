@@ -59,13 +59,13 @@
                             <a href="/Default.aspx" id="Home" runat="server" class="text-right"><i class="fas fa-house" style="float: left;"></i>Home</a>
                         </li>
                          <%--ID needs to match the CLASS GROUP w/ "Menu" in order for active page styling to work--%>
-                        <li id="OrdinanceMenu" runat="server">
+                        <li id="NewFactSheetMenu" runat="server">
                             <a href="#" runat="server" class="text-right"><i class="fas fa-gavel" style="float: left;"></i>Ordinance Tracking</a>
                             <ul class="fc">
                                 <%--ID needs to match the PAGE TITLE (AT TOP OF HTML DOC) with no spaces in order for active page styling to work ALSO ADD MENU GROUP NAME TO START OF CLASS--%>
                                 <li><a href="#" class="text-right" target="_blank"><i class="fa-solid fa-file-lines" style="float: left;"></i>Ordinances</a></li>
                                 <%--ID needs to match the PAGE TITLE (AT TOP OF HTML DOC) with no spaces in order for active page styling to work ALSO ADD MENU GROUP NAME TO START OF CLASS--%>
-                                <li><a href="/OrdinanceRequest.aspx" id="OrdinanceRequest" class="Ordinance text-right" runat="server"><i class="fa-solid fa-square-plus" style="float: left;"></i>New Request</a></li>
+                                <li><a href="/NewFactSheet.aspx" id="NewFactSheet" class="NewFactSheet text-right" runat="server"><i class="fa-solid fa-square-plus" style="float: left;"></i>New Fact Sheet</a></li>
                             </ul>
                         </li>
                         <li id="li2" runat="server">

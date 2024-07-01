@@ -11,7 +11,7 @@ namespace Themis
 {
 
 
-    public partial class OrdinanceRequest
+    public partial class NewFactSheet
     {
 
         /// <summary>
@@ -265,6 +265,78 @@ namespace Themis
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox otherException;
+
+        /// <summary>
+        /// previousOrdinanceNumbers control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText previousOrdinanceNumbers;
+
+        /// <summary>
+        /// codeProvision control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputText codeProvision;
+
+        /// <summary>
+        /// purchaseAARequiredYes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton purchaseAARequiredYes;
+
+        /// <summary>
+        /// purchaseAARequiredNo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton purchaseAARequiredNo;
+
+        /// <summary>
+        /// purchaseAAAtachedYes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton purchaseAAAtachedYes;
+
+        /// <summary>
+        /// purchaseAAAtachedNo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton purchaseAAAtachedNo;
+
+        /// <summary>
+        /// supportingDocumentation control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.FileUpload supportingDocumentation;
+
+        /// <summary>
+        /// staffAnalysis control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox staffAnalysis;
 
         /// <summary>
         /// divSuccess control.

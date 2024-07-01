@@ -3529,7 +3529,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="FormTemplate.aspx" />
-    <Content Include="OrdinanceRequest.aspx" />
+    <Content Include="NewFactSheet.aspx" />
     <Content Include="TableTemplate.aspx" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -3747,12 +3747,12 @@
     <Compile Include="FormTemplate.aspx.designer.cs">
       <DependentUpon>FormTemplate.aspx</DependentUpon>
     </Compile>
-    <Compile Include="OrdinanceRequest.aspx.cs">
-      <DependentUpon>OrdinanceRequest.aspx</DependentUpon>
+    <Compile Include="NewFactSheet.aspx.cs">
+      <DependentUpon>NewFactSheet.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="OrdinanceRequest.aspx.designer.cs">
-      <DependentUpon>OrdinanceRequest.aspx</DependentUpon>
+    <Compile Include="NewFactSheet.aspx.designer.cs">
+      <DependentUpon>NewFactSheet.aspx</DependentUpon>
     </Compile>
     <Compile Include="TableTemplate.aspx.cs">
       <DependentUpon>TableTemplate.aspx</DependentUpon>

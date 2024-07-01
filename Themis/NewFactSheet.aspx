@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Ordinance Request" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="OrdinanceRequest.aspx.cs" Inherits="Themis.OrdinanceRequest" MaintainScrollPositionOnPostback="true"%>
+﻿<%@ Page Title="New Fact Sheet" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="NewFactSheet.aspx.cs" Inherits="Themis.NewFactSheet" MaintainScrollPositionOnPostback="true"%>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server"></asp:Content>
 
@@ -8,13 +8,13 @@
 			<div class="display-table">
 				<div class="display-table-cell align-middle">
 					<div class="container text-center">
-						<h1 class="nomargin size-50 weight-300" style="color: white;"><i class="fas fa-gavel"></i>&nbsp;Ordinance Request</h1>
+						<h1 class="nomargin size-50 weight-300" style="color: white;"><i class="fas fa-gavel"></i>&nbsp;Ordinance Fact Sheet</h1>
 					</div>
 				</div>
 			</div>
 		</div>
 	</section>
-	<div class="container">
+	<div class="container form-page">
        <div class="col-md-12">
            <div class="col">
                <br />
@@ -185,9 +185,8 @@
                         <br />
                     </div>
                </div>
-               <div class="row border-bottom pt-4 mt-1">
-                   <div class="col-12 col-sm-6 col-md-5">
-                        <br />
+               <div class="row border-bottom">
+                    <div class="col-6 col-sm-4 col-md-6">
                         <div class="form-label-group mb-3">
                             <label for="purchaseMethod">Method of Purchase <span class="required-field">*</span></label>
                             <asp:DropDownList ID="purchaseMethod" runat="server" OnSelectedIndexChanged="PurchaseMethodSelectedIndexChanged" AutoPostBack="true" CssClass="form-control">
@@ -195,15 +194,69 @@
                         </div>
                         <br />
                     </div>
-                   <div class="col-12 col-sm-6 col-md-3">
-                       <br />
+                    <div class="col-6 col-sm-4 col-md-3">
                         <div id="otherExceptionDiv" class="form-label-group mb-3 disabled-control" runat="server">
                             <label for="otherException">Other/Exception <span class="required-field">*</span></label>
                             <asp:TextBox ID="otherException" runat="server" TextMode="SingleLine" CssClass="form-control" AutoCompleteType="None" Enabled="false" />
                         </div>
                         <br />
                     </div>
+                    <div class="col-6 col-sm-4 col-md-4">
+                        <br />
+                        <div class="form-label-group mb-3">
+                            <label for="previousOrdinanceNumbers">Previous Ordinance Numbers</label>
+                            <input runat="server" id="previousOrdinanceNumbers" type="text" data-type="ordinanceNumbers" class="form-control" placeholder="123-45-6789" autocomplete="off">
+                        </div>
+                        <br />
+                    </div>
+                    <div class="col-6 col-sm-4 col-md-4">
+                        <br />
+                        <div class="form-label-group mb-3">
+                            <label for="codeProvision">Code Provision <span class="required-field">*</span></label>
+                            <input runat="server" id="codeProvision" type="text" class="form-control" placeholder="123456789" autocomplete="off">
+                        </div>
+                        <br />
+                    </div>
                 </div>
+               <div class="row border-bottom">
+                   <div class="col-6 col-sm-6 col-md-12">
+                       <div class="form-label-group mb-3">
+                           <label for="purchaseAARequiredGroup">Is Purchasing Agent Approval Required? <span class="required-field">*</span></label>
+                           <div id="purchaseAARequiredGroup">
+                               <asp:RadioButton runat="server" ID="purchaseAARequiredYes" GroupName="purchaseAARequiredGroup" Text="Yes" CssClass="radio-btn" />
+                                <asp:RadioButton runat="server" ID="purchaseAARequiredNo" GroupName="purchaseAARequiredGroup" Text="No" CssClass="radio-btn" Checked="true" />
+                           </div>
+                       </div>
+                       <br />
+                    </div>
+                   <div class="col-6 col-sm-6 col-md-12">
+                       <div class="form-label-group mb-3">
+                           <label for="purchaseAAAtachedGroup">Is Purchasing Agent Approval Attached? <span class="required-field">*</span></label>
+                           <div id="purchaseAAAtachedGroup">
+                                <asp:RadioButton runat="server" ID="purchaseAAAtachedYes" GroupName="purchaseAAAtachedGroup" Text="Yes" CssClass="radio-btn" />
+                                <asp:RadioButton runat="server" ID="purchaseAAAtachedNo" GroupName="purchaseAAAtachedGroup" Text="No" CssClass="radio-btn" Checked="true" />
+                           </div>
+                       </div>
+                       <br />
+                   </div>
+                </div>
+               <div class="row border-bottom">
+                    <div class="col-6 col-sm-4 col-md-12">
+                        <div class="form-label-group mb-3">
+                            <label for="supportingDocumentation">Supporting Documentation (Ex: Contract, Agreement, Change Order, Bid Book) <span class="required-field">*</span></label>
+                            <asp:FileUpload runat="server" ID="supportingDocumentation" AllowMultiple="true" />
+                        </div>
+                        <br />
+                    </div>
+                   <br />
+                    <div class="col-6 col-sm-4 col-md-12">
+                        <div class="form-label-group mb-3">
+                            <label for="staffAnalysis">Staff Analysis <span class="required-field">*</span></label>
+                            <asp:TextBox ID="staffAnalysis" runat="server" TextMode="MultiLine" Rows="18" CssClass="form-control" />
+                        </div>
+                        <br />
+                    </div>
+               </div>
                <div class="row">
                    <div class="col-12">
                        <div class="alert alert-success noborder text-center weight-400 nomargin noradius" id="divSuccess" visible="false" runat="server" style="font-weight: 900 !important;">

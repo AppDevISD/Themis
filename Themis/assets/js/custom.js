@@ -48,6 +48,30 @@ $("input[data-type='currency']").each(function () {
         formatCurrency($(this), "blur");
     });
 });
+
+$("input[data-type='ordinanceNumbers']").each(function () {
+    $(this).on("change keyup paste", function () {
+        var output,
+            $this = $(this),
+            input = $this.val();
+
+        input = input.replace(/[^0-9]/g, '');
+        var firstSet = input.substr(0, 3);
+        var secondSet = input.substr(3, 2);
+        var thirdSet = input.substr(5, 4);
+        if (firstSet.length < 3) {
+            output = firstSet;
+        }
+        else if (firstSet.length == 3 && secondSet.length < 2) {
+            output = `${firstSet}-${secondSet}`;
+        } else if (firstSet.length == 3 && secondSet.length <= 2) {
+            output = `${firstSet}-${secondSet}-${thirdSet}`;
+        }
+        $this.val(output);
+    });
+});
+
+
 function formatNumber(n) {
     // format number 1000000 to 1,234,567
     return n.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",")
@@ -119,11 +143,37 @@ function formatCurrency(input, blur) {
     input[0].setSelectionRange(caret_pos, caret_pos);
 }
 
-let termStartEntered = false;
-let termEndEntered = false;
+var termStartEntered;
+var termEndEntered;
 let contractTerm = $("input[data-type='contractTerm']");
 let termStart = $("input[data-type='termStart']");
 let termEnd = $("input[data-type='termEnd']");
+
+LoadTermVars();
+function LoadTermVars() {
+    if (termStart.val() != "") {
+        termStartEntered = true;
+    }
+    else {
+        termStartEntered = false;
+    }
+    if (termEnd.val() != "") {
+        termEndEntered = true;
+    }
+    else {
+        termEndEntered = false;
+    }
+    if (termStart.val() != "" && termEnd.val() != "") {
+        GetTermDate();
+    }
+    console.log("-------------------");
+    console.log(termStart.val());
+    console.log(termStartEntered);
+    console.log(termEnd.val());
+    console.log(termEndEntered);
+    console.log("-------------------");
+}
+
 termStart.each(function () {
     $(this).on("change keyup paste", function () {
         let output = "";
@@ -132,7 +182,7 @@ termStart.each(function () {
             return output;
         }
         else if (termEndEntered && $(this).val() != "") {
-            termEndEntered = true;
+            termStartEntered = true;
             GetTermDate();
             return output;
         }
@@ -172,6 +222,8 @@ termEnd.each(function () {
         }
     });
 });
+
+
 function GetTermDate() {
     let startDate = new Date(termStart.val());
     let endDate = new Date(termEnd.val());

@@ -9,7 +9,7 @@ using System.Web.UI.WebControls;
 
 namespace Themis
 {
-    public partial class OrdinanceRequest : System.Web.UI.Page
+    public partial class NewFactSheet : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
