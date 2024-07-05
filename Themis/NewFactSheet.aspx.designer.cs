@@ -78,6 +78,15 @@ namespace Themis
         protected global::System.Web.UI.HtmlControls.HtmlInputText ext1;
 
         /// <summary>
+        /// addNewContact control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button addNewContact;
+
+        /// <summary>
         /// epYes control.
         /// </summary>
         /// <remarks>

@@ -28,8 +28,7 @@
                         <br />
                         <div class="form-label-group mb-3">
                             <label for="department">Office Requesting <span class="required-field">*</span></label>
-                            <asp:DropDownList ID="department" runat="server" AutoPostBack="true" OnSelectedIndexChanged="DepartmentSelectedIndexChanged" CssClass="form-control">
-                            </asp:DropDownList>
+                            <asp:DropDownList ID="department" runat="server" AutoPostBack="true" OnSelectedIndexChanged="DepartmentSelectedIndexChanged" CssClass="form-control"></asp:DropDownList>
                         </div>
                         <br />
                     </div>
@@ -51,7 +50,7 @@
                         </div>
                         <br />
                     </div>
-                   <div class="col-6 col-sm-4 col-md-9">
+                   <div class="col-6 col-sm-4 col-md-8">
                        <br />
                        <div class="form-label-group mb-3">
                            <label for="contactName">Contact Name <span class="required-field">*</span></label>
@@ -74,6 +73,14 @@
                             <input runat="server" id="ext1" type="text" data-type="extension" class="form-control" placeholder="x1234" minlength="5" maxlength="5" autocomplete="off">
                         </div>
                         <br />
+                    </div>
+                   <div class="col-12 col-sm-1 col-md-1">
+                       <br />
+                       <div class="form-label-group mb-3">
+                           <label for="addNewContact">&nbsp;</label>
+                           <asp:Button ID="addNewContact" runat="server" class="form-control green-btn-form" Text="+"></asp:Button> <%--ONCLICK--%>
+                       </div>
+                       <br />
                     </div>
                </div>
                <div class="row border-bottom">

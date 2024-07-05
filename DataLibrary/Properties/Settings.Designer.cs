@@ -93,5 +93,27 @@ namespace DataLibrary.Properties {
                 return ((string)(this["ISDAdmin"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=gthintdbt6\\sqltest2017;Initial Catalog=Themis;Integrated Security=Tru" +
+            "e;User Id=SA-Themis;Password=Ticket15204!;")]
+        public string ThemisDBTEST {
+            get {
+                return ((string)(this["ThemisDBTEST"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=mcwintdb14\\sqlinternal;Initial Catalog=Themis;Integrated Security=Tru" +
+            "e;User Id=SA-Themis;Password=Ticket15204!;")]
+        public string ThemisDBPROD {
+            get {
+                return ((string)(this["ThemisDBPROD"]));
+            }
+        }
     }
 }

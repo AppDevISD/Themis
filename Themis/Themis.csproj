@@ -3684,6 +3684,8 @@
     <Content Include="assets\images\misc\shop\Thumbs.db" />
     <Content Include="assets\images\misc\Thumbs.db" />
     <Content Include="bin\DataLibrary.dll.config" />
+    <None Include="Properties\PublishProfiles\PROD.pubxml" />
+    <None Include="Properties\PublishProfiles\TEST.pubxml" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
     <Content Include="Scripts\jquery-3.7.0.min.js" />
