@@ -1,0 +1,250 @@
+﻿/* fonts */
+@font-face {
+    font-family: "Lato";
+    src: local("Lato"), url("/Assets/Fonts/Lato-Regular.ttf") format('truetype'), url("/Assets/Fonts/Lato-Italic.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: "Bebas Neue";
+    src: local("Bebas Neue"), url("/Assets/Fonts/BebasNeue-Regular.otf") format('opentype'),
+}
+
+* {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100%;
+/*    font-family: "Lato", sans-serif;*/
+    font-weight: 400;
+}
+
+#header {
+/*    font-family: "Bebas Neue";*/
+}
+
+.themis-logo {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    background: url('../Images/Icons/favicon/android-chrome-512x512.png') no-repeat;
+    background-size: contain;
+}
+
+    .themis-logo::after {
+        content: '';
+        display: block;
+        width: 100%;
+        height: 100%;
+        mix-blend-mode: multiply;
+        mask-image: url('../images/icons/favicon/android-chrome-512x512.png');
+        mask-size: contain;
+    }
+
+.themis-text {
+    position: absolute;
+    width: 100%;
+    font-family: "GFS Neohellenic", sans-serif;
+    font-size: 125px;
+    z-index: 100;
+    filter: drop-shadow(3px 3px 0 black);
+    bottom: -25px;
+    margin: 0;
+    text-align: center;
+}
+
+.center-text {
+    text-align: center;
+    margin: 0 55px;
+}
+
+    #header {
+
+    }
+
+    #header .row a {
+        filter: none !important;
+    }
+
+    #header .row a {
+        text-decoration: none !important;
+        display: flex;
+        align-items: center;
+        width: fit-content;
+    }
+
+    #header .normal-font {
+        font-family: "Lato", sans-serif;
+        font-size: 14px;
+    }
+
+.display-none {
+    display: none;
+}
+
+.modalBackground {
+    background-color: black;
+    opacity: 0.85;
+}
+
+.modalBackgroundLight {
+    background-color: black;
+    opacity: 0.60;
+}
+
+.RedBackground {
+    background-color: indianred !important;
+    color: rgba(0, 95, 255, 0.6) !important;
+}
+
+.AlternateButton111 {
+    text-align: left;
+    width: 100%;
+    font-size: 12px;
+    margin-left: 0px;
+    height: 30px;
+    background-color: rgb(218 236 247 / .8);
+    border: 1px solid #88c2e5;
+}
+
+    .AlternateButton111:hover {
+        border-color: #4b87ac;
+        background-color: rgb(218 236 247 / 0.00);
+        border: 1px solid #4b87ac;
+    }
+
+.foobar {
+    background-color: blue;
+    width: 200px;
+    font-size: 56px;
+}
+
+.nav-logo {
+    width: 60px;
+    margin-left: 20px;
+}
+
+.color-mode-button {
+    position: fixed;
+    bottom: 15px;
+    right: 20px;
+    font-size: 25pt;
+    transition: all 0.5s;
+}
+
+    .color-mode-button button {
+        text-decoration: none !important;
+        opacity: 0.15;
+        transition: all 0.5s;
+    }
+
+        .color-mode-button:hover, .color-mode-button button:hover, .color-mode-button button:focus {
+            background-color: transparent !important;
+            color: Var(--text-color) !important;
+            transition: all 0.5s;
+        }
+
+#aside {
+    filter: drop-shadow(5px 0px 5px #000000ac);
+}
+
+#aside nav ul li a:hover {
+    padding: 12px 30px 12px 30px !important;
+}
+
+#aside nav ul .fc li button {
+    transition: all .3s;
+}
+
+#aside nav ul .fc li a:hover, #aside nav ul .fc li button:hover{
+    padding: 8px 30px 6px 30px !important;
+}
+
+#aside nav ul li ul:before{
+    border-left: 2px dotted Var(--list-border) !important;
+}
+
+#aside nav ul li ul li:before {
+    border-top: 2px dotted Var(--list-border) !important;
+}
+
+#aside nav ul li:first-child a, #aside nav ul li:first-child button {
+    border-top: none !important;
+}
+
+#aside nav ul li ul li button {
+    width: 100%;
+}
+
+#aside nav ul .menu-open a {
+    border-bottom: rgba(0,0,0,0.1) 1px solid !important;
+}
+
+#aside nav ul .menu-open li a {
+    border-bottom: none !important;
+}
+
+.btn-adjust {
+    float: right !important;
+    margin-right: 15px !important;
+}
+
+.btn {
+    transition: all 0.25s !important;
+}
+
+
+
+.panel-heading {
+    padding: 10px 15px !important;
+    border-bottom: 1px solid transparent !important;
+    border-top-left-radius: 3px !important;
+    border-top-right-radius: 3px !important;
+}
+
+#middle div.panel-heading {
+    height: unset !important;
+}
+
+.required-field {
+    color: red !important;
+    font-weight: 900;
+}
+
+select:disabled:hover, .disabled-control input:hover {
+    cursor: default !important;
+}
+
+/*#epGroup {
+    margin-bottom: 20px;
+}*/
+
+.radio-btn {
+    margin-right: 20px;
+}
+
+.radio-btn label {
+    font-size: 14px; 
+    font-weight: normal;
+    margin-left: 5px;
+}
+
+.border-top {
+    border-top: 2px solid Var(--active-bg);
+}
+
+.border-bottom {
+    border-bottom: 2px solid Var(--active-bg);
+}
+
+input[type=date]::-webkit-calendar-picker-indicator:hover, select:hover, .radio-btn:hover, input[type=radio]:hover, .radio-btn label:hover {
+    cursor: pointer !important;
+}
+input[type=date]:hover {
+    cursor: text !important;
+}
+
+input[type="file"] {
+    display: block;
+}
