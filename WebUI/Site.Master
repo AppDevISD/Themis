@@ -21,6 +21,7 @@
         <link href="/Assets/Plugins/jquery/jquery-ui-1.13.3/jquery-ui.min.css" rel="stylesheet" />
 
         <link href="/Assets/Styles/color-mode.css" rel="stylesheet" type="text/css" id="color_scheme"/>
+        <link href="/Assets/Plugins/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" />
         
         <title>Themis</title>
     </head>
@@ -119,11 +120,11 @@
         <script type="text/javascript" src="/Assets/JS/jquery.slimscroll.min.js"></script>
         <script src="Assets/Scripts/Global.js"></script>
         <script type="text/javascript" src="/Assets/JS/app.js"></script>
-        <script type="text/javascript">var plugin_path = '/Assets/Plugins/';</script>
-        <%--<script type="text/javascript" src="/Assets/JS/moment.min.js"></script>
+        <script type="text/javascript" src="/Assets/JS/moment.min.js"></script>
         <script type="text/javascript" src="/Assets/JS/fullcalendar.min.js"></script>
         <script type="text/javascript" src="/Assets/plugins/moment.js"></script>
         <script type="text/javascript" src="/Assets/JS/bootstrap-datetimepicker.js"></script>
-        <script type="text/javascript" src="/Assets/JS/custom.js"></script>--%>
+        <script type="text/javascript" src="/Assets/JS/custom.js"></script>
+        <script type="text/javascript">var plugin_path = '/Assets/Plugins/';</script>
     </body>
 </html>

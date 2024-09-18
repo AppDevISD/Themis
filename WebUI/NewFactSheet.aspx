@@ -14,7 +14,7 @@
 	</section>
 	<div class="container form-page">
        <div class="col-md-12">
-           <div class="col">
+           <div>
                <br />
                <p class="text-justify">
                    Et tellus suspendisse suscipit orci sit amet sem venenatis nec lobortis sem suscipit nullam nec imperdiet velit mauris eu nisi a felis imperdiet porta at ac nulla vivamus faucibus felis nec dolor pretium eget pellentesque dolor suscipit maecenas vitae enim arcu, at tincidunt nunc pellentesque eleifend vulputate lacus, vel semper sem ornare sit amet proin sem sapien, auctor vel faucibus id, aliquet vitae ipsum etiam auctor ultricies ante, at dapibus urna viverra sed nullam mi arcu, tempor vitae interdum a.
@@ -76,7 +76,7 @@
                        <br />
                        <div class="form-label-group mb-3">
                            <label for="addNewContact">&nbsp;</label>
-                           <asp:Button ID="addNewContact" runat="server" class="form-control green-btn-form" Text="+"></asp:Button> <%--ONCLICK--%>
+                           <asp:Button ID="addNewContact" runat="server" class="form-control green-btn-form" Text="+" AutoPostBack="true"  CausesValidation="false"></asp:Button> <%--ONCLICK--%>
                        </div>
                        <br />
                     </div>
