@@ -297,6 +297,7 @@
     <Content Include="bin\roslyn\VBCSCompiler.exe" />
     <Content Include="bin\WebUI.dll" />
     <Content Include="bin\WebUI.pdb" />
+    <Content Include="DB.xml" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
     <Content Include="NewFactSheet.aspx" />

@@ -15,6 +15,7 @@ namespace DataLibrary
         public bool PurchaseAgentApproval {  get; set; }
         public int AgentApprovalID { get; set; }
         public int PurchaseTypeID { get; set; }
+        public string PurchaseDescription { get; set; }
         public string LastUpdateBy { get; set; }
         public DateTime LastUpdateDate { get; set; }
         public DateTime EffectiveDate { get; set; }
