@@ -32,13 +32,11 @@ namespace DataLibrary
                 return _Factory;
             }
         }
-
         private Factory()
         {
             _cn = new SqlConnection();
             _cn.Close();
         }
-
         public List<Division> LoadDivisionsByDept(int deptCode)
         {
             List<Division> lDivision = new List<Division>();
@@ -65,7 +63,6 @@ namespace DataLibrary
             }
             return lDivision;
         }
-
         public List<Department> LoadDepartments()
         {
             List<Department> lDepartments = new List<Department>();
@@ -91,5 +88,6 @@ namespace DataLibrary
 
             return lDepartments;
         }
+
     }
 }
