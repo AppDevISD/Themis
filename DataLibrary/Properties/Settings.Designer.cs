@@ -12,7 +12,7 @@ namespace DataLibrary.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.10.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.11.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -28,9 +28,9 @@ namespace DataLibrary.Properties {
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
         [global::System.Configuration.DefaultSettingValueAttribute("Data Source=gthintdbt6\\sqltest2017;Initial Catalog=Themis;Integrated Security=Tru" +
             "e;User Id=SA-Themis;Password=Ticket15204!;")]
-        public string Database {
+        public string ThemisDatabase {
             get {
-                return ((string)(this["Database"]));
+                return ((string)(this["ThemisDatabase"]));
             }
         }
         
@@ -39,9 +39,9 @@ namespace DataLibrary.Properties {
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
         [global::System.Configuration.DefaultSettingValueAttribute("Data Source=mcwintdb14\\sqlinternal;Initial Catalog=Themis;Integrated Security=Tru" +
             "e;User Id=SA-Themis;Password=Ticket15204!;")]
-        public string DatabasePROD {
+        public string ThemisDatabasePROD {
             get {
-                return ((string)(this["DatabasePROD"]));
+                return ((string)(this["ThemisDatabasePROD"]));
             }
         }
         

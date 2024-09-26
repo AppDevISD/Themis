@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataLibrary
 {
-    internal class Contract
+    public class Contract
     {
         public int ContractID { get; set; }
         public string ContractName { get; set; }

@@ -6,15 +6,8 @@ using System.Threading.Tasks;
 
 namespace DataLibrary
 {
-    internal class Accounting
+    public class AccountingType
     {
-        public int AccountingID { get; set; }
-        public string FundCode { get; set; }
-        public string DepartmentCode { get; set; }
-        public string UnitCode { get; set; }
-        public string ActivityCode { get; set; }
-        public string ObjectCode { get; set; }
-        public decimal Amount { get; set; }
         public int AccountingTypeID { get; set; }
         public string AccountingTypeDescription { get; set; }
         public string LastUpdateBy { get; set; }

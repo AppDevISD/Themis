@@ -1,4 +1,5 @@
 ﻿using DataLibrary;
+using ISD.ActiveDirectory;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,6 +12,8 @@ namespace WebUI
 {
     public partial class NewFactSheet : System.Web.UI.Page
     {
+        private ADUser _user = new ADUser();
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!Page.IsPostBack)

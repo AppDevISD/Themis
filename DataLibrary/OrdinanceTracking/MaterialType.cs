@@ -6,14 +6,10 @@ using System.Threading.Tasks;
 
 namespace DataLibrary
 {
-    internal class Request
+    public class MaterialType
     {
-        public int RequestID { get; set; }
-        public string OfficeName { get; set; }
-        public int UserID { get; set; }
-        public DateTime DateFirstReading { get; set; }
-        public string EmergencyPassage { get; set; }
-        public string SuggestedTitle { get; set; }
+        public int MaterialTypeID { get; set; }
+        public string MaterialTypeDescription { get; set; }
         public string LastUpdateBy { get; set; }
         public DateTime LastUpdateDate { get; set; }
         public DateTime EffectiveDate { get; set; }

@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace DataLibrary
 {
-    internal class SpecificationDocument
+    public class ContractBidder
     {
-        public int SpecDocID { get; set; }
-        public string DocDescription { get; set; }
-        public byte[] DocImage { get; set; }
+        public int ContractID { get; set; }
+        public int BidderID { get; set; }
         public DateTime EffectiveDate { get; set; }
         public DateTime ExpirationDate { get; set; }
     }

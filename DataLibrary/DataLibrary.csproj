@@ -51,6 +51,7 @@
     <Compile Include="Ordinance\Accounting.cs" />
     <Compile Include="Ordinance\Bidder.cs" />
     <Compile Include="Ordinance\Material.cs" />
+    <Compile Include="Ordinance\PurchaseAgentApproval.cs" />
     <Compile Include="Ordinance\SpecificationDocument.cs" />
     <Compile Include="ColorSchemes.cs" />
     <Compile Include="Ordinance\Contract.cs" />

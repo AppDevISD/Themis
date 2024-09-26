@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataLibrary
 {
-    internal class Purchase
+    public class Purchase
     {
         public int PurchaseID {  get; set; }
         public string PurchaseName { get; set; }

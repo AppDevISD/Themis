@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace DataLibrary
 {
-    internal class Ordinance
+    public class RequestContract
     {
-        public int OrdinanceID { get; set; }
-        public string FormNumber { get; set; }
-        public string LastUpdateBy { get; set; }
-        public DateTime LastUpdateDate { get; set; }
+        public int RequestID { get; set; }
+        public int ContractID { get; set; }
         public DateTime EffectiveDate { get; set; }
         public DateTime ExpirationDate { get; set; }
     }

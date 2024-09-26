@@ -89,5 +89,393 @@ namespace DataLibrary
             return lDepartments;
         }
 
+
+        // ORDINANCE TRACKING
+        // INSERTS
+        public int InsertAccounting(Accounting accounting)
+        {
+            int ret = 0;
+            _cn = new SqlConnection(Properties.Settings.Default["ThemisDatabase"].ToString());
+            SqlCommand cmd = new SqlCommand("sp_InsertAccounting", _cn);
+            cmd.Parameters.AddWithValue("@FundCode", accounting.FundCode);
+            cmd.Parameters.AddWithValue("@DepartmentCode", accounting.DepartmentCode);
+            cmd.Parameters.AddWithValue("@UnitCode", accounting.UnitCode);
+            cmd.Parameters.AddWithValue("@ActivityCode", accounting.ActivityCode);
+            cmd.Parameters.AddWithValue("@ObjectCode", accounting.ObjectCode);
+            cmd.Parameters.AddWithValue("@Amount", accounting.Amount);
+            SqlParameter outputParam = new SqlParameter("@nID", SqlDbType.Int);
+            outputParam.Direction = ParameterDirection.ReturnValue;
+            cmd.Parameters.Add(outputParam);
+            cmd.CommandType = CommandType.StoredProcedure;
+            try
+            {
+                using (_cn)
+                {
+                    _cn.Open();
+                    ret = cmd.ExecuteNonQuery();
+                    ret = Convert.ToInt32(outputParam.Value);
+                }
+            }
+            catch (Exception ex)
+            {
+                errorMsg = ex.Message;
+                ret = -1;
+            }
+            return ret;
+        }
+        public int InsertAccountingType(AccountingType accountingType)
+        {
+            int ret = 0;
+            _cn = new SqlConnection(Properties.Settings.Default["ThemisDatabase"].ToString());
+            SqlCommand cmd = new SqlCommand("sp_InsertlkAccountingType", _cn);
+            cmd.Parameters.AddWithValue("@AccountingTypeDescription", accountingType.AccountingTypeDescription);
+            SqlParameter outputParam = new SqlParameter("@nID", SqlDbType.Int);
+            outputParam.Direction = ParameterDirection.ReturnValue;
+            cmd.Parameters.Add(outputParam);
+            cmd.CommandType = CommandType.StoredProcedure;
+            try
+            {
+                using (_cn)
+                {
+                    _cn.Open();
+                    ret = cmd.ExecuteNonQuery();
+                    ret = Convert.ToInt32(outputParam.Value);
+                }
+            }
+            catch (Exception ex)
+            {
+                errorMsg = ex.Message;
+                ret = -1;
+            }
+            return ret;
+        }
+        public int InsertBidder(Bidder bidder)
+        {
+            int ret = 0;
+            _cn = new SqlConnection(Properties.Settings.Default["ThemisDatabase"].ToString());
+            SqlCommand cmd = new SqlCommand("sp_InsertBidder", _cn);
+            cmd.Parameters.AddWithValue("@VendorID", bidder.VendorID);
+            cmd.Parameters.AddWithValue("@BidderTypeID", bidder.BidderTypeID);
+            cmd.Parameters.AddWithValue("@BidderName", bidder.BidderName);
+            cmd.Parameters.AddWithValue("@InsertDate", bidder.InsertDate);
+            SqlParameter outputParam = new SqlParameter("@nID", SqlDbType.Int);
+            outputParam.Direction = ParameterDirection.ReturnValue;
+            cmd.Parameters.Add(outputParam);
+            cmd.CommandType = CommandType.StoredProcedure;
+            try
+            {
+                using (_cn)
+                {
+                    _cn.Open();
+                    ret = cmd.ExecuteNonQuery();
+                    ret = Convert.ToInt32(outputParam.Value);
+                }
+            }
+            catch (Exception ex)
+            {
+                errorMsg = ex.Message;
+                ret = -1;
+            }
+            return ret;
+        }
+        public int InsertBidderType(BidderType bidderType)
+        {
+            int ret = 0;
+            _cn = new SqlConnection(Properties.Settings.Default["ThemisDatabase"].ToString());
+            SqlCommand cmd = new SqlCommand("sp_InsertlkBidderType", _cn);
+            cmd.Parameters.AddWithValue("@BidderTypeDescription", bidderType.BidderTypeDescription);
+            SqlParameter outputParam = new SqlParameter("@nID", SqlDbType.Int);
+            outputParam.Direction = ParameterDirection.ReturnValue;
+            cmd.Parameters.Add(outputParam);
+            cmd.CommandType = CommandType.StoredProcedure;
+            try
+            {
+                using (_cn)
+                {
+                    _cn.Open();
+                    ret = cmd.ExecuteNonQuery();
+                    ret = Convert.ToInt32(outputParam.Value);
+                }
+            }
+            catch (Exception ex)
+            {
+                errorMsg = ex.Message;
+                ret = -1;
+            }
+            return ret;
+        }
+        public int InsertContract(Contract contract)
+        {
+            int ret = 0;
+            _cn = new SqlConnection(Properties.Settings.Default["ThemisDatabase"].ToString());
+            SqlCommand cmd = new SqlCommand("sp_InsertContract", _cn);
+            cmd.Parameters.AddWithValue("@ContractName", contract.ContractName);
+            cmd.Parameters.AddWithValue("@Terms", contract.ContractTerms);
+            cmd.Parameters.AddWithValue("@ChangeOfScope", contract.ChangeOfScope);
+            cmd.Parameters.AddWithValue("@Amount", contract.ContractAmount);
+            cmd.Parameters.AddWithValue("@ChangeOrder", contract.ChangeOrder);
+            cmd.Parameters.AddWithValue("@AdditionalAmount", contract.AdditionalAmount);
+            cmd.Parameters.AddWithValue("@StaffAnalysis", contract.StaffAnalysis);
+            cmd.Parameters.AddWithValue("@OrdinanceRequested", contract.OrdinanceRequested);
+            SqlParameter outputParam = new SqlParameter("@nID", SqlDbType.Int);
+            outputParam.Direction = ParameterDirection.ReturnValue;
+            cmd.Parameters.Add(outputParam);
+            cmd.CommandType = CommandType.StoredProcedure;
+            try
+            {
+                using (_cn)
+                {
+                    _cn.Open();
+                    ret = cmd.ExecuteNonQuery();
+                    ret = Convert.ToInt32(outputParam.Value);
+                }
+            }
+            catch (Exception ex)
+            {
+                errorMsg = ex.Message;
+                ret = -1;
+            }
+            return ret;
+        }
+        public int InsertContractBidder(ContractBidder contractBidder)
+        {
+            int ret = 0;
+            _cn = new SqlConnection(Properties.Settings.Default["ThemisDatabase"].ToString());
+            SqlCommand cmd = new SqlCommand("sp_InsertContractBidder", _cn);
+            cmd.Parameters.AddWithValue("@ContractID", contractBidder.ContractID);
+            cmd.Parameters.AddWithValue("@BidderID", contractBidder.BidderID);
+            SqlParameter outputParam = new SqlParameter("@nID", SqlDbType.Int);
+            outputParam.Direction = ParameterDirection.ReturnValue;
+            cmd.Parameters.Add(outputParam);
+            cmd.CommandType = CommandType.StoredProcedure;
+            try
+            {
+                using (_cn)
+                {
+                    _cn.Open();
+                    ret = cmd.ExecuteNonQuery();
+                    ret = Convert.ToInt32(outputParam.Value);
+                }
+            }
+            catch (Exception ex)
+            {
+                errorMsg = ex.Message;
+                ret = -1;
+            }
+            return ret;
+        }
+        public int InsertContractMaterial(ContractMaterial contractMaterial)
+        {
+            int ret = 0;
+            _cn = new SqlConnection(Properties.Settings.Default["ThemisDatabase"].ToString());
+            SqlCommand cmd = new SqlCommand("sp_InsertContractMaterial", _cn);
+            cmd.Parameters.AddWithValue("@ContractID", contractMaterial.ContractID);
+            cmd.Parameters.AddWithValue("@MaterialID", contractMaterial.MaterialID);
+            SqlParameter outputParam = new SqlParameter("@nID", SqlDbType.Int);
+            outputParam.Direction = ParameterDirection.ReturnValue;
+            cmd.Parameters.Add(outputParam);
+            cmd.CommandType = CommandType.StoredProcedure;
+            try
+            {
+                using (_cn)
+                {
+                    _cn.Open();
+                    ret = cmd.ExecuteNonQuery();
+                    ret = Convert.ToInt32(outputParam.Value);
+                }
+            }
+            catch (Exception ex)
+            {
+                errorMsg = ex.Message;
+                ret = -1;
+            }
+            return ret;
+        }
+        public int InsertContractOrdinance(ContractOrdinance contractOrdinance)
+        {
+            int ret = 0;
+            _cn = new SqlConnection(Properties.Settings.Default["ThemisDatabase"].ToString());
+            SqlCommand cmd = new SqlCommand("sp_InsertContractOrdinance", _cn);
+            cmd.Parameters.AddWithValue("@ContractID", contractOrdinance.ContractID);
+            cmd.Parameters.AddWithValue("@OrdinanceID", contractOrdinance.OrdinanceID);
+            SqlParameter outputParam = new SqlParameter("@nID", SqlDbType.Int);
+            outputParam.Direction = ParameterDirection.ReturnValue;
+            cmd.Parameters.Add(outputParam);
+            cmd.CommandType = CommandType.StoredProcedure;
+            try
+            {
+                using (_cn)
+                {
+                    _cn.Open();
+                    ret = cmd.ExecuteNonQuery();
+                    ret = Convert.ToInt32(outputParam.Value);
+                }
+            }
+            catch (Exception ex)
+            {
+                errorMsg = ex.Message;
+                ret = -1;
+            }
+            return ret;
+        }
+        public int InsertMaterial(Material material)
+        {
+            int ret = 0;
+            _cn = new SqlConnection(Properties.Settings.Default["ThemisDatabase"].ToString());
+            SqlCommand cmd = new SqlCommand("sp_InsertMaterial", _cn);
+            cmd.Parameters.AddWithValue("@MaterialDescription", material.MaterialDescription);
+            cmd.Parameters.AddWithValue("@SpecificationDocID", material.SpecDocID);
+            SqlParameter outputParam = new SqlParameter("@nID", SqlDbType.Int);
+            outputParam.Direction = ParameterDirection.ReturnValue;
+            cmd.Parameters.Add(outputParam);
+            cmd.CommandType = CommandType.StoredProcedure;
+            try
+            {
+                using (_cn)
+                {
+                    _cn.Open();
+                    ret = cmd.ExecuteNonQuery();
+                    ret = Convert.ToInt32(outputParam.Value);
+                }
+            }
+            catch (Exception ex)
+            {
+                errorMsg = ex.Message;
+                ret = -1;
+            }
+            return ret;
+        }
+        public int InsertMaterialSpecificationDocument(MaterialSpecificationDocument materialSpecificationDocument)
+        {
+            int ret = 0;
+            _cn = new SqlConnection(Properties.Settings.Default["ThemisDatabase"].ToString());
+            SqlCommand cmd = new SqlCommand("sp_InsertMaterialSpecificationDocument", _cn);
+            cmd.Parameters.AddWithValue("@DocDescription", materialSpecificationDocument.DocDescription);
+            cmd.Parameters.AddWithValue("@DocImage", materialSpecificationDocument.DocImage);
+            SqlParameter outputParam = new SqlParameter("@nID", SqlDbType.Int);
+            outputParam.Direction = ParameterDirection.ReturnValue;
+            cmd.Parameters.Add(outputParam);
+            cmd.CommandType = CommandType.StoredProcedure;
+            try
+            {
+                using (_cn)
+                {
+                    _cn.Open();
+                    ret = cmd.ExecuteNonQuery();
+                    ret = Convert.ToInt32(outputParam.Value);
+                }
+            }
+            catch (Exception ex)
+            {
+                errorMsg = ex.Message;
+                ret = -1;
+            }
+            return ret;
+        }
+        public int InsertMaterialType(MaterialType materialType)
+        {
+            int ret = 0;
+            _cn = new SqlConnection(Properties.Settings.Default["ThemisDatabase"].ToString());
+            SqlCommand cmd = new SqlCommand("sp_InsertlkMaterialType", _cn);
+            cmd.Parameters.AddWithValue("@MaterialTypeDescription", materialType.MaterialTypeDescription);
+            SqlParameter outputParam = new SqlParameter("@nID", SqlDbType.Int);
+            outputParam.Direction = ParameterDirection.ReturnValue;
+            cmd.Parameters.Add(outputParam);
+            cmd.CommandType = CommandType.StoredProcedure;
+            try
+            {
+                using (_cn)
+                {
+                    _cn.Open();
+                    ret = cmd.ExecuteNonQuery();
+                    ret = Convert.ToInt32(outputParam.Value);
+                }
+            }
+            catch (Exception ex)
+            {
+                errorMsg = ex.Message;
+                ret = -1;
+            }
+            return ret;
+        }
+        public int InsertOrdinance(Ordinance ordinance)
+        {
+            int ret = 0;
+            _cn = new SqlConnection(Properties.Settings.Default["ThemisDatabase"].ToString());
+            SqlCommand cmd = new SqlCommand("sp_InsertOrdinance", _cn);
+            cmd.Parameters.AddWithValue("@FormNumber", ordinance.FormNumber);
+            SqlParameter outputParam = new SqlParameter("@nID", SqlDbType.Int);
+            outputParam.Direction = ParameterDirection.ReturnValue;
+            cmd.Parameters.Add(outputParam);
+            cmd.CommandType = CommandType.StoredProcedure;
+            try
+            {
+                using (_cn)
+                {
+                    _cn.Open();
+                    ret = cmd.ExecuteNonQuery();
+                    ret = Convert.ToInt32(outputParam.Value);
+                }
+            }
+            catch (Exception ex)
+            {
+                errorMsg = ex.Message;
+                ret = -1;
+            }
+            return ret;
+        }
+        public int InsertPurchase(Purchase purchase)
+        {
+            int ret = 0;
+            _cn = new SqlConnection(Properties.Settings.Default["ThemisDatabase"].ToString());
+            SqlCommand cmd = new SqlCommand("sp_InsertPurchase", _cn);
+            cmd.Parameters.AddWithValue("@PurchaseName", purchase.PurchaseName);
+            SqlParameter outputParam = new SqlParameter("@nID", SqlDbType.Int);
+            outputParam.Direction = ParameterDirection.ReturnValue;
+            cmd.Parameters.Add(outputParam);
+            cmd.CommandType = CommandType.StoredProcedure;
+            try
+            {
+                using (_cn)
+                {
+                    _cn.Open();
+                    ret = cmd.ExecuteNonQuery();
+                    ret = Convert.ToInt32(outputParam.Value);
+                }
+            }
+            catch (Exception ex)
+            {
+                errorMsg = ex.Message;
+                ret = -1;
+            }
+            return ret;
+        }
+        public int InsertPurchaseAgentApproval(PurchaseAgentApproval purchaseAgentApproval)
+        {
+            int ret = 0;
+            _cn = new SqlConnection(Properties.Settings.Default["ThemisDatabase"].ToString());
+            SqlCommand cmd = new SqlCommand("sp_InsertPurchaseAgentApproval", _cn);
+            cmd.Parameters.AddWithValue("@ApprovalName", purchaseAgentApproval.ApprovalName);
+            cmd.Parameters.AddWithValue("@ApprovalImage", purchaseAgentApproval.ApprovalImage);
+            SqlParameter outputParam = new SqlParameter("@nID", SqlDbType.Int);
+            outputParam.Direction = ParameterDirection.ReturnValue;
+            cmd.Parameters.Add(outputParam);
+            cmd.CommandType = CommandType.StoredProcedure;
+            try
+            {
+                using (_cn)
+                {
+                    _cn.Open();
+                    ret = cmd.ExecuteNonQuery();
+                    ret = Convert.ToInt32(outputParam.Value);
+                }
+            }
+            catch (Exception ex)
+            {
+                errorMsg = ex.Message;
+                ret = -1;
+            }
+            return ret;
+        }
     }
 }

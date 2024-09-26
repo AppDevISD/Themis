@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace DataLibrary
 {
-    internal class Material
+    public class ContractMaterial
     {
+        public int ContractID { get; set; }
         public int MaterialID { get; set; }
-        public string MaterialName { get; set; }
-        public string MaterialDescription { get; set; }
-        public int SpecDocID { get; set; }
+        public DateTime EffectiveDate { get; set; }
+        public DateTime ExpirationDate { get; set; }
     }
 }
