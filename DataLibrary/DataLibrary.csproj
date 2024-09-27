@@ -48,26 +48,37 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Ordinance\Accounting.cs" />
-    <Compile Include="Ordinance\Bidder.cs" />
-    <Compile Include="Ordinance\Material.cs" />
-    <Compile Include="Ordinance\PurchaseAgentApproval.cs" />
-    <Compile Include="Ordinance\SpecificationDocument.cs" />
+    <Compile Include="OrdinanceTracking\Accounting.cs" />
+    <Compile Include="OrdinanceTracking\AccountingType.cs" />
+    <Compile Include="OrdinanceTracking\Bidder.cs" />
+    <Compile Include="OrdinanceTracking\BidderType.cs" />
+    <Compile Include="OrdinanceTracking\ContractBidder.cs" />
+    <Compile Include="OrdinanceTracking\ContractMaterial.cs" />
+    <Compile Include="OrdinanceTracking\ContractOrdinance.cs" />
+    <Compile Include="OrdinanceTracking\Material.cs" />
+    <Compile Include="OrdinanceTracking\MaterialSpecificationDocument.cs" />
+    <Compile Include="OrdinanceTracking\MaterialType.cs" />
+    <Compile Include="OrdinanceTracking\PurchaseAccounting.cs" />
+    <Compile Include="OrdinanceTracking\PurchaseAgentApproval.cs" />
+    <Compile Include="OrdinanceTracking\PurchaseType.cs" />
+    <Compile Include="OrdinanceTracking\RequestContract.cs" />
+    <Compile Include="OrdinanceTracking\SpecificationDocument.cs" />
     <Compile Include="ColorSchemes.cs" />
-    <Compile Include="Ordinance\Contract.cs" />
+    <Compile Include="OrdinanceTracking\Contract.cs" />
     <Compile Include="Email.cs" />
     <Compile Include="Employee.cs" />
     <Compile Include="Factory.cs" />
     <Compile Include="obj\Debug\.NETFramework,Version=v4.7.2.AssemblyAttributes.cs" />
-    <Compile Include="Ordinance\Ordinance.cs" />
+    <Compile Include="OrdinanceTracking\Ordinance.cs" />
+    <Compile Include="OrdinanceTracking\Vendor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Ordinance\Purchase.cs" />
-    <Compile Include="Ordinance\Request.cs" />
+    <Compile Include="OrdinanceTracking\Purchase.cs" />
+    <Compile Include="OrdinanceTracking\Request.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="TemplateForm.cs" />
     <Compile Include="Utility.cs" />

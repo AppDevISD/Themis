@@ -430,6 +430,38 @@ namespace DataLibrary
             _cn = new SqlConnection(Properties.Settings.Default["ThemisDatabase"].ToString());
             SqlCommand cmd = new SqlCommand("sp_InsertPurchase", _cn);
             cmd.Parameters.AddWithValue("@PurchaseName", purchase.PurchaseName);
+            cmd.Parameters.AddWithValue("@ContractID", purchase.ContractID);
+            cmd.Parameters.AddWithValue("@PurchaseAgentRequired", purchase.PurchaseAgentRequired);
+            cmd.Parameters.AddWithValue("@PurchaseAgentApproval", purchase.PurchaseAgentApproval);
+            cmd.Parameters.AddWithValue("@AgentApprovalID", purchase.AgentApprovalID);
+            cmd.Parameters.AddWithValue("@PurchaseTypeID", purchase.PurchaseTypeID);
+            SqlParameter outputParam = new SqlParameter("@nID", SqlDbType.Int);
+            outputParam.Direction = ParameterDirection.ReturnValue;
+            cmd.Parameters.Add(outputParam);
+            cmd.CommandType = CommandType.StoredProcedure;
+            try
+            {
+                using (_cn)
+                {
+                    _cn.Open();
+                    ret = cmd.ExecuteNonQuery();
+                    ret = Convert.ToInt32(outputParam.Value);
+                }
+            }
+            catch (Exception ex)
+            {
+                errorMsg = ex.Message;
+                ret = -1;
+            }
+            return ret;
+        }
+        public int InsertPurchaseAccounting(PurchaseAccounting purchaseAccounting)
+        {
+            int ret = 0;
+            _cn = new SqlConnection(Properties.Settings.Default["ThemisDatabase"].ToString());
+            SqlCommand cmd = new SqlCommand("sp_InsertPurchaseAccounting", _cn);
+            cmd.Parameters.AddWithValue("@PurchaseID", purchaseAccounting.PurchaseID);
+            cmd.Parameters.AddWithValue("@AccountingID", purchaseAccounting.AccountingID);
             SqlParameter outputParam = new SqlParameter("@nID", SqlDbType.Int);
             outputParam.Direction = ParameterDirection.ReturnValue;
             cmd.Parameters.Add(outputParam);
@@ -457,6 +489,144 @@ namespace DataLibrary
             SqlCommand cmd = new SqlCommand("sp_InsertPurchaseAgentApproval", _cn);
             cmd.Parameters.AddWithValue("@ApprovalName", purchaseAgentApproval.ApprovalName);
             cmd.Parameters.AddWithValue("@ApprovalImage", purchaseAgentApproval.ApprovalImage);
+            SqlParameter outputParam = new SqlParameter("@nID", SqlDbType.Int);
+            outputParam.Direction = ParameterDirection.ReturnValue;
+            cmd.Parameters.Add(outputParam);
+            cmd.CommandType = CommandType.StoredProcedure;
+            try
+            {
+                using (_cn)
+                {
+                    _cn.Open();
+                    ret = cmd.ExecuteNonQuery();
+                    ret = Convert.ToInt32(outputParam.Value);
+                }
+            }
+            catch (Exception ex)
+            {
+                errorMsg = ex.Message;
+                ret = -1;
+            }
+            return ret;
+        }
+        public int InsertPurchaseType(PurchaseType purchaseType)
+        {
+            int ret = 0;
+            _cn = new SqlConnection(Properties.Settings.Default["ThemisDatabase"].ToString());
+            SqlCommand cmd = new SqlCommand("sp_InsertlkPurchaseType", _cn);
+            cmd.Parameters.AddWithValue("@PurchaseDescription", purchaseType.PurchaseTypeDescription);
+            SqlParameter outputParam = new SqlParameter("@nID", SqlDbType.Int);
+            outputParam.Direction = ParameterDirection.ReturnValue;
+            cmd.Parameters.Add(outputParam);
+            cmd.CommandType = CommandType.StoredProcedure;
+            try
+            {
+                using (_cn)
+                {
+                    _cn.Open();
+                    ret = cmd.ExecuteNonQuery();
+                    ret = Convert.ToInt32(outputParam.Value);
+                }
+            }
+            catch (Exception ex)
+            {
+                errorMsg = ex.Message;
+                ret = -1;
+            }
+            return ret;
+        }
+        public int InsertRequest(Request request)
+        {
+            int ret = 0;
+            _cn = new SqlConnection(Properties.Settings.Default["ThemisDatabase"].ToString());
+            SqlCommand cmd = new SqlCommand("sp_InsertRequest", _cn);
+            cmd.Parameters.AddWithValue("@OfficeName", request.OfficeName);
+            cmd.Parameters.AddWithValue("@UserID", request.UserID);
+            cmd.Parameters.AddWithValue("@DateFirstReading", request.DateFirstReading);
+            cmd.Parameters.AddWithValue("@EmergencyPassage", request.EmergencyPassage);
+            cmd.Parameters.AddWithValue("@SuggestedTitle", request.SuggestedTitle);
+            SqlParameter outputParam = new SqlParameter("@nID", SqlDbType.Int);
+            outputParam.Direction = ParameterDirection.ReturnValue;
+            cmd.Parameters.Add(outputParam);
+            cmd.CommandType = CommandType.StoredProcedure;
+            try
+            {
+                using (_cn)
+                {
+                    _cn.Open();
+                    ret = cmd.ExecuteNonQuery();
+                    ret = Convert.ToInt32(outputParam.Value);
+                }
+            }
+            catch (Exception ex)
+            {
+                errorMsg = ex.Message;
+                ret = -1;
+            }
+            return ret;
+        }
+        public int InsertRequestContract(RequestContract requestContract)
+        {
+            int ret = 0;
+            _cn = new SqlConnection(Properties.Settings.Default["ThemisDatabase"].ToString());
+            SqlCommand cmd = new SqlCommand("sp_InsertRequestContract", _cn);
+            cmd.Parameters.AddWithValue("@RequestID", requestContract.RequestID);
+            cmd.Parameters.AddWithValue("@ContractID", requestContract.ContractID);
+            SqlParameter outputParam = new SqlParameter("@nID", SqlDbType.Int);
+            outputParam.Direction = ParameterDirection.ReturnValue;
+            cmd.Parameters.Add(outputParam);
+            cmd.CommandType = CommandType.StoredProcedure;
+            try
+            {
+                using (_cn)
+                {
+                    _cn.Open();
+                    ret = cmd.ExecuteNonQuery();
+                    ret = Convert.ToInt32(outputParam.Value);
+                }
+            }
+            catch (Exception ex)
+            {
+                errorMsg = ex.Message;
+                ret = -1;
+            }
+            return ret;
+        }
+        public int InsertSpecificationDocument(SpecificationDocument specificationDocument)
+        {
+            int ret = 0;
+            _cn = new SqlConnection(Properties.Settings.Default["ThemisDatabase"].ToString());
+            SqlCommand cmd = new SqlCommand("sp_InsertSpecificationDocument", _cn);
+            cmd.Parameters.AddWithValue("@DocDescription", specificationDocument.DocDescription);
+            cmd.Parameters.AddWithValue("@DocImage", specificationDocument.DocImage);
+            SqlParameter outputParam = new SqlParameter("@nID", SqlDbType.Int);
+            outputParam.Direction = ParameterDirection.ReturnValue;
+            cmd.Parameters.Add(outputParam);
+            cmd.CommandType = CommandType.StoredProcedure;
+            try
+            {
+                using (_cn)
+                {
+                    _cn.Open();
+                    ret = cmd.ExecuteNonQuery();
+                    ret = Convert.ToInt32(outputParam.Value);
+                }
+            }
+            catch (Exception ex)
+            {
+                errorMsg = ex.Message;
+                ret = -1;
+            }
+            return ret;
+        }
+        public int InsertVendor(Vendor vendor)
+        {
+            int ret = 0;
+            _cn = new SqlConnection(Properties.Settings.Default["ThemisDatabase"].ToString());
+            SqlCommand cmd = new SqlCommand("sp_InsertlkVendor", _cn);
+            cmd.Parameters.AddWithValue("@VendorName", vendor.VendorName);
+            cmd.Parameters.AddWithValue("@VendorDescription", vendor.VendorDescription);
+            cmd.Parameters.AddWithValue("@VendorNumber", vendor.VendorNumber);
             SqlParameter outputParam = new SqlParameter("@nID", SqlDbType.Int);
             outputParam.Direction = ParameterDirection.ReturnValue;
             cmd.Parameters.Add(outputParam);
