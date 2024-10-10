@@ -2,5 +2,8 @@
 }
 
 .nav {
-    display: block;
+    flex-direction: column !important;
+}
+.row {
+    justify-content: space-between !important;
 }

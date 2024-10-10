@@ -343,6 +343,7 @@ namespace DataLibrary
                                         --logo-text-tint: #87b2ff;
                                         --inset-dark: #c4c4c4a9;
                                         --inset-light: #e6e6e6;
+                                        --form-section-border: #474747;
                                     }</style>");
             return colorTheme;
         }
@@ -371,6 +372,7 @@ namespace DataLibrary
                                         --logo-text-tint: #87b2ff;
                                         --inset-dark: #0000007b;
                                         --inset-light: #797979ff;
+                                        --form-section-border: #e9e9e9;
                                     }</style>");
             return colorTheme;
         }

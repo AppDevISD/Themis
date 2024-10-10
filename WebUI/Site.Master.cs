@@ -65,10 +65,24 @@ namespace WebUI
                 Session["UserName"] = _user.Login;
                 userName = _user.Login.ToUpper();
                 userDisplayName = $"{_user.FirstName}&nbsp; {_user.LastName}";
-                userPosition = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_user.Title.ToLower());
+                //userPosition = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_user.Title.ToLower());
+                userPosition = "Programmer Analyst";
                 lblUser.Text = userDisplayName;
                 lblTitle.Text = userPosition;
                 imgUser.Src = PhotoBase64ImgSrc(_user.PhotoLocation);
+
+                switch (colorSwitcher)
+                {
+                    case true:
+                        GetUserColor();
+                        ColorSwitcherNav.Visible = true;
+                        break;
+
+                    case false:
+                        GetUserTheme();
+                        ColorSwitcherNav.Visible = false;
+                        break;
+                }
             }
             currentPageObj = (Page)HttpContext.Current.Handler;
             currentPageString = currentPageObj.Title;
@@ -111,7 +125,6 @@ namespace WebUI
         }
         protected void GetUserTheme()
         {
-
             if (Request.Cookies["userTheme"] != null)
             {
                 userThemeCookie = Request.Cookies["userTheme"];
@@ -142,9 +155,9 @@ namespace WebUI
             else
             {
                 userThemeCookie = new HttpCookie("userTheme");
-                userThemeCookie.Value = "lightmode";
+                userThemeCookie.Value = "darkmode";
                 colorModeToggle.Attributes.Remove("class");
-                colorModeToggle.Attributes.Add("class", "fas fa-moon");
+                colorModeToggle.Attributes.Add("class", "fas fa-sun");
                 Response.Cookies.Add(userThemeCookie);
                 userThemeCookie.Expires = DateTime.Now.AddYears(1);
             }

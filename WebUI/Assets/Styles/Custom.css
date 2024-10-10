@@ -151,6 +151,7 @@ body {
 
 #aside nav ul li a:hover {
     padding: 12px 30px 12px 30px !important;
+    text-decoration: none;
 }
 
 #aside nav ul .fc li button {
@@ -247,4 +248,11 @@ input[type=date]:hover {
 
 input[type="file"] {
     display: block;
+}
+
+.form-section {
+    padding-top: 1.5rem !important;
+    margin: 0.5rem 0 !important;
+    border-top: 1px solid var(--form-section-border);
+    border-bottom: 1px solid var(--form-section-border);
 }
