@@ -194,8 +194,7 @@
                     <div class="col-6 col-sm-4 col-md-6">
                         <div class="form-label-group mb-3">
                             <label for="purchaseMethod">Method of Purchase <span class="required-field">*</span></label>
-                            <asp:DropDownList ID="purchaseMethod" runat="server" OnSelectedIndexChanged="PurchaseMethodSelectedIndexChanged" AutoPostBack="true" CssClass="form-control">
-                            </asp:DropDownList>
+                            <asp:DropDownList ID="purchaseMethod" runat="server" OnSelectedIndexChanged="PurchaseMethodSelectedIndexChanged" AutoPostBack="true" CssClass="form-control"></asp:DropDownList>
                         </div>
                         <br />
                     </div>

@@ -35,7 +35,6 @@ $("input[data-type='extension']").each(function () {
             output = "";
         }
         $this.val(output);
-        console.log(ext);
     });
 });
 
@@ -166,12 +165,6 @@ function LoadTermVars() {
     if (termStart.val() != "" && termEnd.val() != "") {
         GetTermDate();
     }
-    console.log("-------------------");
-    console.log(termStart.val());
-    console.log(termStartEntered);
-    console.log(termEnd.val());
-    console.log(termEndEntered);
-    console.log("-------------------");
 }
 
 termStart.each(function () {

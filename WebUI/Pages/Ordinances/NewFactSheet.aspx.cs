@@ -183,9 +183,7 @@ namespace WebUI
                 case "5":
                     if (otherExceptionDiv.Attributes["class"].Contains("disabled-control"))
                     {
-                        string[] currentClassAttrList = otherExceptionDiv.Attributes["class"].Split(' ');
-                        string disabledClassAttr = currentClassAttrList[2];
-                        currentClassAttr = otherExceptionDiv.Attributes["class"].Replace($" {disabledClassAttr}", "");
+                        currentClassAttr = otherExceptionDiv.Attributes["class"].Replace($" disabled-control", "");
                         otherExceptionDiv.Attributes.Remove("class");
                         otherExceptionDiv.Attributes.Add("class", currentClassAttr);
                         otherException.Enabled = true;
