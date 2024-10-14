@@ -66,7 +66,6 @@
 					<div class="col-12">
 						<div class="form-group">
 							<label for="contractDescription">Description & Comments <span class="required-field">*</span></label>
-							<%--<textarea runat="server" id="contractDescription" type="text" rows="8" class="form-control" autocomplete="off" required></textarea>--%>
 							<asp:TextBox runat="server" ID="contractDescription" CssClass="form-control" TextMode="Multiline" Rows="8" AutoCompleteType="Disabled" required="true"></asp:TextBox>
 						</div>
 					</div>
