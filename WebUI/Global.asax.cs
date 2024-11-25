@@ -7,7 +7,7 @@ using System.Web.Security;
 using System.Web.SessionState;
 using WebUI;
 
-namespace Themis
+namespace WebUI
 {
     public class Global : System.Web.HttpApplication
     {

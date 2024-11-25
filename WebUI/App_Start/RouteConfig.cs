@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Microsoft.AspNet.FriendlyUrls;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Web;
 using System.Web.Routing;
-using Microsoft.AspNet.FriendlyUrls;
 
 namespace WebUI
 {
@@ -12,7 +13,7 @@ namespace WebUI
         public static void RegisterRoutes(RouteCollection routes)
         {
             var settings = new FriendlyUrlSettings();
-            settings.AutoRedirectMode = RedirectMode.Permanent;
+            settings.AutoRedirectMode = RedirectMode.Off;
             RouteFolder(routes, "~/Pages");
             routes.EnableFriendlyUrls(settings);
         }

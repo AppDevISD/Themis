@@ -1,0 +1,16 @@
+C:\Users\kbolinger\Documents\Repos\ThemisV2\WebUI\bin\WebUI.dll.config
+C:\Users\kbolinger\Documents\Repos\ThemisV2\WebUI\bin\WebUI.dll
+C:\Users\kbolinger\Documents\Repos\ThemisV2\WebUI\bin\WebUI.pdb
+C:\Users\kbolinger\Documents\Repos\ThemisV2\WebUI\bin\DataLibrary.dll
+C:\Users\kbolinger\Documents\Repos\ThemisV2\WebUI\bin\DataLibrary.pdb
+C:\Users\kbolinger\Documents\Repos\ThemisV2\WebUI\bin\DataLibrary.dll.config
+C:\Users\kbolinger\Documents\Repos\ThemisV2\WebUI\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+C:\Users\kbolinger\Documents\Repos\ThemisV2\WebUI\bin\System.Web.Optimization.xml
+C:\Users\kbolinger\Documents\Repos\ThemisV2\WebUI\bin\Newtonsoft.Json.xml
+C:\Users\kbolinger\Documents\Repos\ThemisV2\WebUI\bin\Antlr3.Runtime.pdb
+C:\Users\kbolinger\Documents\Repos\ThemisV2\WebUI\bin\Microsoft.AspNet.FriendlyUrls.xml
+C:\Users\kbolinger\Documents\Repos\ThemisV2\WebUI\obj\Debug\WebUI.csproj.AssemblyReference.cache
+C:\Users\kbolinger\Documents\Repos\ThemisV2\WebUI\obj\Debug\WebUI.csproj.CoreCompileInputs.cache
+C:\Users\kbolinger\Documents\Repos\ThemisV2\WebUI\obj\Debug\WebUI.csproj.Up2Date
+C:\Users\kbolinger\Documents\Repos\ThemisV2\WebUI\obj\Debug\WebUI.dll
+C:\Users\kbolinger\Documents\Repos\ThemisV2\WebUI\obj\Debug\WebUI.pdb

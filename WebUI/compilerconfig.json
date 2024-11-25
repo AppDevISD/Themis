@@ -1,0 +1,8 @@
+[
+  {
+    "outputFile": "assets/Themes/ColorThemes.css",
+    "inputFile": "assets/Themes/ColorThemes.scss",
+    "sourceMap": false,
+    "useNodeSass": false
+  }
+]

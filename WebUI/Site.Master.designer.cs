@@ -11,17 +11,35 @@ namespace WebUI
 {
 
 
-    public partial class Site
+    public partial class SiteMaster
     {
 
         /// <summary>
-        /// color_scheme control.
+        /// html control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlLink color_scheme;
+        protected global::System.Web.UI.HtmlControls.HtmlElement html;
+
+        /// <summary>
+        /// HeadContent control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ContentPlaceHolder HeadContent;
+
+        /// <summary>
+        /// title control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTitle title;
 
         /// <summary>
         /// lblUser control.
@@ -51,15 +69,6 @@ namespace WebUI
         protected global::System.Web.UI.HtmlControls.HtmlImage imgUser;
 
         /// <summary>
-        /// HomeNav control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl HomeNav;
-
-        /// <summary>
         /// Home control.
         /// </summary>
         /// <remarks>
@@ -69,148 +78,40 @@ namespace WebUI
         protected global::System.Web.UI.HtmlControls.HtmlAnchor Home;
 
         /// <summary>
-        /// OrdinanceMenu control.
+        /// A1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl OrdinanceMenu;
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor A1;
 
         /// <summary>
-        /// OrdinanceRequestForm control.
+        /// SettingsMenu control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor OrdinanceRequestForm;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl SettingsMenu;
 
         /// <summary>
-        /// NewFactSheet control.
+        /// themeSwitch control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor NewFactSheet;
+        protected global::System.Web.UI.HtmlControls.HtmlInputCheckBox themeSwitch;
 
         /// <summary>
-        /// li2 control.
+        /// rpColorThemes control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl li2;
-
-        /// <summary>
-        /// TableTemplate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor TableTemplate;
-
-        /// <summary>
-        /// li4 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl li4;
-
-        /// <summary>
-        /// ColorSwitcherNav control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl ColorSwitcherNav;
-
-        /// <summary>
-        /// baseTheme control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlButton baseTheme;
-
-        /// <summary>
-        /// redTheme control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlButton redTheme;
-
-        /// <summary>
-        /// orangeTheme control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlButton orangeTheme;
-
-        /// <summary>
-        /// yellowTheme control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlButton yellowTheme;
-
-        /// <summary>
-        /// greenTheme control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlButton greenTheme;
-
-        /// <summary>
-        /// blueTheme control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlButton blueTheme;
-
-        /// <summary>
-        /// cyanTheme control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlButton cyanTheme;
-
-        /// <summary>
-        /// purpleTheme control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlButton purpleTheme;
-
-        /// <summary>
-        /// colorModeToggle control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlButton colorModeToggle;
+        protected global::System.Web.UI.WebControls.Repeater rpColorThemes;
 
         /// <summary>
         /// formMain control.

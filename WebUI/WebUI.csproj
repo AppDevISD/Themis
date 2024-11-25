@@ -1,4 +1,5 @@
-﻿<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -6,7 +7,7 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{95E90366-09D4-42A8-B7B8-7DD6AF68110F}</ProjectGuid>
+    <ProjectGuid>{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -15,7 +16,7 @@
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
-    <IISExpressSSLPort>44351</IISExpressSSLPort>
+    <IISExpressSSLPort>44357</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>disabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>enabled</IISExpressWindowsAuthentication>
     <IISExpressUseClassicPipelineMode />
@@ -50,16 +51,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\ISD.ActiveDirectory.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.AspNet.FriendlyUrls, Version=1.0.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.FriendlyUrls.Core.1.0.2\lib\net45\Microsoft.AspNet.FriendlyUrls.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=4.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\lib\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Web.DynamicData" />
-    <Reference Include="System.Web.Entity" />
-    <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -73,42 +68,81 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.2.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ScriptManager.MSAjax">
+      <HintPath>..\packages\Microsoft.AspNet.ScriptManager.MSAjax.5.0.0\lib\net45\Microsoft.ScriptManager.MSAjax.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ScriptManager.WebForms">
+      <HintPath>..\packages\Microsoft.AspNet.ScriptManager.WebForms.5.0.0\lib\net45\Microsoft.ScriptManager.WebForms.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Web.Optimization.WebForms">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.WebForms.1.1.3\lib\net45\Microsoft.AspNet.Web.Optimization.WebForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.FriendlyUrls">
+      <HintPath>..\packages\Microsoft.AspNet.FriendlyUrls.Core.1.0.2\lib\net45\Microsoft.AspNet.FriendlyUrls.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\Fonts\fontawesome-webfont.svg" />
-    <Content Include="Assets\Images\Icons\favicon\android-chrome-192x192.png" />
-    <Content Include="Assets\Images\Icons\favicon\android-chrome-512x512.png" />
-    <Content Include="Assets\Images\Icons\favicon\apple-touch-icon.png" />
-    <Content Include="Assets\Images\Icons\favicon\favicon-16x16.png" />
-    <Content Include="Assets\Images\Icons\favicon\favicon-32x32.png" />
-    <Content Include="Assets\Images\Icons\favicon\favicon.ico" />
-    <Content Include="Assets\JS\app.js" />
-    <Content Include="Assets\JS\bootstrap-datetimepicker.js" />
-    <Content Include="Assets\JS\custom.js" />
-    <Content Include="Assets\JS\fullcalendar.min.js" />
-    <Content Include="Assets\JS\global.js" />
-    <Content Include="Assets\JS\jquery.slimscroll.min.js" />
-    <Content Include="Assets\JS\moment.min.js" />
-    <Content Include="Assets\JS\view\demo.calendar.js" />
-    <Content Include="Assets\JS\view\demo.graphs.flot.js" />
-    <Content Include="Assets\JS\view\demo.graphs.morris.js" />
-    <Content Include="Assets\Styles\bootstrap-datetimepicker.css" />
-    <Content Include="Assets\Styles\color-mode.css" />
-    <Content Include="Assets\Styles\Custom.css" />
-    <Content Include="Assets\Styles\essentials.css" />
-    <Content Include="Assets\Styles\Global.css" />
-    <Content Include="Assets\Styles\layout-datatables.css" />
-    <Content Include="Assets\Styles\layout-footable-minimal.css" />
-    <Content Include="Assets\Styles\layout-jqgrid.css" />
-    <Content Include="Assets\Styles\layout-nestable.css" />
-    <Content Include="Assets\Styles\layout-RTL.css" />
-    <Content Include="Assets\Styles\layout.css" />
+    <Content Include="assets\css\Fonts.css" />
+    <Content Include="assets\css\MainLayout.css" />
+    <Content Include="assets\images\icons\favicon\apple-touch-icon.png" />
+    <Content Include="assets\images\icons\favicon\favicon-48x48.png" />
+    <Content Include="assets\images\icons\favicon\favicon.ico" />
+    <Content Include="assets\images\icons\favicon\favicon.svg" />
+    <Content Include="assets\images\icons\favicon\web-app-manifest-192x192.png" />
+    <Content Include="assets\images\icons\favicon\web-app-manifest-512x512.png" />
+    <Content Include="assets\images\icons\noavatar.jpg" />
+    <Content Include="assets\css\Site.css" />
+    <Content Include="assets\images\icons\theme-dark.svg" />
+    <Content Include="assets\images\icons\theme-light.svg" />
+    <Content Include="Scripts\ChartCode\ChartOptions.js" />
+    <Content Include="Scripts\Helpers\JS\ChartHelpers.js" />
+    <Content Include="Scripts\Helpers\JS\ChartPrism.js" />
+    <Content Include="Scripts\Helpers\JS\ColorTheme.js" />
+    <Content Include="Scripts\Helpers\JS\FormFormatting.js" />
+    <Content Include="assets\Themes\ColorThemes.css">
+      <DependentUpon>ColorThemes.scss</DependentUpon>
+    </Content>
+    <Content Include="assets\Themes\ColorThemes.min.css">
+      <DependentUpon>ColorThemes.css</DependentUpon>
+    </Content>
     <Content Include="bin\AjaxControlToolkit.dll" />
+    <Content Include="bin\Antlr3.Runtime.dll" />
+    <Content Include="bin\Antlr3.Runtime.pdb" />
     <Content Include="bin\DataLibrary.dll" />
     <Content Include="bin\DataLibrary.pdb" />
     <Content Include="bin\ISD.ActiveDirectory.dll" />
+    <Content Include="bin\Microsoft.AspNet.FriendlyUrls.dll" />
+    <Content Include="bin\Microsoft.AspNet.FriendlyUrls.xml" />
+    <Content Include="bin\Microsoft.AspNet.Web.Optimization.WebForms.dll" />
     <Content Include="bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll" />
     <Content Include="bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml" />
+    <Content Include="bin\Microsoft.ScriptManager.MSAjax.dll" />
+    <Content Include="bin\Microsoft.ScriptManager.WebForms.dll" />
+    <Content Include="bin\Microsoft.Web.Infrastructure.dll" />
+    <Content Include="bin\Newtonsoft.Json.dll" />
+    <Content Include="bin\Newtonsoft.Json.xml" />
     <Content Include="bin\roslyn\csc.exe" />
     <Content Include="bin\roslyn\csi.exe" />
     <Content Include="bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll" />
@@ -119,48 +153,71 @@
     <Content Include="bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll" />
     <Content Include="bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll" />
     <Content Include="bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll" />
-    <Content Include="bin\roslyn\Microsoft.Win32.Primitives.dll" />
-    <Content Include="bin\roslyn\System.AppContext.dll" />
+    <Content Include="bin\roslyn\System.Buffers.dll" />
     <Content Include="bin\roslyn\System.Collections.Immutable.dll" />
-    <Content Include="bin\roslyn\System.Console.dll" />
-    <Content Include="bin\roslyn\System.Diagnostics.DiagnosticSource.dll" />
-    <Content Include="bin\roslyn\System.Diagnostics.FileVersionInfo.dll" />
-    <Content Include="bin\roslyn\System.Diagnostics.StackTrace.dll" />
-    <Content Include="bin\roslyn\System.Globalization.Calendars.dll" />
-    <Content Include="bin\roslyn\System.IO.Compression.dll" />
-    <Content Include="bin\roslyn\System.IO.Compression.ZipFile.dll" />
-    <Content Include="bin\roslyn\System.IO.FileSystem.dll" />
-    <Content Include="bin\roslyn\System.IO.FileSystem.Primitives.dll" />
-    <Content Include="bin\roslyn\System.Net.Http.dll" />
-    <Content Include="bin\roslyn\System.Net.Sockets.dll" />
+    <Content Include="bin\roslyn\System.Memory.dll" />
+    <Content Include="bin\roslyn\System.Numerics.Vectors.dll" />
     <Content Include="bin\roslyn\System.Reflection.Metadata.dll" />
-    <Content Include="bin\roslyn\System.Runtime.InteropServices.RuntimeInformation.dll" />
-    <Content Include="bin\roslyn\System.Security.Cryptography.Algorithms.dll" />
-    <Content Include="bin\roslyn\System.Security.Cryptography.Encoding.dll" />
-    <Content Include="bin\roslyn\System.Security.Cryptography.Primitives.dll" />
-    <Content Include="bin\roslyn\System.Security.Cryptography.X509Certificates.dll" />
+    <Content Include="bin\roslyn\System.Runtime.CompilerServices.Unsafe.dll" />
     <Content Include="bin\roslyn\System.Text.Encoding.CodePages.dll" />
     <Content Include="bin\roslyn\System.Threading.Tasks.Extensions.dll" />
-    <Content Include="bin\roslyn\System.ValueTuple.dll" />
-    <Content Include="bin\roslyn\System.Xml.ReaderWriter.dll" />
-    <Content Include="bin\roslyn\System.Xml.XmlDocument.dll" />
-    <Content Include="bin\roslyn\System.Xml.XPath.dll" />
-    <Content Include="bin\roslyn\System.Xml.XPath.XDocument.dll" />
     <Content Include="bin\roslyn\vbc.exe" />
     <Content Include="bin\roslyn\VBCSCompiler.exe" />
+    <Content Include="bin\System.Web.Optimization.dll" />
+    <Content Include="bin\System.Web.Optimization.xml" />
+    <Content Include="bin\WebGrease.dll" />
     <Content Include="bin\WebUI.dll" />
     <Content Include="bin\WebUI.pdb" />
+    <Content Include="Scripts\Helpers\JS\ColorMode.js" />
+    <Content Include="Scripts\Helpers\CSharp\ChartHandler.asmx" />
+    <Content Include="Pages\Templates\Charts.aspx" />
     <Content Include="Default.aspx" />
+    <Content Include="assets\css\Animations.css" />
+    <Content Include="assets\js\Charts.js" />
+    <Content Include="Pages\Templates\FormTemplate.aspx" />
     <Content Include="Global.asax" />
-    <Content Include="obj\Debug\WebUI.csproj.FileListAbsolute.txt" />
-    <Content Include="obj\Debug\WebUI.dll" />
-    <Content Include="obj\Debug\WebUI.pdb" />
-    <Content Include="Pages\Ordinances\NewFactSheet.aspx" />
-    <Content Include="Pages\Ordinances\OrdinanceRequestForm.aspx" />
+    <None Include="assets\images\icons\favicon\manifest.json" />
+    <Content Include="Scripts\Helpers\JS\RequiredFieldsAndActivePage.js" />
+    <Content Include="Scripts\WebForms\DetailsView.js" />
+    <Content Include="Scripts\WebForms\Focus.js" />
+    <Content Include="Scripts\WebForms\GridView.js" />
+    <Content Include="Scripts\WebForms\Menu.js" />
+    <Content Include="Scripts\WebForms\MenuStandards.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjax.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxApplicationServices.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxComponentModel.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxCore.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxGlobalization.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxHistory.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxNetwork.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxSerialization.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxTimer.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxWebForms.js" />
+    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxWebServices.js" />
+    <Content Include="Scripts\WebForms\SmartNav.js" />
+    <Content Include="Scripts\WebForms\TreeView.js" />
+    <Content Include="Scripts\WebForms\WebForms.js" />
+    <Content Include="Scripts\WebForms\WebParts.js" />
+    <Content Include="Scripts\WebForms\WebUIValidation.js" />
+    <Content Include="Site.Master" />
+    <Content Include="Pages\Templates\TableTemplate.aspx" />
     <Content Include="Web.config" />
+    <Content Include="Bundle.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Scripts\Helpers\CSharp\ChartCodeHandler.cs" />
+    <Compile Include="Scripts\Helpers\CSharp\ChartHandler.asmx.cs">
+      <DependentUpon>ChartHandler.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Pages\Templates\Charts.aspx.cs">
+      <DependentUpon>Charts.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Templates\Charts.aspx.designer.cs">
+      <DependentUpon>Charts.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -168,30 +225,17 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Templates\FormTemplate.aspx.cs">
+      <DependentUpon>FormTemplate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Templates\FormTemplate.aspx.designer.cs">
+      <DependentUpon>FormTemplate.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="obj\Debug\.NETFramework,Version=v4.7.2.AssemblyAttributes.cs" />
-    <Compile Include="Pages\Ordinances\NewFactSheet.aspx.cs">
-      <DependentUpon>NewFactSheet.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Pages\Ordinances\NewFactSheet.aspx.designer.cs">
-      <DependentUpon>NewFactSheet.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Ordinances\OrdinanceRequestForm.aspx.cs">
-      <DependentUpon>OrdinanceRequestForm.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Pages\Ordinances\OrdinanceRequestForm.aspx.designer.cs">
-      <DependentUpon>OrdinanceRequestForm.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -199,59 +243,44 @@
     <Compile Include="Site.Master.designer.cs">
       <DependentUpon>Site.Master</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Templates\TableTemplate.aspx.cs">
+      <DependentUpon>TableTemplate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Templates\TableTemplate.aspx.designer.cs">
+      <DependentUpon>TableTemplate.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
+    <Content Include="assets\Themes\ColorThemes.scss" />
+    <Content Include="assets\Themes\bootstrap-scss\mixins\_color-mode.scss" />
+    <Content Include="assets\Themes\bootstrap-scss\_functions.scss" />
+    <Content Include="assets\Themes\bootstrap-scss\_mixins.scss" />
+    <Content Include="assets\Themes\bootstrap-scss\_variables-dark.scss" />
+    <Content Include="assets\Themes\bootstrap-scss\_variables.scss" />
+    <Content Include="assets\Themes\_data-color-theme.scss" />
+    <Content Include="assets\css\Colors.scss" />
     <Content Include="bin\DataLibrary.dll.config" />
     <Content Include="bin\roslyn\csc.exe.config" />
     <Content Include="bin\roslyn\csc.rsp" />
     <Content Include="bin\roslyn\csi.exe.config" />
     <Content Include="bin\roslyn\csi.rsp" />
     <Content Include="bin\roslyn\Microsoft.CSharp.Core.targets" />
+    <Content Include="bin\roslyn\Microsoft.Managed.Core.CurrentVersions.targets" />
     <Content Include="bin\roslyn\Microsoft.Managed.Core.targets" />
     <Content Include="bin\roslyn\Microsoft.VisualBasic.Core.targets" />
     <Content Include="bin\roslyn\vbc.exe.config" />
     <Content Include="bin\roslyn\vbc.rsp" />
     <Content Include="bin\roslyn\VBCSCompiler.exe.config" />
     <Content Include="bin\WebUI.dll.config" />
-    <Content Include="obj\Debug\build.force" />
-    <Content Include="obj\Debug\DesignTimeResolveAssemblyReferences.cache" />
-    <Content Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
-    <Content Include="obj\Debug\WebUI.csproj.AssemblyReference.cache" />
-    <Content Include="obj\Debug\WebUI.csproj.CoreCompileInputs.cache" />
-    <Content Include="obj\Debug\WebUI.csproj.Up2Date" />
-    <Content Include="Assets\Images\Icons\favicon\site.webmanifest" />
-    <Content Include="Assets\Fonts\BebasNeue-Bold.otf" />
-    <Content Include="Assets\Fonts\BebasNeue-Bold.ttf" />
-    <Content Include="Assets\Fonts\BebasNeue-Book.otf" />
-    <Content Include="Assets\Fonts\BebasNeue-Book.ttf" />
-    <Content Include="Assets\Fonts\BebasNeue-Light.otf" />
-    <Content Include="Assets\Fonts\BebasNeue-Light.ttf" />
-    <Content Include="Assets\Fonts\BebasNeue-Regular.otf" />
-    <Content Include="Assets\Fonts\BebasNeue-Regular.ttf" />
-    <Content Include="Assets\Fonts\BebasNeue-Thin.otf" />
-    <Content Include="Assets\Fonts\BebasNeue-Thin.ttf" />
-    <Content Include="Assets\Fonts\fontawesome-webfont.eot" />
-    <Content Include="Assets\Fonts\fontawesome-webfont.ttf" />
-    <Content Include="Assets\Fonts\fontawesome-webfont.woff" />
-    <Content Include="Assets\Fonts\fontawesome-webfont.woff2" />
-    <Content Include="Assets\Fonts\FontAwesome.otf" />
-    <Content Include="Assets\Fonts\Lato-Black.ttf" />
-    <Content Include="Assets\Fonts\Lato-BlackItalic.ttf" />
-    <Content Include="Assets\Fonts\Lato-Bold.ttf" />
-    <Content Include="Assets\Fonts\Lato-BoldItalic.ttf" />
-    <Content Include="Assets\Fonts\Lato-Italic.ttf" />
-    <Content Include="Assets\Fonts\Lato-Light.ttf" />
-    <Content Include="Assets\Fonts\Lato-LightItalic.ttf" />
-    <Content Include="Assets\Fonts\Lato-Regular.ttf" />
-    <Content Include="Assets\Fonts\Lato-Thin.ttf" />
-    <Content Include="Assets\Fonts\Lato-ThinItalic.ttf" />
-    <None Include="packages.config" />
-    <Content Include="Site.Master" />
-    <None Include="Properties\PublishProfiles\TEST.pubxml" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    <None Include="compilerconfig.json" />
+    <None Include="compilerconfig.json.defaults">
+      <DependentUpon>compilerconfig.json</DependentUpon>
     </None>
+    <None Include="packages.config" />
+    <Content Include="Scripts\ChartCode\ChartHTMLJS.json" />
+    <Content Include="Scripts\ChartCode\DataOptions.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -260,25 +289,14 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Assets\Documents\" />
-    <Folder Include="obj\Debug\TempPE\" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\DataLibrary\DataLibrary.csproj">
-      <Project>{44476410-b169-487b-8806-1508efd26d0b}</Project>
+      <Project>{b585274b-dd30-46f1-97a3-d2472aa8681e}</Project>
       <Name>DataLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>
-    </ApplicationIcon>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
@@ -289,9 +307,9 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>58492</DevelopmentServerPort>
+          <DevelopmentServerPort>60459</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://localhost:44351/</IISUrl>
+          <IISUrl>https://localhost:44357/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
@@ -301,13 +319,15 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
-  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
+    <Error Condition="!Exists('..\packages\BuildWebCompiler2022.1.14.10\build\BuildWebCompiler2022.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\BuildWebCompiler2022.1.14.10\build\BuildWebCompiler2022.targets'))" />
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets'))" />
   </Target>
+  <Import Project="..\packages\BuildWebCompiler2022.1.14.10\build\BuildWebCompiler2022.targets" Condition="Exists('..\packages\BuildWebCompiler2022.1.14.10\build\BuildWebCompiler2022.targets')" />
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
