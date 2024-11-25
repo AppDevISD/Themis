@@ -12,7 +12,7 @@ using System.Web.UI.WebControls;
 
 namespace WebUI
 {
-    public partial class TableTemplate : System.Web.UI.Page
+    public partial class Ordinances : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {

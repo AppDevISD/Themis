@@ -1,39 +1,52 @@
-﻿<%@ Page Title="Form Template" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="FormTemplate.aspx.cs" Inherits="WebUI.FormTemplate" %>
+﻿<%@ Page Title="New Fact Sheet" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="FormTemplate.aspx.cs" Inherits="WebUI.NewFactSheet" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server"></asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 	<section class="container form-header bg-body text-center">
 		<div class="row h-100 align-items-center">
-			<h1><span class="fas fa-file-lines"></span>&nbsp;Form Template</h1>
+			<h1><span class="fas fa-file-circle-plus"></span>&nbsp;New Fact Sheet</h1>
 		</div>
 	</section>
 	<div class="container form-page bg-body-tertiary">
 		<div class="px-2 py-4">
 			<p class="text-justify">
-				This is a template for a form. It provides many examples of fields that could be implemented in a form, including javascript for masking phone numbers and currency. To add required field styling, add 'required="true"' to the field element.
 			</p>
 			<p class="text-justify" style="color: gray;"><i class="fa-solid fa-asterisk"></i>&nbsp;= Required Field</p>
 
 			<div class="form-section">
 				<div class="row mb-3">
-					<div class="col-md-4">
+					<div class="col-md-6">
 						<div class="form-group">
-							<label for="userName">User Name</label>
-							<asp:TextBox runat="server" ID="userName" CssClass="form-control" TextMode="SingleLine" placeholder="John Doe" AutoCompleteType="DisplayName" required="true"></asp:TextBox>
+							<label for="requestDepartment">Requesting Department</label>
+							<asp:DropDownList ID="requestDepartment" runat="server" OnSelectedIndexChanged="DropdownSelectedIndexChanged" AutoPostBack="true" CssClass="form-select" required="true"></asp:DropDownList>
 						</div>
 					</div>
-					<div class="col-md-4">
+					<div class="col-md-4"></div>
+					<div class="col-md-2">
 						<div class="form-group">
-							<label for="formNumber">Form Number</label>
-							<asp:TextBox runat="server" ID="formNumber" CssClass="form-control" TextMode="SingleLine" placeholder="0A1B2C3" AutoCompleteType="Disabled"></asp:TextBox>
+							<label for="firstReadDate">First Read Date</label>
+							<asp:TextBox runat="server" ID="firstReadDate" CssClass="form-control" TextMode="Date"></asp:TextBox>
 						</div>
 					</div>
-					<div class="col-md-4">
+				</div>
+				<div class="row mb-3">
+					<div class="col-md-6">
 						<div class="form-group">
-							<label for="number">Number</label>
-							<asp:TextBox runat="server" ID="number" CssClass="form-control" TextMode="Number" placeholder="0123456789" AutoCompleteType="Disabled"></asp:TextBox>
+							<label for="requestContact">Requesting Contact</label>
+							<asp:TextBox runat="server" ID="requestContact" CssClass="form-control" TextMode="SingleLine" placeholder="John Doe" AutoCompleteType="DisplayName" required="true"></asp:TextBox>
 						</div>
+					</div>
+					<div class="col-md-2">
+
+					</div>
+					<div class="col-md-4">
+						<label for="requestPhoneNumber">Phone Number</label>
+						<div id="requestPhoneNumber" class="input-group">
+							<asp:TextBox runat="server" ID="TextBox1" CssClass="form-control" TextMode="Phone" data-type="telephone" placeholder="(555) 555-5555" AutoCompleteType="Disabled"></asp:TextBox>
+							<asp:TextBox runat="server" ID="TextBox2" CssClass="form-control" TextMode="SingleLine" data-type="extension" placeholder="x1234" AutoCompleteType="Disabled" style="width:10%;"></asp:TextBox>
+						</div>
+					</div>
 					</div>
 				</div>
 				<div class="row mb-3">
@@ -166,12 +179,9 @@
 			</div>
 
 			<div class="form-section">
-				<div class="row mb-3">
-					<div class="col-md-3">
-						<asp:Button runat="server" ID="SubmitNoFunForm" type="submit" CssClass="btn btn-primary" Text="Submit" Width="100%" OnClick="SubmitForm_Click" OnClientClick="showToast();" />
-					</div>
-					<div class="col-md-5 text-center float-end">
-
+				<div class="row mt-3 mb-3 text-center">
+					<div class="col-md-12">
+						<asp:Button runat="server" ID="SubmitNoFunForm" type="submit" CssClass="btn btn-primary" Width="25%" Text="Submit" OnClick="SubmitForm_Click" OnClientClick="showToast();" />
 					</div>
 				</div>
 			</div>
@@ -187,9 +197,9 @@
 	</div>
 
 	<script>
-		const getStoredTheme = () => localStorage.getItem('showToast');
+		const getStoredToast = () => localStorage.getItem('showToast');
 		document.addEventListener('DOMContentLoaded', function () {
-			if (getStoredTheme() == 'show') {
+			if (getStoredToast() == 'show') {
 				$('#submitToast').toast('show');
 				localStorage.setItem('showToast', '');
 			}

@@ -11,7 +11,7 @@ namespace WebUI
 {
 
 
-    public partial class TableTemplate
+    public partial class Ordinances
     {
 
         /// <summary>

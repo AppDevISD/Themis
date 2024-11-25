@@ -60,23 +60,29 @@ main {
 }
 
 .site-title {
-	font-size: 38px;
+	font-size: 45px;
 }
 
 .user-info {
-	width: 240px;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 }
 
 	.user-info .user-stack {
+		min-width: 140px;
+		padding-right: 10px;
 		display: flex;
 		flex-direction: column;
 	}
 
 .user-avatar {
 	margin-right: 20px;
+}
+
+.welcome-text {
+	font-size: 55px;
+	margin-top: 30px
 }
 
 input[type="date"] {
@@ -502,11 +508,11 @@ pre[class*=language-] {
 	}
 
 		.nav-item a:hover span {
-			padding-left: 10%;
+			padding-left: 5%;
 		}
 
 		.nav-item a:hover p {
-			padding-right: 10%;
+			padding-right: 5%;
 		}
 
 	#sidebarCollapse.collapse:not(.show) {

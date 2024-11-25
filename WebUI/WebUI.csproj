@@ -107,7 +107,7 @@
     <Content Include="assets\css\Fonts.css" />
     <Content Include="assets\css\MainLayout.css" />
     <Content Include="assets\images\icons\favicon\apple-touch-icon.png" />
-    <Content Include="assets\images\icons\favicon\favicon-48x48.png" />
+    <Content Include="assets\images\icons\favicon\favicon-96x96.png" />
     <Content Include="assets\images\icons\favicon\favicon.ico" />
     <Content Include="assets\images\icons\favicon\favicon.svg" />
     <Content Include="assets\images\icons\favicon\web-app-manifest-192x192.png" />
@@ -116,6 +116,8 @@
     <Content Include="assets\css\Site.css" />
     <Content Include="assets\images\icons\theme-dark.svg" />
     <Content Include="assets\images\icons\theme-light.svg" />
+    <Content Include="Pages\OrdinanceTracking\NewFactSheet.aspx" />
+    <Content Include="Pages\OrdinanceTracking\Ordinances.aspx" />
     <Content Include="Scripts\ChartCode\ChartOptions.js" />
     <Content Include="Scripts\Helpers\JS\ChartHelpers.js" />
     <Content Include="Scripts\Helpers\JS\ChartPrism.js" />
@@ -174,7 +176,6 @@
     <Content Include="Default.aspx" />
     <Content Include="assets\css\Animations.css" />
     <Content Include="assets\js\Charts.js" />
-    <Content Include="Pages\Templates\FormTemplate.aspx" />
     <Content Include="Global.asax" />
     <None Include="assets\images\icons\favicon\manifest.json" />
     <Content Include="Scripts\Helpers\JS\RequiredFieldsAndActivePage.js" />
@@ -200,12 +201,25 @@
     <Content Include="Scripts\WebForms\WebParts.js" />
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
     <Content Include="Site.Master" />
-    <Content Include="Pages\Templates\TableTemplate.aspx" />
     <Content Include="Web.config" />
     <Content Include="Bundle.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Pages\OrdinanceTracking\NewFactSheet.aspx.cs">
+      <DependentUpon>NewFactSheet.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\OrdinanceTracking\NewFactSheet.aspx.designer.cs">
+      <DependentUpon>NewFactSheet.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\OrdinanceTracking\Ordinances.aspx.cs">
+      <DependentUpon>Ordinances.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\OrdinanceTracking\Ordinances.aspx.designer.cs">
+      <DependentUpon>Ordinances.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Scripts\Helpers\CSharp\ChartCodeHandler.cs" />
     <Compile Include="Scripts\Helpers\CSharp\ChartHandler.asmx.cs">
       <DependentUpon>ChartHandler.asmx</DependentUpon>
@@ -225,13 +239,6 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Templates\FormTemplate.aspx.cs">
-      <DependentUpon>FormTemplate.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Pages\Templates\FormTemplate.aspx.designer.cs">
-      <DependentUpon>FormTemplate.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -242,13 +249,6 @@
     </Compile>
     <Compile Include="Site.Master.designer.cs">
       <DependentUpon>Site.Master</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Templates\TableTemplate.aspx.cs">
-      <DependentUpon>TableTemplate.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Pages\Templates\TableTemplate.aspx.designer.cs">
-      <DependentUpon>TableTemplate.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup />
@@ -309,7 +309,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>60459</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://localhost:44357/</IISUrl>
+          <IISUrl>https://localhost:44360/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

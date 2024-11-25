@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Table Template" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="TableTemplate.aspx.cs" Inherits="WebUI.TableTemplate" %>
+﻿<%@ Page Title="Ordinances" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="TableTemplate.aspx.cs" Inherits="WebUI.Ordinances" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
@@ -12,7 +12,7 @@
 		</div>
 		<div class="card">
 			<div class="card-header bg-body">
-				<h3><i class="fas fa-table"></i>&nbsp;Template Table</h3>
+				<h3><i class="fas fa-book-section"></i>&nbsp;Ordinances</h3>
 			</div>
 			<div class="card-body bg-body-tertiary">
 				<asp:Repeater runat="server" ID="rpTemplateForm">
@@ -20,7 +20,7 @@
 						<table id="FormTable" class="table table-bordered table-striped table-hover text-center" style="padding: 0px; margin: 0px">
 							<thead>
 								<tr>
-									<th style="width: 10%; text-align: center"><strong>Date</strong></th>
+									<th style="width: 10%; text-align: center"><strong>Submitted</strong></th>
 									<th style="width: 10%; text-align: center"><strong>Form</strong></th>
 									<th style="width: 15%; text-align: center"><strong>Contact</strong></th>
 									<th style="width: 15%; text-align: center"><strong>Employee</strong></th>
@@ -104,7 +104,6 @@
 	<script>
 		var hdnID = document.getElementById('<%= deleteID.ClientID %>')
 		function DeleteForm(formID) {
-			console.log("Working");
 			hdnID.setAttribute('Value', formID);
 		}
 	</script>

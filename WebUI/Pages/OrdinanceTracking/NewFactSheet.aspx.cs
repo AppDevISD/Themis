@@ -10,7 +10,7 @@ using System.Web.UI.WebControls;
 
 namespace WebUI
 {
-    public partial class FormTemplate : System.Web.UI.Page
+    public partial class NewFactSheet : System.Web.UI.Page
     {
         private ADUser _user = new ADUser();
         private string emailList = "TemplateEmailList";
@@ -22,6 +22,7 @@ namespace WebUI
             _user = Session["CurrentUser"] as ADUser;
             if (!Page.IsPostBack)
             {
+                GetAllDepartments();
                 GetAllDropdownOptions();
                 SetStartupActives();
             }
@@ -30,6 +31,25 @@ namespace WebUI
         protected void SetStartupActives()
         {
             dropdownOther.Enabled = false;
+        }
+        protected void GetAllDepartments()
+        {
+            requestDepartment.Items.Insert(0, new ListItem("Select Department...", "N/A"));
+            requestDepartment.Items.Insert(1, new ListItem("Budget and Management", "5"));
+            requestDepartment.Items.Insert(2, new ListItem("City Clerk", "13"));
+            requestDepartment.Items.Insert(3, new ListItem("City Council", "7"));
+            requestDepartment.Items.Insert(4, new ListItem("City Treasurer", "12"));
+            requestDepartment.Items.Insert(5, new ListItem("Community Relations", "16"));
+            requestDepartment.Items.Insert(6, new ListItem("Convention and Visitor's Bureau", "14"));
+            requestDepartment.Items.Insert(7, new ListItem("Corporation Counsel", "6"));
+            requestDepartment.Items.Insert(8, new ListItem("Fire Department", "4"));
+            requestDepartment.Items.Insert(9, new ListItem("Human Resources", "8"));
+            requestDepartment.Items.Insert(10, new ListItem("Lincoln Library", "15"));
+            requestDepartment.Items.Insert(11, new ListItem("Office of The Mayor", "10"));
+            requestDepartment.Items.Insert(12, new ListItem("Planning and Economic Development", "1"));
+            requestDepartment.Items.Insert(13, new ListItem("Police Department", "11"));
+            requestDepartment.Items.Insert(14, new ListItem("Public Utilities", "3"));
+            requestDepartment.Items.Insert(15, new ListItem("Public Works", "9"));
         }
         protected void GetAllDropdownOptions()
         {
@@ -62,8 +82,8 @@ namespace WebUI
 
             Email newEmail = new Email();
 
-            newEmail.EmailSubject = "New No-Fun Request";
-            newEmail.EmailTitle = "New No-Fun Request";
+            newEmail.EmailSubject = "Form Submitted";
+            newEmail.EmailTitle = "Form Submitted";
             newEmail.EmailText = $"This is a template email body for the {formType}";
 
             Template tf = new Template();
@@ -76,7 +96,7 @@ namespace WebUI
                 Session["ToastColor"] = "text-bg-success";
                 Session["ToastMessage"] = "Form Submitted!";
                 Email.Instance.SendEmail(newEmail, emailList);
-                Response.Redirect("/FormTemplate");
+                Response.Redirect("/NewFactSheet");
             }
             else
             {

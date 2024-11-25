@@ -6,7 +6,7 @@
 		}
 	}
 
-	var activePage = document.getElementsByClassName('active');
+	var activePage = document.getElementsByClassName('activePage');
 	for (const element of activePage) {
 		element.parentElement.classList.add('show');
 	}

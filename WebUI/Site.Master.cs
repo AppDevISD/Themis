@@ -36,10 +36,6 @@ namespace WebUI
         protected void Page_PreRender(object sender, EventArgs e)
         {
             UserTheme.Instance.GetUserTheme(Request, html, Response);
-            ColorTheme.Instance.GetColorTheme(Request, html, Response);
-            Dictionary<string, string> colorThemeDict = ColorTheme.Instance.GetColorThemeColors(Server);
-            rpColorThemes.DataSource = colorThemeDict;
-            rpColorThemes.DataBind();
         }
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -58,7 +54,7 @@ namespace WebUI
         }
         protected void SetPageTitle()
         {
-            string ProjectName = "Portal Template";
+            string ProjectName = "THΣMIS";
             string BlankSpace = string.Join("", Enumerable.Repeat("&nbsp;", 3));
             switch (Page.Title)
             {
