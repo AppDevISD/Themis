@@ -7,24 +7,24 @@
       "RelativeMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|solutionrelative:webui\\site.master||{B30AFBFF-D992-43B7-B62D-2642580A2883}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|c:\\users\\kbolinger\\documents\\repos\\themisv2\\webui\\pages\\ordinancetracking\\newfactsheet.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}",
-      "RelativeMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|solutionrelative:webui\\pages\\ordinancetracking\\newfactsheet.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}"
+      "AbsoluteMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|c:\\users\\kbolinger\\documents\\repos\\themisv2\\webui\\site.master.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|solutionrelative:webui\\site.master.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|c:\\users\\kbolinger\\documents\\repos\\themisv2\\webui\\pages\\ordinancetracking\\ordinances.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}",
-      "RelativeMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|solutionrelative:webui\\pages\\ordinancetracking\\ordinances.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}"
+      "AbsoluteMoniker": "D:0:0:{88738A87-DB6D-4410-B21B-AD61D12CF56B}|DataLibrary\\DataLibrary.csproj|c:\\users\\kbolinger\\documents\\repos\\themisv2\\datalibrary\\utilities\\utility.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{88738A87-DB6D-4410-B21B-AD61D12CF56B}|DataLibrary\\DataLibrary.csproj|solutionrelative:datalibrary\\utilities\\utility.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|c:\\users\\kbolinger\\documents\\repos\\themisv2\\webui\\assets\\images\\icons\\favicon\\manifest.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|solutionrelative:webui\\assets\\images\\icons\\favicon\\manifest.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|c:\\users\\kbolinger\\documents\\repos\\themisv2\\webui\\pages\\ordinancetracking\\newfactsheet.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|solutionrelative:webui\\pages\\ordinancetracking\\newfactsheet.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|c:\\users\\kbolinger\\documents\\repos\\themisv2\\webui\\scripts\\helpers\\js\\formformatting.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|solutionrelative:webui\\scripts\\helpers\\js\\formformatting.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|c:\\users\\kbolinger\\documents\\repos\\themisv2\\webui\\default.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}",
-      "RelativeMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|solutionrelative:webui\\default.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}"
+      "AbsoluteMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|c:\\users\\kbolinger\\documents\\repos\\themisv2\\webui\\pages\\ordinancetracking\\newfactsheet.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}",
+      "RelativeMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|solutionrelative:webui\\pages\\ordinancetracking\\newfactsheet.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|c:\\users\\kbolinger\\documents\\repos\\themisv2\\webui\\default.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -35,8 +35,16 @@
       "RelativeMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|solutionrelative:webui\\pages\\ordinancetracking\\ordinances.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|c:\\users\\kbolinger\\documents\\repos\\themisv2\\webui\\site.master.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|solutionrelative:webui\\site.master.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|c:\\users\\kbolinger\\documents\\repos\\themisv2\\webui\\scripts\\helpers\\js\\requiredfieldsandactivepage.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|solutionrelative:webui\\scripts\\helpers\\js\\requiredfieldsandactivepage.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|c:\\users\\kbolinger\\documents\\repos\\themisv2\\webui\\pages\\ordinancetracking\\ordinances.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}",
+      "RelativeMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|solutionrelative:webui\\pages\\ordinancetracking\\ordinances.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|c:\\users\\kbolinger\\documents\\repos\\themisv2\\webui\\default.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}",
+      "RelativeMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|solutionrelative:webui\\default.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}"
     }
   ],
   "DocumentGroupContainers": [
@@ -64,7 +72,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 9,
               "Title": "Ordinances.aspx",
               "DocumentMoniker": "C:\\Users\\kbolinger\\Documents\\Repos\\ThemisV2\\WebUI\\Pages\\OrdinanceTracking\\Ordinances.aspx",
               "RelativeDocumentMoniker": "WebUI\\Pages\\OrdinanceTracking\\Ordinances.aspx",
@@ -82,7 +90,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 10,
               "Title": "Default.aspx",
               "DocumentMoniker": "C:\\Users\\kbolinger\\Documents\\Repos\\ThemisV2\\WebUI\\Default.aspx",
               "RelativeDocumentMoniker": "WebUI\\Default.aspx",
@@ -95,7 +103,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 5,
               "Title": "NewFactSheet.aspx",
               "DocumentMoniker": "C:\\Users\\kbolinger\\Documents\\Repos\\ThemisV2\\WebUI\\Pages\\OrdinanceTracking\\NewFactSheet.aspx",
               "RelativeDocumentMoniker": "WebUI\\Pages\\OrdinanceTracking\\NewFactSheet.aspx",
@@ -108,15 +116,28 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "FormFormatting.js",
-              "DocumentMoniker": "C:\\Users\\kbolinger\\Documents\\Repos\\ThemisV2\\WebUI\\Scripts\\Helpers\\JS\\FormFormatting.js",
-              "RelativeDocumentMoniker": "WebUI\\Scripts\\Helpers\\JS\\FormFormatting.js",
-              "ToolTip": "C:\\Users\\kbolinger\\Documents\\Repos\\ThemisV2\\WebUI\\Scripts\\Helpers\\JS\\FormFormatting.js",
-              "RelativeToolTip": "WebUI\\Scripts\\Helpers\\JS\\FormFormatting.js",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFYAAAA6AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2024-11-25T21:20:47.175Z",
+              "DocumentIndex": 2,
+              "Title": "Utility.cs",
+              "DocumentMoniker": "C:\\Users\\kbolinger\\Documents\\Repos\\ThemisV2\\DataLibrary\\Utilities\\Utility.cs",
+              "RelativeDocumentMoniker": "DataLibrary\\Utilities\\Utility.cs",
+              "ToolTip": "C:\\Users\\kbolinger\\Documents\\Repos\\ThemisV2\\DataLibrary\\Utilities\\Utility.cs",
+              "RelativeToolTip": "DataLibrary\\Utilities\\Utility.cs",
+              "ViewState": "AgIAADUAAAAAAAAAAAA0wD8AAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-26T15:34:41.642Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "manifest.json",
+              "DocumentMoniker": "C:\\Users\\kbolinger\\Documents\\Repos\\ThemisV2\\WebUI\\assets\\images\\icons\\favicon\\manifest.json",
+              "RelativeDocumentMoniker": "WebUI\\assets\\images\\icons\\favicon\\manifest.json",
+              "ToolTip": "C:\\Users\\kbolinger\\Documents\\Repos\\ThemisV2\\WebUI\\assets\\images\\icons\\favicon\\manifest.json",
+              "RelativeToolTip": "WebUI\\assets\\images\\icons\\favicon\\manifest.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2024-11-26T16:41:21.819Z",
               "EditorCaption": ""
             }
           ]
@@ -138,17 +159,17 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 1,
               "Title": "Site.Master.cs",
               "DocumentMoniker": "C:\\Users\\kbolinger\\Documents\\Repos\\ThemisV2\\WebUI\\Site.Master.cs",
               "RelativeDocumentMoniker": "WebUI\\Site.Master.cs",
               "ToolTip": "C:\\Users\\kbolinger\\Documents\\Repos\\ThemisV2\\WebUI\\Site.Master.cs",
               "RelativeToolTip": "WebUI\\Site.Master.cs",
-              "ViewState": "AgIAABQAAAAAAAAAAAAUwFkAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAABoAAAAAAAAAAAAcwCoAAAAhAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-25T17:18:25.514Z",
               "IsPinned": true,
@@ -183,15 +204,28 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "NewFactSheet.aspx.cs",
               "DocumentMoniker": "C:\\Users\\kbolinger\\Documents\\Repos\\ThemisV2\\WebUI\\Pages\\OrdinanceTracking\\NewFactSheet.aspx.cs",
               "RelativeDocumentMoniker": "WebUI\\Pages\\OrdinanceTracking\\NewFactSheet.aspx.cs",
               "ToolTip": "C:\\Users\\kbolinger\\Documents\\Repos\\ThemisV2\\WebUI\\Pages\\OrdinanceTracking\\NewFactSheet.aspx.cs",
               "RelativeToolTip": "WebUI\\Pages\\OrdinanceTracking\\NewFactSheet.aspx.cs",
-              "ViewState": "AgIAAA4AAAAAAAAAAAAzwBcAAAANAAAAAAAAAA==",
+              "ViewState": "AgIAACAAAAAAAAAAAAAIwCcAAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-25T19:41:39.649Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "RequiredFieldsAndActivePage.js",
+              "DocumentMoniker": "C:\\Users\\kbolinger\\Documents\\Repos\\ThemisV2\\WebUI\\Scripts\\Helpers\\JS\\RequiredFieldsAndActivePage.js",
+              "RelativeDocumentMoniker": "WebUI\\Scripts\\Helpers\\JS\\RequiredFieldsAndActivePage.js",
+              "ToolTip": "C:\\Users\\kbolinger\\Documents\\Repos\\ThemisV2\\WebUI\\Scripts\\Helpers\\JS\\RequiredFieldsAndActivePage.js",
+              "RelativeToolTip": "WebUI\\Scripts\\Helpers\\JS\\RequiredFieldsAndActivePage.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2024-11-26T15:00:17.329Z",
               "EditorCaption": ""
             }
           ]

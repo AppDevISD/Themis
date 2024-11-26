@@ -8,12 +8,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.UI.WebControls;
 
 namespace DataLibrary
 {
     public class Utility
     {
-        private static SqlConnection _cn = null;
         private static Utility _Utility;
         public static Utility Instance
         {
@@ -59,26 +59,49 @@ namespace DataLibrary
             }
             return adu;
         }
+        //public string EmployeeTitle(int pIntID)
+        //{
+        //    string employeeTitle = string.Empty;
+        //    _cn = new SqlConnection(Properties.Settings.Default["EmployeeDirectoryDB"].ToString());
+        //    SqlCommand cmd = new SqlCommand("spGetEmployeeDetail", _cn);
+        //    cmd.CommandType = CommandType.StoredProcedure;
+        //    cmd.Parameters.AddWithValue("@pIntID", pIntID);
+        //    using (_cn)
+        //    {
+        //        _cn.Open();
+        //        SqlDataReader rs;
+        //        rs = cmd.ExecuteReader();
 
-        public string EmployeeTitle(int pIntID)
+        //        while (rs.Read())
+        //        {
+        //            employeeTitle = rs["Title"].ToString();
+        //        }
+        //    }
+        //    return employeeTitle;
+        //}
+        public Dictionary<string, string> DepartmentsList()
         {
-            string employeeTitle = string.Empty;
-            _cn = new SqlConnection(Properties.Settings.Default["EmployeeDirectoryDB"].ToString());
-            SqlCommand cmd = new SqlCommand("spGetEmployeeDetail", _cn);
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@pIntID", pIntID);
-            using (_cn)
+            Dictionary<string, string> dictionary = new Dictionary<string, string>()
             {
-                _cn.Open();
-                SqlDataReader rs;
-                rs = cmd.ExecuteReader();
-
-                while (rs.Read())
-                {
-                    employeeTitle = rs["Title"].ToString();
-                }
-            }
-            return employeeTitle;
+                {"Select Department...",                null},
+                { "Budget & Management",                "5"},
+                {"City Clerk",                          "13"},
+                {"City Council",                        "7"},
+                {"City Treasurer",                      "12"},
+                {"Community Relations",                 "16"},
+                {"Convention & Visitor's Bureau",       "14"},
+                {"Corporation Counsel",                 "6"},
+                {"Fire Department",                     "4"},
+                {"Human Resources",                     "8"},
+                {"Lincoln Library",                     "15"},
+                {"Office of The Mayor",                 "10"},
+                {"Planning & Economic Development",     "1"},
+                {"Police Department",                   "11"},
+                {"Public Utilities",                    "3"},
+                {"Public Works",                        "9"},
+            };
+            
+            return dictionary;
         }
 
     }

@@ -1,4 +1,4 @@
-﻿<%@ Page Title="New Fact Sheet" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="FormTemplate.aspx.cs" Inherits="WebUI.NewFactSheet" %>
+﻿<%@ Page Title="New Fact Sheet" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="NewFactSheet.aspx.cs" Inherits="WebUI.NewFactSheet" ClientIDMode="Static" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server"></asp:Content>
 
@@ -19,14 +19,14 @@
 					<div class="col-md-6">
 						<div class="form-group">
 							<label for="requestDepartment">Requesting Department</label>
-							<asp:DropDownList ID="requestDepartment" runat="server" OnSelectedIndexChanged="DropdownSelectedIndexChanged" AutoPostBack="true" CssClass="form-select" required="true"></asp:DropDownList>
+							<asp:DropDownList ID="requestDepartment" runat="server" OnSelectedIndexChanged="DropdownSelectedIndexChanged" AutoPostBack="true" CssClass="form-select" required="true" ValidateRequestMode="Enabled"></asp:DropDownList>
 						</div>
 					</div>
 					<div class="col-md-4"></div>
 					<div class="col-md-2">
 						<div class="form-group">
-							<label for="firstReadDate">First Read Date</label>
-							<asp:TextBox runat="server" ID="firstReadDate" CssClass="form-control" TextMode="Date"></asp:TextBox>
+							<label for="firstReadDate">Date of 1<sup>st</sup> Reading</label>
+							<asp:TextBox runat="server" ID="firstReadDate" CssClass="form-control" TextMode="Date" required="true"></asp:TextBox>
 						</div>
 					</div>
 				</div>
@@ -41,10 +41,13 @@
 
 					</div>
 					<div class="col-md-4">
-						<label for="requestPhoneNumber">Phone Number</label>
-						<div id="requestPhoneNumber" class="input-group">
-							<asp:TextBox runat="server" ID="TextBox1" CssClass="form-control" TextMode="Phone" data-type="telephone" placeholder="(555) 555-5555" AutoCompleteType="Disabled"></asp:TextBox>
-							<asp:TextBox runat="server" ID="TextBox2" CssClass="form-control" TextMode="SingleLine" data-type="extension" placeholder="x1234" AutoCompleteType="Disabled" style="width:10%;"></asp:TextBox>
+						<div class="input-group w-100">
+							<label for="requestPhone" style="flex: 1 1 auto !important">Phone Number</label>
+							<label for="requestExt" style="flex: 0.32 1 auto !important">Ext</label>
+						</div>
+						<div class="input-group">
+							<asp:TextBox runat="server" ID="requestPhone" CssClass="form-control" TextMode="Phone" data-type="telephone" placeholder="(555) 555-5555" AutoCompleteType="Disabled" required="true"></asp:TextBox>
+							<asp:TextBox runat="server" ID="requestExt" CssClass="form-control ext-split" TextMode="SingleLine" data-type="extension" placeholder="x1234" AutoCompleteType="Disabled" required="true"></asp:TextBox>
 						</div>
 					</div>
 					</div>

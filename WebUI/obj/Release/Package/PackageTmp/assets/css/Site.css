@@ -1,0 +1,7 @@
+﻿.themis-logo {
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	background: url('../images/icons/favicon/web-app-manifest-512x512.png') no-repeat;
+	background-size: contain;
+}

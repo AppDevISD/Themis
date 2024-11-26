@@ -1,0 +1,9 @@
+C:\Users\kbolinger\Documents\Repos\ThemisV2\DataLibrary\bin\Release\DataLibrary.dll.config
+C:\Users\kbolinger\Documents\Repos\ThemisV2\DataLibrary\bin\Release\DataLibrary.dll
+C:\Users\kbolinger\Documents\Repos\ThemisV2\DataLibrary\bin\Release\DataLibrary.pdb
+C:\Users\kbolinger\Documents\Repos\ThemisV2\DataLibrary\bin\Release\ISD.ActiveDirectory.dll
+C:\Users\kbolinger\Documents\Repos\ThemisV2\DataLibrary\obj\Release\DataLibrary.csproj.AssemblyReference.cache
+C:\Users\kbolinger\Documents\Repos\ThemisV2\DataLibrary\obj\Release\DataLibrary.csproj.CoreCompileInputs.cache
+C:\Users\kbolinger\Documents\Repos\ThemisV2\DataLibrary\obj\Release\DataLibr.6887D3A1.Up2Date
+C:\Users\kbolinger\Documents\Repos\ThemisV2\DataLibrary\obj\Release\DataLibrary.dll
+C:\Users\kbolinger\Documents\Repos\ThemisV2\DataLibrary\obj\Release\DataLibrary.pdb

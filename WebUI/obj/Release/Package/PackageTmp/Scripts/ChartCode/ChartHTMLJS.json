@@ -1,0 +1,13 @@
+{
+	"helpers": {
+		"javascript": "// PLUGINS //\nconst Utils = ChartUtils.init();\nconst autocolors = window['chartjs-plugin-autocolors'];\nChart.register(autocolors);\n\n// COLOR FUNCTIONS //\nconst opacity = (color, value) => Chart.helpers.color(color).alpha(value).rgbString();\nconst borderColor = () => getComputedStyle(document.body).getPropertyValue('--chart-border-color');\nconst textColor = () => getComputedStyle(document.body).getPropertyValue('--bs-body-color');\nconst lineColor = () => getComputedStyle(document.body).getPropertyValue('--chart-line-color');\nChart.defaults.color = textColor();"
+	},
+	"lineChart": {
+		"html": "<canvas id=\"lineChart\" class=\"jsChart\"></canvas>",
+		"javascript": "const charts = [\n\tnew Chart('lineChart', {\n\t\ttype: \"line\",\n\t\tdata: lineChartData,\n\t\toptions: lineChartOptions\n\t}),\n];"
+	},
+	"barChart": {
+		"html": "<canvas id=\"barChart\" class=\"jsChart\"></canvas>",
+		"javascript": "const charts = [\n\tnew Chart('barChart', {\n\t\ttype: \"bar\",\n\t\tdata: barData,\n\t\toptions: barOptions\n\t}),\n];"
+	}
+}

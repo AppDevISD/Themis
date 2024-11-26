@@ -1,0 +1,150 @@
+{
+	"lineChart": {
+		"data": {
+			"labels": "Utils.months({ count:  12 })",
+			"datasets": [
+				{
+					"label": "'Tension'",
+					"fill": false,
+					"tension": 5,
+					"lineTension": 0.5,
+					"pointRadius": 4,
+					"data": "Utils.numbers({ count: 12, min: 0, max: 100 })",
+					"pointBorderColor": "'white'"
+				},
+				{
+					"label": "'No Tension'",
+					"fill": false,
+					"pointRadius": 4,
+					"data": "Utils.numbers({ count: 12, min: 0, max: 100 })",
+					"pointBorderColor": "'white'"
+				}
+			]
+		},
+		"options": {
+			"indexAxis": "'x'",
+			"legend": {
+				"labels": {
+					"display": true,
+					"color": "function () { return textColor() }"
+				}
+			},
+			"scales": {
+				"x": {
+					"title": {
+						"display": true,
+						"text": "'Months'"
+					},
+					"grid": {
+						"color": "function () { return borderColor() }"
+					},
+					"ticks": {
+						"min": 0,
+						"max": 100,
+						"color": "function () { return textColor() }"
+					}
+				},
+				"y": {
+					"title": {
+						"display": true,
+						"text": "'Numbers'"
+					},
+					"grid": {
+						"color": "function () { return borderColor() }"
+					},
+					"ticks": {
+						"min": 0,
+						"max": 100,
+						"color": "function () { return textColor() }"
+					}
+				}
+			},
+			"plugins": {
+				"title": {
+					"display": true,
+					"text": "'Graph Title'",
+					"color": "function () { return textColor() }"
+				},
+				"autocolors": {
+					"mode": "'label'",
+					"offset": 0,
+					"customize": "function(context) {\n\t\t\t\tconst colors = context.colors;\n\t\t\t\treturn {\n\t\t\t\t\tbackground: opacity(colors.background, 1.0),\n\t\t\t\t\tborder: opacity(colors.background, 0.65)\n\t\t\t\t}\n\t\t\t}"
+				}
+			}
+		},
+		"dataSource": {
+			"c#": "const getRandomCoordsCSharp = (count, min, max) => {\n\tvar dataString = JSON.stringify({ count: count, min: min, max: max });\n\tvar valArray = [];\n\t$.ajax({\n\t\ttype: \"POST\",\n\t\tasync: false,\n\t\turl: \"./Scripts/Helpers/CSharp/ChartHandler.asmx/GetRandomCoords\",\n\t\tdata: dataString,\n\t\tcontentType: \"application/json\",\n\t\tdataType: \"json\",\n\t\tsuccess: function (response) {\n\t\t\tvalArray = JSON.parse(response.d);\n\t\t}\n\t});\n\treturn valArray;\n};"
+		}
+	},
+	"barChart": {
+		"data": {
+			"labels": "Utils.months({ count:  12 })",
+			"datasets": [
+				{
+					"label": "'Squared'",
+					"borderRadius": 0, 
+					"data": "Utils.numbers({ count: 12, min: 0, max: 100 })"
+				},
+				{
+					"label": "'Rounded'",
+					"borderRadius": "Number.MAX_VALUE", 
+					"data": "Utils.numbers({ count: 12, min: 0, max: 100 })"
+				}
+			]
+		},
+		"options": {
+			"indexAxis": "'x'",
+			"legend": {
+				"labels": {
+					"display": true,
+					"color": "function () { return textColor() }"
+				}
+			},
+			"scales": {
+				"x": {
+					"title": {
+						"display": true,
+						"text": "'Months'"
+					},
+					"grid": {
+						"color": "function () { return borderColor() }"
+					},
+					"ticks": {
+						"min": 0,
+						"max": 100,
+						"color": "function () { return textColor() }"
+					}
+				},
+				"y": {
+					"title": {
+						"display": true,
+						"text": "'Numbers'"
+					},
+					"grid": {
+						"color": "function () { return borderColor() }"
+					},
+					"ticks": {
+						"min": 0,
+						"max": 100,
+						"color": "function () { return textColor() }"
+					}
+				}
+			},
+			"plugins": {
+				"title": {
+					"display": true,
+					"text": "'Graph Title'",
+					"color": "function () { return textColor() }"
+				},
+				"autocolors": {
+					"mode": "'label'",
+					"offset": 0,
+					"customize": "function(context) {\n\t\t\t\tconst colors = context.colors;\n\t\t\t\treturn {\n\t\t\t\t\tbackground: opacity(colors.background, 1.0),\n\t\t\t\t\tborder: opacity(colors.background, 0.65)\n\t\t\t\t}\n\t\t\t}"
+				}
+			}
+		},
+		"dataSource": {
+			"c#": "const getRandomCoordsCSharp = (count, min, max) => {\n\tvar dataString = JSON.stringify({ count: count, min: min, max: max });\n\tvar valArray = [];\n\t$.ajax({\n\t\ttype: \"POST\",\n\t\tasync: false,\n\t\turl: \"./Scripts/Helpers/CSharp/ChartHandler.asmx/GetRandomCoords\",\n\t\tdata: dataString,\n\t\tcontentType: \"application/json\",\n\t\tdataType: \"json\",\n\t\tsuccess: function (response) {\n\t\t\tvalArray = JSON.parse(response.d);\n\t\t}\n\t});\n\treturn valArray;\n};"
+		} 
+	}
+}

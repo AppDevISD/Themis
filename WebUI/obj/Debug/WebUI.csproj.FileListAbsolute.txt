@@ -45,3 +45,13 @@ C:\Users\kbolinger\Documents\Repos\ThemisV2\WebUI\bin\roslyn\vbc.exe.config
 C:\Users\kbolinger\Documents\Repos\ThemisV2\WebUI\bin\roslyn\vbc.rsp
 C:\Users\kbolinger\Documents\Repos\ThemisV2\WebUI\bin\roslyn\VBCSCompiler.exe
 C:\Users\kbolinger\Documents\Repos\ThemisV2\WebUI\bin\roslyn\VBCSCompiler.exe.config
+C:\Users\kbolinger\Documents\Repos\ThemisV2\WebUI\bin\Antlr3.Runtime.dll
+C:\Users\kbolinger\Documents\Repos\ThemisV2\WebUI\bin\Microsoft.AspNet.FriendlyUrls.dll
+C:\Users\kbolinger\Documents\Repos\ThemisV2\WebUI\bin\Microsoft.AspNet.Web.Optimization.WebForms.dll
+C:\Users\kbolinger\Documents\Repos\ThemisV2\WebUI\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+C:\Users\kbolinger\Documents\Repos\ThemisV2\WebUI\bin\Microsoft.ScriptManager.MSAjax.dll
+C:\Users\kbolinger\Documents\Repos\ThemisV2\WebUI\bin\Microsoft.ScriptManager.WebForms.dll
+C:\Users\kbolinger\Documents\Repos\ThemisV2\WebUI\bin\Microsoft.Web.Infrastructure.dll
+C:\Users\kbolinger\Documents\Repos\ThemisV2\WebUI\bin\Newtonsoft.Json.dll
+C:\Users\kbolinger\Documents\Repos\ThemisV2\WebUI\bin\System.Web.Optimization.dll
+C:\Users\kbolinger\Documents\Repos\ThemisV2\WebUI\bin\WebGrease.dll

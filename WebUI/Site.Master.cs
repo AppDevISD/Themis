@@ -19,9 +19,9 @@ namespace WebUI
     public partial class SiteMaster : System.Web.UI.MasterPage
     {
         private ADUser _user = new ADUser();
-        private string userName;
-        private string userDisplayName;
-        private string userPosition;
+        //public string userName;
+        //public string userDisplayName;
+        //public string userPosition;
         public string PageTitle;
 
         protected void Page_Init(object sender, EventArgs e)
@@ -44,9 +44,9 @@ namespace WebUI
             {
                 _user = (ADUser)Session["CurrentUser"];
                 Session["UserName"] = _user.Login;
-                userName = _user.Login.ToUpper();
-                userDisplayName = $"{_user.FirstName}&nbsp; {_user.LastName}";
-                userPosition = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_user.Title.ToLower());
+                string userName = _user.Login.ToUpper();
+                string userDisplayName = $"{_user.FirstName}&nbsp; {_user.LastName}";
+                string userPosition = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_user.Title.ToLower());
                 lblUser.Text = userDisplayName;
                 lblTitle.Text = userPosition;
                 imgUser.Src = Photo.Instance.Base64ImgSrc(_user.PhotoLocation);
