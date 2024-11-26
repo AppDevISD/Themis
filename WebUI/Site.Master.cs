@@ -28,9 +28,9 @@ namespace WebUI
         {
             if (Session["CurrentUser"] == null)
             {
-                _user = Utility.Instance.AuthenticateUser();
-                Session["CurrentUser"] = _user;
-                imgUser.Src = Photo.Instance.Base64ImgSrc(_user.PhotoLocation);
+                //_user = Utility.Instance.AuthenticateUser();
+                //Session["CurrentUser"] = _user;
+                //imgUser.Src = Photo.Instance.Base64ImgSrc(_user.PhotoLocation);
             }
         }
         protected void Page_PreRender(object sender, EventArgs e)
@@ -42,14 +42,14 @@ namespace WebUI
             SetPageTitle();
             if (!Page.IsPostBack)
             {
-                _user = (ADUser)Session["CurrentUser"];
-                Session["UserName"] = _user.Login;
-                string userName = _user.Login.ToUpper();
-                string userDisplayName = $"{_user.FirstName}&nbsp; {_user.LastName}";
-                string userPosition = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_user.Title.ToLower());
-                lblUser.Text = userDisplayName;
-                lblTitle.Text = userPosition;
-                imgUser.Src = Photo.Instance.Base64ImgSrc(_user.PhotoLocation);
+                //_user = (ADUser)Session["CurrentUser"];
+                //Session["UserName"] = _user.Login;
+                //string userName = _user.Login.ToUpper();
+                //string userDisplayName = $"{_user.FirstName}&nbsp; {_user.LastName}";
+                //string userPosition = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_user.Title.ToLower());
+                //lblUser.Text = userDisplayName;
+                //lblTitle.Text = userPosition;
+                //imgUser.Src = Photo.Instance.Base64ImgSrc(_user.PhotoLocation);
             }
         }
         protected void SetPageTitle()

@@ -10,157 +10,158 @@
             formatCurrency($(this), "blur");
         });
     });
-});
 
+    function formatNumber(n) {
+        // format number 1000000 to 1,234,567
+        return n.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+    }
+    function formatCurrency(input, blur) {
+        // appends $ to value, validates decimal side
+        // and puts cursor back in right position.
 
+        // get input value
+        var input_val = input.val();
 
-function formatNumber(n) {
-    // format number 1000000 to 1,234,567
-    return n.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-}
-function formatCurrency(input, blur) {
-    // appends $ to value, validates decimal side
-    // and puts cursor back in right position.
+        // don't validate empty input
+        if (input_val === "") { return; }
 
-    // get input value
-    var input_val = input.val();
+        // original length
+        var original_len = input_val.length;
 
-    // don't validate empty input
-    if (input_val === "") { return; }
+        // initial caret position 
+        /*    var caret_pos = input.prop("selectionStart");*/
 
-    // original length
-    var original_len = input_val.length;
+        // check for decimal
+        if (input_val.indexOf(".") >= 0) {
 
-    // initial caret position 
-    /*    var caret_pos = input.prop("selectionStart");*/
+            // get position of first decimal
+            // this prevents multiple decimals from
+            // being entered
+            var decimal_pos = input_val.indexOf(".");
 
-    // check for decimal
-    if (input_val.indexOf(".") >= 0) {
+            // split number by decimal point
+            var left_side = input_val.substring(0, decimal_pos);
+            var right_side = input_val.substring(decimal_pos);
 
-        // get position of first decimal
-        // this prevents multiple decimals from
-        // being entered
-        var decimal_pos = input_val.indexOf(".");
+            // add commas to left side of number
+            left_side = formatNumber(left_side);
 
-        // split number by decimal point
-        var left_side = input_val.substring(0, decimal_pos);
-        var right_side = input_val.substring(decimal_pos);
+            // validate right side
+            right_side = formatNumber(right_side);
 
-        // add commas to left side of number
-        left_side = formatNumber(left_side);
+            // On blur make sure 2 numbers after decimal
+            if (blur === "blur") {
+                right_side += "00";
+            }
 
-        // validate right side
-        right_side = formatNumber(right_side);
+            // Limit decimal to only 2 digits
+            right_side = right_side.substring(0, 2);
 
-        // On blur make sure 2 numbers after decimal
-        if (blur === "blur") {
-            right_side += "00";
+            // join number by .
+            input_val = "$" + left_side + "." + right_side;
+
+        } else {
+            // no decimal entered
+            // add commas to number
+            // remove all non-digits
+            input_val = formatNumber(input_val);
+            input_val = "$" + input_val;
+
+            // final formatting
+            if (blur === "blur") {
+                input_val += ".00";
+            }
         }
 
-        // Limit decimal to only 2 digits
-        right_side = right_side.substring(0, 2);
-
-        // join number by .
-        input_val = "$" + left_side + "." + right_side;
-
-    } else {
-        // no decimal entered
-        // add commas to number
-        // remove all non-digits
-        input_val = formatNumber(input_val);
-        input_val = "$" + input_val;
-
-        // final formatting
-        if (blur === "blur") {
-            input_val += ".00";
-        }
+        // send updated string to input
+        input.val(input_val);
     }
 
-    // send updated string to input
-    input.val(input_val);
-}
+    var datePeriodStartEntered;
+    var datePeriodEndEntered;
+    let dateTerm = $("input[data-type='dateTerm']");
+    let datePeriodStart = $("input[data-type='datePeriodStart']");
+    let datePeriodEnd = $("input[data-type='datePeriodEnd']");
 
-var datePeriodStartEntered;
-var datePeriodEndEntered;
-let dateTerm = $("input[data-type='dateTerm']");
-let datePeriodStart = $("input[data-type='datePeriodStart']");
-let datePeriodEnd = $("input[data-type='datePeriodEnd']");
-
-LoadTermVars();
-function LoadTermVars() {
-    if (datePeriodStart.val() != "") {
-        datePeriodStartEntered = true;
-    }
-    else {
-        datePeriodStartEntered = false;
-    }
-    if (datePeriodEnd.val() != "") {
-        datePeriodEndEntered = true;
-    }
-    else {
-        datePeriodEndEntered = false;
-    }
-    if (datePeriodStart.val() != "" && datePeriodEnd.val() != "") {
-        GetTermDate();
-    }
-}
-datePeriodStart.each(function () {
-    $(this).on("change keyup paste", function () {
-        let output = "";
-        if (datePeriodStartEntered && datePeriodEndEntered && $(this).val() != "") {
-            GetTermDate();
-            return output;
-        }
-        else if (datePeriodEndEntered && $(this).val() != "") {
+    LoadTermVars();
+    function LoadTermVars() {
+        if (datePeriodStart.val() != "") {
             datePeriodStartEntered = true;
-            GetTermDate();
-            return output;
         }
-        else if ($(this).val() == "") {
+        else {
             datePeriodStartEntered = false;
-            dateTerm.val(output);
-            return output;
+        }
+        if (datePeriodEnd.val() != "") {
+            datePeriodEndEntered = true;
         }
         else {
-            datePeriodStartEntered = true;
-            dateTerm.val(output);
-            return output;
-        }
-    });
-});
-datePeriodEnd.each(function () {
-    $(this).on("change keyup paste", function () {
-        let output = "";
-        if (datePeriodStartEntered && datePeriodEndEntered && $(this).val() != "") {
-            GetTermDate();
-            return output;
-        }
-        else if (datePeriodStartEntered && $(this).val() != "") {
-            datePeriodEndEntered = true;
-            GetTermDate();
-            return output;
-        }
-        else if ($(this).val() == "") {
             datePeriodEndEntered = false;
-            dateTerm.val(output);
-            return output;
+        }
+        if (datePeriodStart.val() != "" && datePeriodEnd.val() != "") {
+            GetTermDate();
+        }
+    }
+    datePeriodStart.each(function () {
+        $(this).on("change keyup paste", function () {
+            let output = "";
+            if (datePeriodStartEntered && datePeriodEndEntered && $(this).val() != "") {
+                GetTermDate();
+                return output;
+            }
+            else if (datePeriodEndEntered && $(this).val() != "") {
+                datePeriodStartEntered = true;
+                GetTermDate();
+                return output;
+            }
+            else if ($(this).val() == "") {
+                datePeriodStartEntered = false;
+                dateTerm.val(output);
+                return output;
+            }
+            else {
+                datePeriodStartEntered = true;
+                dateTerm.val(output);
+                return output;
+            }
+        });
+    });
+    datePeriodEnd.each(function () {
+        $(this).on("change keyup paste", function () {
+            let output = "";
+            if (datePeriodStartEntered && datePeriodEndEntered && $(this).val() != "") {
+                GetTermDate();
+                return output;
+            }
+            else if (datePeriodStartEntered && $(this).val() != "") {
+                datePeriodEndEntered = true;
+                GetTermDate();
+                return output;
+            }
+            else if ($(this).val() == "") {
+                datePeriodEndEntered = false;
+                dateTerm.val(output);
+                return output;
+            }
+            else {
+                datePeriodEndEntered = true;
+                dateTerm.val(output);
+                return output;
+            }
+        });
+    });
+    function GetTermDate() {
+        let startDate = new Date(datePeriodStart.val());
+        let endDate = new Date(datePeriodEnd.val());
+        let TimeDifference = endDate.getTime() - startDate.getTime();
+        let DaysDifference = Math.round(TimeDifference / (1000 * 3600 * 24));
+        if (DaysDifference > 1 || DaysDifference == 0) {
+            dateTerm.val(`${DaysDifference} Days`);
         }
         else {
-            datePeriodEndEntered = true;
-            dateTerm.val(output);
-            return output;
+            dateTerm.val(`${DaysDifference} Day`);
         }
-    });
+    }
 });
-function GetTermDate() {
-    let startDate = new Date(datePeriodStart.val());
-    let endDate = new Date(datePeriodEnd.val());
-    let TimeDifference = endDate.getTime() - startDate.getTime();
-    let DaysDifference = Math.round(TimeDifference / (1000 * 3600 * 24));
-    if (DaysDifference > 1 || DaysDifference == 0) {
-        dateTerm.val(`${DaysDifference} Days`);
-    }
-    else {
-        dateTerm.val(`${DaysDifference} Day`);
-    }
-}
+
+
+

@@ -76,7 +76,7 @@
 					<nav class="flex-column navMenuShow">
 						<%-- HOME --%>
 						<div class='nav-item <%:ActivePage("Home")?"activePage":""%>'>
-							<a runat="server" id="Home" class="nav-link" href="/">
+							<a runat="server" id="Home" class="nav-link" href="./">
 								<span class="fas fa-house"></span>
 								<p class="m-0 fs-6 noto-sans-semi-bold">Home</p>
 							</a>
@@ -89,7 +89,7 @@
 								<p class="m-0 fs-6 noto-sans-semi-bold">Ordinance Tracking</p>
 							</a>
 							<div id="OrdinanceTrackingMenu" class='accordion-border collapse' data-parent="#ordinanceTrackingParent">
-								<a class='nav-link <%:ActivePage("Ordinances")?"activePage":""%>' href="./Ordinances">
+								<a class='nav-link <%:ActivePage("Ordinances")?"activePage":""%>' href="#">
 									<span class="fas fa-book-section"></span>
 									<p class="m-0 fs-6 noto-sans-semi-bold">Ordinances</p>
 								</a>

@@ -60,58 +60,76 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.TextBox requestExt;
 
         /// <summary>
-        /// textArea control.
+        /// epYes control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox textArea;
+        protected global::System.Web.UI.WebControls.RadioButton epYes;
 
         /// <summary>
-        /// telephone control.
+        /// epNo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox telephone;
+        protected global::System.Web.UI.WebControls.RadioButton epNo;
 
         /// <summary>
-        /// extension control.
+        /// epJustificationGroup control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox extension;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl epJustificationGroup;
 
         /// <summary>
-        /// currency control.
+        /// epJustification control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox currency;
+        protected global::System.Web.UI.WebControls.TextBox epJustification;
 
         /// <summary>
-        /// date control.
+        /// fiscalImpact control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox date;
+        protected global::System.Web.UI.WebControls.TextBox fiscalImpact;
 
         /// <summary>
-        /// dateTime control.
+        /// suggestedTitle control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox dateTime;
+        protected global::System.Web.UI.WebControls.TextBox suggestedTitle;
+
+        /// <summary>
+        /// vendorName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox vendorName;
+
+        /// <summary>
+        /// vendorNumber control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox vendorNumber;
 
         /// <summary>
         /// datePeriodStart control.
@@ -141,67 +159,67 @@ namespace WebUI
         protected global::System.Web.UI.HtmlControls.HtmlInputText dateTerm;
 
         /// <summary>
-        /// dropdown control.
+        /// contractAmount control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList dropdown;
+        protected global::System.Web.UI.WebControls.TextBox contractAmount;
 
         /// <summary>
-        /// dropdownOther control.
+        /// scYes control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox dropdownOther;
+        protected global::System.Web.UI.WebControls.RadioButton scYes;
 
         /// <summary>
-        /// checkbox control.
+        /// scNo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox checkbox;
+        protected global::System.Web.UI.WebControls.RadioButton scNo;
 
         /// <summary>
-        /// checkbox1 control.
+        /// changeOrderNumber control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox checkbox1;
+        protected global::System.Web.UI.WebControls.TextBox changeOrderNumber;
 
         /// <summary>
-        /// checkbox2 control.
+        /// additionalAmount control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox checkbox2;
+        protected global::System.Web.UI.WebControls.TextBox additionalAmount;
 
         /// <summary>
-        /// radio1 control.
+        /// purchaseMethod control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton radio1;
+        protected global::System.Web.UI.WebControls.DropDownList purchaseMethod;
 
         /// <summary>
-        /// radio2 control.
+        /// otherException control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButton radio2;
+        protected global::System.Web.UI.WebControls.TextBox otherException;
 
         /// <summary>
         /// SubmitNoFunForm control.

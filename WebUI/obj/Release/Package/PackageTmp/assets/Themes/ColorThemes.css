@@ -507,6 +507,20 @@
   border-color: var(--custom-theme-border-color);
 }
 
+.form-control:read-only {
+  background-color: var(--bs-secondary-bg);
+  opacity: 1;
+}
+
+.form-control:disabled {
+  background-color: var(--bs-secondary-bg);
+  opacity: 0.5;
+}
+
+label:has(+ .form-control:disabled) {
+  opacity: 0.25;
+}
+
 [data-color-theme=base] .form-control:focus, [data-color-theme=base] .form-select:focus {
   box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
 }
@@ -528,6 +542,10 @@
 .form-check-input:focus {
   border: none;
   box-shadow: unset;
+}
+
+.form-check-input input:hover {
+  cursor: pointer !important;
 }
 
 .form-switch:not(.theme-switch) .form-check-input:not([name=colorThemeRadio]) {

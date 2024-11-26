@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -30,7 +31,10 @@ namespace WebUI
         }
         protected void SetStartupActives()
         {
-            dropdownOther.Enabled = false;
+            epJustificationGroup.Visible = false;
+            changeOrderNumber.Enabled = false;
+            additionalAmount.Enabled = false;
+            otherException.Enabled = false;
         }
         protected void GetAllDepartments()
         {
@@ -44,28 +48,63 @@ namespace WebUI
         }
         protected void GetAllDropdownOptions()
         {
-            dropdown.Items.Insert(0, new ListItem("Select Option...", "N/A"));
-            dropdown.Items.Insert(1, new ListItem("Item 1", "Item 1"));
-            dropdown.Items.Insert(2, new ListItem("Item 2", "Item 2"));
-            dropdown.Items.Insert(3, new ListItem("Item 3", "Item 3"));
-            dropdown.Items.Insert(4, new ListItem("Other", "Other"));
+            purchaseMethod.Items.Insert(0, new ListItem("Select Purchase Method...", null));
+            purchaseMethod.Items.Insert(1, new ListItem("Low Bid", "Low Bid"));
+            purchaseMethod.Items.Insert(2, new ListItem("Low Bid Meeting Specs", "Low Bid Meeting Specs"));
+            purchaseMethod.Items.Insert(3, new ListItem("Low Evaluated Bid", "Low Evaluated Bid"));
+            purchaseMethod.Items.Insert(4, new ListItem("Other", "Other"));
+            purchaseMethod.Items.Insert(5, new ListItem("Exception", "Exception"));
         }
-        protected void DropdownSelectedIndexChanged(object sender, EventArgs e)
+        protected void PurchaseMethodSelectedIndexChanged(object sender, EventArgs e)
         {
-            switch (dropdown.SelectedItem.Value)
+            switch (purchaseMethod.SelectedItem.Value)
             {
                 default:
-                    dropdownOther.Enabled = false;
-                    dropdownOther.Text = string.Empty;
-                    dropdownOther.Attributes.Remove("required");
+                    otherException.Enabled = false;
+                    otherException.Text = string.Empty;
+                    otherException.Attributes.Remove("required");
                     break;
                 case "Other":
-                    dropdownOther.Enabled = true;
-                    dropdownOther.Attributes.Add("required", "true");
+                case "Exception":
+                    otherException.Enabled = true;
+                    otherException.Attributes.Add("required", "true");
                     break;
             }
         }
+        protected void EPCheckedChanged(object sender, EventArgs e)
+        {
+            switch (epYes.Checked)
+            {
+                case true:
+                    epJustificationGroup.Visible = true;
+                    epJustification.Attributes.Add("required", "true");
+                    break;
 
+                case false:
+                    epJustificationGroup.Visible = false;
+                    epJustification.Attributes.Remove("required");
+                    break;
+            }
+        }
+        protected void SCCheckedChanged(object sender, EventArgs e)
+        {
+            switch (scYes.Checked)
+            {
+                case true:
+                    changeOrderNumber.Enabled = true;
+                    additionalAmount.Enabled = true;
+                    changeOrderNumber.Attributes.Add("required", "true");
+                    additionalAmount.Attributes.Add("required", "true");
+                    break;
+
+                case false:
+                    changeOrderNumber.Enabled = false;
+                    additionalAmount.Enabled = false;
+                    changeOrderNumber.Attributes.Remove("required");
+                    additionalAmount.Attributes.Remove("required");
+                    break;
+            }
+        }
         protected void SubmitForm_Click(object sender, EventArgs e)
         {
             Email.Instance.AddEmailAddress(emailList, _user.Email);
@@ -111,6 +150,6 @@ namespace WebUI
                 toastColor = (string)Session["ToastColor"];
                 toastMessage = (string)Session["ToastMessage"];
             }
-        }
+        }     
     }
 }
