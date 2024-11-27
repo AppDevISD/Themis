@@ -3,36 +3,8 @@
   "WorkspaceRootPath": "C:\\Users\\kbolinger\\Documents\\Repos\\ThemisV2\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|c:\\users\\kbolinger\\documents\\repos\\themisv2\\webui\\site.master.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|solutionrelative:webui\\site.master.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|c:\\users\\kbolinger\\documents\\repos\\themisv2\\webui\\app_start\\routeconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|solutionrelative:webui\\app_start\\routeconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|C:\\Users\\kbolinger\\Documents\\Repos\\ThemisV2\\webui\\pages\\ordinancetracking\\ordinances.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}",
-      "RelativeMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|solutionrelative:webui\\pages\\ordinancetracking\\ordinances.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|C:\\Users\\kbolinger\\Documents\\Repos\\ThemisV2\\webui\\pages\\ordinancetracking\\newfactsheet.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}",
       "RelativeMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|solutionrelative:webui\\pages\\ordinancetracking\\newfactsheet.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|c:\\users\\kbolinger\\documents\\repos\\themisv2\\webui\\global.asax.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|solutionrelative:webui\\global.asax.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|C:\\Users\\kbolinger\\Documents\\Repos\\ThemisV2\\webui\\default.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}",
-      "RelativeMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|solutionrelative:webui\\default.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|c:\\users\\kbolinger\\documents\\repos\\themisv2\\webui\\site.master||{B30AFBFF-D992-43B7-B62D-2642580A2883}",
-      "RelativeMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|solutionrelative:webui\\site.master||{B30AFBFF-D992-43B7-B62D-2642580A2883}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|C:\\Users\\kbolinger\\Documents\\Repos\\ThemisV2\\webui\\default.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|solutionrelative:webui\\default.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|C:\\Users\\kbolinger\\Documents\\Repos\\ThemisV2\\webui\\pages\\ordinancetracking\\newfactsheet.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -43,8 +15,32 @@
       "RelativeMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|solutionrelative:webui\\pages\\ordinancetracking\\ordinances.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|C:\\Users\\kbolinger\\Documents\\Repos\\ThemisV2\\webui\\site.master||{B30AFBFF-D992-43B7-B62D-2642580A2883}",
+      "RelativeMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|solutionrelative:webui\\site.master||{B30AFBFF-D992-43B7-B62D-2642580A2883}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|C:\\Users\\kbolinger\\Documents\\Repos\\ThemisV2\\webui\\default.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}",
+      "RelativeMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|solutionrelative:webui\\default.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|C:\\Users\\kbolinger\\Documents\\Repos\\ThemisV2\\webui\\scripts\\helpers\\js\\requiredfieldsandactivepage.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|solutionrelative:webui\\scripts\\helpers\\js\\requiredfieldsandactivepage.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|c:\\users\\kbolinger\\documents\\repos\\themisv2\\webui\\scripts\\helpers\\js\\formformatting.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|solutionrelative:webui\\scripts\\helpers\\js\\formformatting.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|C:\\Users\\kbolinger\\Documents\\Repos\\ThemisV2\\webui\\pages\\ordinancetracking\\ordinances.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}",
+      "RelativeMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|solutionrelative:webui\\pages\\ordinancetracking\\ordinances.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|c:\\users\\kbolinger\\documents\\repos\\themisv2\\webui\\site.master.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|solutionrelative:webui\\site.master.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|C:\\Users\\kbolinger\\Documents\\Repos\\ThemisV2\\webui\\default.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{69B8EBCD-D3D9-4A9C-928F-997E88CF9A07}|WebUI\\WebUI.csproj|solutionrelative:webui\\default.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -53,12 +49,22 @@
       "VerticalTabListWidth": 256,
       "DocumentGroups": [
         {
-          "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "DockedWidth": 100,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            }
+          ]
+        },
+        {
+          "DockedWidth": 300,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 3,
               "Title": "Site.Master",
               "DocumentMoniker": "C:\\Users\\kbolinger\\Documents\\Repos\\ThemisV2\\WebUI\\Site.Master",
               "RelativeDocumentMoniker": "WebUI\\Site.Master",
@@ -72,7 +78,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 7,
               "Title": "Ordinances.aspx",
               "DocumentMoniker": "C:\\Users\\kbolinger\\Documents\\Repos\\ThemisV2\\WebUI\\Pages\\OrdinanceTracking\\Ordinances.aspx",
               "RelativeDocumentMoniker": "WebUI\\Pages\\OrdinanceTracking\\Ordinances.aspx",
@@ -85,12 +91,8 @@
               "EditorCaption": ""
             },
             {
-              "$type": "Bookmark",
-              "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
-            },
-            {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 4,
               "Title": "Default.aspx",
               "DocumentMoniker": "C:\\Users\\kbolinger\\Documents\\Repos\\ThemisV2\\WebUI\\Default.aspx",
               "RelativeDocumentMoniker": "WebUI\\Default.aspx",
@@ -103,7 +105,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
               "Title": "NewFactSheet.aspx",
               "DocumentMoniker": "C:\\Users\\kbolinger\\Documents\\Repos\\ThemisV2\\WebUI\\Pages\\OrdinanceTracking\\NewFactSheet.aspx",
               "RelativeDocumentMoniker": "WebUI\\Pages\\OrdinanceTracking\\NewFactSheet.aspx",
@@ -112,32 +114,6 @@
               "LogicalView": "7651a703-06e5-11d1-8ebd-00a0c90f26ea",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000195|",
               "WhenOpened": "2024-11-25T19:26:47.998Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "RouteConfig.cs",
-              "DocumentMoniker": "C:\\Users\\kbolinger\\Documents\\Repos\\ThemisV2\\WebUI\\App_Start\\RouteConfig.cs",
-              "RelativeDocumentMoniker": "WebUI\\App_Start\\RouteConfig.cs",
-              "ToolTip": "C:\\Users\\kbolinger\\Documents\\Repos\\ThemisV2\\WebUI\\App_Start\\RouteConfig.cs",
-              "RelativeToolTip": "WebUI\\App_Start\\RouteConfig.cs",
-              "ViewState": "AgIAAEMAAAAAAAAAAAAowFAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-27T13:54:54.485Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "Global.asax.cs",
-              "DocumentMoniker": "C:\\Users\\kbolinger\\Documents\\Repos\\ThemisV2\\WebUI\\Global.asax.cs",
-              "RelativeDocumentMoniker": "WebUI\\Global.asax.cs",
-              "ToolTip": "C:\\Users\\kbolinger\\Documents\\Repos\\ThemisV2\\WebUI\\Global.asax.cs",
-              "RelativeToolTip": "WebUI\\Global.asax.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAeAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-27T14:19:18.876Z",
               "EditorCaption": ""
             }
           ]
@@ -149,27 +125,27 @@
       "VerticalTabListWidth": 256,
       "FloatingWindowState": {
         "Id": "695088b1-bf3f-4599-acf8-f0691a588649",
-        "Display": 0,
+        "Display": 1,
         "X": -5,
-        "Y": 119,
+        "Y": 839,
         "Width": 1090,
         "Height": 1038,
-        "WindowState": 2
+        "WindowState": 0
       },
       "DocumentGroups": [
         {
-          "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "DockedWidth": 271,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 8,
               "Title": "Site.Master.cs",
               "DocumentMoniker": "C:\\Users\\kbolinger\\Documents\\Repos\\ThemisV2\\WebUI\\Site.Master.cs",
               "RelativeDocumentMoniker": "WebUI\\Site.Master.cs",
               "ToolTip": "C:\\Users\\kbolinger\\Documents\\Repos\\ThemisV2\\WebUI\\Site.Master.cs",
               "RelativeToolTip": "WebUI\\Site.Master.cs",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAUwB8AAAAvAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAhAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-25T17:18:25.514Z",
               "IsPinned": true,
@@ -177,13 +153,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 2,
               "Title": "Ordinances.aspx.cs",
               "DocumentMoniker": "C:\\Users\\kbolinger\\Documents\\Repos\\ThemisV2\\WebUI\\Pages\\OrdinanceTracking\\Ordinances.aspx.cs",
               "RelativeDocumentMoniker": "WebUI\\Pages\\OrdinanceTracking\\Ordinances.aspx.cs",
               "ToolTip": "C:\\Users\\kbolinger\\Documents\\Repos\\ThemisV2\\WebUI\\Pages\\OrdinanceTracking\\Ordinances.aspx.cs",
               "RelativeToolTip": "WebUI\\Pages\\OrdinanceTracking\\Ordinances.aspx.cs",
-              "ViewState": "AgIAAAgAAAAAAAAAAAAkwCYAAABLAAAAAAAAAA==",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABEAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-25T19:42:00.024Z",
               "IsPinned": true,
@@ -191,7 +167,21 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 6,
+              "Title": "FormFormatting.js",
+              "DocumentMoniker": "C:\\Users\\kbolinger\\Documents\\Repos\\ThemisV2\\WebUI\\Scripts\\Helpers\\JS\\FormFormatting.js",
+              "RelativeDocumentMoniker": "WebUI\\Scripts\\Helpers\\JS\\FormFormatting.js",
+              "ToolTip": "C:\\Users\\kbolinger\\Documents\\Repos\\ThemisV2\\WebUI\\Scripts\\Helpers\\JS\\FormFormatting.js",
+              "RelativeToolTip": "WebUI\\Scripts\\Helpers\\JS\\FormFormatting.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAE4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2024-11-27T17:55:30.21Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
               "Title": "Default.aspx.cs",
               "DocumentMoniker": "C:\\Users\\kbolinger\\Documents\\Repos\\ThemisV2\\WebUI\\Default.aspx.cs",
               "RelativeDocumentMoniker": "WebUI\\Default.aspx.cs",
@@ -204,26 +194,26 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 1,
               "Title": "NewFactSheet.aspx.cs",
               "DocumentMoniker": "C:\\Users\\kbolinger\\Documents\\Repos\\ThemisV2\\WebUI\\Pages\\OrdinanceTracking\\NewFactSheet.aspx.cs",
               "RelativeDocumentMoniker": "WebUI\\Pages\\OrdinanceTracking\\NewFactSheet.aspx.cs",
               "ToolTip": "C:\\Users\\kbolinger\\Documents\\Repos\\ThemisV2\\WebUI\\Pages\\OrdinanceTracking\\NewFactSheet.aspx.cs",
               "RelativeToolTip": "WebUI\\Pages\\OrdinanceTracking\\NewFactSheet.aspx.cs",
-              "ViewState": "AgIAAAsAAAAAAAAAAAAzwBgAAAANAAAAAAAAAA==",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAzwBkAAAAkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-25T19:41:39.649Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 5,
               "Title": "RequiredFieldsAndActivePage.js",
               "DocumentMoniker": "C:\\Users\\kbolinger\\Documents\\Repos\\ThemisV2\\WebUI\\Scripts\\Helpers\\JS\\RequiredFieldsAndActivePage.js",
               "RelativeDocumentMoniker": "WebUI\\Scripts\\Helpers\\JS\\RequiredFieldsAndActivePage.js",
               "ToolTip": "C:\\Users\\kbolinger\\Documents\\Repos\\ThemisV2\\WebUI\\Scripts\\Helpers\\JS\\RequiredFieldsAndActivePage.js",
               "RelativeToolTip": "WebUI\\Scripts\\Helpers\\JS\\RequiredFieldsAndActivePage.js",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAkAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2024-11-26T15:00:17.329Z",
               "EditorCaption": ""

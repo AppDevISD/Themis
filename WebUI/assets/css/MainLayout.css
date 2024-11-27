@@ -3,13 +3,22 @@
 	transition: background-color 0.3s ease;
 }
 
+html {
+	height: 100vh;
+	overflow: auto;
+	scroll-behavior: auto !important;
+}
+
+body {
+	height: 100%;
+	
+}
+
 .page {
 	position: relative;
 	display: flex;
 	flex-direction: column;
-	overflow: hidden;
-	overflow-y: scroll;
-	height: 100vh;
+	height: 100%;
 }
 
 main {
@@ -27,9 +36,9 @@ main {
 }
 
 .menu-box-shadow {
-	box-shadow: 259px 10px 20px 0px rgba(0, 0, 0, .75);
-	-moz-box-shadow: 259px 10px 20px 0px rgba(0, 0, 0, .75);
-	-webkit-box-shadow: 259px 10px 20px 0px rgba(0, 0, 0, .75);
+	box-shadow: 0 10px 20px 0px rgba(0, 0, 0, .75);
+	-moz-box-shadow: 0 10px 20px 0px rgba(0, 0, 0, .75);
+	-webkit-box-shadow: 0 10px 20px 0px rgba(0, 0, 0, .75);
 }
 
 .top-row {
@@ -488,7 +497,7 @@ pre[class*=language-] {
 	}
 
 	.top-row {
-		position: sticky;
+		position: fixed;
 		top: 0;
 	}
 
@@ -510,6 +519,8 @@ pre[class*=language-] {
 		}
 
 	#sidebarCollapse.collapse:not(.show) {
+		position: sticky;
+		margin-top: 87px;
 		display: block !important;
 	}
 

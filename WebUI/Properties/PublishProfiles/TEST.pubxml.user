@@ -5,7 +5,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 <Project>
   <PropertyGroup>
     <_PublishTargetUrl>\\mcwintwt04\Themis</_PublishTargetUrl>
-    <History>True|2024-11-27T15:13:36.7521267Z||;True|2024-11-27T09:09:27.8078984-06:00||;True|2024-11-27T09:08:26.1470018-06:00||;True|2024-11-27T09:08:02.5308868-06:00||;True|2024-11-27T09:07:03.8911746-06:00||;True|2024-11-27T08:59:52.2314601-06:00||;True|2024-11-27T08:59:30.0227589-06:00||;True|2024-11-27T08:58:01.9942706-06:00||;True|2024-11-26T10:24:47.9579449-06:00||;True|2024-11-26T10:24:19.7572397-06:00||;True|2024-11-26T10:23:32.8628190-06:00||;True|2024-11-26T10:21:21.1412393-06:00||;True|2024-11-26T10:18:35.6743335-06:00||;True|2024-11-26T10:17:03.2843336-06:00||;</History>
+    <History>True|2024-11-27T21:42:32.5846431Z||;True|2024-11-27T11:07:01.6832380-06:00||;True|2024-11-27T09:13:36.7521267-06:00||;True|2024-11-27T09:09:27.8078984-06:00||;True|2024-11-27T09:08:26.1470018-06:00||;True|2024-11-27T09:08:02.5308868-06:00||;True|2024-11-27T09:07:03.8911746-06:00||;True|2024-11-27T08:59:52.2314601-06:00||;True|2024-11-27T08:59:30.0227589-06:00||;True|2024-11-27T08:58:01.9942706-06:00||;True|2024-11-26T10:24:47.9579449-06:00||;True|2024-11-26T10:24:19.7572397-06:00||;True|2024-11-26T10:23:32.8628190-06:00||;True|2024-11-26T10:21:21.1412393-06:00||;True|2024-11-26T10:18:35.6743335-06:00||;True|2024-11-26T10:17:03.2843336-06:00||;</History>
     <LastFailureDetails />
   </PropertyGroup>
   <ItemGroup>
@@ -19,7 +19,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>11/25/2024 11:54:19</publishTime>
     </File>
     <File Include="assets/css/MainLayout.css">
-      <publishTime>11/26/2024 08:56:03</publishTime>
+      <publishTime>11/27/2024 12:59:58</publishTime>
     </File>
     <File Include="assets/css/Site.css">
       <publishTime>11/25/2024 15:35:15</publishTime>
@@ -57,6 +57,9 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     <File Include="assets/js/Charts.js">
       <publishTime>11/25/2024 11:06:51</publishTime>
     </File>
+    <File Include="assets/js/Site.js">
+      <publishTime>11/27/2024 13:25:45</publishTime>
+    </File>
     <File Include="assets/Themes/bootstrap-scss/mixins/_color-mode.scss">
       <publishTime>11/25/2024 11:06:51</publishTime>
     </File>
@@ -88,10 +91,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>11/25/2024 11:06:51</publishTime>
     </File>
     <File Include="bin/Antlr3.Runtime.dll">
-      <publishTime>11/25/2024 11:06:51</publishTime>
+      <publishTime>09/10/2013 11:29:20</publishTime>
     </File>
     <File Include="bin/Antlr3.Runtime.pdb">
-      <publishTime>11/25/2024 11:06:51</publishTime>
+      <publishTime>09/10/2013 11:29:20</publishTime>
     </File>
     <File Include="bin/DataLibrary.dll">
       <publishTime>11/26/2024 15:51:52</publishTime>
@@ -106,25 +109,25 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>11/25/2024 11:06:51</publishTime>
     </File>
     <File Include="bin/Microsoft.AspNet.FriendlyUrls.dll">
-      <publishTime>11/25/2024 11:06:51</publishTime>
+      <publishTime>07/30/2013 11:57:30</publishTime>
     </File>
     <File Include="bin/Microsoft.AspNet.Web.Optimization.WebForms.dll">
-      <publishTime>11/25/2024 11:06:51</publishTime>
+      <publishTime>02/11/2014 09:26:04</publishTime>
     </File>
     <File Include="bin/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll">
-      <publishTime>11/25/2024 11:06:51</publishTime>
+      <publishTime>03/05/2023 16:41:40</publishTime>
     </File>
     <File Include="bin/Microsoft.ScriptManager.MSAjax.dll">
-      <publishTime>11/25/2024 11:06:51</publishTime>
+      <publishTime>09/06/2013 06:20:12</publishTime>
     </File>
     <File Include="bin/Microsoft.ScriptManager.WebForms.dll">
-      <publishTime>11/25/2024 11:06:51</publishTime>
+      <publishTime>09/06/2013 06:20:22</publishTime>
     </File>
     <File Include="bin/Microsoft.Web.Infrastructure.dll">
-      <publishTime>11/25/2024 11:06:51</publishTime>
+      <publishTime>04/11/2022 14:09:46</publishTime>
     </File>
     <File Include="bin/Newtonsoft.Json.dll">
-      <publishTime>11/25/2024 11:06:51</publishTime>
+      <publishTime>03/08/2023 01:09:56</publishTime>
     </File>
     <File Include="bin/roslyn/csc.exe">
       <publishTime>02/14/2022 23:38:32</publishTime>
@@ -220,31 +223,31 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>02/14/2022 23:38:42</publishTime>
     </File>
     <File Include="bin/System.Web.Optimization.dll">
-      <publishTime>11/25/2024 11:06:51</publishTime>
+      <publishTime>02/11/2014 09:26:04</publishTime>
     </File>
     <File Include="bin/WebGrease.dll">
-      <publishTime>11/25/2024 11:06:51</publishTime>
+      <publishTime>01/23/2014 07:57:34</publishTime>
     </File>
     <File Include="bin/WebUI.dll">
-      <publishTime>11/27/2024 09:13:36</publishTime>
+      <publishTime>11/27/2024 15:42:31</publishTime>
     </File>
     <File Include="bin/WebUI.dll.config">
       <publishTime>11/26/2024 10:18:30</publishTime>
     </File>
     <File Include="bin/WebUI.pdb">
-      <publishTime>11/27/2024 09:13:36</publishTime>
+      <publishTime>11/27/2024 15:42:31</publishTime>
     </File>
     <File Include="Bundle.config">
       <publishTime>11/25/2024 11:06:51</publishTime>
     </File>
     <File Include="Default.aspx">
-      <publishTime>11/25/2024 13:51:22</publishTime>
+      <publishTime>11/27/2024 10:19:33</publishTime>
     </File>
     <File Include="Global.asax">
       <publishTime>11/25/2024 11:06:51</publishTime>
     </File>
     <File Include="Pages/OrdinanceTracking/NewFactSheet.aspx">
-      <publishTime>11/27/2024 08:57:26</publishTime>
+      <publishTime>11/27/2024 15:41:52</publishTime>
     </File>
     <File Include="Pages/OrdinanceTracking/Ordinances.aspx">
       <publishTime>11/26/2024 09:07:05</publishTime>
@@ -280,7 +283,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>11/26/2024 14:40:26</publishTime>
     </File>
     <File Include="Scripts/Helpers/JS/RequiredFieldsAndActivePage.js">
-      <publishTime>11/26/2024 09:07:54</publishTime>
+      <publishTime>11/27/2024 13:05:46</publishTime>
     </File>
     <File Include="Scripts/WebForms/DetailsView.js">
       <publishTime>11/25/2024 11:06:51</publishTime>
@@ -346,10 +349,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>11/25/2024 11:06:51</publishTime>
     </File>
     <File Include="Site.Master">
-      <publishTime>11/27/2024 08:15:53</publishTime>
+      <publishTime>11/27/2024 13:26:15</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>11/26/2024 10:18:35</publishTime>
+      <publishTime>11/27/2024 15:42:31</publishTime>
     </File>
   </ItemGroup>
 </Project>

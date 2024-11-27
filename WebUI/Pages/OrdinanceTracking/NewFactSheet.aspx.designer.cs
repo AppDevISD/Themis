@@ -222,6 +222,78 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.TextBox otherException;
 
         /// <summary>
+        /// prevOrdinanceNums control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox prevOrdinanceNums;
+
+        /// <summary>
+        /// codeProvision control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox codeProvision;
+
+        /// <summary>
+        /// paApprovalRequiredYes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton paApprovalRequiredYes;
+
+        /// <summary>
+        /// paApprovalRequiredNo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton paApprovalRequiredNo;
+
+        /// <summary>
+        /// paApprovalAttachedYes control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton paApprovalAttachedYes;
+
+        /// <summary>
+        /// paApprovalAttachedNo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton paApprovalAttachedNo;
+
+        /// <summary>
+        /// staffAnalysis control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox staffAnalysis;
+
+        /// <summary>
+        /// supportingDocumentation control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.FileUpload supportingDocumentation;
+
+        /// <summary>
         /// SubmitNoFunForm control.
         /// </summary>
         /// <remarks>

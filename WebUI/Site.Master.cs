@@ -19,18 +19,15 @@ namespace WebUI
     public partial class SiteMaster : System.Web.UI.MasterPage
     {
         private ADUser _user = new ADUser();
-        //public string userName;
-        //public string userDisplayName;
-        //public string userPosition;
         public string PageTitle;
 
         protected void Page_Init(object sender, EventArgs e)
         {
             if (Session["CurrentUser"] == null)
             {
-                //_user = Utility.Instance.AuthenticateUser();
-                //Session["CurrentUser"] = _user;
-                //imgUser.Src = Photo.Instance.Base64ImgSrc(_user.PhotoLocation);
+                _user = Utility.Instance.AuthenticateUser();
+                Session["CurrentUser"] = _user;
+                imgUser.Src = Photo.Instance.Base64ImgSrc(_user.PhotoLocation);
             }
             if (!Page.IsPostBack)
             {
@@ -46,14 +43,14 @@ namespace WebUI
             SetPageTitle();
             if (!Page.IsPostBack)
             {
-                //_user = (ADUser)Session["CurrentUser"];
-                //Session["UserName"] = _user.Login;
-                //string userName = _user.Login.ToUpper();
-                //string userDisplayName = $"{_user.FirstName}&nbsp; {_user.LastName}";
-                //string userPosition = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_user.Title.ToLower());
-                //lblUser.Text = userDisplayName;
-                //lblTitle.Text = userPosition;
-                //imgUser.Src = Photo.Instance.Base64ImgSrc(_user.PhotoLocation);
+                _user = (ADUser)Session["CurrentUser"];
+                Session["UserName"] = _user.Login;
+                string userName = _user.Login.ToUpper();
+                string userDisplayName = $"{_user.FirstName}&nbsp; {_user.LastName}";
+                string userPosition = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_user.Title.ToLower());
+                lblUser.Text = userDisplayName;
+                lblTitle.Text = userPosition;
+                imgUser.Src = Photo.Instance.Base64ImgSrc(_user.PhotoLocation);
             }
         }
         protected void SetPageTitle()

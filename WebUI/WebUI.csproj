@@ -116,6 +116,7 @@
     <Content Include="assets\css\Site.css" />
     <Content Include="assets\images\icons\theme-dark.svg" />
     <Content Include="assets\images\icons\theme-light.svg" />
+    <Content Include="assets\js\Site.js" />
     <Content Include="Pages\OrdinanceTracking\NewFactSheet.aspx" />
     <Content Include="Pages\OrdinanceTracking\Ordinances.aspx" />
     <Content Include="Scripts\ChartCode\ChartOptions.js" />
@@ -227,6 +228,7 @@
     <None Include="packages.config" />
     <Content Include="Scripts\ChartCode\ChartHTMLJS.json" />
     <Content Include="Scripts\ChartCode\DataOptions.json" />
+    <None Include="Properties\PublishProfiles\TEST.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -79,7 +79,7 @@
 					<div class="col-md-12">
 						<div class="form-group">
 							<label for="epList">Emergency Passage</label>
-							<div class="radioListDiv" id="epList" required="true">
+							<div class="radioListDiv" id="epList">
 								<div class="form-check form-check-inline">
 									<label for="epYes">Yes</label>
 									<asp:RadioButton runat="server" ID="epYes" CssClass="form-check-input" GroupName="epList" OnCheckedChanged="EPCheckedChanged" AutoPostBack="true" />
@@ -131,7 +131,7 @@
 			<%-- FOURTH SECTION --%>
 			<div class="form-section">
 				<%-- FIRST ROW --%>
-				<div class="row mb-3">
+				<div class="row mb-5">
 					<%-- VENDOR NAME --%>
 					<div class="col-md-10">
 						<div class="form-group">
@@ -196,7 +196,7 @@
 					<div class="col-md-12">
 						<div class="form-group">
 							<label for="scopeChangeList">Change In Scope</label>
-							<div class="radioListDiv" id="scopeChangeList" required="true">
+							<div class="radioListDiv" id="scopeChangeList">
 								<div class="form-check form-check-inline">
 									<label for="scYes">Yes</label>
 									<asp:RadioButton runat="server" ID="scYes" CssClass="form-check-input" GroupName="scopeChangeList" OnCheckedChanged="SCCheckedChanged" AutoPostBack="true" />
@@ -231,9 +231,9 @@
 			<%-- SIXTH SECTION --%>
 			<div class="form-section">
 				<%-- FIRST ROW --%>
-				<div class="row mb-3">
+				<div class="row mb-5">
 					<%-- PURCHASE METHOD --%>
-					<div class="col-md-4">
+					<div class="col-md-5">
 						<div class="form-group">
 							<label for="purchaseMethod">Method of Purchase</label>
 							<asp:DropDownList ID="purchaseMethod" runat="server" OnSelectedIndexChanged="PurchaseMethodSelectedIndexChanged" AutoPostBack="true" CssClass="form-select" required="true"></asp:DropDownList>
@@ -242,9 +242,96 @@
 
 					<%-- OTHER / EXCEPTION --%>
 					<div class="col-md-4">
-						<div id="dropdownOtherDiv" class='form-group'>
+						<div id="otherExceptionDiv" class="form-group">
 							<label for="otherException">Other/Exception</label>
 							<asp:TextBox runat="server" ID="otherException" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled"></asp:TextBox>
+						</div>
+					</div>
+				</div>
+
+				<%-- SECOND ROW --%>
+				<div class="row mb-3">
+					<%-- PREVIOUS ORDINANCE NUMBERS --%>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label for="prevOrdinanceNums">Previous Ordinance Numbers</label>
+							<asp:TextBox runat="server" ID="prevOrdinanceNums" CssClass="form-control" TextMode="SingleLine" placeholder="123-45-6789" AutoCompleteType="Disabled"></asp:TextBox>
+						</div>
+					</div>
+
+					<%-- CODE PROVISION --%>
+					<div class="col-md-4">
+						<div class="form-group">
+							<label for="codeProvision">Code Provision</label>
+							<asp:TextBox runat="server" ID="codeProvision" CssClass="form-control" TextMode="SingleLine" placeholder="123456789" AutoCompleteType="Disabled" required="true"></asp:TextBox>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<%-- SEVENTH SECTION --%>
+			<div class="form-section">
+				<%-- FIRST ROW --%>
+				<div class="row mb-3">
+					<%-- PURCHASING AGENT APPROVAL REQUIRED --%>
+					<div class="col-md-12">
+						<div class="form-group">
+							<label for="paApprovalRequiredList">Is Purchasing Agent Approval Required?</label>
+							<div class="radioListDiv" id="paApprovalRequiredList">
+								<div class="form-check form-check-inline">
+									<label for="paApprovalRequiredYes">Yes</label>
+									<asp:RadioButton runat="server" ID="paApprovalRequiredYes" CssClass="form-check-input" GroupName="paApprovalRequiredList" />
+								</div>
+								<div class="form-check form-check-inline">
+									<label for="paApprovalRequiredNo">No</label>
+									<asp:RadioButton runat="server" ID="paApprovalRequiredNo" CssClass="form-check-input" GroupName="paApprovalRequiredList" Checked="true" />
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<%-- SECOND ROW --%>
+				<div class="row mb-3">
+					<%-- PURCHASING AGENT APPROVAL ATTACHED --%>
+					<div class="col-md-12">
+						<div class="form-group">
+							<label for="paApprovalAttachedList">Is Purchasing Agent Approval Attached?</label>
+							<div class="radioListDiv" id="paApprovalAttachedList">
+								<div class="form-check form-check-inline">
+									<label for="paApprovalAttachedYes">Yes</label>
+									<asp:RadioButton runat="server" ID="paApprovalAttachedYes" CssClass="form-check-input" GroupName="paApprovalAttachedList" />
+								</div>
+								<div class="form-check form-check-inline">
+									<label for="paApprovalAttachedNo">No</label>
+									<asp:RadioButton runat="server" ID="paApprovalAttachedNo" CssClass="form-check-input" GroupName="paApprovalAttachedList" Checked="true" />
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<%-- EIGHTH SECTION --%>
+			<div class="form-section">
+				<%-- FIRST ROW --%>
+				<div class="row mb-5">
+					<%-- STAFF ANALYSIS --%>
+					<div class="col-md-12">
+						<div class="form-group">
+							<label for="staffAnalysis">Staff Analysis</label>
+							<asp:TextBox runat="server" ID="staffAnalysis" CssClass="form-control" TextMode="Multiline" Rows="18" AutoCompleteType="Disabled" required="true"></asp:TextBox>
+						</div>
+					</div>
+				</div>
+
+				<%-- SECOND ROW --%>
+				<div class="row mb-3">
+					<%-- SUPPORTING DOCUMENTATION --%>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label for="supportingDocumentation">Supporting Documentation (Ex: Contract, Agreement, Change Order, Bid Book)</label>
+							<asp:FileUpload runat="server" ID="supportingDocumentation" CssClass="form-control" AllowMultiple="true" />
 						</div>
 					</div>
 				</div>
