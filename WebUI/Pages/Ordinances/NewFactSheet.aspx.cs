@@ -34,7 +34,7 @@ namespace WebUI
 
         protected void GetAllDepartments()
         {
-            department.Items.Insert(0, new ListItem("Select Department...", "N/A"));
+            department.Items.Insert(0, new ListItem("Select Department...", null));
             department.Items.Insert(1, new ListItem("Budget and Management", "5"));
             department.Items.Insert(2, new ListItem("City Clerk", "13"));
             department.Items.Insert(3, new ListItem("City Council", "7"));

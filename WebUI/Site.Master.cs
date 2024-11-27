@@ -30,7 +30,7 @@ namespace WebUI
         LiteralControl darkModeStyle = new LiteralControl(ColorSchemes.Instance.BlueDark());
 
 
-        private bool colorSwitcher = false;
+        private bool colorSwitcher = true;
 
         protected void Page_Init(object sender, EventArgs e)
         {
