@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Web;
+using System.Web.UI;
 using System.Web.Routing;
+using System.Web.UI.WebControls.WebParts;
 
 namespace WebUI
 {
@@ -15,6 +17,7 @@ namespace WebUI
             var settings = new FriendlyUrlSettings();
             settings.AutoRedirectMode = RedirectMode.Off;
             RouteFolder(routes, "~/Pages");
+            routes.MapPageRoute("Default", "./", "~/Default.aspx");
             routes.EnableFriendlyUrls(settings);
         }
         public static void RouteFolder(RouteCollection routes, string folder)
@@ -35,7 +38,6 @@ namespace WebUI
             folder = HttpContext.Current.Server.MapPath(folder);
             MapFolderRoute(routes, folder, rootFolder);
         }
-
         static void MapFolderRoute(RouteCollection routes, string folder, string rootFolder)
         {
             string[] folders = Directory.GetDirectories(folder);
@@ -63,5 +65,14 @@ namespace WebUI
                 routes.MapPageRoute(filename, filename, webPath);
             }
         }
+        public static void FolderRedirect(HttpResponse Response, Page Page)
+        {
+            string fileName = new FileInfo(Page.Request.Url.LocalPath).Name;
+            if (Page.Request.FilePath.ToLower().Contains("pages") || fileName.ToLower() == "default")
+            {
+                Response.RedirectToRoute(fileName);
+            }
+        }
+
     }
 }

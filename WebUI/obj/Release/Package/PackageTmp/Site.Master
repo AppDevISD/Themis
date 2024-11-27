@@ -89,7 +89,7 @@
 								<p class="m-0 fs-6 noto-sans-semi-bold">Ordinance Tracking</p>
 							</a>
 							<div id="OrdinanceTrackingMenu" class='accordion-border collapse' data-parent="#ordinanceTrackingParent">
-								<a class='nav-link <%:ActivePage("Ordinances")?"activePage":""%>' href="#">
+								<a class='nav-link <%:ActivePage("Ordinances")?"activePage":""%>' href="./Ordinances">
 									<span class="fas fa-book-section"></span>
 									<p class="m-0 fs-6 noto-sans-semi-bold">Ordinances</p>
 								</a>

@@ -32,6 +32,10 @@ namespace WebUI
                 //Session["CurrentUser"] = _user;
                 //imgUser.Src = Photo.Instance.Base64ImgSrc(_user.PhotoLocation);
             }
+            if (!Page.IsPostBack)
+            {
+                RouteConfig.FolderRedirect(Response, Page);
+            }
         }
         protected void Page_PreRender(object sender, EventArgs e)
         {
