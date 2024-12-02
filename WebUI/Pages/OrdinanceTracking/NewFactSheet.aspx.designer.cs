@@ -276,6 +276,24 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.RadioButton paApprovalAttachedNo;
 
         /// <summary>
+        /// rpRevenueTable control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rpRevenueTable;
+
+        /// <summary>
+        /// newRevenueRow control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton newRevenueRow;
+
+        /// <summary>
         /// staffAnalysis control.
         /// </summary>
         /// <remarks>

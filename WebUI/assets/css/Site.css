@@ -5,3 +5,20 @@
 	background: url('../images/icons/favicon/web-app-manifest-512x512.png') no-repeat;
 	background-size: contain;
 }
+
+.tableAddTable {
+	position: relative !important;
+}
+
+.tableAdd {
+	position: absolute;
+	bottom: -18px;
+	left: 49%;
+	transform: translateX(-50%);
+}
+
+.tableAdd i {
+	background-color: white;
+	border-radius: 100%;
+	font-size: 20px;
+}

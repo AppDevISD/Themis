@@ -195,7 +195,34 @@ label:has(+ .form-control:disabled) {
 	border: none;
 }
 
-.form-check-input:focus {
+[data-bs-theme='dark'] .table-striped > tbody > tr:nth-of-type(odd) > * {
+	background-color: var(--bs-body-bg);
+}
+.table-striped > tbody > tr:nth-of-type(even) > * {
+	background-color: var(--bs-secondary-bg);
+}
+
+[data-bs-theme='light'] .table-striped > tbody > tr:nth-of-type(odd) > * {
+	background-color: var(--bs-tertiary-bg);
+}
+
+[data-bs-theme='dark'] .table-striped > tbody > tr:nth-of-type(odd) > td .form-select, [data-bs-theme='dark'] .table-striped > tbody > tr:nth-of-type(odd) > td .form-control {
+	background-color: var(--bs-tertiary-bg);
+}
+
+.table-striped > tbody > tr:nth-of-type(even) > td .form-select, .table-striped > tbody > tr:nth-of-type(even) > td .form-control {
+	background-color: var(--bs-secondary-bg);
+}
+
+td:has(.form-select), td:has(.form-control) {
+	padding: 0;
+}
+td .form-select, td .form-control {
+	padding: .5rem .5rem;
+	border: none;
+	border-radius: 0;
+}
+.form-check-input:focus, td .form-select:focus, td .form-control {
 	border: none;
 	box-shadow: unset;
 }

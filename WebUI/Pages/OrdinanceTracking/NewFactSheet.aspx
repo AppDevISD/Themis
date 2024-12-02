@@ -315,6 +315,56 @@
 			<%-- EIGHTH SECTION --%>
 			<div class="form-section">
 				<%-- FIRST ROW --%>
+				<div class="row mb-3">
+					<%-- REVENUE --%>
+					<div class="col-md-6 tableAddTable">
+						<label for="rpRevenueTable">Additional Amount</label>
+						<asp:Repeater runat="server" ID="rpRevenueTable">
+							<HeaderTemplate>
+								<table id="revenueTable" class="table table-bordered table-striped table-hover text-center" style="padding: 0px; margin: 0px">
+									<thead>
+										<tr>
+											<th style="width: 15%; text-align: center"><strong>Fund</strong></th>
+											<th style="width: 17%; text-align: center"><strong>Agency</strong></th>
+											<th style="width: 17%; text-align: center"><strong>Org</strong></th>
+											<th style="width: 17%; text-align: center"><strong>Activity</strong></th>
+											<th style="width: 17%; text-align: center"><strong>Object</strong></th>
+											<th style="width: 17%; text-align: center"><strong>Amount</strong></th>
+										</tr>
+									</thead>
+							</HeaderTemplate>
+							<ItemTemplate>
+									<tr>
+										<td style="vertical-align: middle">
+											<asp:DropDownList ID="revenueFundCode" runat="server" CssClass="form-select" required="true" ValidateRequestMode="Enabled" DataSource='<%# fundCodes %>' DataValueField='<%# DataBinder.Eval(Container.DataItem, "FundCode") %>'></asp:DropDownList>
+										</td>
+										<td style="vertical-align: middle">
+											<asp:DropDownList ID="revenueAgencyCode" runat="server" CssClass="form-select" required="true" ValidateRequestMode="Enabled" DataSource='<%# agencyCodes %>' DataValueField='<%# DataBinder.Eval(Container.DataItem, "DepartmentCode") %>'></asp:DropDownList>
+										</td>
+										<td style="vertical-align: middle">
+											<asp:DropDownList ID="revenueOrgCode" runat="server" CssClass="form-select" required="true" ValidateRequestMode="Enabled" DataSource='<%# orgCodes %>' DataValueField='<%# DataBinder.Eval(Container.DataItem, "UnitCode") %>'></asp:DropDownList>
+										</td>
+										<td style="vertical-align: middle">
+											<asp:DropDownList ID="revenueActivityCode" runat="server" CssClass="form-select" required="true" ValidateRequestMode="Enabled" DataSource='<%# activityCodes %>' DataValueField='<%# DataBinder.Eval(Container.DataItem, "ActivityCode") %>'></asp:DropDownList>
+										</td>
+										<td style="vertical-align: middle">
+											<asp:DropDownList ID="revenueObjectCode" runat="server" CssClass="form-select" required="true" ValidateRequestMode="Enabled" DataSource='<%# objectCodes %>' DataValueField='<%# DataBinder.Eval(Container.DataItem, "ObjectCode") %>'></asp:DropDownList>
+										</td>
+										<td style="vertical-align: middle">
+											<asp:TextBox runat="server" ID="revenueAmount" CssClass="form-control" TextMode="SingleLine" data-type="currency" placeholder="$10,000.00" AutoCompleteType="Disabled"></asp:TextBox>
+										</td>
+									</tr>
+								</table>
+							</ItemTemplate>
+						</asp:Repeater>
+						<button runat="server" id="newRevenueRow" class="btn tableAdd" onserverclick="newAccountingRow_ServerClick" data-row-type="revenue" causesvalidation="false"><i class="fas fa-circle-plus text-success"></i></button>
+					</div>
+				</div>
+			</div>
+
+			<%-- NINTH SECTION --%>
+			<div class="form-section">
+				<%-- FIRST ROW --%>
 				<div class="row mb-5">
 					<%-- STAFF ANALYSIS --%>
 					<div class="col-md-12">

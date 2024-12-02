@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection.Emit;
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
 namespace WebUI
@@ -18,13 +19,52 @@ namespace WebUI
         public string toastColor;
         public string toastMessage;
 
+        List<Accounting> emptyRevenueList = new List<Accounting>();
+
+        public ListItemCollection fundCodes = new ListItemCollection()
+            {
+                new ListItem("", null),
+                new ListItem("100", "100"),
+                new ListItem("101", "101"),
+                new ListItem("102", "102")
+            };
+        public ListItemCollection agencyCodes = new ListItemCollection()
+            {
+                new ListItem("", null),
+                new ListItem("100", "100"),
+                new ListItem("101", "101"),
+                new ListItem("102", "102")
+            };
+        public ListItemCollection orgCodes = new ListItemCollection()
+            {
+                new ListItem("", null),
+                new ListItem("CABC", "CABC"),
+                new ListItem("BABC", "BABC"),
+                new ListItem("ABAC", "ABAC")
+            };
+        public ListItemCollection activityCodes = new ListItemCollection()
+            {
+                new ListItem("", null),
+                new ListItem("8018", "8018"),
+                new ListItem("8019", "8019"),
+                new ListItem("8020", "8020")
+            };
+        public ListItemCollection objectCodes = new ListItemCollection()
+            {
+                new ListItem("", null),
+                new ListItem("1418", "1418"),
+                new ListItem("1419", "1419"),
+                new ListItem("1420", "1420")
+            };
+
         protected void Page_Load(object sender, EventArgs e)
         {
             _user = Session["CurrentUser"] as ADUser;
             if (!Page.IsPostBack)
             {
                 GetAllDepartments();
-                GetAllDropdownOptions();
+                GetAllPurchaseMethods();
+                BlankAccountingRow("revenue");
                 SetStartupActives();
             }
             SubmitStatus();
@@ -46,7 +86,7 @@ namespace WebUI
                 requestDepartment.Items.Add(newItem);
             }
         }
-        protected void GetAllDropdownOptions()
+        protected void GetAllPurchaseMethods()
         {
             purchaseMethod.Items.Insert(0, new ListItem("Select Purchase Method...", null));
             purchaseMethod.Items.Insert(1, new ListItem("Low Bid", "Low Bid"));
@@ -54,6 +94,39 @@ namespace WebUI
             purchaseMethod.Items.Insert(3, new ListItem("Low Evaluated Bid", "Low Evaluated Bid"));
             purchaseMethod.Items.Insert(4, new ListItem("Other", "Other"));
             purchaseMethod.Items.Insert(5, new ListItem("Exception", "Exception"));
+        }
+        protected void BlankAccountingRow(string type)
+        {
+            switch (type)
+            {
+                case "revenue":
+                    Accounting revenueItem = new Accounting();
+                    //revenueItem.AccountingDesc = null;
+                    //revenueItem.FundCode = null;
+                    //revenueItem.DepartmentCode = null;
+                    //revenueItem.UnitCode = null;
+                    //revenueItem.ActivityCode = null;
+                    //revenueItem.ObjectCode = null;
+                    //revenueItem.Amount = Convert.ToDecimal(null);
+                    emptyRevenueList.Add(revenueItem);
+                    rpRevenueTable.DataSource = emptyRevenueList;
+                    rpRevenueTable.DataBind();
+                    break;
+                case "expenditure":
+                    //List<Accounting> emptyRevenueList = new List<Accounting>();
+                    //Accounting revenueItem = new Accounting();
+                    //revenueItem.AccountingDesc = null;
+                    //revenueItem.FundCode = null;
+                    //revenueItem.DepartmentCode = null;
+                    //revenueItem.UnitCode = null;
+                    //revenueItem.ActivityCode = null;
+                    //revenueItem.ObjectCode = null;
+                    //revenueItem.Amount = Convert.ToDecimal(null);
+                    //emptyRevenueList.Add(revenueItem);
+                    //rpRevenueTable.DataSource = emptyRevenueList;
+                    //rpRevenueTable.DataBind();
+                    break;
+            }
         }
         protected void PurchaseMethodSelectedIndexChanged(object sender, EventArgs e)
         {
@@ -150,6 +223,13 @@ namespace WebUI
                 toastColor = (string)Session["ToastColor"];
                 toastMessage = (string)Session["ToastMessage"];
             }
-        }     
+        }
+
+        protected void newAccountingRow_ServerClick(object sender, EventArgs e)
+        {
+            HtmlButton pressedButton = (HtmlButton)sender;
+            string type = pressedButton.Attributes["data-row-type"];
+            BlankAccountingRow("revenue");
+        }
     }
 }
