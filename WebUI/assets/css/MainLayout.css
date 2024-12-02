@@ -11,7 +11,6 @@ html {
 
 body {
 	height: 100%;
-	
 }
 
 .page {
@@ -33,6 +32,7 @@ main {
 .sidebar {
 	width: 100%;
 	z-index: 100;
+	position: absolute;
 }
 
 .menu-box-shadow {
@@ -344,10 +344,12 @@ select:disabled, .disabled-control, .disabled-control input {
 	background-color: var(--active-bg-subtle);
 	color: var(--color-theme-text);
 }
+
 .nav-tabs .nav-link.active {
 	color: var(--active-text);
 	border-bottom: none;
 }
+
 .jsChartTabs {
 	border: var(--bs-border-width) solid var(--custom-theme-border-color);
 	border-radius: 15px;
@@ -358,6 +360,7 @@ select:disabled, .disabled-control, .disabled-control input {
 	-moz-box-shadow: 10px 10px 20px 0px rgba(0, 0, 0, .75);
 	box-shadow: 10px 10px 20px 0px rgba(0, 0, 0, .75)
 }
+
 .jsChart {
 	border: var(--bs-border-width) solid var(--custom-theme-border-color);
 	border-radius: 15px;
@@ -367,6 +370,7 @@ select:disabled, .disabled-control, .disabled-control input {
 	-moz-box-shadow: 10px 10px 20px 0px rgba(0, 0, 0, .75);
 	box-shadow: 10px 10px 20px 0px rgba(0, 0, 0, .75)
 }
+
 .jsChartTabs .jsChart {
 	border: none;
 	border-radius: 0;
@@ -376,43 +380,54 @@ select:disabled, .disabled-control, .disabled-control input {
 	-moz-box-shadow: none;
 	box-shadow: none
 }
+
 .chart-controls {
 	display: flex !important;
 	justify-content: space-between !important;
 }
+
 .nav-tabs {
 	border-bottom: none;
 }
+
 pre[class*=language-] {
 	border-radius: 5px;
 	margin: 0;
 }
+
 .copy-to-clipboard-button {
 	margin-right: 15px;
 }
+
 .labelRow {
 	height: max-content;
 }
+
 .codePane.show:has(.codeGrow), .codePane.show:has(.codeRowGrow) {
 	display: flex !important;
 	flex-direction: column;
 }
+
 .codeRowGrow {
 	height: 100%;
 }
+
 .codeCol {
 	display: flex !important;
 	flex-direction: column;
 	height: 100%;
 }
+
 .codeGrow {
 	display: flex !important;
 	flex-direction: column;
 	flex: 1 1 auto;
 }
-.codeGrow .code-toolbar, .codeGrow .code-toolbar .codeNoClip {
-	height: 100%;
-}
+
+	.codeGrow .code-toolbar, .codeGrow .code-toolbar .codeNoClip {
+		height: 100%;
+	}
+
 .ext-split {
 	flex: 0.25 1 auto !important;
 }
@@ -489,7 +504,9 @@ pre[class*=language-] {
 
 	.sidebar {
 		width: 250px;
-		position: absolute;
+		height: 100%;
+		display: flex;
+		position: fixed;
 		top: 0;
 		-webkit-box-shadow: 10px 10px 20px 0px rgba(0, 0, 0, .75);
 		-moz-box-shadow: 10px 10px 20px 0px rgba(0, 0, 0, .75);
@@ -519,9 +536,11 @@ pre[class*=language-] {
 		}
 
 	#sidebarCollapse.collapse:not(.show) {
-		position: sticky;
+		flex: 1 1 auto;
 		margin-top: 87px;
 		display: block !important;
+		overflow-y: auto;
+		scrollbar-width: none;
 	}
 
 	.accordion-border a.nav-link:hover span {

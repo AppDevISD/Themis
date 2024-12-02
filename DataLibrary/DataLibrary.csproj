@@ -46,6 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="OrdinanceTracking\Accounting.cs" />
+    <Compile Include="OrdinanceTracking\Ordinance.cs" />
     <Compile Include="Templates\Template.cs" />
     <Compile Include="Utilities\ColorTheme.cs" />
     <Compile Include="Utilities\Email.cs" />
