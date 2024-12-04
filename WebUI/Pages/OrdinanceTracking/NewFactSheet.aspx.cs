@@ -2,6 +2,7 @@
 using ISD.ActiveDirectory;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection.Emit;
@@ -19,7 +20,9 @@ namespace WebUI
         public string toastColor;
         public string toastMessage;
 
-        List<Accounting> emptyRevenueList = new List<Accounting>();
+        public List<Accounting> emptyRevenueList = new List<Accounting>();
+        public DataTable revenueDT;
+
 
         public ListItemCollection fundCodes = new ListItemCollection()
             {
@@ -64,8 +67,10 @@ namespace WebUI
             {
                 GetAllDepartments();
                 GetAllPurchaseMethods();
-                BlankAccountingRow("revenue");
                 SetStartupActives();
+                revenueDT = FormTables();
+                revenueDT.Rows.Add(new Accounting());
+                BlankAccountingRow("revenue", "load");
             }
             SubmitStatus();
         }
@@ -95,38 +100,19 @@ namespace WebUI
             purchaseMethod.Items.Insert(4, new ListItem("Other", "Other"));
             purchaseMethod.Items.Insert(5, new ListItem("Exception", "Exception"));
         }
-        protected void BlankAccountingRow(string type)
+        protected void BlankAccountingRow(string type, string where)
         {
             switch (type)
             {
                 case "revenue":
                     Accounting revenueItem = new Accounting();
-                    //revenueItem.AccountingDesc = null;
-                    //revenueItem.FundCode = null;
-                    //revenueItem.DepartmentCode = null;
-                    //revenueItem.UnitCode = null;
-                    //revenueItem.ActivityCode = null;
-                    //revenueItem.ObjectCode = null;
-                    //revenueItem.Amount = Convert.ToDecimal(null);
-                    emptyRevenueList.Add(revenueItem);
-                    rpRevenueTable.DataSource = emptyRevenueList;
+                    rpRevenueTable.DataSource = revenueDT;
                     rpRevenueTable.DataBind();
                     break;
                 case "expenditure":
-                    //List<Accounting> emptyRevenueList = new List<Accounting>();
-                    //Accounting revenueItem = new Accounting();
-                    //revenueItem.AccountingDesc = null;
-                    //revenueItem.FundCode = null;
-                    //revenueItem.DepartmentCode = null;
-                    //revenueItem.UnitCode = null;
-                    //revenueItem.ActivityCode = null;
-                    //revenueItem.ObjectCode = null;
-                    //revenueItem.Amount = Convert.ToDecimal(null);
-                    //emptyRevenueList.Add(revenueItem);
-                    //rpRevenueTable.DataSource = emptyRevenueList;
-                    //rpRevenueTable.DataBind();
                     break;
             }
+            Debug.WriteLine(where);
         }
         protected void PurchaseMethodSelectedIndexChanged(object sender, EventArgs e)
         {
@@ -224,12 +210,24 @@ namespace WebUI
                 toastMessage = (string)Session["ToastMessage"];
             }
         }
-
+        protected DataTable FormTables()
+        {
+            DataTable dt = new DataTable();
+            Accounting accountingItem = new Accounting();
+            dt.Columns.Add("FundCode");
+            dt.Columns.Add("DepartmentCode");
+            dt.Columns.Add("UnitCode");
+            dt.Columns.Add("ActivityCode");
+            dt.Columns.Add("ObjectCode");
+            dt.Columns.Add("Amount");
+            dt.NewRow();
+            return dt;
+        }
         protected void newAccountingRow_ServerClick(object sender, EventArgs e)
         {
             HtmlButton pressedButton = (HtmlButton)sender;
             string type = pressedButton.Attributes["data-row-type"];
-            BlankAccountingRow("revenue");
+            BlankAccountingRow("revenue", "button");
         }
     }
 }
