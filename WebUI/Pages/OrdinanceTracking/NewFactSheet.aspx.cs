@@ -70,7 +70,7 @@ namespace WebUI
                 SetStartupActives();
                 revenueDT = FormTables();
                 revenueDT.Rows.Add(new Accounting());
-                BlankAccountingRow("revenue", "load");
+                //BlankAccountingRow("revenue", "load");
             }
             SubmitStatus();
         }

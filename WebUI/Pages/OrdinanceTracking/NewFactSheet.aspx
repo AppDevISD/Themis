@@ -318,7 +318,7 @@
 				<div class="row mb-3">
 					<%-- REVENUE --%>
 					<div class="col-md-6 tableAddTable">
-						<label for="rpRevenueTable">Additional Amount</label>
+						<label for="rpRevenueTable">Revenue</label>
 						<asp:Repeater runat="server" ID="rpRevenueTable">
 							<HeaderTemplate>
 								<table id="revenueTable" class="table table-bordered table-striped table-hover text-center" style="padding: 0px; margin: 0px">
@@ -387,123 +387,7 @@
 				</div>
 			</div>
 
-			<%--<div class="form-section">
-				<div class="row mb-3">
-					<div class="col-md-3">
-						<div class="form-group">
-							<label for="telephone">Telephone</label>
-							<asp:TextBox runat="server" ID="telephone" CssClass="form-control" TextMode="Phone" data-type="telephone" placeholder="(555) 555-5555" AutoCompleteType="Disabled"></asp:TextBox>
-						</div>
-					</div>
-					<div class="col-md-1">
-						<div class="form-group">
-							<label for="extension">Extension</label>
-							<asp:TextBox runat="server" ID="extension" CssClass="form-control" TextMode="SingleLine" data-type="extension" placeholder="x1234" AutoCompleteType="Disabled"></asp:TextBox>
-						</div>
-					</div>
-					<div class="col-md-2">
-						<div class="form-group">
-							<label for="currency">Currency</label>
-							<asp:TextBox runat="server" ID="currency" CssClass="form-control" TextMode="SingleLine" data-type="currency" placeholder="$0.00" AutoCompleteType="Disabled"></asp:TextBox>
-						</div>
-					</div>
-				</div>
-				<div class="row mb-3">
-					<div class="col-md-3">
-						<div class="form-group">
-							<label for="date">Date</label>
-							<asp:TextBox runat="server" ID="date" CssClass="form-control" TextMode="Date"></asp:TextBox>
-						</div>
-					</div>
-					<div class="col-md-3">
-						<div class="form-group">
-							<label for="dateTime">Date Time</label>
-							<asp:TextBox runat="server" ID="dateTime" CssClass="form-control" TextMode="DateTimeLocal"></asp:TextBox>
-						</div>
-					</div>
-					<div class="col-md-4">
-						<div class="form-group">
-							<label for="datePeriod">Date Period</label>
-							<div id="datePeriod" class="input-group">
-								<asp:TextBox runat="server" ID="datePeriodStart" CssClass="form-control" TextMode="Date" data-type="datePeriodStart"></asp:TextBox>
-								<div class="input-group-append">
-									<span class="input-group-text date-period-separator"><i class="fas fa-minus"></i></span>
-								</div>
-								<asp:TextBox runat="server" ID="datePeriodEnd" CssClass="form-control" TextMode="Date" data-type="datePeriodEnd"></asp:TextBox>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-2">
-						<div class="form-group">
-							<label for="dateTerm">Date Term</label>
-							<input runat="server" id="dateTerm" type="text" data-type="dateTerm" class="form-control locked-field" autocomplete="off" disabled="disabled" value="" placeholder="Calculating Term..." required>
-						</div>
-					</div>
-				</div>
-			</div>--%>
-
-			<%--<div class="form-section">
-				<div class="row mb-3">
-					<div class="col-md-4">
-						<div class="form-group">
-							<label for="dropdown">Dropdown</label>
-							<asp:DropDownList ID="dropdown" runat="server" OnSelectedIndexChanged="DropdownSelectedIndexChanged" AutoPostBack="true" CssClass="form-select"></asp:DropDownList>
-						</div>
-					</div>
-					<div class="col-md-4">
-						<div id="dropdownOtherDiv" class='form-group <%:dropdown.SelectedItem.Value =="Other"?"":"disabled-control"%>'>
-							<label for="dropdownOther">Other</label>
-							<asp:TextBox runat="server" ID="dropdownOther" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled"></asp:TextBox>
-						</div>
-					</div>
-				</div>
-			</div>--%>
-
-			<%--<div class="form-section">
-				<div class="row mb-3">
-					<div class="col-md-2">
-						<div class="form-group">
-							<label for="single">Single Checkbox</label>
-							<div class="checkboxListDiv" id="single">
-								<div class="form-check form-check-inline">
-									<label for="checkbox">Option</label>
-									<asp:CheckBox runat="server" ID="checkbox" CssClass="form-check-input" />
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-3">
-						<div class="form-group">
-							<label for="multiple">Multiple Checkboxes</label>
-							<div class="checkboxListDiv" id="multiple">
-								<div class="form-check form-check-inline">
-									<label for="checkbox1">Option 1</label>
-									<asp:CheckBox runat="server" ID="checkbox1" CssClass="form-check-input" />
-								</div>
-								<div class="form-check form-check-inline">
-									<label for="checkbox2">Option 2</label>
-									<asp:CheckBox runat="server" ID="checkbox2" CssClass="form-check-input" />
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-3">
-						<div class="form-group">
-							<label for="radioList">Radios</label>
-							<div class="radioListDiv" id="radioList">
-								<div class="form-check form-check-inline">
-									<label for="radio1">Option 1</label>
-									<asp:RadioButton runat="server" ID="radio1" CssClass="form-check-input" GroupName="radioList1" />
-								</div>
-								<div class="form-check form-check-inline">
-									<label for="radio2">Option 2</label>
-									<asp:RadioButton runat="server" ID="radio2" CssClass="form-check-input" GroupName="radioList1" />
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>--%>
+			
 
 			<div class="form-section">
 				<div class="row mt-3 mb-3 text-center">

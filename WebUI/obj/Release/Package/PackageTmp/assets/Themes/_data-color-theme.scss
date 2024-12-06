@@ -1,7 +1,0 @@
-// scss-docs-start color-mode-mixin
-@mixin color-theme($mode, $color) {
-      [data-bs-theme="#{$mode}"][data-color-theme="#{$color}"] {
-      @content;
-    }
-}
-// scss-docs-end color-mode-mixin
