@@ -1,4 +1,5 @@
-﻿$(document).ready(function () {
+﻿
+$(document).ready(function () {
     $("[data-type='telephone']").mask('(000) 000-0000');
     $("[data-type='extension']").mask('x000000');
     $("[data-type='currency']").each(function () {
@@ -162,6 +163,3 @@
         }
     }
 });
-
-
-

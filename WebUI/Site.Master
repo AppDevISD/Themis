@@ -150,11 +150,5 @@
 
 		<%-- LIGHT/DARK MODE SWITCHER --%>
 		<script type="text/javascript" src="./Scripts/Helpers/JS/ColorMode.js"></script>
-
-		<script>
-			$('html').animate({
-				scrollBehavior: 'auto'
-			});
-		</script>
 	</body>
 </html>

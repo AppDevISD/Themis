@@ -15,6 +15,15 @@ namespace WebUI
     {
 
         /// <summary>
+        /// formUpdatePanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel formUpdatePanel;
+
+        /// <summary>
         /// requestDepartment control.
         /// </summary>
         /// <remarks>
@@ -291,7 +300,7 @@ namespace WebUI
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlButton newRevenueRow;
+        protected global::System.Web.UI.WebControls.Button newRevenueRow;
 
         /// <summary>
         /// staffAnalysis control.

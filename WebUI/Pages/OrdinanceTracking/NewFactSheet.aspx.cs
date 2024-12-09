@@ -20,9 +20,6 @@ namespace WebUI
         public string toastColor;
         public string toastMessage;
 
-        public List<Accounting> emptyRevenueList = new List<Accounting>();
-        public DataTable revenueDT;
-
 
         public ListItemCollection fundCodes = new ListItemCollection()
             {
@@ -59,18 +56,18 @@ namespace WebUI
                 new ListItem("1419", "1419"),
                 new ListItem("1420", "1420")
             };
+        List<Accounting> revenueList = new List<Accounting>();
 
         protected void Page_Load(object sender, EventArgs e)
         {
             _user = Session["CurrentUser"] as ADUser;
-            if (!Page.IsPostBack)
+            if (!Page.IsPostBack && !Response.IsRequestBeingRedirected)
             {
+                Session.Remove("RevList");
                 GetAllDepartments();
                 GetAllPurchaseMethods();
                 SetStartupActives();
-                revenueDT = FormTables();
-                revenueDT.Rows.Add(new Accounting());
-                //BlankAccountingRow("revenue", "load");
+                BlankAccountingRow("revenue", "load");
             }
             SubmitStatus();
         }
@@ -105,9 +102,32 @@ namespace WebUI
             switch (type)
             {
                 case "revenue":
+                    
                     Accounting revenueItem = new Accounting();
-                    rpRevenueTable.DataSource = revenueDT;
+
+                    if (Session["RevList"] != null)
+                    {
+                        revenueList = (List<Accounting>)Session["RevList"];
+                        
+                    }
+                    //if (revenueList.Count > 0)
+                    //{
+                    //    revenueItem.RowNum = revenueList.Count;
+                    //}
+                    //else
+                    //{
+                    //    revenueItem.RowNum = 0;
+                    //}
+                    //revenueItem.FundCode = null;
+                    //revenueItem.DepartmentCode = null;
+                    //revenueItem.UnitCode = null;
+                    //revenueItem.ActivityCode = null;
+                    //revenueItem.ObjectCode = null;
+                    //revenueItem.Amount = Convert.ToDecimal(null);
+                    revenueList.Add(revenueItem);
+                    rpRevenueTable.DataSource = revenueList;
                     rpRevenueTable.DataBind();
+                    Session["RevList"] = revenueList;
                     break;
                 case "expenditure":
                     break;
@@ -210,23 +230,10 @@ namespace WebUI
                 toastMessage = (string)Session["ToastMessage"];
             }
         }
-        protected DataTable FormTables()
-        {
-            DataTable dt = new DataTable();
-            Accounting accountingItem = new Accounting();
-            dt.Columns.Add("FundCode");
-            dt.Columns.Add("DepartmentCode");
-            dt.Columns.Add("UnitCode");
-            dt.Columns.Add("ActivityCode");
-            dt.Columns.Add("ObjectCode");
-            dt.Columns.Add("Amount");
-            dt.NewRow();
-            return dt;
-        }
         protected void newAccountingRow_ServerClick(object sender, EventArgs e)
         {
-            HtmlButton pressedButton = (HtmlButton)sender;
-            string type = pressedButton.Attributes["data-row-type"];
+            //HtmlButton pressedButton = (HtmlButton)sender;
+            //string type = pressedButton.Attributes["data-row-type"];
             BlankAccountingRow("revenue", "button");
         }
     }
