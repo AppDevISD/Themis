@@ -1,4 +1,4 @@
-﻿$(document).ready(function () {
+﻿function pageLoad(sender, args) {
 	var requiredFields = document.querySelectorAll('[required="true"]');
 	if (requiredFields.length > 0) {
 		for (const field of requiredFields) {
@@ -12,4 +12,4 @@
 	for (const element of activePage) {
 		element.parentElement.classList.add('show');
 	}
-});
+}

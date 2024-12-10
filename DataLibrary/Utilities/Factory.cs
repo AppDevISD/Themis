@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Reflection;
 using System.Diagnostics;
 using System.IO;
 using System.Net.Mail;
@@ -12,6 +13,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Xml.Linq;
+using System.Web.UI;
+using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace DataLibrary
 {
@@ -38,6 +42,88 @@ namespace DataLibrary
             _cn = new SqlConnection();
             _cn.Close();
         }
+
+        public void TestVariable<T>(T item)
+        {
+            PropertyInfo[] properties = typeof(T).GetProperties();
+            //.Where(prop => !prop.Name.Equals(""))
+            foreach (var property in properties.Skip(1))
+            {
+
+                Debug.WriteLine($"cmd.Parameters.AddWithValue(\"@p{property.Name}\", {property.GetValue(item)});");
+            }
+        }
+
+
+        // GETS //
+        public List<T> GetAll<T>(string sp)
+        {
+            PropertyInfo[] classType = typeof(T).GetProperties();
+            List<T> list = new List<T>();
+            SqlConnection cn = new SqlConnection(Properties.Settings.Default["ThemisDB"].ToString());
+            SqlCommand cmd = new SqlCommand(sp, cn);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            using (cn)
+            {
+                cn.Open();
+                SqlDataReader rs;
+                rs = cmd.ExecuteReader();
+                while (rs.Read())
+                {
+
+                    T item = (T)Activator.CreateInstance(typeof(T));
+                    foreach (var property in classType)
+                    {
+                        Type propertyType = property.PropertyType;
+                        object value = Convert.ChangeType(rs[property.Name], propertyType);
+                        property.SetValue(item, value);                      
+                    }
+                    list.Add(item);
+                }
+            }
+            return list;
+        }
+
+        // INSERTS //
+        public int Insert<T>(T item, string sp)
+        {
+            SqlConnection cn = new SqlConnection(Properties.Settings.Default["ThemisDB"].ToString());
+            
+            PropertyInfo[] classType = typeof(T).GetProperties();
+            SqlCommand cmd = new SqlCommand(sp, cn);
+            foreach (var property in classType.Skip(1))
+            {
+                cmd.Parameters.AddWithValue($"@p{property.Name}", property.GetValue(item));
+                //Debug.WriteLine($"ParamName: @p{property.Name}, Value: {property.GetValue(item)}");
+            }
+            SqlParameter outputParam = new SqlParameter("@nID", SqlDbType.Int);
+            outputParam.Direction = ParameterDirection.ReturnValue;
+            cmd.Parameters.Add(outputParam);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            using (cn)
+            {
+                try
+                {
+                    cn.Open();
+                    retVal = cmd.ExecuteNonQuery();
+                    retVal = Convert.ToInt32(outputParam.Value);
+                }
+                catch (Exception e)
+                {
+                    string message = e.Message;
+                    retVal = 0;
+                }
+                finally
+                {
+                    cn.Close();
+                }
+            }
+
+            return retVal;
+        }
+
+        // DELETES //
 
         // TEMPLATE //
         public int InsertTemplateForm(Template template)

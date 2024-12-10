@@ -8,80 +8,66 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DataLibrary.Properties
-{
-
-
+namespace DataLibrary.Properties {
+    
+    
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.11.0.0")]
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase
-    {
-
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.12.0.0")]
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
-
-        public static Settings Default
-        {
-            get
-            {
+        
+        public static Settings Default {
+            get {
                 return defaultInstance;
             }
         }
-
+        
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string userTheme
-        {
-            get
-            {
+        public string userTheme {
+            get {
                 return ((string)(this["userTheme"]));
             }
         }
-
+        
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("10.14.13.35")]
-        public string ExchangeIP
-        {
-            get
-            {
+        public string ExchangeIP {
+            get {
                 return ((string)(this["ExchangeIP"]));
             }
         }
-
+        
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=gthintdbt6\\sqltest2017;Initial Catalog=SandboxTEST;Integrated Securit" +
-            "y=True")]
-        public string SandboxDB
-        {
-            get
-            {
-                return ((string)(this["SandboxDB"]));
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=gthintdbt6\\sqltest2017;Initial Catalog=THEMIS;Integrated Security=Tru" +
+            "e")]
+        public string ThemisDB {
+            get {
+                return ((string)(this["ThemisDB"]));
             }
         }
-
+        
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string TemplateEmailList
-        {
-            get
-            {
+        public string TemplateEmailList {
+            get {
                 return ((string)(this["TemplateEmailList"]));
             }
         }
-
+        
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
         [global::System.Configuration.DefaultSettingValueAttribute("Data Source=mcwintdb14\\sqlinternal;Initial Catalog=EmployeeDirectory;Integrated S" +
             "ecurity=True")]
-        public string EmployeeDirectoryDB
-        {
-            get
-            {
+        public string EmployeeDirectoryDB {
+            get {
                 return ((string)(this["EmployeeDirectoryDB"]));
             }
         }

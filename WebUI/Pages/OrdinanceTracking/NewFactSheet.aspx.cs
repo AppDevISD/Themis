@@ -23,40 +23,43 @@ namespace WebUI
 
         public ListItemCollection fundCodes = new ListItemCollection()
             {
-                new ListItem("", null),
+                new ListItem(" ", " "),
                 new ListItem("100", "100"),
                 new ListItem("101", "101"),
                 new ListItem("102", "102")
             };
         public ListItemCollection agencyCodes = new ListItemCollection()
             {
-                new ListItem("", null),
+                new ListItem("", " "),
                 new ListItem("100", "100"),
                 new ListItem("101", "101"),
                 new ListItem("102", "102")
             };
         public ListItemCollection orgCodes = new ListItemCollection()
             {
-                new ListItem("", null),
+                new ListItem("", " "),
                 new ListItem("CABC", "CABC"),
                 new ListItem("BABC", "BABC"),
                 new ListItem("ABAC", "ABAC")
             };
         public ListItemCollection activityCodes = new ListItemCollection()
             {
-                new ListItem("", null),
+                new ListItem("", " "),
                 new ListItem("8018", "8018"),
                 new ListItem("8019", "8019"),
                 new ListItem("8020", "8020")
             };
         public ListItemCollection objectCodes = new ListItemCollection()
             {
-                new ListItem("", null),
+                new ListItem("", " "),
                 new ListItem("1418", "1418"),
                 new ListItem("1419", "1419"),
                 new ListItem("1420", "1420")
             };
-        List<Accounting> revenueList = new List<Accounting>();
+        
+        List<Accounting> expenditureList = new List<Accounting>();
+        public int revRowNum = 0;
+        public int expRowNum = 0;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -64,10 +67,12 @@ namespace WebUI
             if (!Page.IsPostBack && !Response.IsRequestBeingRedirected)
             {
                 Session.Remove("RevList");
+                Session.Remove("ExpList");
                 GetAllDepartments();
                 GetAllPurchaseMethods();
                 SetStartupActives();
-                BlankAccountingRow("revenue", "load");
+
+                //TestOpenVariable();
             }
             SubmitStatus();
         }
@@ -97,42 +102,54 @@ namespace WebUI
             purchaseMethod.Items.Insert(4, new ListItem("Other", "Other"));
             purchaseMethod.Items.Insert(5, new ListItem("Exception", "Exception"));
         }
-        protected void BlankAccountingRow(string type, string where)
+        protected void AddAccountingRow(string type)
         {
+            Accounting accountingItem = new Accounting();
+            accountingItem.AccountingDesc = type;
+            accountingItem.LastUpdateBy = _user.Login;
+            accountingItem.LastUpdateDate = DateTime.Now;
+            accountingItem.EffectiveDate = DateTime.Now;
+            accountingItem.ExpirationDate = DateTime.MaxValue;
             switch (type)
             {
                 case "revenue":
-                    
-                    Accounting revenueItem = new Accounting();
-
-                    if (Session["RevList"] != null)
+                    int retVal = Factory.Instance.Insert(accountingItem, "sp_InsertlkAccounting");
+                    if (retVal > 0)
                     {
-                        revenueList = (List<Accounting>)Session["RevList"];
-                        
+                        List<Accounting> revenueList = Factory.Instance.GetAll<Accounting>("sp_GetLkAccounting");
+                        rpRevenueTable.DataSource = revenueList;
+                        rpRevenueTable.DataBind();
                     }
-                    //if (revenueList.Count > 0)
-                    //{
-                    //    revenueItem.RowNum = revenueList.Count;
-                    //}
-                    //else
-                    //{
-                    //    revenueItem.RowNum = 0;
-                    //}
-                    //revenueItem.FundCode = null;
-                    //revenueItem.DepartmentCode = null;
-                    //revenueItem.UnitCode = null;
-                    //revenueItem.ActivityCode = null;
-                    //revenueItem.ObjectCode = null;
-                    //revenueItem.Amount = Convert.ToDecimal(null);
-                    revenueList.Add(revenueItem);
-                    rpRevenueTable.DataSource = revenueList;
-                    rpRevenueTable.DataBind();
-                    Session["RevList"] = revenueList;
                     break;
                 case "expenditure":
                     break;
             }
-            Debug.WriteLine(where);
+        }
+        protected void RemoveAccountingRow(string type, int row)
+        {
+            switch (type)
+            {
+                case "revenue":
+                    //if (Session["RevList"] != null)
+                    //{
+                    //    revenueList = (List<Accounting>)Session["RevList"];
+                    //}
+                    //revenueList.RemoveAt(row);
+                    //rpRevenueTable.DataSource = revenueList;
+                    //rpRevenueTable.DataBind();
+                    //Session["RevList"] = revenueList;
+                    break;
+                case "expenditure":
+                    //if (Session["ExpList"] != null)
+                    //{
+                    //    expenditureList = (List<Accounting>)Session["ExpList"];
+                    //}
+                    //expenditureList.RemoveAt(row);
+                    //rpExpenditureTable.DataSource = expenditureList;
+                    //rpExpenditureTable.DataBind();
+                    //Session["ExpList"] = expenditureList;
+                    break;
+            }
         }
         protected void PurchaseMethodSelectedIndexChanged(object sender, EventArgs e)
         {
@@ -232,9 +249,65 @@ namespace WebUI
         }
         protected void newAccountingRow_ServerClick(object sender, EventArgs e)
         {
-            //HtmlButton pressedButton = (HtmlButton)sender;
-            //string type = pressedButton.Attributes["data-row-type"];
-            BlankAccountingRow("revenue", "button");
+            Button button = (Button)sender;
+            string type = button.CommandName;
+            Accounting accountingItem = new Accounting();
+            accountingItem.AccountingDesc = type;
+            accountingItem.FundCode = " ";
+            accountingItem.DepartmentCode = " ";
+            accountingItem.UnitCode = " ";
+            accountingItem.ActivityCode = " ";
+            accountingItem.ObjectCode = " ";
+            accountingItem.Amount = Convert.ToDecimal(0);
+            accountingItem.LastUpdateBy = _user.Login;
+            accountingItem.LastUpdateDate = DateTime.Now;
+            accountingItem.EffectiveDate = DateTime.Now;
+            accountingItem.ExpirationDate = DateTime.MaxValue;
+            //Debug.WriteLine(Convert.ToInt32("$1,000.00"));
+            switch (type)
+            {
+                case "revenue":
+                    int retVal = Factory.Instance.Insert(accountingItem, "sp_InsertlkAccounting");
+                    Debug.WriteLine(retVal);
+                    if (retVal > 0)
+                    {
+                        List<Accounting> revenueList = Factory.Instance.GetAll<Accounting>("sp_GetLkAccounting");
+                        rpRevenueTable.DataSource = revenueList;
+                        rpRevenueTable.DataBind();
+                    }
+                    break;
+                case "expenditure":
+                    break;
+            }
+        }
+
+        protected void removeAccountingRow_ServerClick(object sender, EventArgs e)
+        {
+            //Button button = (Button)sender;
+            //string type = button.CommandName;
+            //int row = Convert.ToInt32(button.Attributes["data-row-num"]);
+            //if (Session["RevList"] != null)
+            //{
+            //    revenueList = (List<Accounting>)Session["RevList"];
+            //}
+            //if (revenueList.Count > 0)
+            //{
+            //    RemoveAccountingRow(type, row);
+            //}
+        }
+
+
+
+        protected void TestOpenVariable()
+        {
+            Accounting revItem = new Accounting();
+            revItem.FundCode = "101";
+            revItem.DepartmentCode = "102";
+            revItem.UnitCode = "103";
+            revItem.ActivityCode = "104";
+            revItem.ObjectCode = "105";
+            revItem.Amount = Convert.ToDecimal(5);
+            Factory.Instance.TestVariable(revItem);
         }
     }
 }

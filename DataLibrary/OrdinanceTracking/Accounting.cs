@@ -16,7 +16,6 @@ namespace DataLibrary
         public string ActivityCode { get; set; }
         public string ObjectCode { get; set; }
         public decimal Amount { get; set; }
-        public int RowNum { get; set; }
         public string LastUpdateBy { get; set; }
         public DateTime LastUpdateDate { get; set; }
         public DateTime EffectiveDate { get; set; }
