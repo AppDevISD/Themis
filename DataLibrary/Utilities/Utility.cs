@@ -2,6 +2,7 @@
 using ISD.ActiveDirectory;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -104,5 +105,9 @@ namespace DataLibrary
             return dictionary;
         }
 
+        public static decimal CurrencyToDecimal(string currency)
+        {
+            return decimal.Parse(currency, NumberStyles.Any);
+        }
     }
 }

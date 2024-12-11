@@ -2,6 +2,7 @@
 using ISD.ActiveDirectory;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
@@ -10,6 +11,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using static DataLibrary.Utility;
 
 namespace WebUI
 {
@@ -30,28 +32,28 @@ namespace WebUI
             };
         public ListItemCollection agencyCodes = new ListItemCollection()
             {
-                new ListItem("", " "),
+                new ListItem(" ", " "),
                 new ListItem("100", "100"),
                 new ListItem("101", "101"),
                 new ListItem("102", "102")
             };
         public ListItemCollection orgCodes = new ListItemCollection()
             {
-                new ListItem("", " "),
+                new ListItem(" ", " "),
                 new ListItem("CABC", "CABC"),
                 new ListItem("BABC", "BABC"),
                 new ListItem("ABAC", "ABAC")
             };
         public ListItemCollection activityCodes = new ListItemCollection()
             {
-                new ListItem("", " "),
+                new ListItem(" ", " "),
                 new ListItem("8018", "8018"),
                 new ListItem("8019", "8019"),
                 new ListItem("8020", "8020")
             };
         public ListItemCollection objectCodes = new ListItemCollection()
             {
-                new ListItem("", " "),
+                new ListItem(" ", " "),
                 new ListItem("1418", "1418"),
                 new ListItem("1419", "1419"),
                 new ListItem("1420", "1420")
@@ -212,7 +214,7 @@ namespace WebUI
             newEmail.EmailTitle = "Form Submitted";
             newEmail.EmailText = $"This is a template email body for the {formType}";
 
-            Template tf = new Template();
+            //Template tf = new Template();
 
             //int retVal = Factory.Instance.InsertTemplateForm(tf);
             int retVal = 1;
@@ -258,20 +260,19 @@ namespace WebUI
             accountingItem.UnitCode = " ";
             accountingItem.ActivityCode = " ";
             accountingItem.ObjectCode = " ";
-            accountingItem.Amount = Convert.ToDecimal(0);
+            accountingItem.Amount = CurrencyToDecimal("0");
             accountingItem.LastUpdateBy = _user.Login;
             accountingItem.LastUpdateDate = DateTime.Now;
             accountingItem.EffectiveDate = DateTime.Now;
             accountingItem.ExpirationDate = DateTime.MaxValue;
-            //Debug.WriteLine(Convert.ToInt32("$1,000.00"));
             switch (type)
             {
                 case "revenue":
                     int retVal = Factory.Instance.Insert(accountingItem, "sp_InsertlkAccounting");
-                    Debug.WriteLine(retVal);
                     if (retVal > 0)
                     {
-                        List<Accounting> revenueList = Factory.Instance.GetAll<Accounting>("sp_GetLkAccounting");
+                        //IEnumerable<Accounting> revenueList = Factory.Instance.GetAllAccounting().Where(item => item.AccountingDesc.Equals("revenue"));
+                        IEnumerable<Accounting> revenueList = Factory.Instance.GetAll<Accounting>("sp_GetLkAccounting").Where(item => item.AccountingDesc.Equals("revenue"));
                         rpRevenueTable.DataSource = revenueList;
                         rpRevenueTable.DataBind();
                     }
@@ -308,6 +309,24 @@ namespace WebUI
             revItem.ObjectCode = "105";
             revItem.Amount = Convert.ToDecimal(5);
             Factory.Instance.TestVariable(revItem);
+        }
+
+        protected void rpRevenueTable_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            switch (e.CommandName)
+            {
+                case "delete":
+                    HiddenField hdnID = (HiddenField)e.Item.FindControl("hdnRevID");
+                    Accounting deleteItem = Factory.Instance.GetAll<Accounting>("sp_GetLkAccounting").Where(item => item.AccountingID.Equals(Convert.ToInt32(hdnID.Value))).First();
+                    int retVal = Factory.Instance.Delete(deleteItem, "lkAccounting");
+                    if (retVal > 0)
+                    {
+                        IEnumerable<Accounting> list = Factory.Instance.GetAll<Accounting>("sp_GetLkAccounting").Where(item => item.AccountingDesc.Equals(e.CommandArgument));
+                        rpRevenueTable.DataSource = list;
+                        rpRevenueTable.DataBind();
+                    }
+                    break;
+            }
         }
     }
 }

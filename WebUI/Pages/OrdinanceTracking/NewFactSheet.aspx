@@ -333,29 +333,29 @@
 										</tr>
 									</thead>
 									<tbody>
-										<asp:Repeater runat="server" ID="rpRevenueTable">
+										<asp:Repeater runat="server" ID="rpRevenueTable" OnItemCommand="rpRevenueTable_ItemCommand">
 											<ItemTemplate>
 												<tr>
 													<td style="vertical-align: middle">
-														<asp:HiddenField runat="server" ID="hdnRevRowID" Value='<%# DataBinder.Eval(Container.DataItem, "AccountingID") %>' />
-														<asp:DropDownList ID="revenueFundCode" runat="server" CssClass="form-select" required="true" ValidateRequestMode="Enabled" DataSource='<%# fundCodes %>' DataValueField='<%# DataBinder.Eval(Container.DataItem, "FundCode") %>'></asp:DropDownList>
+														<asp:HiddenField runat="server" ID="hdnRevID" Value='<%# DataBinder.Eval(Container.DataItem, "AccountingID") %>' />
+														<asp:DropDownList ID="revenueFundCode" runat="server" CssClass="form-select" required="true" ValidateRequestMode="Enabled" DataSource='<%# fundCodes %>' SelectedValue='<%# DataBinder.Eval(Container.DataItem, "FundCode") %>'></asp:DropDownList>
 													</td>
 													<td style="vertical-align: middle">
-														<asp:DropDownList ID="revenueAgencyCode" runat="server" CssClass="form-select" required="true" ValidateRequestMode="Enabled" DataSource='<%# agencyCodes %>' DataValueField='<%# DataBinder.Eval(Container.DataItem, "DepartmentCode") %>'></asp:DropDownList>
+														<asp:DropDownList ID="revenueAgencyCode" runat="server" CssClass="form-select" required="true" ValidateRequestMode="Enabled" DataSource='<%# agencyCodes %>' SelectedValue='<%# DataBinder.Eval(Container.DataItem, "DepartmentCode") %>'></asp:DropDownList>
 													</td>
 													<td style="vertical-align: middle">
-														<asp:DropDownList ID="revenueOrgCode" runat="server" CssClass="form-select" required="true" ValidateRequestMode="Enabled" DataSource='<%# orgCodes %>' DataValueField='<%# DataBinder.Eval(Container.DataItem, "UnitCode") %>'></asp:DropDownList>
+														<asp:DropDownList ID="revenueOrgCode" runat="server" CssClass="form-select" required="true" ValidateRequestMode="Enabled" DataSource='<%# orgCodes %>' SelectedValue='<%# DataBinder.Eval(Container.DataItem, "UnitCode") %>'></asp:DropDownList>
 													</td>
 													<td style="vertical-align: middle">
-														<asp:DropDownList ID="revenueActivityCode" runat="server" CssClass="form-select" required="true" ValidateRequestMode="Enabled" DataSource='<%# activityCodes %>' DataValueField='<%# DataBinder.Eval(Container.DataItem, "ActivityCode") %>'></asp:DropDownList>
+														<asp:DropDownList ID="revenueActivityCode" runat="server" CssClass="form-select" required="true" ValidateRequestMode="Enabled" DataSource='<%# activityCodes %>' SelectedValue='<%# DataBinder.Eval(Container.DataItem, "ActivityCode") %>'></asp:DropDownList>
 													</td>
 													<td style="vertical-align: middle">
-														<asp:DropDownList ID="revenueObjectCode" runat="server" CssClass="form-select" required="true" ValidateRequestMode="Enabled" DataSource='<%# objectCodes %>' DataValueField='<%# DataBinder.Eval(Container.DataItem, "ObjectCode") %>'></asp:DropDownList>
+														<asp:DropDownList ID="revenueObjectCode" runat="server" CssClass="form-select" required="true" ValidateRequestMode="Enabled" DataSource='<%# objectCodes %>' SelectedValue='<%# DataBinder.Eval(Container.DataItem, "ObjectCode") %>'></asp:DropDownList>
 													</td>
 													<td class="position-relative" style="vertical-align: middle">
 														<asp:TextBox runat="server" ID="revenueAmount" CssClass="form-control" TextMode="SingleLine" data-type="currency" placeholder="$10,000.00" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "Amount") %>'></asp:TextBox>
 														<div>
-															<asp:Button runat="server" ID="removeRevenueRow" CssClass="btn tableDelete" OnClick="removeAccountingRow_ServerClick" UseSubmitBehavior="false" CommandName="revenue" Text="&#xf068;" />
+															<asp:Button runat="server" ID="removeRevenueRow" CssClass="btn tableDelete" UseSubmitBehavior="false" CommandName="delete" CommandArgument="revenue" Text="&#xf068;" />
 														</div>
 													</td>
 												</tr>
