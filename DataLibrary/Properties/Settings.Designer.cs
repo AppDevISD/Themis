@@ -55,9 +55,9 @@ namespace DataLibrary.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string TemplateEmailList {
+        public string NewFactSheetEmailList {
             get {
-                return ((string)(this["TemplateEmailList"]));
+                return ((string)(this["NewFactSheetEmailList"]));
             }
         }
         

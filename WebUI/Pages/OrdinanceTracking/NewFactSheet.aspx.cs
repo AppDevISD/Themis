@@ -18,7 +18,7 @@ namespace WebUI
     public partial class NewFactSheet : System.Web.UI.Page
     {
         private ADUser _user = new ADUser();
-        private string emailList = "TemplateEmailList";
+        private string emailList = "NewFactSheetEmailList";
         public string toastColor;
         public string toastMessage;
 
@@ -163,29 +163,7 @@ namespace WebUI
                     {
                         for (int i = 0; i < rpRevenueTable.Items.Count; i++)
                         {
-                            Accounting accountingItem = new Accounting();
-                            var revItem = rpRevenueTable.Items[i];
-                            DropDownList revFundCode = (DropDownList)revItem.FindControl("revenueFundCode");
-                            DropDownList revAgencyCode = (DropDownList)revItem.FindControl("revenueAgencyCode");
-                            DropDownList revOrgCode = (DropDownList)revItem.FindControl("revenueOrgCode");
-                            DropDownList revActivityCode = (DropDownList)revItem.FindControl("revenueActivityCode");
-                            DropDownList revObjectCode = (DropDownList)revItem.FindControl("revenueObjectCode");
-                            TextBox revAmount = (TextBox)revItem.FindControl("revenueAmount");
-                            accountingItem.AccountingDesc = tableDesc;
-                            accountingItem.FundCode = revFundCode.SelectedValue;
-                            accountingItem.DepartmentCode = revAgencyCode.SelectedValue;
-                            accountingItem.UnitCode = revOrgCode.SelectedValue;
-                            accountingItem.ActivityCode = revActivityCode.SelectedValue;
-                            accountingItem.ObjectCode = revObjectCode.SelectedValue;
-                            if (revAmount.Text.Length == 0)
-                            {
-
-                                accountingItem.Amount = CurrencyToDecimal("-1");
-                            }
-                            else
-                            {
-                                accountingItem.Amount = CurrencyToDecimal(revAmount.Text);
-                            }
+                            Accounting accountingItem = GetAccountingItem("revenue", i);
                             prvList.Add(accountingItem);
                         }
                         Session[tableDesc] = prvList;
@@ -201,29 +179,7 @@ namespace WebUI
                     {
                         for (int i = 0; i < rpExpenditureTable.Items.Count; i++)
                         {
-                            Accounting accountingItem = new Accounting();
-                            var expItem = rpExpenditureTable.Items[i];
-                            DropDownList expFundCode = (DropDownList)expItem.FindControl("expenditureFundCode");
-                            DropDownList expAgencyCode = (DropDownList)expItem.FindControl("expenditureAgencyCode");
-                            DropDownList expOrgCode = (DropDownList)expItem.FindControl("expenditureOrgCode");
-                            DropDownList expActivityCode = (DropDownList)expItem.FindControl("expenditureActivityCode");
-                            DropDownList expObjectCode = (DropDownList)expItem.FindControl("expenditureObjectCode");
-                            TextBox expAmount = (TextBox)expItem.FindControl("expenditureAmount");
-                            accountingItem.AccountingDesc = tableDesc;
-                            accountingItem.FundCode = expFundCode.SelectedValue;
-                            accountingItem.DepartmentCode = expAgencyCode.SelectedValue;
-                            accountingItem.UnitCode = expOrgCode.SelectedValue;
-                            accountingItem.ActivityCode = expActivityCode.SelectedValue;
-                            accountingItem.ObjectCode = expObjectCode.SelectedValue;
-                            if (expAmount.Text.Length == 0)
-                            {
-
-                                accountingItem.Amount = CurrencyToDecimal("-1");
-                            }
-                            else
-                            {
-                                accountingItem.Amount = CurrencyToDecimal(expAmount.Text);
-                            }
+                            Accounting accountingItem = GetAccountingItem("expenditure", i);
                             prvList.Add(accountingItem);
                         }
                         Session[tableDesc] = prvList;
@@ -345,17 +301,154 @@ namespace WebUI
             newEmail.EmailTitle = "Form Submitted";
             newEmail.EmailText = $"This is a template email body for the {formType}";
 
-            //Template tf = new Template();
+            Ordinance ordinance = new Ordinance();
 
-            //int retVal = Factory.Instance.InsertTemplateForm(tf);
+            ordinance.RequestID = 0;
+            ordinance.RequestDepartment = requestDepartment.SelectedItem.Text;
+            ordinance.RequestContact = requestContact.Text;
+            ordinance.RequestPhone = $"{requestPhone.Text}{requestExt.Text}";
+            ordinance.FirstReadDate = Convert.ToDateTime(firstReadDate.Text);
+            ordinance.EmergencyPassage = epYes.Checked;
+            ordinance.EmergencyPassageReason = epJustification.Text ?? string.Empty;
+            ordinance.OrdinanceFiscalImpact = CurrencyToDecimal(fiscalImpact.Text);
+            ordinance.OrdinanceTitle = suggestedTitle.Text;
+            ordinance.ContractVendorID = 0;
+            ordinance.ContractVendorName = vendorName.Text;
+            ordinance.ContractVendorNumber = Convert.ToInt32(vendorNumber.Text);
+            ordinance.ContractStartDate = contractStartDate.Text;
+            ordinance.ContractEndDate = contractEndDate.Text;
+            ordinance.ContractTerm = contractTerm.Value;
+            ordinance.ContractAmount = CurrencyToDecimal(contractAmount.Text);
+            //ordinance.ScopeChange = scYes.Checked;
+            //ordinance.ChangeOrderNumber = changeOrderNumber.Text;
+            //ordinance.AdditionalAmount = CurrencyToDecimal(additionalAmount.Text);
+            ordinance.ContractMethod = purchaseMethod.SelectedValue;
+            //ordinance.OtherException = otherException.Text ?? string.Empty;
+            //ordinance.PreviousOrdinanceNumbers = prevOrdinanceNums.Text;
+            //ordinance.CodeProvision = codeProvision.Text;
+            ordinance.PAApprovalRequired = paApprovalRequiredYes.Checked;
+            ordinance.PAApprovalAttached = paApprovalAttachedYes.Checked;
+            ordinance.OrdinanceAnalysis = staffAnalysis.Text;
+            ordinance.LastUpdateBy = _user.Login;
+            ordinance.LastUpdateDate = DateTime.Now;
+            ordinance.EffectiveDate = DateTime.Now;
+            ordinance.ExpirationDate = DateTime.MaxValue;
+
+            Debug.WriteLine($"Department: {ordinance.RequestDepartment}");
+            Debug.WriteLine($"EP Reason: {ordinance.EmergencyPassageReason}");
+
+
+
+
+
+            //int retVal = Factory.Instance.Insert(ordinance, "sp_InsertOrdinance");
             int retVal = 1;
             if (retVal > 0)
             {
-                Session["SubmitStatus"] = "success";
-                Session["ToastColor"] = "text-bg-success";
-                Session["ToastMessage"] = "Form Submitted!";
-                Email.Instance.SendEmail(newEmail, emailList);
-                Response.Redirect("/NewFactSheet");
+                bool revExpTables = false;
+                bool finishSubmit = false;
+                if (rpRevenueTable.Items.Count > 0 || rpExpenditureTable.Items.Count > 0)
+                {
+                    revExpTables = true;
+                    Debug.WriteLine($"Table > 0");
+                }
+
+                switch (revExpTables)
+                {
+                    case true:
+                        bool revSubmit = false;
+                        bool expSubmit = false;
+                        if (rpRevenueTable.Items.Count > 0)
+                        {
+                            Debug.WriteLine($"RevTable Running");
+                            for (int i = 0; i < rpRevenueTable.Items.Count; i++)
+                            {
+                                Debug.WriteLine($"RevTable Item: {i}");
+                                Accounting accountingItem = GetAccountingItem("revenue", i);
+                                int ret = Factory.Instance.Insert(accountingItem, "sp_InsertlkAccounting");
+                                //int ret = 1;
+                                if (ret > 0)
+                                {
+                                    OrdinanceAccounting oaItem = new OrdinanceAccounting();
+                                    oaItem.OrdinanceID = retVal;
+                                    oaItem.AccountingID = ret;
+                                    oaItem.LastUpdateBy = _user.Login;
+                                    oaItem.LastUpdateDate = DateTime.Now;
+                                    oaItem.EffectiveDate = DateTime.Now;
+                                    oaItem.ExpirationDate = DateTime.MaxValue;
+                                    int finalRet = Factory.Instance.Insert(oaItem, "sp_InsertOrdinance_Accounting");
+                                    //int finalRet = 1;
+                                    if (finalRet > 0)
+                                    {
+                                        revSubmit = true;
+                                    }
+                                    else
+                                    {
+                                        revSubmit = false;
+                                    }
+                                }
+                            }
+                        }
+                        if (rpExpenditureTable.Items.Count > 0)
+                        {
+                            Debug.WriteLine($"ExpTable Running");
+                            for (int i = 0; i < rpExpenditureTable.Items.Count; i++)
+                            {
+                                Debug.WriteLine($"ExpTable Item: {i}");
+                                Accounting accountingItem = GetAccountingItem("expenditure", i);
+                                int ret = Factory.Instance.Insert(accountingItem, "sp_InsertlkAccounting");
+                                if (ret > 0)
+                                {
+                                    OrdinanceAccounting oaItem = new OrdinanceAccounting();
+                                    oaItem.OrdinanceID = retVal;
+                                    oaItem.AccountingID = ret;
+                                    oaItem.LastUpdateBy = _user.Login;
+                                    oaItem.LastUpdateDate = DateTime.Now;
+                                    oaItem.EffectiveDate = DateTime.Now;
+                                    oaItem.ExpirationDate = DateTime.MaxValue;
+                                    int finalRet = Factory.Instance.Insert(oaItem, "sp_InsertOrdinance_Accounting");
+                                    //int finalRet = 1;
+                                    if (finalRet > 0)
+                                    {
+                                        expSubmit = true;
+                                    }
+                                    else
+                                    {
+                                        expSubmit = false;
+                                    }
+                                }
+                            }
+                        }
+                        if (revSubmit && expSubmit)
+                        {
+                            finishSubmit = true;
+                        }
+                        else
+                        {
+                            finishSubmit = false;
+                        }
+                        break;
+                    case false:
+                        finishSubmit = true;
+                        break;
+                        
+                }
+
+                switch (finishSubmit)
+                {
+                    case true:
+                        Session["SubmitStatus"] = "success";
+                        Session["ToastColor"] = "text-bg-success";
+                        Session["ToastMessage"] = "Form Submitted!";
+                        Email.Instance.SendEmail(newEmail, emailList);
+                        Response.Redirect("/NewFactSheet");
+                        break;
+                    case false:
+                        Session["SubmitStatus"] = "error";
+                        Session["ToastColor"] = "text-bg-danger";
+                        Session["ToastMessage"] = "Something went wrong while submitting!";
+                        break;
+                }
             }
             else
             {
@@ -382,7 +475,62 @@ namespace WebUI
         }
         
 
+        protected Accounting GetAccountingItem(string tableDesc, int itemIndex)
+        {
+            Accounting accountingItem = new Accounting();
+            switch (tableDesc)
+            {
+                case "revenue":
+                    var revItem = rpRevenueTable.Items[itemIndex];
+                    DropDownList revFundCode = (DropDownList)revItem.FindControl("revenueFundCode");
+                    DropDownList revAgencyCode = (DropDownList)revItem.FindControl("revenueAgencyCode");
+                    DropDownList revOrgCode = (DropDownList)revItem.FindControl("revenueOrgCode");
+                    DropDownList revActivityCode = (DropDownList)revItem.FindControl("revenueActivityCode");
+                    DropDownList revObjectCode = (DropDownList)revItem.FindControl("revenueObjectCode");
+                    TextBox revAmount = (TextBox)revItem.FindControl("revenueAmount");
+                    accountingItem.AccountingDesc = tableDesc;
+                    accountingItem.FundCode = revFundCode.SelectedValue;
+                    accountingItem.DepartmentCode = revAgencyCode.SelectedValue;
+                    accountingItem.UnitCode = revOrgCode.SelectedValue;
+                    accountingItem.ActivityCode = revActivityCode.SelectedValue;
+                    accountingItem.ObjectCode = revObjectCode.SelectedValue;
+                    if (revAmount.Text.Length == 0)
+                    {
 
+                        accountingItem.Amount = CurrencyToDecimal("-1");
+                    }
+                    else
+                    {
+                        accountingItem.Amount = CurrencyToDecimal(revAmount.Text);
+                    }
+                    break;
+                case "expenditure":
+                    var expItem = rpExpenditureTable.Items[itemIndex];
+                    DropDownList expFundCode = (DropDownList)expItem.FindControl("expenditureFundCode");
+                    DropDownList expAgencyCode = (DropDownList)expItem.FindControl("expenditureAgencyCode");
+                    DropDownList expOrgCode = (DropDownList)expItem.FindControl("expenditureOrgCode");
+                    DropDownList expActivityCode = (DropDownList)expItem.FindControl("expenditureActivityCode");
+                    DropDownList expObjectCode = (DropDownList)expItem.FindControl("expenditureObjectCode");
+                    TextBox expAmount = (TextBox)expItem.FindControl("expenditureAmount");
+                    accountingItem.AccountingDesc = tableDesc;
+                    accountingItem.FundCode = expFundCode.SelectedValue;
+                    accountingItem.DepartmentCode = expAgencyCode.SelectedValue;
+                    accountingItem.UnitCode = expOrgCode.SelectedValue;
+                    accountingItem.ActivityCode = expActivityCode.SelectedValue;
+                    accountingItem.ObjectCode = expObjectCode.SelectedValue;
+                    if (expAmount.Text.Length == 0)
+                    {
+
+                        accountingItem.Amount = CurrencyToDecimal("-1");
+                    }
+                    else
+                    {
+                        accountingItem.Amount = CurrencyToDecimal(expAmount.Text);
+                    }
+                    break;
+            }
+            return accountingItem;
+        }
 
 
 

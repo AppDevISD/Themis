@@ -141,31 +141,31 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.TextBox vendorNumber;
 
         /// <summary>
-        /// datePeriodStart control.
+        /// contractStartDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox datePeriodStart;
+        protected global::System.Web.UI.WebControls.TextBox contractStartDate;
 
         /// <summary>
-        /// datePeriodEnd control.
+        /// contractEndDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox datePeriodEnd;
+        protected global::System.Web.UI.WebControls.TextBox contractEndDate;
 
         /// <summary>
-        /// dateTerm control.
+        /// contractTerm control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText dateTerm;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText contractTerm;
 
         /// <summary>
         /// contractAmount control.

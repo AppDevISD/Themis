@@ -167,7 +167,7 @@
 									<label for="datePeriod">Date Period</label>
 									<div id="datePeriod" class="input-group">
 										<%-- START --%>
-										<asp:TextBox runat="server" ID="datePeriodStart" CssClass="form-control" TextMode="Date" data-type="datePeriodStart"></asp:TextBox>
+										<asp:TextBox runat="server" ID="contractStartDate" CssClass="form-control" TextMode="Date" data-type="datePeriodStart"></asp:TextBox>
 
 										<%-- SEPARATOR --%>
 										<div class="input-group-append">
@@ -175,7 +175,7 @@
 										</div>
 
 										<%-- END --%>
-										<asp:TextBox runat="server" ID="datePeriodEnd" CssClass="form-control" TextMode="Date" data-type="datePeriodEnd"></asp:TextBox>
+										<asp:TextBox runat="server" ID="contractEndDate" CssClass="form-control" TextMode="Date" data-type="datePeriodEnd"></asp:TextBox>
 									</div>
 								</div>
 							</div>
@@ -184,7 +184,7 @@
 							<div class="col-md-3">
 								<div class="form-group">
 									<label for="dateTerm">Date Term</label>
-									<input runat="server" id="dateTerm" type="text" data-type="dateTerm" class="form-control locked-field" autocomplete="off" readonly="readonly" value="" placeholder="Calculating Term..." required>
+									<input runat="server" id="contractTerm" type="text" data-type="dateTerm" class="form-control locked-field" autocomplete="off" readonly="readonly" value="" placeholder="Calculating Term..." required>
 								</div>
 							</div>
 
@@ -341,7 +341,7 @@
 										</tr>
 									</thead>
 									<tbody>
-										<asp:Repeater runat="server" ID="rpRevenueTable" OnItemCommand="rpAccountingTable_ItemCommand">
+										<asp:Repeater runat="server" ID="rpRevenueTable" OnItemCommand="rpAccountingTable_ItemCommand" >
 											<ItemTemplate>
 												<tr>
 													<td style="vertical-align: middle">
