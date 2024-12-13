@@ -233,7 +233,7 @@ select:disabled, .disabled-control, .disabled-control input {
 
 	.nav-item:first-of-type {
 		padding-top: 1rem;
-		border-top: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
+/*		border-top: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;*/
 	}
 
 	.nav-item:last-of-type {
@@ -338,6 +338,13 @@ select:disabled, .disabled-control, .disabled-control input {
 	font-size: 20px;
 	font-weight: 500;
 	margin-bottom: 0.25rem;
+}
+
+.form-group label, .input-group label, .form-table label {
+	font-weight: bold;
+}
+.form-check label {
+	font-weight: normal;
 }
 
 .nav-tabs .nav-link:not(.active) {
@@ -491,6 +498,7 @@ pre[class*=language-] {
 		border-left: var(--bs-border-color) 1px dotted;
 		z-index: 0;
 	}
+	
 }
 
 @media (min-width: 641px) {
@@ -537,7 +545,7 @@ pre[class*=language-] {
 
 	#sidebarCollapse.collapse:not(.show) {
 		flex: 1 1 auto;
-		margin-top: 87px;
+		margin-top: 85px;
 		display: block !important;
 		overflow-y: auto;
 		scrollbar-width: none;
@@ -549,5 +557,17 @@ pre[class*=language-] {
 
 	.accordion-border a.nav-link:hover p {
 		padding-right: 5%;
+	}
+}
+
+@media (min-width: 768px) {
+	.col-md-1hf {
+		flex: 0 0 auto;
+		width: 4.166666666%;
+	}
+
+	.col-md-6hf {
+		flex: 0 0 auto;
+		width: 45.33333333%;
 	}
 }

@@ -43,58 +43,15 @@ namespace DataLibrary
             _cn.Close();
         }
 
-        public void TestVariable<T>(T item)
-        {
-            PropertyInfo[] properties = typeof(T).GetProperties();
-            //.Where(prop => !prop.Name.Equals(""))
-            foreach (var property in properties.Skip(1))
-            {
-
-                Debug.WriteLine($"cmd.Parameters.AddWithValue(\"@p{property.Name}\", {property.GetValue(item)});");
-            }
-        }
-
 
         // GETS //
-        public List<Accounting> GetAllAccounting()
-        {
-            List<Accounting> list = new List<Accounting>();
-            SqlConnection cn = new SqlConnection(Properties.Settings.Default["ThemisDB"].ToString());
-            SqlCommand cmd = new SqlCommand("sp_GetLkAccounting", cn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
-            using (cn)
-            {
-                cn.Open();
-                SqlDataReader rs;
-                rs = cmd.ExecuteReader();
-                while (rs.Read())
-                {
-
-                    Accounting item = new Accounting();
-                    item.AccountingID = Convert.ToInt32(rs["AccountingID"]);
-                    item.AccountingDesc = rs["AccountingDesc"].ToString();
-                    item.FundCode = rs["FundCode"].ToString();
-                    item.DepartmentCode = rs["DepartmentCode"].ToString();
-                    item.UnitCode = rs["UnitCode"].ToString();
-                    item.ActivityCode = rs["ActivityCode"].ToString();
-                    item.ObjectCode = rs["ObjectCode"].ToString();
-                    item.Amount = Convert.ToDecimal(rs["Amount"]);
-                    item.EffectiveDate = Convert.ToDateTime(rs["EffectiveDate"]);
-                    item.ExpirationDate = Convert.ToDateTime(rs["ExpirationDate"]);
-                    item.LastUpdateBy = rs["LastUpdateBy"].ToString();
-                    item.LastUpdateDate = Convert.ToDateTime(rs["LastUpdateDate"]);
-                    list.Add(item);
-                }
-            }
-            return list;
-        }
         public List<T> GetAll<T>(string sp)
         {
             PropertyInfo[] classType = typeof(T).GetProperties();
             List<T> list = new List<T>();
             SqlConnection cn = new SqlConnection(Properties.Settings.Default["ThemisDB"].ToString());
             SqlCommand cmd = new SqlCommand(sp, cn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
             using (cn)
             {
                 cn.Open();
@@ -115,8 +72,7 @@ namespace DataLibrary
             }
             return list;
         }
-
-        public List<T> GetAllLookup<T>(string sp, int id)
+        public List<T> GetAllLookup<T>(int id, string sp)
         {
             PropertyInfo[] classType = typeof(T).GetProperties();
             List<T> list = new List<T>();
@@ -143,34 +99,34 @@ namespace DataLibrary
             }
             return list;
         }
-        //public T GetByID<T>(string sp, int id)
-        //{
-        //    T returnItem = default;
-        //    PropertyInfo[] classType = typeof(T).GetProperties();
-        //    SqlConnection cn = new SqlConnection(Properties.Settings.Default["ThemisDB"].ToString());
-        //    SqlCommand cmd = new SqlCommand(sp, cn);
-        //    cmd.Parameters.AddWithValue($"")
+        public T GetByID<T>(int id, string sp)
+        {
+            T item = (T)Activator.CreateInstance(typeof(T));
+            PropertyInfo[] classType = typeof(T).GetProperties();
+            SqlConnection cn = new SqlConnection(Properties.Settings.Default["ThemisDB"].ToString());
+            SqlCommand cmd = new SqlCommand(sp, cn);
+            cmd.CommandType = CommandType.StoredProcedure;
 
-        //    using (cn)
-        //    {
-        //        cn.Open();
-        //        SqlDataReader rs;
-        //        rs = cmd.ExecuteReader();
-        //        if (rs.Read())
-        //        {
+            using (cn)
+            {
+                cn.Open();
+                SqlDataReader rs;
+                rs = cmd.ExecuteReader();
+                if (rs.Read())
+                {
+                    foreach (var property in classType)
+                    {
+                        Type propertyType = property.PropertyType;
+                        object value = Convert.ChangeType(rs[property.Name], propertyType);
+                        property.SetValue(item, value);
+                    }
+                    cmd.CommandType = CommandType.StoredProcedure;
+                }
+            }
+            return item;
+        }
 
-        //            T item = (T)Activator.CreateInstance(typeof(T));
-        //            foreach (var property in classType)
-        //            {
-        //                Type propertyType = property.PropertyType;
-        //                object value = Convert.ChangeType(rs[property.Name], propertyType);
-        //                property.SetValue(item, value);
-        //            }
-        //            cmd.CommandType = CommandType.StoredProcedure;
-        //        }
-        //    }
-        //    return returnItem;
-        //}
+
 
         // INSERTS //
         public int Insert<T>(T item, string sp)
@@ -210,8 +166,36 @@ namespace DataLibrary
             return retVal;
         }
 
+
+
         // DELETES //
-        public int Delete<T>(T item, string tableName) {
+        public int Delete<T>(int id, string tableName)
+        {
+            SqlConnection cn = new SqlConnection(Properties.Settings.Default["ThemisDB"].ToString());
+
+            PropertyInfo[] classType = typeof(T).GetProperties();
+            SqlCommand cmd = new SqlCommand($"sp_Delete{tableName}", cn);
+            cmd.Parameters.AddWithValue($"@p{classType.First().Name}", id);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            int ret;
+            try
+            {
+                using (cn)
+                {
+                    cn.Open();
+                    ret = cmd.ExecuteNonQuery();
+                    Debug.WriteLine(ret);
+                }
+            }
+            catch (Exception ex)
+            {
+                errorMsg = ex.Message;
+                ret = -1;
+            }
+            return ret;
+        }
+        public int Expire<T>(T item, string tableName) {
             SqlConnection cn = new SqlConnection(Properties.Settings.Default["ThemisDB"].ToString());
 
             PropertyInfo[] classType = typeof(T).GetProperties();
@@ -229,7 +213,6 @@ namespace DataLibrary
                 {
                     cn.Open();
                     retVal = cmd.ExecuteNonQuery();
-                    Debug.WriteLine(retVal);
                 }
             }
             catch (Exception ex)
@@ -239,127 +222,5 @@ namespace DataLibrary
             }
             return retVal;
         }
-
-        // TEMPLATE //
-        //public int InsertTemplateForm(Template template)
-        //{
-        //    SqlConnection cn = new SqlConnection(Properties.Settings.Default["SandboxDB"].ToString());
-        //    SqlCommand cmd = new SqlCommand("sp_InsertTemplateForm", cn);
-        //    cmd.Parameters.AddWithValue("@FormTypeID", template.FormTypeID);
-        //    cmd.Parameters.AddWithValue("@ContactName", template.ContactName);
-        //    cmd.Parameters.AddWithValue("@EmployeeName", template.EmployeeName);
-        //    cmd.Parameters.AddWithValue("@Comments", template.Comments);
-        //    cmd.Parameters.AddWithValue("@EffectiveDate", template.EffectiveDate);
-        //    cmd.Parameters.AddWithValue("@ExpirationDate", template.ExpirationDate);
-        //    cmd.Parameters.AddWithValue("@LastUpdateBy", template.LastUpdateBy);
-        //    cmd.Parameters.AddWithValue("@LastUpdateDate", template.LastUpdateDate);
-        //    SqlParameter outputParam = new SqlParameter("@nID", SqlDbType.Int);
-        //    outputParam.Direction = ParameterDirection.ReturnValue;
-        //    cmd.Parameters.Add(outputParam);
-        //    cmd.CommandType = CommandType.StoredProcedure;
-
-        //    using (cn)
-        //    {
-        //        try
-        //        {
-        //            cn.Open();
-        //            retVal = Convert.ToInt32(cmd.ExecuteScalar());
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            string message = e.Message;
-        //            retVal = 0;
-        //        }
-        //        finally
-        //        {
-        //            cn.Close();
-        //        }
-        //    }
-
-        //    return retVal;
-        //}
-        //public int DeleteTemplateForm(int templateID)
-        //{
-        //    SqlConnection cn = new SqlConnection(Properties.Settings.Default["SandboxDB"].ToString());
-        //    SqlCommand cmd = new SqlCommand("sp_DeleteTemplateForm", cn);
-        //    cmd.CommandType = CommandType.StoredProcedure;
-        //    cmd.Parameters.AddWithValue("FormID", templateID);
-        //    using (cn)
-        //    {
-        //        try
-        //        {
-        //            cn.Open();
-        //            cmd.ExecuteNonQuery();
-        //            retVal = 1;
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            string message = e.Message;
-        //            retVal = 0;
-        //        }
-        //        finally
-        //        {
-        //            cn.Close();
-        //        }
-        //    }
-        //    return retVal;
-        //}
-        //public List<Template> GetAllTemplateForms()
-        //{
-        //    List<Template> list = new List<Template>();
-        //    SqlConnection cn = new SqlConnection(Properties.Settings.Default["SandboxDB"].ToString());
-        //    SqlCommand cmd = new SqlCommand("sp_GetAllTemplateForms", cn);
-        //    cmd.CommandType = System.Data.CommandType.StoredProcedure;
-        //    using (cn)
-        //    {
-        //        cn.Open();
-        //        SqlDataReader rs;
-        //        rs = cmd.ExecuteReader();
-        //        while (rs.Read())
-        //        {
-        //            Template tf = new Template();
-        //            tf.FormID = Convert.ToInt32(rs["FormID"]);
-        //            tf.FormTypeID = Convert.ToInt32(rs["FormTypeID"]);
-        //            tf.FormTypeDesc = rs["FormTypeDesc"].ToString();
-        //            tf.ContactName = rs["ContactName"].ToString();
-        //            tf.EmployeeName = rs["EmployeeName"].ToString();
-        //            tf.Comments = rs["Comments"].ToString();
-        //            tf.EffectiveDate = Convert.ToDateTime(rs["EffectiveDate"]);
-        //            tf.ExpirationDate = Convert.ToDateTime(rs["ExpirationDate"]);
-        //            tf.LastUpdateBy = rs["LastUpdateBy"].ToString();
-        //            tf.LastUpdateDate = Convert.ToDateTime(rs["LastUpdateDate"]);
-        //            list.Add(tf);
-        //        }
-        //    }
-        //    return list;
-        //}
-        //public Template GetTemplateForm(int templateID)
-        //{
-        //    Template tf = new Template();
-        //    SqlConnection cn = new SqlConnection(Properties.Settings.Default["SandboxDB"].ToString());
-        //    SqlCommand cmd = new SqlCommand("sp_GetTemplateForms", cn);
-        //    cmd.CommandType = System.Data.CommandType.StoredProcedure;
-        //    cmd.Parameters.AddWithValue("FormID", templateID);
-        //    using (cn)
-        //    {
-        //        cn.Open();
-        //        SqlDataReader rs;
-        //        rs = cmd.ExecuteReader();
-        //        while (rs.Read())
-        //        {
-        //            tf.FormID = Convert.ToInt32(rs["FormID"]);
-        //            tf.FormTypeID = Convert.ToInt32(rs["FormTypeID"]);
-        //            tf.FormTypeDesc = rs["FormTypeDesc"].ToString();
-        //            tf.ContactName = rs["ContactName"].ToString();
-        //            tf.EmployeeName = rs["EmployeeName"].ToString();
-        //            tf.Comments = rs["Comments"].ToString();
-        //            tf.EffectiveDate = Convert.ToDateTime(rs["EffectiveDate"]);
-        //            tf.ExpirationDate = Convert.ToDateTime(rs["ExpirationDate"]);
-        //            tf.LastUpdateBy = rs["LastUpdateBy"].ToString();
-        //            tf.LastUpdateDate = Convert.ToDateTime(rs["LastUpdateDate"]);
-        //        }
-        //    }
-        //    return tf;
-        //}
     }
 }

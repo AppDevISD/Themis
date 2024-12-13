@@ -1,5 +1,7 @@
-﻿
-function pageLoad(sender, args) {
+﻿$(document).ready(function () {
+    FormatForms();
+});
+function FormatForms() {
     $("[data-type='telephone']").mask('(000) 000-0000');
     $("[data-type='extension']").mask('x000000');
     $("[data-type='currency']").each(function () {
@@ -11,37 +13,6 @@ function pageLoad(sender, args) {
             formatCurrency($(this), "blur");
         });
     });
-
-    function formatNumber(n) {
-        return n.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-    }
-    function formatCurrency(input, blur) {
-        var input_val = input.val();
-        if (input_val === "") { return; }
-
-        var original_len = input_val.length;
-
-        if (input_val.indexOf(".") >= 0) {
-            var decimal_pos = input_val.indexOf(".");
-            var left_side = input_val.substring(0, decimal_pos);
-            var right_side = input_val.substring(decimal_pos);
-            left_side = formatNumber(left_side);
-            right_side = formatNumber(right_side);
-            if (blur === "blur") {
-                right_side += "00";
-            }
-            right_side = right_side.substring(0, 2);
-            input_val = "$" + left_side + "." + right_side;
-
-        } else {
-            input_val = formatNumber(input_val);
-            input_val = "$" + input_val;
-            if (blur === "blur") {
-                input_val += ".00";
-            }
-        }
-        input.val(input_val);
-    }
 
     var datePeriodStartEntered;
     var datePeriodEndEntered;
@@ -127,4 +98,35 @@ function pageLoad(sender, args) {
             dateTerm.val(`${DaysDifference} Day`);
         }
     }
+}
+
+function formatNumber(n) {
+    return n.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+}
+function formatCurrency(input, blur) {
+    var input_val = input.val();
+    if (input_val === "") { return; }
+
+    var original_len = input_val.length;
+
+    if (input_val.indexOf(".") >= 0) {
+        var decimal_pos = input_val.indexOf(".");
+        var left_side = input_val.substring(0, decimal_pos);
+        var right_side = input_val.substring(decimal_pos);
+        left_side = formatNumber(left_side);
+        right_side = formatNumber(right_side);
+        if (blur === "blur") {
+            right_side += "00";
+        }
+        right_side = right_side.substring(0, 2);
+        input_val = "$" + left_side + "." + right_side;
+
+    } else {
+        input_val = formatNumber(input_val);
+        input_val = "$" + input_val;
+        if (blur === "blur") {
+            input_val += ".00";
+        }
+    }
+    input.val(input_val);
 }

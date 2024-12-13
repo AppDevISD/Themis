@@ -61,14 +61,14 @@ namespace WebUI
             {
                 default:
                     PageTitle = Page.Title.Replace(" ", string.Empty).ToLower();
-                    Page.Title = $"{ProjectName}{BlankSpace}|{BlankSpace}{Page.Title}";
+                    Page.Title = $"{ProjectName} | {Page.Title}";
                     break;
                 case null:
                 case "":
                     string fileName = new FileInfo(Page.Request.Url.LocalPath).Name;
                     string pageTitle = string.Concat(fileName.Select(x => Char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ');
                     PageTitle = pageTitle.Replace(" ", string.Empty).ToLower();
-                    Page.Title = $"{ProjectName}{BlankSpace}|{BlankSpace}{pageTitle}";
+                    Page.Title = $"{ProjectName} | {Page.Title}";
                     break;
             }
         }

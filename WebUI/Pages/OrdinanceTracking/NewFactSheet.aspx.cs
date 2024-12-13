@@ -22,59 +22,54 @@ namespace WebUI
         public string toastColor;
         public string toastMessage;
 
-
         public ListItemCollection fundCodes = new ListItemCollection()
-            {
-                new ListItem(" ", " "),
-                new ListItem("100", "100"),
-                new ListItem("101", "101"),
-                new ListItem("102", "102")
-            };
+        {
+            new ListItem("", null),
+            new ListItem("100", "100"),
+            new ListItem("101", "101"),
+            new ListItem("102", "102")
+        };
         public ListItemCollection agencyCodes = new ListItemCollection()
-            {
-                new ListItem(" ", " "),
-                new ListItem("100", "100"),
-                new ListItem("101", "101"),
-                new ListItem("102", "102")
-            };
+        {
+            new ListItem("", null),
+            new ListItem("100", "100"),
+            new ListItem("101", "101"),
+            new ListItem("102", "102")
+        };
         public ListItemCollection orgCodes = new ListItemCollection()
-            {
-                new ListItem(" ", " "),
-                new ListItem("CABC", "CABC"),
-                new ListItem("BABC", "BABC"),
-                new ListItem("ABAC", "ABAC")
-            };
+        {
+            new ListItem("", null),
+            new ListItem("CABC", "CABC"),
+            new ListItem("BABC", "BABC"),
+            new ListItem("ABAC", "ABAC")
+        };
         public ListItemCollection activityCodes = new ListItemCollection()
-            {
-                new ListItem(" ", " "),
-                new ListItem("8018", "8018"),
-                new ListItem("8019", "8019"),
-                new ListItem("8020", "8020")
-            };
+        {
+            new ListItem("", null),
+            new ListItem("8018", "8018"),
+            new ListItem("8019", "8019"),
+            new ListItem("8020", "8020")
+        };
         public ListItemCollection objectCodes = new ListItemCollection()
-            {
-                new ListItem(" ", " "),
-                new ListItem("1418", "1418"),
-                new ListItem("1419", "1419"),
-                new ListItem("1420", "1420")
-            };
-        
-        List<Accounting> expenditureList = new List<Accounting>();
-        public int revRowNum = 0;
-        public int expRowNum = 0;
+        {
+            new ListItem("", null),
+            new ListItem("1418", "1418"),
+            new ListItem("1419", "1419"),
+            new ListItem("1420", "1420")
+        };
 
         protected void Page_Load(object sender, EventArgs e)
         {
             _user = Session["CurrentUser"] as ADUser;
             if (!Page.IsPostBack && !Response.IsRequestBeingRedirected)
             {
-                Session.Remove("RevList");
-                Session.Remove("ExpList");
+                Session.Remove("revenue");
+                Session.Remove("expenditure");
                 GetAllDepartments();
                 GetAllPurchaseMethods();
                 SetStartupActives();
-
-                //TestOpenVariable();
+                NewAccountingRow("revenue");
+                NewAccountingRow("expenditure");
             }
             SubmitStatus();
         }
@@ -103,55 +98,6 @@ namespace WebUI
             purchaseMethod.Items.Insert(3, new ListItem("Low Evaluated Bid", "Low Evaluated Bid"));
             purchaseMethod.Items.Insert(4, new ListItem("Other", "Other"));
             purchaseMethod.Items.Insert(5, new ListItem("Exception", "Exception"));
-        }
-        protected void AddAccountingRow(string type)
-        {
-            Accounting accountingItem = new Accounting();
-            accountingItem.AccountingDesc = type;
-            accountingItem.LastUpdateBy = _user.Login;
-            accountingItem.LastUpdateDate = DateTime.Now;
-            accountingItem.EffectiveDate = DateTime.Now;
-            accountingItem.ExpirationDate = DateTime.MaxValue;
-            switch (type)
-            {
-                case "revenue":
-                    int retVal = Factory.Instance.Insert(accountingItem, "sp_InsertlkAccounting");
-                    if (retVal > 0)
-                    {
-                        List<Accounting> revenueList = Factory.Instance.GetAll<Accounting>("sp_GetLkAccounting");
-                        rpRevenueTable.DataSource = revenueList;
-                        rpRevenueTable.DataBind();
-                    }
-                    break;
-                case "expenditure":
-                    break;
-            }
-        }
-        protected void RemoveAccountingRow(string type, int row)
-        {
-            switch (type)
-            {
-                case "revenue":
-                    //if (Session["RevList"] != null)
-                    //{
-                    //    revenueList = (List<Accounting>)Session["RevList"];
-                    //}
-                    //revenueList.RemoveAt(row);
-                    //rpRevenueTable.DataSource = revenueList;
-                    //rpRevenueTable.DataBind();
-                    //Session["RevList"] = revenueList;
-                    break;
-                case "expenditure":
-                    //if (Session["ExpList"] != null)
-                    //{
-                    //    expenditureList = (List<Accounting>)Session["ExpList"];
-                    //}
-                    //expenditureList.RemoveAt(row);
-                    //rpExpenditureTable.DataSource = expenditureList;
-                    //rpExpenditureTable.DataBind();
-                    //Session["ExpList"] = expenditureList;
-                    break;
-            }
         }
         protected void PurchaseMethodSelectedIndexChanged(object sender, EventArgs e)
         {
@@ -203,10 +149,195 @@ namespace WebUI
                     break;
             }
         }
+        protected void NewAccountingRow(string tableDesc)
+        {
+            List<Accounting> prvList = new List<Accounting>();
+            List<Accounting> accountingList = new List<Accounting>();
+            Accounting newAccountingItem = new Accounting();
+            newAccountingItem.Amount = CurrencyToDecimal("-1");
+
+            switch (tableDesc)
+            {
+                case "revenue":
+                    if (Session[tableDesc] != null)
+                    {
+                        for (int i = 0; i < rpRevenueTable.Items.Count; i++)
+                        {
+                            Accounting accountingItem = new Accounting();
+                            var revItem = rpRevenueTable.Items[i];
+                            DropDownList revFundCode = (DropDownList)revItem.FindControl("revenueFundCode");
+                            DropDownList revAgencyCode = (DropDownList)revItem.FindControl("revenueAgencyCode");
+                            DropDownList revOrgCode = (DropDownList)revItem.FindControl("revenueOrgCode");
+                            DropDownList revActivityCode = (DropDownList)revItem.FindControl("revenueActivityCode");
+                            DropDownList revObjectCode = (DropDownList)revItem.FindControl("revenueObjectCode");
+                            TextBox revAmount = (TextBox)revItem.FindControl("revenueAmount");
+                            accountingItem.AccountingDesc = tableDesc;
+                            accountingItem.FundCode = revFundCode.SelectedValue;
+                            accountingItem.DepartmentCode = revAgencyCode.SelectedValue;
+                            accountingItem.UnitCode = revOrgCode.SelectedValue;
+                            accountingItem.ActivityCode = revActivityCode.SelectedValue;
+                            accountingItem.ObjectCode = revObjectCode.SelectedValue;
+                            if (revAmount.Text.Length == 0)
+                            {
+
+                                accountingItem.Amount = CurrencyToDecimal("-1");
+                            }
+                            else
+                            {
+                                accountingItem.Amount = CurrencyToDecimal(revAmount.Text);
+                            }
+                            prvList.Add(accountingItem);
+                        }
+                        Session[tableDesc] = prvList;
+                        accountingList = (List<Accounting>)Session[tableDesc];
+                    }
+                    accountingList.Add(newAccountingItem);
+                    Session[tableDesc] = accountingList;
+                    rpRevenueTable.DataSource = accountingList;
+                    rpRevenueTable.DataBind();
+                    break;
+                case "expenditure":
+                    if (Session[tableDesc] != null)
+                    {
+                        for (int i = 0; i < rpExpenditureTable.Items.Count; i++)
+                        {
+                            Accounting accountingItem = new Accounting();
+                            var expItem = rpExpenditureTable.Items[i];
+                            DropDownList expFundCode = (DropDownList)expItem.FindControl("expenditureFundCode");
+                            DropDownList expAgencyCode = (DropDownList)expItem.FindControl("expenditureAgencyCode");
+                            DropDownList expOrgCode = (DropDownList)expItem.FindControl("expenditureOrgCode");
+                            DropDownList expActivityCode = (DropDownList)expItem.FindControl("expenditureActivityCode");
+                            DropDownList expObjectCode = (DropDownList)expItem.FindControl("expenditureObjectCode");
+                            TextBox expAmount = (TextBox)expItem.FindControl("expenditureAmount");
+                            accountingItem.AccountingDesc = tableDesc;
+                            accountingItem.FundCode = expFundCode.SelectedValue;
+                            accountingItem.DepartmentCode = expAgencyCode.SelectedValue;
+                            accountingItem.UnitCode = expOrgCode.SelectedValue;
+                            accountingItem.ActivityCode = expActivityCode.SelectedValue;
+                            accountingItem.ObjectCode = expObjectCode.SelectedValue;
+                            if (expAmount.Text.Length == 0)
+                            {
+
+                                accountingItem.Amount = CurrencyToDecimal("-1");
+                            }
+                            else
+                            {
+                                accountingItem.Amount = CurrencyToDecimal(expAmount.Text);
+                            }
+                            prvList.Add(accountingItem);
+                        }
+                        Session[tableDesc] = prvList;
+                        accountingList = (List<Accounting>)Session[tableDesc];
+                    }
+                    accountingList.Add(newAccountingItem);
+                    Session[tableDesc] = accountingList;
+                    rpExpenditureTable.DataSource = accountingList;
+                    rpExpenditureTable.DataBind();
+                    break;
+            }
+        }
+        protected void newAccountingRow_ServerClick(object sender, EventArgs e)
+        {
+            Button button = (Button)sender;
+            NewAccountingRow(button.CommandName);
+        }
+        protected void rpAccountingTable_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            string tableDesc = e.CommandArgument.ToString();
+            List<Accounting> prvList = new List<Accounting>();
+            List<Accounting> accountingList = new List<Accounting>();
+            switch (e.CommandName)
+            {
+                case "delete":
+
+                    switch (tableDesc)
+                    {
+                        case "revenue":
+                            for (int i = 0; i < rpRevenueTable.Items.Count; i++)
+                            {
+                                Accounting accountingItem = new Accounting();
+                                var revItem = rpRevenueTable.Items[i];
+                                DropDownList revFundCode = (DropDownList)revItem.FindControl("revenueFundCode");
+                                DropDownList revAgencyCode = (DropDownList)revItem.FindControl("revenueAgencyCode");
+                                DropDownList revOrgCode = (DropDownList)revItem.FindControl("revenueOrgCode");
+                                DropDownList revActivityCode = (DropDownList)revItem.FindControl("revenueActivityCode");
+                                DropDownList revObjectCode = (DropDownList)revItem.FindControl("revenueObjectCode");
+                                TextBox revAmount = (TextBox)revItem.FindControl("revenueAmount");
+                                accountingItem.AccountingDesc = tableDesc;
+                                accountingItem.FundCode = revFundCode.SelectedValue;
+                                accountingItem.DepartmentCode = revAgencyCode.SelectedValue;
+                                accountingItem.UnitCode = revOrgCode.SelectedValue;
+                                accountingItem.ActivityCode = revActivityCode.SelectedValue;
+                                accountingItem.ObjectCode = revObjectCode.SelectedValue;
+                                if (revAmount.Text.Length == 0)
+                                {
+
+                                    accountingItem.Amount = CurrencyToDecimal("-1");
+                                }
+                                else
+                                {
+                                    accountingItem.Amount = CurrencyToDecimal(revAmount.Text);
+                                }
+                                prvList.Add(accountingItem);
+                            }
+                            Session[tableDesc] = prvList;
+                            HiddenField revHdnID = (HiddenField)e.Item.FindControl("hdnRevID");
+                            if (Session[tableDesc] != null)
+                            {
+                                accountingList = (List<Accounting>)Session[tableDesc];
+                            }
+                            accountingList.RemoveAt(Convert.ToInt32(revHdnID.Value));
+                            Session[tableDesc] = accountingList;
+                            rpRevenueTable.DataSource = accountingList;
+                            rpRevenueTable.DataBind();
+                            break;
+                        case "expenditure":
+                            for (int i = 0; i < rpExpenditureTable.Items.Count; i++)
+                            {
+                                Accounting accountingItem = new Accounting();
+                                var expItem = rpExpenditureTable.Items[i];
+                                DropDownList expFundCode = (DropDownList)expItem.FindControl("expenditureFundCode");
+                                DropDownList expAgencyCode = (DropDownList)expItem.FindControl("expenditureAgencyCode");
+                                DropDownList expOrgCode = (DropDownList)expItem.FindControl("expenditureOrgCode");
+                                DropDownList expActivityCode = (DropDownList)expItem.FindControl("expenditureActivityCode");
+                                DropDownList expObjectCode = (DropDownList)expItem.FindControl("expenditureObjectCode");
+                                TextBox expAmount = (TextBox)expItem.FindControl("expenditureAmount");
+                                accountingItem.AccountingDesc = tableDesc;
+                                accountingItem.FundCode = expFundCode.SelectedValue;
+                                accountingItem.DepartmentCode = expAgencyCode.SelectedValue;
+                                accountingItem.UnitCode = expOrgCode.SelectedValue;
+                                accountingItem.ActivityCode = expActivityCode.SelectedValue;
+                                accountingItem.ObjectCode = expObjectCode.SelectedValue;
+                                if (expAmount.Text.Length == 0)
+                                {
+
+                                    accountingItem.Amount = CurrencyToDecimal("-1");
+                                }
+                                else
+                                {
+                                    accountingItem.Amount = CurrencyToDecimal(expAmount.Text);
+                                }
+                                prvList.Add(accountingItem);
+                            }
+                            Session[tableDesc] = prvList;
+                            HiddenField expHdnID = (HiddenField)e.Item.FindControl("hdnExpID");
+                            if (Session[tableDesc] != null)
+                            {
+                                accountingList = (List<Accounting>)Session[tableDesc];
+                            }
+                            accountingList.RemoveAt(Convert.ToInt32(expHdnID.Value));
+                            Session[tableDesc] = accountingList;
+                            rpExpenditureTable.DataSource = accountingList;
+                            rpExpenditureTable.DataBind();
+                            break;
+                    }
+                    break;
+            }
+        }
         protected void SubmitForm_Click(object sender, EventArgs e)
         {
             Email.Instance.AddEmailAddress(emailList, _user.Email);
-            string formType = "Template Form";
+            string formType = "Ordinance Fact Sheet";
 
             Email newEmail = new Email();
 
@@ -249,84 +380,67 @@ namespace WebUI
                 toastMessage = (string)Session["ToastMessage"];
             }
         }
-        protected void newAccountingRow_ServerClick(object sender, EventArgs e)
-        {
-            Button button = (Button)sender;
-            string type = button.CommandName;
-            Accounting accountingItem = new Accounting();
-            accountingItem.AccountingDesc = type;
-            accountingItem.FundCode = " ";
-            accountingItem.DepartmentCode = " ";
-            accountingItem.UnitCode = " ";
-            accountingItem.ActivityCode = " ";
-            accountingItem.ObjectCode = " ";
-            accountingItem.Amount = CurrencyToDecimal("0");
-            accountingItem.LastUpdateBy = _user.Login;
-            accountingItem.LastUpdateDate = DateTime.Now;
-            accountingItem.EffectiveDate = DateTime.Now;
-            accountingItem.ExpirationDate = DateTime.MaxValue;
-            switch (type)
-            {
-                case "revenue":
-                    int retVal = Factory.Instance.Insert(accountingItem, "sp_InsertlkAccounting");
-                    if (retVal > 0)
-                    {
-                        //IEnumerable<Accounting> revenueList = Factory.Instance.GetAllAccounting().Where(item => item.AccountingDesc.Equals("revenue"));
-                        IEnumerable<Accounting> revenueList = Factory.Instance.GetAll<Accounting>("sp_GetLkAccounting").Where(item => item.AccountingDesc.Equals("revenue"));
-                        rpRevenueTable.DataSource = revenueList;
-                        rpRevenueTable.DataBind();
-                    }
-                    break;
-                case "expenditure":
-                    break;
-            }
-        }
-
-        protected void removeAccountingRow_ServerClick(object sender, EventArgs e)
-        {
-            //Button button = (Button)sender;
-            //string type = button.CommandName;
-            //int row = Convert.ToInt32(button.Attributes["data-row-num"]);
-            //if (Session["RevList"] != null)
-            //{
-            //    revenueList = (List<Accounting>)Session["RevList"];
-            //}
-            //if (revenueList.Count > 0)
-            //{
-            //    RemoveAccountingRow(type, row);
-            //}
-        }
+        
 
 
 
-        protected void TestOpenVariable()
-        {
-            Accounting revItem = new Accounting();
-            revItem.FundCode = "101";
-            revItem.DepartmentCode = "102";
-            revItem.UnitCode = "103";
-            revItem.ActivityCode = "104";
-            revItem.ObjectCode = "105";
-            revItem.Amount = Convert.ToDecimal(5);
-            Factory.Instance.TestVariable(revItem);
-        }
 
-        protected void rpRevenueTable_ItemCommand(object source, RepeaterCommandEventArgs e)
-        {
-            switch (e.CommandName)
-            {
-                case "delete":
-                    HiddenField hdnID = (HiddenField)e.Item.FindControl("hdnRevID");
-                    Accounting deleteItem = Factory.Instance.GetAll<Accounting>("sp_GetLkAccounting").Where(item => item.AccountingID.Equals(Convert.ToInt32(hdnID.Value))).First();
-                    int retVal = Factory.Instance.Delete(deleteItem, "lkAccounting");
-                    if (retVal > 0)
-                    {
-                        IEnumerable<Accounting> list = Factory.Instance.GetAll<Accounting>("sp_GetLkAccounting").Where(item => item.AccountingDesc.Equals(e.CommandArgument));
-                        rpRevenueTable.DataSource = list;
-                        rpRevenueTable.DataBind();
-                    }
-                    break;
-            }
-        }
+
+
+
+
+
+
+
+
+        //protected void newAccountingRow_ServerClick(object sender, EventArgs e)
+        //{
+        //    Button button = (Button)sender;
+        //    string type = button.CommandName;
+        //    Accounting accountingItem = new Accounting();
+        //    accountingItem.AccountingDesc = type;
+        //    accountingItem.FundCode = " ";
+        //    accountingItem.DepartmentCode = " ";
+        //    accountingItem.UnitCode = " ";
+        //    accountingItem.ActivityCode = " ";
+        //    accountingItem.ObjectCode = " ";
+        //    accountingItem.Amount = CurrencyToDecimal("0");
+        //    accountingItem.LastUpdateBy = _user.Login;
+        //    accountingItem.LastUpdateDate = DateTime.Now;
+        //    accountingItem.EffectiveDate = DateTime.Now;
+        //    accountingItem.ExpirationDate = DateTime.MaxValue;
+        //    switch (type)
+        //    {
+        //        case "revenue":
+        //            int retVal = Factory.Instance.Insert(accountingItem, "sp_InsertlkAccounting");
+        //            if (retVal > 0)
+        //            {
+        //                //IEnumerable<Accounting> revenueList = Factory.Instance.GetAllAccounting().Where(item => item.AccountingDesc.Equals("revenue"));
+        //                IEnumerable<Accounting> revenueList = Factory.Instance.GetAll<Accounting>("sp_GetLkAccounting").Where(item => item.AccountingDesc.Equals("revenue"));
+        //                rpRevenueTable.DataSource = revenueList;
+        //                rpRevenueTable.DataBind();
+        //            }
+        //            break;
+        //        case "expenditure":
+        //            break;
+        //    }
+        //}
+
+        //protected void rpRevenueTable_ItemCommand(object source, RepeaterCommandEventArgs e)
+        //{
+        //    switch (e.CommandName)
+        //    {
+        //        case "delete":
+        //            HiddenField hdnID = (HiddenField)e.Item.FindControl("hdnRevID");
+        //            int retVal = Factory.Instance.Delete<Accounting>(Convert.ToInt32(hdnID.Value), "lkAccounting");
+        //            if (retVal > 0)
+        //            {
+        //                IEnumerable<Accounting> list = Factory.Instance.GetAll<Accounting>("sp_GetLkAccounting").Where(item => item.AccountingDesc.Equals(e.CommandArgument));
+        //                rpRevenueTable.DataSource = list;
+        //                rpRevenueTable.DataBind();
+        //            }
+        //            break;
+        //    }
+        //}
     }
 }

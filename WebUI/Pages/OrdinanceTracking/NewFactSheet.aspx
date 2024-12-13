@@ -15,6 +15,14 @@
 			<p class="text-justify" style="color: gray;"><i class="fa-solid fa-asterisk"></i>&nbsp;= Required Field</p>
 
 			<asp:UpdatePanel runat="server" ID="formUpdatePanel" UpdateMode="Always">
+				<Triggers>
+					<asp:AsyncPostBackTrigger ControlID="epYes" EventName="CheckedChanged" />
+					<asp:AsyncPostBackTrigger ControlID="epNo" EventName="CheckedChanged" />
+					<asp:AsyncPostBackTrigger ControlID="scYes" EventName="CheckedChanged" />
+					<asp:AsyncPostBackTrigger ControlID="scNo" EventName="CheckedChanged" />
+					<asp:AsyncPostBackTrigger ControlID="scNo" EventName="CheckedChanged" />
+					<asp:AsyncPostBackTrigger ControlID="purchaseMethod" EventName="SelectedIndexChanged" />
+				</Triggers>
 				<ContentTemplate>
 					<%-- FIRST SECTION --%>
 					<div class="form-section">
@@ -319,25 +327,25 @@
 						<%-- FIRST ROW --%>
 						<div class="row mb-3">
 							<%-- REVENUE --%>
-							<div class="col-md-6 tableAddTable">
-								<label for="rpRevenueTable">Revenue</label>
+							<div class="col-md-6hf tableAddTable form-table">
+								<label for="revenueTable">Revenue</label>
 								<table id="revenueTable" class="table table-bordered table-striped table-hover text-center" style="padding: 0px; margin: 0px">
 									<thead>
 										<tr>
-											<th style="width: 15%; text-align: center"><strong>Fund</strong></th>
-											<th style="width: 17%; text-align: center"><strong>Agency</strong></th>
-											<th style="width: 17%; text-align: center"><strong>Org</strong></th>
-											<th style="width: 17%; text-align: center"><strong>Activity</strong></th>
-											<th style="width: 17%; text-align: center"><strong>Object</strong></th>
-											<th style="width: 17%; text-align: center"><strong>Amount</strong></th>
+											<th style="width: 13%; text-align: center"><strong>Fund</strong></th>
+											<th style="width: 13%; text-align: center"><strong>Agency</strong></th>
+											<th style="width: 15%; text-align: center"><strong>Org</strong></th>
+											<th style="width: 15%; text-align: center"><strong>Activity</strong></th>
+											<th style="width: 15%; text-align: center"><strong>Object</strong></th>
+											<th style="width: 22%; text-align: center"><strong>Amount</strong></th>
 										</tr>
 									</thead>
 									<tbody>
-										<asp:Repeater runat="server" ID="rpRevenueTable" OnItemCommand="rpRevenueTable_ItemCommand">
+										<asp:Repeater runat="server" ID="rpRevenueTable" OnItemCommand="rpAccountingTable_ItemCommand">
 											<ItemTemplate>
 												<tr>
 													<td style="vertical-align: middle">
-														<asp:HiddenField runat="server" ID="hdnRevID" Value='<%# DataBinder.Eval(Container.DataItem, "AccountingID") %>' />
+														<asp:HiddenField runat="server" ID="hdnRevID" Value='<%# Container.ItemIndex %>' />
 														<asp:DropDownList ID="revenueFundCode" runat="server" CssClass="form-select" required="true" ValidateRequestMode="Enabled" DataSource='<%# fundCodes %>' SelectedValue='<%# DataBinder.Eval(Container.DataItem, "FundCode") %>'></asp:DropDownList>
 													</td>
 													<td style="vertical-align: middle">
@@ -353,7 +361,8 @@
 														<asp:DropDownList ID="revenueObjectCode" runat="server" CssClass="form-select" required="true" ValidateRequestMode="Enabled" DataSource='<%# objectCodes %>' SelectedValue='<%# DataBinder.Eval(Container.DataItem, "ObjectCode") %>'></asp:DropDownList>
 													</td>
 													<td class="position-relative" style="vertical-align: middle">
-														<asp:TextBox runat="server" ID="revenueAmount" CssClass="form-control" TextMode="SingleLine" data-type="currency" placeholder="$10,000.00" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "Amount") %>'></asp:TextBox>
+														<asp:TextBox runat="server" ID="revenueAmount" CssClass="form-control" TextMode="SingleLine" data-type="currency" placeholder="$10,000.00" AutoCompleteType="Disabled" Text='<%# (Convert.ToInt32(DataBinder.Eval(Container.DataItem, "Amount")) >= 0)?DataBinder.Eval(Container.DataItem, "Amount"):string.Empty%>'></asp:TextBox>
+														
 														<div>
 															<asp:Button runat="server" ID="removeRevenueRow" CssClass="btn tableDelete" UseSubmitBehavior="false" CommandName="delete" CommandArgument="revenue" Text="&#xf068;" />
 														</div>
@@ -367,6 +376,57 @@
 									<asp:Button runat="server" ID="newRevenueRow" CssClass="btn btn-success w-100 tableAdd" OnClick="newAccountingRow_ServerClick" UseSubmitBehavior="false" CommandName="revenue" Text="Add Row" />
 								</div>
 							</div>
+							<div class="col-md-1hf"></div>
+							<div class="col-md-6hf tableAddTable form-table">
+								<label for="expenditureTable">Expenditure</label>
+								<table id="expenditureTable" class="table table-bordered table-striped table-hover text-center" style="padding: 0px; margin: 0px">
+									<thead>
+										<tr>
+											<th style="width: 13%; text-align: center"><strong>Fund</strong></th>
+											<th style="width: 13%; text-align: center"><strong>Agency</strong></th>
+											<th style="width: 15%; text-align: center"><strong>Org</strong></th>
+											<th style="width: 15%; text-align: center"><strong>Activity</strong></th>
+											<th style="width: 15%; text-align: center"><strong>Object</strong></th>
+											<th style="width: 22%; text-align: center"><strong>Amount</strong></th>
+										</tr>
+									</thead>
+									<tbody>
+										<asp:Repeater runat="server" ID="rpExpenditureTable" OnItemCommand="rpAccountingTable_ItemCommand">
+											<ItemTemplate>
+												<tr>
+													<td style="vertical-align: middle">
+														<asp:HiddenField runat="server" ID="hdnExpID" Value='<%# Container.ItemIndex %>' />
+														<asp:DropDownList ID="expenditureFundCode" runat="server" CssClass="form-select" required="true" ValidateRequestMode="Enabled" DataSource='<%# fundCodes %>' SelectedValue='<%# DataBinder.Eval(Container.DataItem, "FundCode") %>'></asp:DropDownList>
+													</td>
+													<td style="vertical-align: middle">
+														<asp:DropDownList ID="expenditureAgencyCode" runat="server" CssClass="form-select" required="true" ValidateRequestMode="Enabled" DataSource='<%# agencyCodes %>' SelectedValue='<%# DataBinder.Eval(Container.DataItem, "DepartmentCode") %>'></asp:DropDownList>
+													</td>
+													<td style="vertical-align: middle">
+														<asp:DropDownList ID="expenditureOrgCode" runat="server" CssClass="form-select" required="true" ValidateRequestMode="Enabled" DataSource='<%# orgCodes %>' SelectedValue='<%# DataBinder.Eval(Container.DataItem, "UnitCode") %>'></asp:DropDownList>
+													</td>
+													<td style="vertical-align: middle">
+														<asp:DropDownList ID="expenditureActivityCode" runat="server" CssClass="form-select" required="true" ValidateRequestMode="Enabled" DataSource='<%# activityCodes %>' SelectedValue='<%# DataBinder.Eval(Container.DataItem, "ActivityCode") %>'></asp:DropDownList>
+													</td>
+													<td style="vertical-align: middle">
+														<asp:DropDownList ID="expenditureObjectCode" runat="server" CssClass="form-select" required="true" ValidateRequestMode="Enabled" DataSource='<%# objectCodes %>' SelectedValue='<%# DataBinder.Eval(Container.DataItem, "ObjectCode") %>'></asp:DropDownList>
+													</td>
+													<td class="position-relative" style="vertical-align: middle">
+														<asp:TextBox runat="server" ID="expenditureAmount" CssClass="form-control" TextMode="SingleLine" data-type="currency" placeholder="$10,000.00" AutoCompleteType="Disabled" Text='<%# (Convert.ToInt32(DataBinder.Eval(Container.DataItem, "Amount")) >= 0)?DataBinder.Eval(Container.DataItem, "Amount"):string.Empty%>'></asp:TextBox>
+
+														<div>
+															<asp:Button runat="server" ID="removeExpenditureRow" CssClass="btn tableDelete" UseSubmitBehavior="false" CommandName="delete" CommandArgument="expenditure" Text="&#xf068;" />
+														</div>
+													</td>
+												</tr>
+											</ItemTemplate>
+										</asp:Repeater>
+									</tbody>
+								</table>
+								<div class="text-center w-100">
+									<asp:Button runat="server" ID="newExpenditureRow" CssClass="btn btn-success w-100 tableAdd" OnClick="newAccountingRow_ServerClick" UseSubmitBehavior="false" CommandName="expenditure" Text="Add Row" />
+								</div>
+							</div>
+							<div class="col-md-1hf"></div>
 						</div>
 					</div>
 
@@ -396,9 +456,6 @@
 					</div>
 				</ContentTemplate>
 			</asp:UpdatePanel>
-
-			
-
 			<div class="form-section">
 				<div class="row mt-3 mb-3 text-center">
 					<div class="col-md-12">
@@ -416,8 +473,13 @@
 			</div>
 		</div>
 	</div>
-
 	<script>
+		var prm = Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
+			FormatForms();
+			$("[data-type='currency']").each(function () {
+				formatCurrency($(this), "blur");
+			});
+		});
 		function pageLoad(sender, args) {
 			const getStoredToast = () => localStorage.getItem('showToast');
 			document.addEventListener('DOMContentLoaded', function () {

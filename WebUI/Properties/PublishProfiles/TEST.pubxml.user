@@ -5,7 +5,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 <Project>
   <PropertyGroup>
     <_PublishTargetUrl>\\mcwintwt04\Themis</_PublishTargetUrl>
-    <History>True|2024-12-06T21:43:36.1726910Z||;True|2024-11-27T15:42:32.5846431-06:00||;True|2024-11-27T11:07:01.6832380-06:00||;True|2024-11-27T09:13:36.7521267-06:00||;True|2024-11-27T09:09:27.8078984-06:00||;True|2024-11-27T09:08:26.1470018-06:00||;True|2024-11-27T09:08:02.5308868-06:00||;True|2024-11-27T09:07:03.8911746-06:00||;True|2024-11-27T08:59:52.2314601-06:00||;True|2024-11-27T08:59:30.0227589-06:00||;True|2024-11-27T08:58:01.9942706-06:00||;True|2024-11-26T10:24:47.9579449-06:00||;True|2024-11-26T10:24:19.7572397-06:00||;True|2024-11-26T10:23:32.8628190-06:00||;True|2024-11-26T10:21:21.1412393-06:00||;True|2024-11-26T10:18:35.6743335-06:00||;True|2024-11-26T10:17:03.2843336-06:00||;</History>
+    <History>True|2024-12-13T14:57:23.8088892Z||;True|2024-12-06T15:43:36.1726910-06:00||;True|2024-11-27T15:42:32.5846431-06:00||;True|2024-11-27T11:07:01.6832380-06:00||;True|2024-11-27T09:13:36.7521267-06:00||;True|2024-11-27T09:09:27.8078984-06:00||;True|2024-11-27T09:08:26.1470018-06:00||;True|2024-11-27T09:08:02.5308868-06:00||;True|2024-11-27T09:07:03.8911746-06:00||;True|2024-11-27T08:59:52.2314601-06:00||;True|2024-11-27T08:59:30.0227589-06:00||;True|2024-11-27T08:58:01.9942706-06:00||;True|2024-11-26T10:24:47.9579449-06:00||;True|2024-11-26T10:24:19.7572397-06:00||;True|2024-11-26T10:23:32.8628190-06:00||;True|2024-11-26T10:21:21.1412393-06:00||;True|2024-11-26T10:18:35.6743335-06:00||;True|2024-11-26T10:17:03.2843336-06:00||;</History>
     <LastFailureDetails />
   </PropertyGroup>
   <ItemGroup>
@@ -19,10 +19,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>11/25/2024 11:54:19</publishTime>
     </File>
     <File Include="assets/css/MainLayout.css">
-      <publishTime>12/02/2024 10:31:50</publishTime>
+      <publishTime>12/13/2024 07:44:54</publishTime>
     </File>
     <File Include="assets/css/Site.css">
-      <publishTime>12/02/2024 12:44:17</publishTime>
+      <publishTime>12/10/2024 11:29:27</publishTime>
     </File>
     <File Include="assets/images/icons/favicon/apple-touch-icon.png">
       <publishTime>11/25/2024 11:44:02</publishTime>
@@ -76,13 +76,13 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>11/25/2024 11:06:51</publishTime>
     </File>
     <File Include="assets/Themes/ColorThemes.css">
-      <publishTime>12/02/2024 14:03:23</publishTime>
+      <publishTime>12/12/2024 14:53:52</publishTime>
     </File>
     <File Include="assets/Themes/ColorThemes.min.css">
-      <publishTime>12/02/2024 14:03:23</publishTime>
+      <publishTime>12/12/2024 14:53:53</publishTime>
     </File>
     <File Include="assets/Themes/ColorThemes.scss">
-      <publishTime>12/02/2024 14:03:24</publishTime>
+      <publishTime>12/12/2024 14:53:52</publishTime>
     </File>
     <File Include="assets/Themes/_data-color-theme.scss">
       <publishTime>11/25/2024 11:06:51</publishTime>
@@ -97,13 +97,13 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>09/10/2013 11:29:20</publishTime>
     </File>
     <File Include="bin/DataLibrary.dll">
-      <publishTime>12/06/2024 15:43:33</publishTime>
+      <publishTime>12/13/2024 08:57:22</publishTime>
     </File>
     <File Include="bin/DataLibrary.dll.config">
-      <publishTime>11/25/2024 11:06:54</publishTime>
+      <publishTime>12/10/2024 14:41:57</publishTime>
     </File>
     <File Include="bin/DataLibrary.pdb">
-      <publishTime>12/06/2024 15:43:33</publishTime>
+      <publishTime>12/13/2024 08:57:22</publishTime>
     </File>
     <File Include="bin/ISD.ActiveDirectory.dll">
       <publishTime>11/25/2024 11:06:51</publishTime>
@@ -229,13 +229,13 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>01/23/2014 07:57:34</publishTime>
     </File>
     <File Include="bin/WebUI.dll">
-      <publishTime>12/06/2024 15:43:34</publishTime>
+      <publishTime>12/13/2024 08:57:23</publishTime>
     </File>
     <File Include="bin/WebUI.dll.config">
       <publishTime>11/26/2024 10:18:30</publishTime>
     </File>
     <File Include="bin/WebUI.pdb">
-      <publishTime>12/06/2024 15:43:34</publishTime>
+      <publishTime>12/13/2024 08:57:23</publishTime>
     </File>
     <File Include="Bundle.config">
       <publishTime>11/25/2024 11:06:51</publishTime>
@@ -247,7 +247,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>11/25/2024 11:06:51</publishTime>
     </File>
     <File Include="Pages/OrdinanceTracking/NewFactSheet.aspx">
-      <publishTime>12/06/2024 15:06:47</publishTime>
+      <publishTime>12/13/2024 07:42:38</publishTime>
     </File>
     <File Include="Pages/OrdinanceTracking/Ordinances.aspx">
       <publishTime>11/26/2024 09:07:05</publishTime>
@@ -280,10 +280,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>11/25/2024 11:06:51</publishTime>
     </File>
     <File Include="Scripts/Helpers/JS/FormFormatting.js">
-      <publishTime>11/26/2024 14:40:26</publishTime>
+      <publishTime>12/12/2024 13:52:40</publishTime>
     </File>
     <File Include="Scripts/Helpers/JS/RequiredFieldsAndActivePage.js">
-      <publishTime>11/27/2024 13:05:46</publishTime>
+      <publishTime>12/12/2024 11:13:22</publishTime>
     </File>
     <File Include="Scripts/WebForms/DetailsView.js">
       <publishTime>11/25/2024 11:06:51</publishTime>
@@ -349,7 +349,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>11/25/2024 11:06:51</publishTime>
     </File>
     <File Include="Site.Master">
-      <publishTime>11/27/2024 13:26:15</publishTime>
+      <publishTime>12/12/2024 10:56:17</publishTime>
     </File>
     <File Include="Web.config">
       <publishTime>11/27/2024 15:42:31</publishTime>

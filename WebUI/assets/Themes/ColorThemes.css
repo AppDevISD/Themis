@@ -551,7 +551,7 @@ label:has(+ .form-control:disabled) {
   background-color: var(--bs-tertiary-bg);
 }
 
-[data-bs-theme=dark] .table-striped > tbody > tr:nth-of-type(odd) > td .form-select, [data-bs-theme=dark] .table-striped > tbody > tr:nth-of-type(odd) > td .form-control {
+.table-striped > tbody > tr:nth-of-type(odd) > td .form-select, .table-striped > tbody > tr:nth-of-type(odd) > td .form-control {
   background-color: var(--bs-tertiary-bg);
 }
 
