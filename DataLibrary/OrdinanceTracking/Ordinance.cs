@@ -35,7 +35,7 @@ namespace DataLibrary
         // public string PreviousOrdinanceNumbers { get; set; } // Added
         // public string CodeProvision { get; set; } // Added
         public bool PAApprovalRequired { get; set; }
-        public bool PAApprovalAttached { get; set; }
+        public bool PAApprovalIncluded { get; set; }
         public string LastUpdateBy { get; set; }
         public DateTime LastUpdateDate { get; set; }
         public DateTime EffectiveDate { get; set; }

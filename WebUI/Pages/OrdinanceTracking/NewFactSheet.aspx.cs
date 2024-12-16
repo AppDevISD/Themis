@@ -303,6 +303,7 @@ namespace WebUI
 
             Ordinance ordinance = new Ordinance();
 
+            ordinance.OrdinanceNumber = "6515dfgsaf";
             ordinance.RequestID = 0;
             ordinance.RequestDepartment = requestDepartment.SelectedItem.Text;
             ordinance.RequestContact = requestContact.Text;
@@ -327,22 +328,15 @@ namespace WebUI
             //ordinance.PreviousOrdinanceNumbers = prevOrdinanceNums.Text;
             //ordinance.CodeProvision = codeProvision.Text;
             ordinance.PAApprovalRequired = paApprovalRequiredYes.Checked;
-            ordinance.PAApprovalAttached = paApprovalAttachedYes.Checked;
+            ordinance.PAApprovalIncluded = paApprovalAttachedYes.Checked;
             ordinance.OrdinanceAnalysis = staffAnalysis.Text;
             ordinance.LastUpdateBy = _user.Login;
             ordinance.LastUpdateDate = DateTime.Now;
             ordinance.EffectiveDate = DateTime.Now;
             ordinance.ExpirationDate = DateTime.MaxValue;
 
-            Debug.WriteLine($"Department: {ordinance.RequestDepartment}");
-            Debug.WriteLine($"EP Reason: {ordinance.EmergencyPassageReason}");
-
-
-
-
-
-            //int retVal = Factory.Instance.Insert(ordinance, "sp_InsertOrdinance");
-            int retVal = 1;
+            int retVal = Factory.Instance.Insert(ordinance, "sp_InsertOrdinance");
+            //int retVal = 1;
             if (retVal > 0)
             {
                 bool revExpTables = false;
@@ -350,7 +344,6 @@ namespace WebUI
                 if (rpRevenueTable.Items.Count > 0 || rpExpenditureTable.Items.Count > 0)
                 {
                     revExpTables = true;
-                    Debug.WriteLine($"Table > 0");
                 }
 
                 switch (revExpTables)
@@ -360,10 +353,8 @@ namespace WebUI
                         bool expSubmit = false;
                         if (rpRevenueTable.Items.Count > 0)
                         {
-                            Debug.WriteLine($"RevTable Running");
                             for (int i = 0; i < rpRevenueTable.Items.Count; i++)
                             {
-                                Debug.WriteLine($"RevTable Item: {i}");
                                 Accounting accountingItem = GetAccountingItem("revenue", i);
                                 int ret = Factory.Instance.Insert(accountingItem, "sp_InsertlkAccounting");
                                 //int ret = 1;
@@ -389,14 +380,18 @@ namespace WebUI
                                 }
                             }
                         }
+                        else
+                        {
+                            revSubmit = true;
+                        }
+
                         if (rpExpenditureTable.Items.Count > 0)
                         {
-                            Debug.WriteLine($"ExpTable Running");
                             for (int i = 0; i < rpExpenditureTable.Items.Count; i++)
                             {
-                                Debug.WriteLine($"ExpTable Item: {i}");
                                 Accounting accountingItem = GetAccountingItem("expenditure", i);
                                 int ret = Factory.Instance.Insert(accountingItem, "sp_InsertlkAccounting");
+                                //int ret = 1;
                                 if (ret > 0)
                                 {
                                     OrdinanceAccounting oaItem = new OrdinanceAccounting();
@@ -419,6 +414,11 @@ namespace WebUI
                                 }
                             }
                         }
+                        else
+                        {
+                            expSubmit = true;
+                        }
+
                         if (revSubmit && expSubmit)
                         {
                             finishSubmit = true;
@@ -494,6 +494,10 @@ namespace WebUI
                     accountingItem.UnitCode = revOrgCode.SelectedValue;
                     accountingItem.ActivityCode = revActivityCode.SelectedValue;
                     accountingItem.ObjectCode = revObjectCode.SelectedValue;
+                    accountingItem.LastUpdateBy = _user.Login;
+                    accountingItem.LastUpdateDate = DateTime.Now;
+                    accountingItem.EffectiveDate = DateTime.Now;
+                    accountingItem.ExpirationDate = DateTime.MaxValue;
                     if (revAmount.Text.Length == 0)
                     {
 
@@ -518,6 +522,10 @@ namespace WebUI
                     accountingItem.UnitCode = expOrgCode.SelectedValue;
                     accountingItem.ActivityCode = expActivityCode.SelectedValue;
                     accountingItem.ObjectCode = expObjectCode.SelectedValue;
+                    accountingItem.LastUpdateBy = _user.Login;
+                    accountingItem.LastUpdateDate = DateTime.Now;
+                    accountingItem.EffectiveDate = DateTime.Now;
+                    accountingItem.ExpirationDate = DateTime.MaxValue;
                     if (expAmount.Text.Length == 0)
                     {
 
@@ -531,64 +539,5 @@ namespace WebUI
             }
             return accountingItem;
         }
-
-
-
-
-
-
-
-
-
-
-        //protected void newAccountingRow_ServerClick(object sender, EventArgs e)
-        //{
-        //    Button button = (Button)sender;
-        //    string type = button.CommandName;
-        //    Accounting accountingItem = new Accounting();
-        //    accountingItem.AccountingDesc = type;
-        //    accountingItem.FundCode = " ";
-        //    accountingItem.DepartmentCode = " ";
-        //    accountingItem.UnitCode = " ";
-        //    accountingItem.ActivityCode = " ";
-        //    accountingItem.ObjectCode = " ";
-        //    accountingItem.Amount = CurrencyToDecimal("0");
-        //    accountingItem.LastUpdateBy = _user.Login;
-        //    accountingItem.LastUpdateDate = DateTime.Now;
-        //    accountingItem.EffectiveDate = DateTime.Now;
-        //    accountingItem.ExpirationDate = DateTime.MaxValue;
-        //    switch (type)
-        //    {
-        //        case "revenue":
-        //            int retVal = Factory.Instance.Insert(accountingItem, "sp_InsertlkAccounting");
-        //            if (retVal > 0)
-        //            {
-        //                //IEnumerable<Accounting> revenueList = Factory.Instance.GetAllAccounting().Where(item => item.AccountingDesc.Equals("revenue"));
-        //                IEnumerable<Accounting> revenueList = Factory.Instance.GetAll<Accounting>("sp_GetLkAccounting").Where(item => item.AccountingDesc.Equals("revenue"));
-        //                rpRevenueTable.DataSource = revenueList;
-        //                rpRevenueTable.DataBind();
-        //            }
-        //            break;
-        //        case "expenditure":
-        //            break;
-        //    }
-        //}
-
-        //protected void rpRevenueTable_ItemCommand(object source, RepeaterCommandEventArgs e)
-        //{
-        //    switch (e.CommandName)
-        //    {
-        //        case "delete":
-        //            HiddenField hdnID = (HiddenField)e.Item.FindControl("hdnRevID");
-        //            int retVal = Factory.Instance.Delete<Accounting>(Convert.ToInt32(hdnID.Value), "lkAccounting");
-        //            if (retVal > 0)
-        //            {
-        //                IEnumerable<Accounting> list = Factory.Instance.GetAll<Accounting>("sp_GetLkAccounting").Where(item => item.AccountingDesc.Equals(e.CommandArgument));
-        //                rpRevenueTable.DataSource = list;
-        //                rpRevenueTable.DataBind();
-        //            }
-        //            break;
-        //    }
-        //}
     }
 }

@@ -139,6 +139,7 @@
     <Content Include="Global.asax" />
     <None Include="assets\images\icons\favicon\manifest.json" />
     <Content Include="Scripts\Helpers\JS\RequiredFieldsAndActivePage.js" />
+    <Content Include="Scripts\Helpers\JS\SubmitToast.js" />
     <Content Include="Scripts\WebForms\DetailsView.js" />
     <Content Include="Scripts\WebForms\Focus.js" />
     <Content Include="Scripts\WebForms\GridView.js" />

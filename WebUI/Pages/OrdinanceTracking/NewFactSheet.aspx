@@ -22,6 +22,7 @@
 					<asp:AsyncPostBackTrigger ControlID="scNo" EventName="CheckedChanged" />
 					<asp:AsyncPostBackTrigger ControlID="scNo" EventName="CheckedChanged" />
 					<asp:AsyncPostBackTrigger ControlID="purchaseMethod" EventName="SelectedIndexChanged" />
+					<asp:AsyncPostBackTrigger ControlID="SubmitFactSheet" EventName="Click" />
 				</Triggers>
 				<ContentTemplate>
 					<%-- FIRST SECTION --%>
@@ -167,7 +168,7 @@
 									<label for="datePeriod">Date Period</label>
 									<div id="datePeriod" class="input-group">
 										<%-- START --%>
-										<asp:TextBox runat="server" ID="contractStartDate" CssClass="form-control" TextMode="Date" data-type="datePeriodStart"></asp:TextBox>
+										<asp:TextBox runat="server" ID="contractStartDate" CssClass="form-control" TextMode="Date" data-type="datePeriodStart" required="true"></asp:TextBox>
 
 										<%-- SEPARATOR --%>
 										<div class="input-group-append">
@@ -175,7 +176,7 @@
 										</div>
 
 										<%-- END --%>
-										<asp:TextBox runat="server" ID="contractEndDate" CssClass="form-control" TextMode="Date" data-type="datePeriodEnd"></asp:TextBox>
+										<asp:TextBox runat="server" ID="contractEndDate" CssClass="form-control" TextMode="Date" data-type="datePeriodEnd" required="true"></asp:TextBox>
 									</div>
 								</div>
 							</div>
@@ -333,11 +334,11 @@
 									<thead>
 										<tr>
 											<th style="width: 13%; text-align: center"><strong>Fund</strong></th>
-											<th style="width: 13%; text-align: center"><strong>Agency</strong></th>
+											<th style="width: 15%; text-align: center"><strong>Agency</strong></th>
 											<th style="width: 15%; text-align: center"><strong>Org</strong></th>
-											<th style="width: 15%; text-align: center"><strong>Activity</strong></th>
+											<th style="width: 16%; text-align: center"><strong>Activity</strong></th>
 											<th style="width: 15%; text-align: center"><strong>Object</strong></th>
-											<th style="width: 22%; text-align: center"><strong>Amount</strong></th>
+											<th style="width: 18%; text-align: center"><strong>Amount</strong></th>
 										</tr>
 									</thead>
 									<tbody>
@@ -376,18 +377,21 @@
 									<asp:Button runat="server" ID="newRevenueRow" CssClass="btn btn-success w-100 tableAdd" OnClick="newAccountingRow_ServerClick" UseSubmitBehavior="false" CommandName="revenue" Text="Add Row" />
 								</div>
 							</div>
+
 							<div class="col-md-1hf"></div>
+
+							<%-- EXPENDITURE --%>
 							<div class="col-md-6hf tableAddTable form-table">
 								<label for="expenditureTable">Expenditure</label>
 								<table id="expenditureTable" class="table table-bordered table-striped table-hover text-center" style="padding: 0px; margin: 0px">
 									<thead>
 										<tr>
 											<th style="width: 13%; text-align: center"><strong>Fund</strong></th>
-											<th style="width: 13%; text-align: center"><strong>Agency</strong></th>
+											<th style="width: 15%; text-align: center"><strong>Agency</strong></th>
 											<th style="width: 15%; text-align: center"><strong>Org</strong></th>
-											<th style="width: 15%; text-align: center"><strong>Activity</strong></th>
+											<th style="width: 16%; text-align: center"><strong>Activity</strong></th>
 											<th style="width: 15%; text-align: center"><strong>Object</strong></th>
-											<th style="width: 22%; text-align: center"><strong>Amount</strong></th>
+											<th style="width: 18%; text-align: center"><strong>Amount</strong></th>
 										</tr>
 									</thead>
 									<tbody>
@@ -426,6 +430,7 @@
 									<asp:Button runat="server" ID="newExpenditureRow" CssClass="btn btn-success w-100 tableAdd" OnClick="newAccountingRow_ServerClick" UseSubmitBehavior="false" CommandName="expenditure" Text="Add Row" />
 								</div>
 							</div>
+
 							<div class="col-md-1hf"></div>
 						</div>
 					</div>
@@ -454,15 +459,17 @@
 							</div>
 						</div>
 					</div>
+
+					<div class="form-section">
+						<div class="row mt-3 mb-3 text-center">
+							<div class="col-md-12">
+								<asp:Button runat="server" ID="SubmitFactSheet" UseSubmitBehavior="true" CssClass="btn btn-primary" Width="25%" Text="Submit" OnClick="SubmitForm_Click" OnClientClick="ShowSubmitToast();" />
+							</div>
+						</div>
+					</div>
 				</ContentTemplate>
 			</asp:UpdatePanel>
-			<div class="form-section">
-				<div class="row mt-3 mb-3 text-center">
-					<div class="col-md-12">
-						<asp:Button runat="server" ID="SubmitNoFunForm" type="submit" CssClass="btn btn-primary" Width="25%" Text="Submit" OnClick="SubmitForm_Click" OnClientClick="showToast();" />
-					</div>
-				</div>
-			</div>
+			
 		</div>
 	</div>
 	<div class="toast-container position-fixed bottom-0 end-0 p-3">
@@ -479,18 +486,13 @@
 			$("[data-type='currency']").each(function () {
 				formatCurrency($(this), "blur");
 			});
-		});
-		function pageLoad(sender, args) {
-			const getStoredToast = () => localStorage.getItem('showToast');
-			document.addEventListener('DOMContentLoaded', function () {
-				if (getStoredToast() == 'show') {
+			if (getStoredToast() == 'show') {
+				try {
 					$('#submitToast').toast('show');
 					localStorage.setItem('showToast', '');
-				}
-			});
-			function showToast() {
-				localStorage.setItem('showToast', 'show');
+				} catch (e) { }
 			}
-		}
+		});
+		
 	</script>
 </asp:Content>

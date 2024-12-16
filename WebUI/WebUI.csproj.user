@@ -8,7 +8,7 @@
     <IISExpressWindowsAuthentication>enabled</IISExpressWindowsAuthentication>
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
-    <LastActiveSolutionConfig>Debug|Any CPU</LastActiveSolutionConfig>
+    <LastActiveSolutionConfig>Release|Any CPU</LastActiveSolutionConfig>
     <ProjectView>ProjectFiles</ProjectView>
     <NameOfLastUsedPublishProfile>C:\Users\kbolinger\Documents\Repos\ThemisV2\WebUI\Properties\PublishProfiles\TEST.pubxml</NameOfLastUsedPublishProfile>
   </PropertyGroup>
