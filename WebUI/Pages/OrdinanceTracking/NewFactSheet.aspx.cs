@@ -2,14 +2,7 @@
 using ISD.ActiveDirectory;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Data;
-using System.Diagnostics;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using static DataLibrary.Utility;
 
@@ -290,6 +283,70 @@ namespace WebUI
                     break;
             }
         }
+        protected Accounting GetAccountingItem(string tableDesc, int itemIndex)
+        {
+            Accounting accountingItem = new Accounting();
+            switch (tableDesc)
+            {
+                case "revenue":
+                    var revItem = rpRevenueTable.Items[itemIndex];
+                    DropDownList revFundCode = (DropDownList)revItem.FindControl("revenueFundCode");
+                    DropDownList revAgencyCode = (DropDownList)revItem.FindControl("revenueAgencyCode");
+                    DropDownList revOrgCode = (DropDownList)revItem.FindControl("revenueOrgCode");
+                    DropDownList revActivityCode = (DropDownList)revItem.FindControl("revenueActivityCode");
+                    DropDownList revObjectCode = (DropDownList)revItem.FindControl("revenueObjectCode");
+                    TextBox revAmount = (TextBox)revItem.FindControl("revenueAmount");
+                    accountingItem.AccountingDesc = tableDesc;
+                    accountingItem.FundCode = revFundCode.SelectedValue;
+                    accountingItem.DepartmentCode = revAgencyCode.SelectedValue;
+                    accountingItem.UnitCode = revOrgCode.SelectedValue;
+                    accountingItem.ActivityCode = revActivityCode.SelectedValue;
+                    accountingItem.ObjectCode = revObjectCode.SelectedValue;
+                    accountingItem.LastUpdateBy = _user.Login;
+                    accountingItem.LastUpdateDate = DateTime.Now;
+                    accountingItem.EffectiveDate = DateTime.Now;
+                    accountingItem.ExpirationDate = DateTime.MaxValue;
+                    if (revAmount.Text.Length == 0)
+                    {
+
+                        accountingItem.Amount = CurrencyToDecimal("-1");
+                    }
+                    else
+                    {
+                        accountingItem.Amount = CurrencyToDecimal(revAmount.Text);
+                    }
+                    break;
+                case "expenditure":
+                    var expItem = rpExpenditureTable.Items[itemIndex];
+                    DropDownList expFundCode = (DropDownList)expItem.FindControl("expenditureFundCode");
+                    DropDownList expAgencyCode = (DropDownList)expItem.FindControl("expenditureAgencyCode");
+                    DropDownList expOrgCode = (DropDownList)expItem.FindControl("expenditureOrgCode");
+                    DropDownList expActivityCode = (DropDownList)expItem.FindControl("expenditureActivityCode");
+                    DropDownList expObjectCode = (DropDownList)expItem.FindControl("expenditureObjectCode");
+                    TextBox expAmount = (TextBox)expItem.FindControl("expenditureAmount");
+                    accountingItem.AccountingDesc = tableDesc;
+                    accountingItem.FundCode = expFundCode.SelectedValue;
+                    accountingItem.DepartmentCode = expAgencyCode.SelectedValue;
+                    accountingItem.UnitCode = expOrgCode.SelectedValue;
+                    accountingItem.ActivityCode = expActivityCode.SelectedValue;
+                    accountingItem.ObjectCode = expObjectCode.SelectedValue;
+                    accountingItem.LastUpdateBy = _user.Login;
+                    accountingItem.LastUpdateDate = DateTime.Now;
+                    accountingItem.EffectiveDate = DateTime.Now;
+                    accountingItem.ExpirationDate = DateTime.MaxValue;
+                    if (expAmount.Text.Length == 0)
+                    {
+
+                        accountingItem.Amount = CurrencyToDecimal("-1");
+                    }
+                    else
+                    {
+                        accountingItem.Amount = CurrencyToDecimal(expAmount.Text);
+                    }
+                    break;
+            }
+            return accountingItem;
+        }
         protected void SubmitForm_Click(object sender, EventArgs e)
         {
             Email.Instance.AddEmailAddress(emailList, _user.Email);
@@ -431,7 +488,7 @@ namespace WebUI
                     case false:
                         finishSubmit = true;
                         break;
-                        
+
                 }
 
                 switch (finishSubmit)
@@ -441,7 +498,7 @@ namespace WebUI
                         Session["ToastColor"] = "text-bg-success";
                         Session["ToastMessage"] = "Form Submitted!";
                         Email.Instance.SendEmail(newEmail, emailList);
-                        Response.Redirect("/NewFactSheet");
+                        Response.Redirect("./NewFactSheet");
                         break;
                     case false:
                         Session["SubmitStatus"] = "error";
@@ -472,72 +529,6 @@ namespace WebUI
                 toastColor = (string)Session["ToastColor"];
                 toastMessage = (string)Session["ToastMessage"];
             }
-        }
-        
-
-        protected Accounting GetAccountingItem(string tableDesc, int itemIndex)
-        {
-            Accounting accountingItem = new Accounting();
-            switch (tableDesc)
-            {
-                case "revenue":
-                    var revItem = rpRevenueTable.Items[itemIndex];
-                    DropDownList revFundCode = (DropDownList)revItem.FindControl("revenueFundCode");
-                    DropDownList revAgencyCode = (DropDownList)revItem.FindControl("revenueAgencyCode");
-                    DropDownList revOrgCode = (DropDownList)revItem.FindControl("revenueOrgCode");
-                    DropDownList revActivityCode = (DropDownList)revItem.FindControl("revenueActivityCode");
-                    DropDownList revObjectCode = (DropDownList)revItem.FindControl("revenueObjectCode");
-                    TextBox revAmount = (TextBox)revItem.FindControl("revenueAmount");
-                    accountingItem.AccountingDesc = tableDesc;
-                    accountingItem.FundCode = revFundCode.SelectedValue;
-                    accountingItem.DepartmentCode = revAgencyCode.SelectedValue;
-                    accountingItem.UnitCode = revOrgCode.SelectedValue;
-                    accountingItem.ActivityCode = revActivityCode.SelectedValue;
-                    accountingItem.ObjectCode = revObjectCode.SelectedValue;
-                    accountingItem.LastUpdateBy = _user.Login;
-                    accountingItem.LastUpdateDate = DateTime.Now;
-                    accountingItem.EffectiveDate = DateTime.Now;
-                    accountingItem.ExpirationDate = DateTime.MaxValue;
-                    if (revAmount.Text.Length == 0)
-                    {
-
-                        accountingItem.Amount = CurrencyToDecimal("-1");
-                    }
-                    else
-                    {
-                        accountingItem.Amount = CurrencyToDecimal(revAmount.Text);
-                    }
-                    break;
-                case "expenditure":
-                    var expItem = rpExpenditureTable.Items[itemIndex];
-                    DropDownList expFundCode = (DropDownList)expItem.FindControl("expenditureFundCode");
-                    DropDownList expAgencyCode = (DropDownList)expItem.FindControl("expenditureAgencyCode");
-                    DropDownList expOrgCode = (DropDownList)expItem.FindControl("expenditureOrgCode");
-                    DropDownList expActivityCode = (DropDownList)expItem.FindControl("expenditureActivityCode");
-                    DropDownList expObjectCode = (DropDownList)expItem.FindControl("expenditureObjectCode");
-                    TextBox expAmount = (TextBox)expItem.FindControl("expenditureAmount");
-                    accountingItem.AccountingDesc = tableDesc;
-                    accountingItem.FundCode = expFundCode.SelectedValue;
-                    accountingItem.DepartmentCode = expAgencyCode.SelectedValue;
-                    accountingItem.UnitCode = expOrgCode.SelectedValue;
-                    accountingItem.ActivityCode = expActivityCode.SelectedValue;
-                    accountingItem.ObjectCode = expObjectCode.SelectedValue;
-                    accountingItem.LastUpdateBy = _user.Login;
-                    accountingItem.LastUpdateDate = DateTime.Now;
-                    accountingItem.EffectiveDate = DateTime.Now;
-                    accountingItem.ExpirationDate = DateTime.MaxValue;
-                    if (expAmount.Text.Length == 0)
-                    {
-
-                        accountingItem.Amount = CurrencyToDecimal("-1");
-                    }
-                    else
-                    {
-                        accountingItem.Amount = CurrencyToDecimal(expAmount.Text);
-                    }
-                    break;
-            }
-            return accountingItem;
         }
     }
 }

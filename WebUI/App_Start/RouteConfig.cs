@@ -1,12 +1,8 @@
 ﻿using Microsoft.AspNet.FriendlyUrls;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Web;
-using System.Web.UI;
 using System.Web.Routing;
-using System.Web.UI.WebControls.WebParts;
+using System.Web.UI;
 
 namespace WebUI
 {
@@ -70,7 +66,7 @@ namespace WebUI
             string fileName = new FileInfo(Page.Request.Url.LocalPath).Name;
             if (Page.Request.FilePath.ToLower().Contains("pages") || fileName.ToLower() == "default")
             {
-                Response.RedirectToRoute(fileName);
+                Response.RedirectToRoute(fileName.Replace(".aspx", ""));
             }
         }
     }

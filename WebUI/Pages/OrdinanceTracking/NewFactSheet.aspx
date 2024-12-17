@@ -493,6 +493,5 @@
 				} catch (e) { }
 			}
 		});
-		
 	</script>
 </asp:Content>

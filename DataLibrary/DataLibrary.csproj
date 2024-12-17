@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="OrdinanceTracking\Accounting.cs" />
+    <Compile Include="OrdinanceTracking\AccountingCode.cs" />
     <Compile Include="OrdinanceTracking\Ordinance.cs" />
     <Compile Include="OrdinanceTracking\OrdinanceAccounting.cs" />
     <Compile Include="Utilities\ColorTheme.cs" />
@@ -58,6 +59,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\TablePagination.cs" />
     <Compile Include="Utilities\UserTheme.cs" />
     <Compile Include="Utilities\Utility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

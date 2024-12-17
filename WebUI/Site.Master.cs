@@ -1,18 +1,10 @@
 ﻿using DataLibrary;
 using ISD.ActiveDirectory;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Web;
-using System.Web.Routing;
-using System.Web.Services;
 using System.Web.UI;
-using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
 
 namespace WebUI
 {
@@ -29,7 +21,7 @@ namespace WebUI
                 Session["CurrentUser"] = _user;
                 imgUser.Src = Photo.Instance.Base64ImgSrc(_user.PhotoLocation);
             }
-            if (!Page.IsPostBack)
+            if (!Page.IsPostBack && !Response.IsRequestBeingRedirected)
             {
                 RouteConfig.FolderRedirect(Response, Page);
             }

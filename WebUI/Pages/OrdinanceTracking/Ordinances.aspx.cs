@@ -1,14 +1,11 @@
 ﻿using DataLibrary;
-using ISD.ActiveDirectory;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using static DataLibrary.TablePagination;
 
 namespace WebUI
 {
@@ -16,80 +13,66 @@ namespace WebUI
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!Page.IsPostBack)
+            if (!Page.IsPostBack && !Response.IsRequestBeingRedirected)
             {
                 SetStartupActives();
-                //Template tf = new Template();
-                //List<Template> tf_list = new List<Template>();
-                //tf_list = Factory.Instance.GetAllTemplateForms();
-
-                //if (tf_list.Count > 0)
-                //{
-                //    BindDataRepeaterSearch("yes", tf_list);
-                //}
-
-                //Session["tf_list"] = tf_list;
-                //int numItems = tf_list.Count;
+                SetPagination(rpOrdinanceTable, 10);
+                GetStartupData();
             }
         }
         protected void SetStartupActives()
         {
             errorAlert.Visible = false;
         }
+        protected void SetPagination(Repeater rpTable, int ItemsPerPage)
+        {
+            SetViewState(ViewState, ItemsPerPage);
+            GetControls(lnkFirstSearchP, lnkPreviousSearchP, lnkNextSearchP, lnkLastSearchP, rpTable, pnlPagingP, lblCurrentPageBottomSearchP);
+        }
+        protected void GetStartupData()
+        {
+            List<Ordinance> ord_list = new List<Ordinance>();
+            ord_list = Factory.Instance.GetAll<Ordinance>("sp_GetOrdinanceByEffective");
+            if (ord_list.Count > 0)
+            {
+                BindDataRepeaterPagination("yes", ord_list);
+            }
+
+            Session["ord_list"] = ord_list;
+        }
         protected void mdlDeleteSubmit_ServerClick(object sender, EventArgs e)
         {
-            Debug.WriteLine(deleteID.Value);
             int FormID = Convert.ToInt32(deleteID.Value);
-            //int retVal = Factory.Instance.DeleteTemplateForm(FormID);
-            //if (retVal > 0)
-            //{
-            //    List<Template> tf_list = new List<Template>();
-            //    tf_list = Session["tf_list"] as List<Template>;
-            //    tf_list = Factory.Instance.GetAllTemplateForms();
-            //    rpTemplateForm.DataSource = tf_list;
-            //    rpTemplateForm.DataBind();
-            //    Session["tf_list"] = tf_list;
-            //    Response.Redirect(HttpContext.Current.Request.Url.AbsoluteUri);
-            //}
-            //else
-            //{
-            //    errorAlert.Visible = true;
-            //    errorMsg.Text = "Could not delete entry. Something went wrong!";
-            //}
+            int retVal = Factory.Instance.Delete<Ordinance>(FormID, "Ordinance");
+            if (retVal > 0)
+            {
+                List<Ordinance> ord_list = new List<Ordinance>();
+                ord_list = Session["ord_list"] as List<Ordinance>;
+                ord_list = Factory.Instance.GetAll<Ordinance>("sp_GetOrdinanceByEffective");
+                rpOrdinanceTable.DataSource = ord_list;
+                rpOrdinanceTable.DataBind();
+                Session["ord_list"] = ord_list;
+                Response.Redirect(HttpContext.Current.Request.Url.AbsoluteUri);
+            }
+            else
+            {
+                errorAlert.Visible = true;
+                errorMsg.Text = "Could not delete entry. Something went wrong!";
+            }
         }
         protected void mdlCancelBtn_ServerClick(object sender, EventArgs e)
         {
             //deleteModal.Hide();
         }
-
-        public int SearchPgNumP
+        protected void paginationBtn_Click(object sender, EventArgs e)
         {
-            get
-            {
-                if (ViewState["PgNumP"] != null)
-                    return Convert.ToInt32(ViewState["PgNumP"]);
-                else return 1;
-            }
-
-            set
-            {
-                ViewState["PgNumP"] = value;
-            }
+            SetPagination(rpOrdinanceTable, 10);
+            List<Ordinance> ord_list = new List<Ordinance>();
+            ord_list = (List<Ordinance>)Session["ord_list"];
+            HtmlButton button = (HtmlButton)sender;
+            string commandName = button.Attributes["data-command"];
+            PageButtonClick(ord_list, commandName);
         }
-        public int SearchPageCountP
-        {
-            get
-            {
-                if (ViewState["PageCountP"] != null)
-                    return Convert.ToInt32(ViewState["PageCountP"]);
-                else return 0;
-            }
-            set
-            {
-                ViewState["PageCountP"] = value;
-            }
-        }
-        
         protected void CloseAlert_ServerClick(object sender, EventArgs e)
         {
             errorAlert.Visible = false;

@@ -119,6 +119,7 @@
     <Content Include="assets\js\Site.js" />
     <Content Include="Pages\OrdinanceTracking\NewFactSheet.aspx" />
     <Content Include="Pages\OrdinanceTracking\Ordinances.aspx" />
+    <Content Include="Pages\OrdinanceTracking\OrdinanceTrackingAdmin.aspx" />
     <Content Include="Scripts\ChartCode\ChartOptions.js" />
     <Content Include="Scripts\Helpers\JS\ChartHelpers.js" />
     <Content Include="Scripts\Helpers\JS\ChartPrism.js" />
@@ -180,6 +181,13 @@
     </Compile>
     <Compile Include="Pages\OrdinanceTracking\Ordinances.aspx.designer.cs">
       <DependentUpon>Ordinances.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\OrdinanceTracking\OrdinanceTrackingAdmin.aspx.cs">
+      <DependentUpon>OrdinanceTrackingAdmin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\OrdinanceTracking\OrdinanceTrackingAdmin.aspx.designer.cs">
+      <DependentUpon>OrdinanceTrackingAdmin.aspx</DependentUpon>
     </Compile>
     <Compile Include="Scripts\Helpers\CSharp\ChartCodeHandler.cs" />
     <Compile Include="Scripts\Helpers\CSharp\ChartHandler.asmx.cs">
