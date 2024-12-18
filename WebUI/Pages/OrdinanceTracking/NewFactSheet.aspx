@@ -328,7 +328,7 @@
 						<%-- FIRST ROW --%>
 						<div class="row mb-3">
 							<%-- REVENUE --%>
-							<div class="col-md-6hf tableAddTable form-table">
+							<div class="col-md-6hf form-table">
 								<label for="revenueTable">Revenue</label>
 								<table id="revenueTable" class="table table-bordered table-striped table-hover text-center" style="padding: 0px; margin: 0px">
 									<thead>
@@ -365,7 +365,7 @@
 														<asp:TextBox runat="server" ID="revenueAmount" CssClass="form-control" TextMode="SingleLine" data-type="currency" placeholder="$10,000.00" AutoCompleteType="Disabled" Text='<%# (Convert.ToInt32(DataBinder.Eval(Container.DataItem, "Amount")) >= 0)?DataBinder.Eval(Container.DataItem, "Amount"):string.Empty%>'></asp:TextBox>
 														
 														<div>
-															<asp:Button runat="server" ID="removeRevenueRow" CssClass="btn tableDelete" UseSubmitBehavior="false" CommandName="delete" CommandArgument="revenue" Text="&#xf068;" />
+															<asp:Button runat="server" ID="removeRevenueRow" CssClass="btn row-delete" UseSubmitBehavior="false" CommandName="delete" CommandArgument="revenue" Text="&#xf068;" />
 														</div>
 													</td>
 												</tr>
@@ -374,14 +374,14 @@
 									</tbody>
 								</table>
 								<div class="text-center w-100">
-									<asp:Button runat="server" ID="newRevenueRow" CssClass="btn btn-success w-100 tableAdd" OnClick="newAccountingRow_ServerClick" UseSubmitBehavior="false" CommandName="revenue" Text="Add Row" />
+									<asp:Button runat="server" ID="newRevenueRow" CssClass="btn btn-success w-100 row-add" OnClick="newAccountingRow_ServerClick" UseSubmitBehavior="false" CommandName="revenue" Text="Add Row" />
 								</div>
 							</div>
 
 							<div class="col-md-1hf"></div>
 
 							<%-- EXPENDITURE --%>
-							<div class="col-md-6hf tableAddTable form-table">
+							<div class="col-md-6hf form-table">
 								<label for="expenditureTable">Expenditure</label>
 								<table id="expenditureTable" class="table table-bordered table-striped table-hover text-center" style="padding: 0px; margin: 0px">
 									<thead>
@@ -418,7 +418,7 @@
 														<asp:TextBox runat="server" ID="expenditureAmount" CssClass="form-control" TextMode="SingleLine" data-type="currency" placeholder="$10,000.00" AutoCompleteType="Disabled" Text='<%# (Convert.ToInt32(DataBinder.Eval(Container.DataItem, "Amount")) >= 0)?DataBinder.Eval(Container.DataItem, "Amount"):string.Empty%>'></asp:TextBox>
 
 														<div>
-															<asp:Button runat="server" ID="removeExpenditureRow" CssClass="btn tableDelete" UseSubmitBehavior="false" CommandName="delete" CommandArgument="expenditure" Text="&#xf068;" />
+															<asp:Button runat="server" ID="removeExpenditureRow" CssClass="btn row-delete" UseSubmitBehavior="false" CommandName="delete" CommandArgument="expenditure" Text="&#xf068;" />
 														</div>
 													</td>
 												</tr>
@@ -427,7 +427,7 @@
 									</tbody>
 								</table>
 								<div class="text-center w-100">
-									<asp:Button runat="server" ID="newExpenditureRow" CssClass="btn btn-success w-100 tableAdd" OnClick="newAccountingRow_ServerClick" UseSubmitBehavior="false" CommandName="expenditure" Text="Add Row" />
+									<asp:Button runat="server" ID="newExpenditureRow" CssClass="btn btn-success w-100 row-add" OnClick="newAccountingRow_ServerClick" UseSubmitBehavior="false" CommandName="expenditure" Text="Add Row" />
 								</div>
 							</div>
 

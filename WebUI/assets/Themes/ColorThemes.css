@@ -1,4 +1,5 @@
-﻿[data-bs-theme=light] {
+﻿/* --------------- Variables --------------- */
+[data-bs-theme=light] {
   --bs-body-bg: #dddddd;
   --bs-body-bg-rgb: rgb(221, 221, 221);
   --bs-secondary-bg: #ffffff;
@@ -488,6 +489,7 @@
   --custom-theme-border-color: var(--bs-border-color);
 }
 
+/* --------------- Body --------------- */
 .bg-body {
   --bs-bg-opacity: 1;
   background-color: var(--bs-body-bg) !important;
@@ -503,6 +505,7 @@
   background-color: var(--bs-tertiary-bg) !important;
 }
 
+/* --------------- Forms --------------- */
 .form-control, .form-select {
   border-color: var(--custom-theme-border-color);
 }
@@ -578,6 +581,41 @@ td .form-select, td .form-control {
   cursor: pointer !important;
 }
 
+input[type=range]::-webkit-slider-thumb {
+  background-color: var(--active-bg);
+  border: 1px solid var(--bs-body-color);
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+  border: 1px solid var(--active-bg-subtle);
+}
+
+[data-color-theme=base] input[type=range]::-webkit-slider-thumb {
+  background-color: var(--bs-body-color);
+}
+
+input[type=range]:focus::-webkit-slider-thumb {
+  border: 1px solid var(--bs-body-color);
+  box-shadow: unset;
+  background-color: var(--active-bg);
+}
+
+[data-color-theme=base] input[type=range]:focus::-webkit-slider-thumb {
+  background-color: var(--bs-body-color);
+}
+
+[data-control-type=shape-button] {
+  color: var(--active-bg);
+}
+
+[data-control-type=shape-button] {
+  color: var(--active-bg);
+}
+
+[data-color-theme=base] [data-control-type=shape-button] {
+  color: var(--bs-body-color);
+}
+
 .form-switch:not(.theme-switch) .form-check-input:not([name=colorThemeRadio]) {
   background-color: var(--active-bg-subtle) !important;
   border: 1px solid var(--active-bg);
@@ -596,6 +634,11 @@ td .form-select, td .form-control {
   background-image: url("../images/icons/theme-light.svg") !important;
 }
 
+.btn-close:focus {
+  box-shadow: none;
+}
+
+/* --------------- Prism Code Blocks --------------- */
 [data-bs-theme=dark] pre[class*=language-] {
   background: var(--bs-body-bg) !important;
 }

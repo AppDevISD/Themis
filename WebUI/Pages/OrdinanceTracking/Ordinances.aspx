@@ -74,10 +74,10 @@
 										</div>
 									</td>
 									<td class="text-center">
-										<button id="lnkNextSearchP" class="btn btn-primary" runat="server" onserverclick="paginationBtn_Click" data-command="next" style="width: 150px;" causesvalidation="false"><i class="fas fa-angle-right"></i>&nbsp;Next</button>
+										<button id="lnkNextSearchP" class="btn btn-primary" runat="server" onserverclick="paginationBtn_Click" data-command="next" style="width: 150px;" causesvalidation="false">Next&nbsp;<i class="fas fa-angle-right"></i></button>
 									</td>
 									<td class="text-end">
-										<button id="lnkLastSearchP" class="btn btn-primary" runat="server" onserverclick="paginationBtn_Click" data-command="last" style="width: 150px;" causesvalidation="false"><i class="fas fa-angles-right"></i>&nbsp;Last</button>
+										<button id="lnkLastSearchP" class="btn btn-primary" runat="server" onserverclick="paginationBtn_Click" data-command="last" style="width: 150px;" causesvalidation="false">Last&nbsp;<i class="fas fa-angles-right"></i></button>
 									</td>
 								</tr>
 							</table>

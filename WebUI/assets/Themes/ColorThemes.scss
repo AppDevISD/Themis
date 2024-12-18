@@ -3,6 +3,7 @@
 @import "bootstrap-scss/_mixins.scss";
 @import "../css/Colors.scss";
 @import "_data-color-theme.scss";
+
 @function color-theme-text($mode, $color, $value) {
 	@if $mode == light {
 		@if $color != base {
@@ -21,7 +22,6 @@
 		}
 	}
 }
-
 @function color-theme-subtle($mode, $color, $value) {
 	@if $mode == light {
 		@return rgba($value, 0.15);
@@ -36,6 +36,9 @@
 	}
 }
 
+
+
+/* --------------- Variables --------------- */
 @include color-mode(light) {
 	--bs-body-bg: #dddddd;
 	--bs-body-bg-rgb: rgb(221, 221, 221);
@@ -71,6 +74,7 @@
 			--bs-form-check-bg-image: #{$radio-checked-image} !important;
 		}
 	}
+
 	@include color-mode(light) {
 		$color-theme-text: color-theme-text(light, $color, $value);
 		$color-theme-active-bg-subtle: color-theme-subtle(light, $color, $value);
@@ -96,6 +100,7 @@
 	--chart-border-color: rgba(255, 255, 255, 0.25);
 	--chart-line-color: rgba(167, 167, 167, 0.65);
 }
+
 @each $color, $value in $color-themes {
 	@include color-theme(dark, $color) {
 		$color-theme-text: color-theme-text(dark, $color, $value);
@@ -144,6 +149,9 @@
 	--custom-theme-border-color: var(--bs-border-color);
 }
 
+
+
+/* --------------- Body --------------- */
 .bg-body {
 	--bs-bg-opacity: 1;
 	background-color: var(--bs-body-bg) !important;
@@ -159,6 +167,9 @@
 	background-color: var(--bs-tertiary-bg) !important;
 }
 
+
+
+/* --------------- Forms --------------- */
 .form-control, .form-select {
 	border-color: var(--custom-theme-border-color);
 }
@@ -198,6 +209,7 @@ label:has(+ .form-control:disabled) {
 [data-bs-theme='dark'] .table-striped > tbody > tr:nth-of-type(odd) > * {
 	background-color: var(--bs-body-bg);
 }
+
 .table-striped > tbody > tr:nth-of-type(even) > * {
 	background-color: var(--bs-secondary-bg);
 }
@@ -217,11 +229,13 @@ label:has(+ .form-control:disabled) {
 td:has(.form-select), td:has(.form-control) {
 	padding: 0;
 }
+
 td .form-select, td .form-control {
 	padding: .5rem .5rem;
 	border: none;
 	border-radius: 0;
 }
+
 .form-check-input:focus, td .form-select:focus, td .form-control {
 	border: none;
 	box-shadow: unset;
@@ -231,10 +245,46 @@ td .form-select, td .form-control {
 	cursor: pointer !important;
 }
 
+input[type="range"]::-webkit-slider-thumb {
+	background-color: var(--active-bg);
+	border: 1px solid var(--bs-body-color);
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+	border: 1px solid var(--active-bg-subtle);
+}
+
+[data-color-theme="base"] input[type="range"]::-webkit-slider-thumb {
+	background-color: var(--bs-body-color);
+}
+
+input[type="range"]:focus::-webkit-slider-thumb {
+	border: 1px solid var(--bs-body-color);
+	box-shadow: unset;
+	background-color: var(--active-bg);
+}
+
+[data-color-theme="base"] input[type="range"]:focus::-webkit-slider-thumb {
+	background-color: var(--bs-body-color);
+}
+
+[data-control-type="shape-button"] {
+	color: var(--active-bg);
+}
+
+[data-control-type="shape-button"] {
+	color: var(--active-bg);
+}
+
+[data-color-theme="base"] [data-control-type="shape-button"] {
+	color: var(--bs-body-color);
+}
+
 .form-switch:not(.theme-switch) .form-check-input:not([name="colorThemeRadio"]) {
 	background-color: var(--active-bg-subtle) !important;
 	border: 1px solid var(--active-bg);
 }
+
 .form-switch:not(.theme-switch) .form-check-input:not([name="colorThemeRadio"]):checked {
 	background-color: var(--active-bg) !important;
 	border: none;
@@ -248,6 +298,13 @@ td .form-select, td .form-control {
 	background-image: url('../images/icons/theme-light.svg') !important;
 }
 
+.btn-close:focus {
+	box-shadow: none;
+}
+
+
+
+/* --------------- Prism Code Blocks --------------- */
 [data-bs-theme="dark"] pre[class*=language-] {
 	background: var(--bs-body-bg) !important;
 }

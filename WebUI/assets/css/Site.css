@@ -6,35 +6,6 @@
 	background-size: contain;
 }
 
-.tableAddTable {
-	position: relative !important;
+.site-title {
+	font-size: 45px;
 }
-
-.tableAdd {
-	border-top-left-radius: 0 !important;
-	border-top-right-radius: 0 !important;
-}
-
-.tableDelete {
-	border: none !important;
-	position: absolute;
-	bottom: 25%;
-	right: -30px;
-	font-family: "Font Awesome 6 Pro" !important;
-	font-weight: 900;
-	font-size: 15px;
-	color: white;
-	background-color: var(--bs-danger);
-	border-radius: 100%;
-	padding: 0;
-	height: 22px;
-	width: 22px;
-	padding-left: 0.5px;
-	padding-bottom: 0.5px;
-	line-height: 1;
-	transition: 0.3s ease-in-out;
-}
-	.tableDelete:hover {
-		color: var(--bs-danger);
-		background-color: white;
-	}

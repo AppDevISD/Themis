@@ -8,7 +8,13 @@
 			<div class="card-header bg-body">
 				<h3><i class="fas fa-key"></i>&nbsp;&nbsp;Ordinance Admin</h3>
 			</div>
+			<asp:UpdatePanel runat="server" ID="pnlOrdinanceTable" UpdateMode="Always">
+				<ContentTemplate>
+					<div class="card-body bg-body-tertiary">
 
+					</div>
+				</ContentTemplate>
+			</asp:UpdatePanel>
 		</div>
 	</section>
 </asp:Content>
