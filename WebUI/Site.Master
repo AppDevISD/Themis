@@ -1,125 +1,159 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.Master.cs" Inherits="WebUI.Site" %>
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="WebUI.SiteMaster" %>
 
-<!DOCTYPE html">
-<html lang="en" data-bs-theme="dark" class="bg-body">
-    <head runat="server">
-        <meta charset="utf-8" />
-        <meta name="author" content="CWLP AppDev">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" type="text/css">
-        <link href="Assets/Styles/Global.css" rel="stylesheet" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/Assets/Images/Icons/favicon/apple-touch-icon.png">
-        <link rel="icon" type="image/png" sizes="32x32" href="/Assets/Images/Icons/favicon/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/Assets/Images/Icons/favicon/favicon-16x16.png">
-        <link href="https://fonts.googleapis.com/css2?family=GFS+Neohellenic:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-        <link href="/Assets/Styles/essentials.css" rel="stylesheet" type="text/css" />
-        <link href="/Assets/Styles/layout.css" rel="stylesheet" type="text/css" />
-        <link href="/Assets/Styles/Custom.css" rel="stylesheet" type="text/css" />
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
+
+<!DOCTYPE html>
+
+<html runat="server" id="html" lang="en" data-bs-theme='dark' data-color-theme="blue" class="bg-body-secondary">
+	<head runat="server">
+		<asp:ContentPlaceHolder ID="HeadContent" runat="server"></asp:ContentPlaceHolder>
+		<title runat="server" id="title"></title>
+
+		<%-- METAS --%>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="apple-mobile-web-app-title" content="Themis" />
+		
+		<%-- FAVICON --%>
+		<link rel="icon" type="image/png" href="./assets/images/icons/favicon/favicon-96x96.png" sizes="96x96" />
+		<link rel="icon" type="image/svg+xml" href="./assets/images/icons/favicon/favicon.svg" />
+		<link rel="shortcut icon" href="./assets/images/icons/favicon/favicon.ico" />
+		<link rel="apple-touch-icon" sizes="180x180" href="./assets/images/icons/favicon/apple-touch-icon.png" />
+		<link rel="manifest" href="./assets/images/icons/favicon/manifest.json" crossorigin="use-credentials"/>
+
+		<%-- FONTS --%>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+		<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=GFS+Neohellenic:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+		<link href="./assets/css/Fonts.css" rel="stylesheet" type="text/css">
+
+		<%-- CDN LINKS --%>
+		<script src="https://kit.fontawesome.com/e9883517ba.js" crossorigin="anonymous"></script>
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap4-datetimepicker@5.2.3/build/css/bootstrap-datetimepicker.min.css" type="text/css">
-        <link href="/Assets/Styles/color-mode.css" rel="stylesheet" type="text/css" id="color_scheme"/>
-        
-        
-        <title>Themis</title>
-    </head>
-    <body runat="server">
-        <div id="wrapper">
-            <header id="header">
-                <div class="row" style="display: flex; justify-content: space-between; align-items: center;">
-                    <div class="col-md-9" style="padding: 10px; font-weight: 600;">
-                        <a href="/">
-                            <div style="position: relative; width: 60px; height: 60px;">
-                                <div class="themis-logo nav-logo" style="width: 60px; height: 60px;"></div>
-                            </div>
-                            <asp:Label Text="&nbsp;&nbsp;&nbsp;THΣMIS" runat="server" style="font-size: 38px; line-height: 1; font-family: 'GFS Neohellenic', sans-serif; margin-top: 5px;"/>
-                        </a>
-                    </div>
-                    <div class="col-md-3 text-right normal-font" style="display: flex; justify-content: flex-end; align-items: center;">
-                        <div class="text-stack" style="display: flex; flex-direction: column;">
-                            <asp:Label ID="lblUser" Text="" runat="server"/>
-                            <asp:Label ID="lblTitle" Text="" runat="server" />
-                        </div>&nbsp;&nbsp;&nbsp;&nbsp;
-                        <img id="imgUser" runat="server" class="user-avatar" alt="" src="/assets/images/icons/noavatar.jpg" height="60" />&nbsp;&nbsp;&nbsp;&nbsp;
-                    </div>
-                </div>
-            </header>
-            <aside id="aside">
-                <nav id="sideNav">
-                    <ul class="nav nav-list">
-                        <li id="HomeNav" runat="server">
-                            <%--ID needs to match the PAGE TITLE (AT TOP OF HTML DOC) with no spaces in order for active page styling to work--%>
-                            <a href="/" id="Home" runat="server" class="text-right"><i class="fas fa-house" style="float: left;"></i>Home</a>
-                        </li>
-                         <%--ID needs to match the CLASS GROUP w/ "Menu" in order for active page styling to work--%>
-                        <li id="OrdinanceMenu" runat="server">
-                            <a href="#" runat="server" class="text-right"><i class="fas fa-gavel" style="float: left;"></i>Ordinance Tracking</a>
-                            <ul class="fc">
-                                <%--ID needs to match the PAGE TITLE (AT TOP OF HTML DOC) with no spaces in order for active page styling to work ALSO ADD MENU GROUP NAME TO START OF CLASS--%>
-                                <li><a href="#" id="Ordinances" class="Ordinance text-right" target="_blank"><i class="fa-solid fa-file-lines" style="float: left;"></i>Ordinances</a></li>
-
-                                <%--ID needs to match the PAGE TITLE (AT TOP OF HTML DOC) with no spaces in order for active page styling to work ALSO ADD MENU GROUP NAME TO START OF CLASS--%>
-                                <li><a href="/OrdinanceRequestForm" id="OrdinanceRequestForm" class="Ordinance text-right" runat="server"><i class="fa-solid fa-file-lines" style="float: left;"></i>Request Form</a></li>
-
-                                <%--ID needs to match the PAGE TITLE (AT TOP OF HTML DOC) with no spaces in order for active page styling to work ALSO ADD MENU GROUP NAME TO START OF CLASS--%>
-                                <li><a href="/NewFactSheet" id="NewFactSheet" class="Ordinance text-right" runat="server"><i class="fa-solid fa-square-plus" style="float: left;"></i>New Fact Sheet</a></li>
-                            </ul>
-                        </li>
-                        <li id="li2" runat="server">
-                            <%--ID needs to match the PAGE TITLE (AT TOP OF HTML DOC) with no spaces in order for active page styling to work--%>
-                            <a href="/TableTemplate.aspx" id="TableTemplate" runat="server" class="text-right"><i class="fas fa-table" style="float: left;"></i>Table Template</a>
-                        </li>
-                        <li id="li4" runat="server" class="">
-                            <a href="#" class="text-right"><i class="fas fa-link" style="float: left;"></i>External Links</a>
-                            <ul class="fc">
-                                <li><a href="http://apps/appdevportal/" class="text-right" target="_blank"><i class="fas fa-link" style="float: left;"></i>Link 1</a></li>
-                                <li><a href="https://fontawesome.com/search?o=r&m=free" class="text-right" target="_blank"><i class="fas fa-link" style="float: left;"></i>Link 2</a></li>
-                                <li><a href="http://apps/adtool/" class="text-right" target="_blank"><i class="fas fa-link" style="float: left;"></i>Link 3</a></li>
-                            </ul>
-                        </li>
+		<link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" crossorigin="anonymous" data-code-theme="dark">
+		<link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/toolbar/prism-toolbar.min.css" rel="stylesheet" crossorigin="anonymous">
 
 
+		<%-- STYLESHEETS --%>
+		<link href="./assets/Themes/ColorThemes.css" rel="stylesheet" type="text/css"/>
+		<link href="./assets/css/MainLayout.css" rel="stylesheet" type="text/css">
+		<link href="./assets/css/Animations.css" rel="stylesheet" type="text/css">
+		<link href="./assets/css/Site.css" rel="stylesheet" type="text/css">
 
-                        <%--COLOR THEME SWITCHER NAV--%>
-                        <li id="ColorSwitcherNav" runat="server" class="">
-                            <a href="#" class="text-right" id="color-schemes-nav"><i class="fas fa-palette" style="float: left;"></i>Color Schemes</a>
-                            <ul class="fc">
-                                <li><button id="baseTheme" class="text-right" type="button" runat="server" onserverclick="Theme_ServerClick"><i class="fas fa-droplet" style="float: left;"></i>Black/White</button></li>
-                                <li><button id="redTheme" class="text-right" type="button" runat="server" onserverclick="Theme_ServerClick"><i class="fas fa-droplet" style="float: left;"></i>Red</button></li>
-                                <li><button id="orangeTheme" class="text-right" type="button" runat="server" onserverclick="Theme_ServerClick"><i class="fas fa-droplet" style="float: left;"></i>Orange</button></li>
-                                <li><button id="yellowTheme" class="text-right" type="button" runat="server" onserverclick="Theme_ServerClick"><i class="fas fa-droplet" style="float: left;"></i>Yellow</button></li>
-                                <li><button id="greenTheme" class="text-right" type="button" runat="server" onserverclick="Theme_ServerClick"><i class="fas fa-droplet" style="float: left;"></i>Green</button></li>
-                                <li><button id="blueTheme" class="text-right" type="button" runat="server" onserverclick="Theme_ServerClick"><i class="fas fa-droplet" style="float: left;"></i>Blue</button></li>
-                                <li><button id="cyanTheme" class="text-right" type="button" runat="server" onserverclick="Theme_ServerClick"><i class="fas fa-droplet" style="float: left;"></i>Cyan</button></li>
-                                <li><button id="purpleTheme" class="text-right" type="button" runat="server" onserverclick="Theme_ServerClick"><i class="fas fa-droplet" style="float: left;"></i>Purple</button></li>
-                            </ul>
-                        </li>
-                    </ul>
+	</head>
+	<body runat="server" class="bg-body-secondary">
+		<div class="page">
+			<%-- NAV MENU --%>
+			<div class="sidebar bg-body-tertiary">
+				<%-- TOP ROW --%>
+				<div id="top-row-header" class="top-row ps-0 navbar bg-body menu-box-shadow">
+					<div class="container-fluid ps-0">
+						<%-- SITE BRANDING --%>
+						<a class="navbar-brand" href="./">
+							<img class="site-logo" src="./assets/images/icons/favicon/web-app-manifest-192x192.png" alt="Favicon">
+							<asp:Label CssClass="site-title gfs-neohellenic-bold" Text="&nbsp;&nbsp;THΣMIS" runat="server" />
+						</a>
 
+						<%-- MOBILE NAV TOGGLER --%>
+						<button title="Navigation menu" class="navbar-toggler" data-toggle="collapse" data-target="#sidebarCollapse">
+							<span class="navbar-toggler-icon"></span>
+						</button>
 
+						<%-- USER --%>
+						<div class="user-info text-end">
+							<div class="user-stack text-stack">
+								<asp:Label ID="lblUser" runat="server" CssClass="border-bottom" Text="John Doe" />
+								<asp:Label ID="lblTitle" runat="server" Text="Current Position" />
+							</div>
+							<img id="imgUser" runat="server" class="user-avatar" alt="" src="./assets/images/icons/noavatar.jpg" height="60" />
+						</div>
+					</div>
+				</div>
+				<%-- SIDEBAR --%>
+				<div id="sidebarCollapse" class="collapse">
+					<nav class="flex-column navMenuShow">
+						<%-- HOME --%>
+						<div class='nav-item <%:ActivePage("Home")?"activePage":""%>'>
+							<a runat="server" id="Home" class="nav-link" href="./">
+								<span class="fas fa-house"></span>
+								<p class="m-0 fs-6 noto-sans-semi-bold">Home</p>
+							</a>
+						</div>
 
-                    <div class="color-mode-button">
-                        <button id="colorModeToggle" type="button" runat="server" onserverclick="colorModeToggle_ServerClick"></button>
-                    </div>
-                </nav>
-            </aside>    
-            <section id="middle">
-                <div id="content" class="dashboard padding-10">
-                    <form id="formMain" runat="server">
-                        <asp:ScriptManager runat="server" />
-                        <asp:ContentPlaceHolder ID="MainContent" runat="server">
-                        </asp:ContentPlaceHolder>
-                    </form>
-                </div>
-            </section>
-        </div>
-        
-        <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
-		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/moment@2.30.1/moment.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap4-datetimepicker@5.2.3/build/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
-        <script type="text/javascript" src="https://kit.fontawesome.com/e9883517ba.js" crossorigin="anonymous"></script>
-        <script type="text/javascript" src="/Assets/JS/custom.js"></script>
-        <%--<script type="text/javascript">var plugin_path = '/Assets/Plugins/';</script>--%>
-    </body>
+						<%-- ORDINANCE TRACKING --%>
+						<div id="ordinanceTrackingParent" class="nav-item accordion">
+							<a class='btn-accordion nav-link' href="javascript:void(0);" data-toggle="collapse" data-target="#OrdinanceTrackingMenu">
+								<span class="fas fa-gavel"></span>
+								<p class="m-0 fs-6 noto-sans-semi-bold">Ordinance Tracking</p>
+							</a>
+							<div id="OrdinanceTrackingMenu" class='accordion-border collapse' data-parent="#ordinanceTrackingParent">
+								<a class='nav-link <%:ActivePage("Ordinances")?"activePage":""%>' href="./Ordinances">
+									<span class="fas fa-book-section"></span>
+									<p class="m-0 fs-6 noto-sans-semi-bold">Ordinances</p>
+								</a>
+								<a class='nav-link <%:ActivePage("NewFactSheet")?"activePage":""%>' href="./NewFactSheet">
+									<span class="fas fa-file-circle-plus"></span>
+									<p class="m-0 fs-6 noto-sans-semi-bold">New Fact Sheet</p>
+								</a>
+								<a class='nav-link <%:ActivePage("OrdinanceAdmin")?"activePage":""%>' href="./OrdinanceTrackingAdmin">
+									<span class="fas fa-key"></span>
+									<p class="m-0 fs-6 noto-sans-semi-bold">Admin</p>
+								</a>
+							</div>
+						</div>
+
+						<%-- SETTINGS --%>
+						<div id="settingsParent" class="nav-item accordion">
+							<a runat="server" id="A1" class="btn-accordion nav-link" href="javascript:void(0);" data-toggle="collapse" data-target="#SettingsMenu">
+								<span class="fas fa-gear"></span>
+								<p class="m-0 fs-6 noto-sans-semi-bold">Settings</p>
+							</a>
+							<div runat="server" id="SettingsMenu" class="accordion-border collapse" data-parent="#settingsParent">
+								<div class="Settings nav-link switchSetting">
+									<p class="m-0 fs-6 noto-sans-semi-bold">Mode</p>
+									<div class="form-check form-switch theme-switch" style="display: flex; align-items: center;">
+										<input runat="server" type="checkbox" class="form-check-input" id="themeSwitch" style="width: 4em; height: 2em; margin: 0; cursor: pointer;"/>
+									</div>
+								</div>								
+							</div>
+						</div>
+					</nav>
+				</div>
+			</div>
+
+			<%-- THESE SCRIPTS MUST COME BEFORE MAIN CONTENT FOR THEM TO WORK ON OTHER PAGES --%>
+			<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+			<script src="https://cdn.jsdelivr.net/npm/jquery-mask-plugin@1.14.16/dist/jquery.mask.min.js"></script>
+			<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+			<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-autocolors"></script>
+			<script src="https://imhvost.github.io/chart-utils.min.js"></script>
+			<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"></script>
+			<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+			<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js" data-autoloader-path="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/"></script>
+			<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/toolbar/prism-toolbar.min.js"></script>
+			<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+			<script type="text/javascript" src="./Scripts/Helpers/JS/FormFormatting.js"></script>
+			<script type="text/javascript" src="./Scripts/Helpers/JS/SubmitToast.js"></script>
+			<script type="text/javascript" src="./Scripts/Helpers/JS/ChartHelpers.js"></script>
+			<script type="text/javascript" src="./assets/js/Site.js"></script>
+
+			<%-- MAIN CONTENT --%>
+			<main id="main">
+				<article class="content px-4">
+					<form id="formMain" runat="server">
+						<asp:ScriptManager runat="server" />
+						<asp:ContentPlaceHolder ID="MainContent" runat="server"></asp:ContentPlaceHolder>
+					</form>
+				</article>
+			</main>
+		</div>
+
+		<%-- REQUIRED FIELDS INDICATOR / ACTIVE PAGE HELPER --%>
+		<script type="text/javascript" src="./Scripts/Helpers/JS/RequiredFieldsAndActivePage.js"></script>
+
+		<%-- LIGHT/DARK MODE SWITCHER --%>
+		<script type="text/javascript" src="./Scripts/Helpers/JS/ColorMode.js"></script>
+	</body>
 </html>
