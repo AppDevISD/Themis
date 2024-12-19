@@ -11,6 +11,9 @@ namespace WebUI
 {
     public partial class Ordinances : System.Web.UI.Page
     {
+        public string toastColor;
+        public string toastMessage;
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!Page.IsPostBack && !Response.IsRequestBeingRedirected)
@@ -19,10 +22,10 @@ namespace WebUI
                 SetPagination(rpOrdinanceTable, 10);
                 GetStartupData();
             }
+            SubmitStatus();
         }
         protected void SetStartupActives()
         {
-            errorAlert.Visible = false;
         }
         protected void SetPagination(Repeater rpTable, int ItemsPerPage)
         {
@@ -52,17 +55,17 @@ namespace WebUI
                 rpOrdinanceTable.DataSource = ord_list;
                 rpOrdinanceTable.DataBind();
                 Session["ord_list"] = ord_list;
-                Response.Redirect(HttpContext.Current.Request.Url.AbsoluteUri);
+                Session["SubmitStatus"] = "success";
+                Session["ToastColor"] = "text-bg-success";
+                Session["ToastMessage"] = "Entry Deleted!";
+                Response.Redirect("./Ordinances");
             }
             else
             {
-                errorAlert.Visible = true;
-                errorMsg.Text = "Could not delete entry. Something went wrong!";
+                Session["SubmitStatus"] = "error";
+                Session["ToastColor"] = "text-bg-danger";
+                Session["ToastMessage"] = "Something went wrong while submitting!";
             }
-        }
-        protected void mdlCancelBtn_ServerClick(object sender, EventArgs e)
-        {
-            //deleteModal.Hide();
         }
         protected void paginationBtn_Click(object sender, EventArgs e)
         {
@@ -73,10 +76,21 @@ namespace WebUI
             string commandName = button.Attributes["data-command"];
             PageButtonClick(ord_list, commandName);
         }
-        protected void CloseAlert_ServerClick(object sender, EventArgs e)
+        protected void SubmitStatus()
         {
-            errorAlert.Visible = false;
-            Response.Redirect(HttpContext.Current.Request.Url.AbsoluteUri);
+            if (Session["SubmitStatus"] != null || (string)Session["SubmitStatus"] == "success")
+            {
+                toastColor = (string)Session["ToastColor"];
+                toastMessage = (string)Session["ToastMessage"];
+            }
+            else
+            {
+                Session["SubmitStatus"] = "error";
+                Session["ToastColor"] = "text-bg-danger";
+                Session["ToastMessage"] = "Something went wrong while submitting!";
+                toastColor = (string)Session["ToastColor"];
+                toastMessage = (string)Session["ToastMessage"];
+            }
         }
     }
 }

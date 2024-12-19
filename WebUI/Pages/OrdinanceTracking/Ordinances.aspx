@@ -6,10 +6,6 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 	<section>
-		<div runat="server" id="errorAlert" class="alert alert-danger alert-dismissible" role="alert">
-			<asp:Label runat="server" ID="errorMsg"></asp:Label>
-			<button runat="server" id="CloseAlert" type="button" class="btn btn-close" onserverclick="CloseAlert_ServerClick" aria-label="Close"></button>
-		</div>
 		<div class="card">
 			<div class="card-header bg-body">
 				<h3><i class="fas fa-book-section"></i>&nbsp;Ordinances</h3>
@@ -99,9 +95,16 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-					<asp:Button ID="btnDelete" runat="server" Text="Delete" CssClass="btn btn-danger" Visible="true" OnClick="mdlDeleteSubmit_ServerClick" />
-
+					<asp:Button ID="btnDelete" runat="server" Text="Delete" CssClass="btn btn-danger" Visible="true" OnClick="mdlDeleteSubmit_ServerClick" OnClientClick="ShowSubmitToast();" />
 				</div>
+			</div>
+		</div>
+	</div>
+	<div class="toast-container position-fixed bottom-0 end-0 p-3">
+		<div id="submitToast" class='toast <%:toastColor%> border-0 fade-slide-in' role="alert" aria-live="assertive" aria-atomic="true" data-delay="10000" data-animation="true">
+			<div class="d-flex">
+				<div class="toast-body"><%:toastMessage%></div>
+				<button type="button" class="btn-close btn-close-white me-2 m-auto" data-dismiss="toast" aria-label="Close"></button>
 			</div>
 		</div>
 	</div>
@@ -109,7 +112,6 @@
 	<script>
 		var hdnID = document.getElementById('<%= deleteID.ClientID %>')
 		function DeleteForm(formID) {
-			console.log("Working");
 			hdnID.setAttribute('Value', formID);
 		}
 	</script>

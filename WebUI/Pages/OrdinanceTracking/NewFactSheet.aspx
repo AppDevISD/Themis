@@ -482,16 +482,11 @@
 	</div>
 	<script>
 		var prm = Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
+			GetToastStatus();
 			FormatForms();
 			$("[data-type='currency']").each(function () {
 				formatCurrency($(this), "blur");
 			});
-			if (getStoredToast() == 'show') {
-				try {
-					$('#submitToast').toast('show');
-					localStorage.setItem('showToast', '');
-				} catch (e) { }
-			}
 		});
 	</script>
 </asp:Content>
