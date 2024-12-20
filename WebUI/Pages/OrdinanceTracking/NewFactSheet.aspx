@@ -3,18 +3,26 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server"></asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+	<%-- FORM HEADER --%>
 	<section class="container form-header bg-body text-center">
 		<div class="row h-100 align-items-center">
 			<h1><span class="fas fa-file-circle-plus"></span>&nbsp;New Fact Sheet</h1>
 		</div>
 	</section>
+
+	<%-- FORM BODY --%>
 	<div class="container form-page bg-body-tertiary">
 		<div class="px-2 py-4">
-			<p class="text-justify">
-			</p>
+
+			<%-- FORM DESCRIPTION / INSTRUCTIONS --%>
+			<p class="text-justify"></p>
+
+			<%-- REQUIRED FIELD DESCRIPTOR --%>
 			<p class="text-justify" style="color: gray;"><i class="fa-solid fa-asterisk"></i>&nbsp;= Required Field</p>
 
+			<%-- FORM UPDATE PANEL --%>
 			<asp:UpdatePanel runat="server" ID="formUpdatePanel" UpdateMode="Always">
+				<%-- TRIGGERS --%>
 				<Triggers>
 					<asp:AsyncPostBackTrigger ControlID="epYes" EventName="CheckedChanged" />
 					<asp:AsyncPostBackTrigger ControlID="epNo" EventName="CheckedChanged" />
@@ -24,6 +32,8 @@
 					<asp:AsyncPostBackTrigger ControlID="purchaseMethod" EventName="SelectedIndexChanged" />
 					<asp:AsyncPostBackTrigger ControlID="SubmitFactSheet" EventName="Click" />
 				</Triggers>
+
+				<%-- FORM CONTENT --%>
 				<ContentTemplate>
 					<%-- FIRST SECTION --%>
 					<div class="form-section">
@@ -91,10 +101,13 @@
 								<div class="form-group">
 									<label for="epList">Emergency Passage</label>
 									<div class="radioListDiv" id="epList">
+										<%-- YES --%>
 										<div class="form-check form-check-inline">
 											<label for="epYes">Yes</label>
 											<asp:RadioButton runat="server" ID="epYes" CssClass="form-check-input" GroupName="epList" OnCheckedChanged="EPCheckedChanged" AutoPostBack="true" />
 										</div>
+
+										<%-- NO --%>
 										<div class="form-check form-check-inline">
 											<label for="epNo">No</label>
 											<asp:RadioButton runat="server" ID="epNo" CssClass="form-check-input" GroupName="epList" OnCheckedChanged="EPCheckedChanged" AutoPostBack="true" Checked="true" />
@@ -208,10 +221,13 @@
 								<div class="form-group">
 									<label for="scopeChangeList">Change In Scope</label>
 									<div class="radioListDiv" id="scopeChangeList">
+										<%-- YES --%>
 										<div class="form-check form-check-inline">
 											<label for="scYes">Yes</label>
 											<asp:RadioButton runat="server" ID="scYes" CssClass="form-check-input" GroupName="scopeChangeList" OnCheckedChanged="SCCheckedChanged" AutoPostBack="true" />
 										</div>
+
+										<%-- NO --%>
 										<div class="form-check form-check-inline">
 											<label for="scNo">No</label>
 											<asp:RadioButton runat="server" ID="scNo" CssClass="form-check-input" GroupName="scopeChangeList" OnCheckedChanged="SCCheckedChanged" AutoPostBack="true" Checked="true" />
@@ -289,10 +305,13 @@
 								<div class="form-group">
 									<label for="paApprovalRequiredList">Is Purchasing Agent Approval Required?</label>
 									<div class="radioListDiv" id="paApprovalRequiredList">
+										<%-- YES --%>
 										<div class="form-check form-check-inline">
 											<label for="paApprovalRequiredYes">Yes</label>
 											<asp:RadioButton runat="server" ID="paApprovalRequiredYes" CssClass="form-check-input" GroupName="paApprovalRequiredList" />
 										</div>
+
+										<%-- NO --%>
 										<div class="form-check form-check-inline">
 											<label for="paApprovalRequiredNo">No</label>
 											<asp:RadioButton runat="server" ID="paApprovalRequiredNo" CssClass="form-check-input" GroupName="paApprovalRequiredList" Checked="true" />
@@ -309,10 +328,13 @@
 								<div class="form-group">
 									<label for="paApprovalAttachedList">Is Purchasing Agent Approval Attached?</label>
 									<div class="radioListDiv" id="paApprovalAttachedList">
+										<%-- YES --%>
 										<div class="form-check form-check-inline">
 											<label for="paApprovalAttachedYes">Yes</label>
 											<asp:RadioButton runat="server" ID="paApprovalAttachedYes" CssClass="form-check-input" GroupName="paApprovalAttachedList" />
 										</div>
+
+										<%-- NO --%>
 										<div class="form-check form-check-inline">
 											<label for="paApprovalAttachedNo">No</label>
 											<asp:RadioButton runat="server" ID="paApprovalAttachedNo" CssClass="form-check-input" GroupName="paApprovalAttachedList" Checked="true" />
@@ -330,7 +352,9 @@
 							<%-- REVENUE --%>
 							<div class="col-md-6hf form-table">
 								<label for="revenueTable">Revenue</label>
+								<%-- REVENUE TABLE --%>
 								<table id="revenueTable" class="table table-bordered table-striped table-hover text-center" style="padding: 0px; margin: 0px">
+									<%-- TABLE HEAD --%>
 									<thead>
 										<tr>
 											<th style="width: 13%; text-align: center"><strong>Fund</strong></th>
@@ -341,7 +365,10 @@
 											<th style="width: 18%; text-align: center"><strong>Amount</strong></th>
 										</tr>
 									</thead>
+
+									<%-- TABLE BODY --%>
 									<tbody>
+										<%-- REVENUE TABLE REPEATER --%>
 										<asp:Repeater runat="server" ID="rpRevenueTable" OnItemCommand="rpAccountingTable_ItemCommand" >
 											<ItemTemplate>
 												<tr>
@@ -373,17 +400,22 @@
 										</asp:Repeater>
 									</tbody>
 								</table>
+
+								<%-- ADD REVENUE ROW BUTTON --%>
 								<div class="text-center w-100">
 									<asp:Button runat="server" ID="newRevenueRow" CssClass="btn btn-success w-100 row-add" OnClick="newAccountingRow_ServerClick" UseSubmitBehavior="false" CommandName="revenue" Text="Add Row" />
 								</div>
 							</div>
 
+							<%-- BLANK SPACE --%>
 							<div class="col-md-1hf"></div>
 
 							<%-- EXPENDITURE --%>
 							<div class="col-md-6hf form-table">
 								<label for="expenditureTable">Expenditure</label>
+								<%-- EXPENDITURE TABLE --%>
 								<table id="expenditureTable" class="table table-bordered table-striped table-hover text-center" style="padding: 0px; margin: 0px">
+									<%-- TABLE HEAD --%>
 									<thead>
 										<tr>
 											<th style="width: 13%; text-align: center"><strong>Fund</strong></th>
@@ -394,7 +426,10 @@
 											<th style="width: 18%; text-align: center"><strong>Amount</strong></th>
 										</tr>
 									</thead>
+
+									<%-- TABLE BODY --%>
 									<tbody>
+										<%-- EXPENDITURE TABLE REPEATER --%>
 										<asp:Repeater runat="server" ID="rpExpenditureTable" OnItemCommand="rpAccountingTable_ItemCommand">
 											<ItemTemplate>
 												<tr>
@@ -426,11 +461,14 @@
 										</asp:Repeater>
 									</tbody>
 								</table>
+
+								<%-- ADD EXPENDITURE ROW BUTTON --%>
 								<div class="text-center w-100">
 									<asp:Button runat="server" ID="newExpenditureRow" CssClass="btn btn-success w-100 row-add" OnClick="newAccountingRow_ServerClick" UseSubmitBehavior="false" CommandName="expenditure" Text="Add Row" />
 								</div>
 							</div>
 
+							<%-- BLANK SPACE --%>
 							<div class="col-md-1hf"></div>
 						</div>
 					</div>
@@ -460,8 +498,11 @@
 						</div>
 					</div>
 
+					<%-- SUBMIT SECTION --%>
 					<div class="form-section">
+						<%-- FIRST ROW --%>
 						<div class="row mt-3 mb-3 text-center">
+							<%-- SUBMIT BUTTON --%>
 							<div class="col-md-12">
 								<asp:Button runat="server" ID="SubmitFactSheet" UseSubmitBehavior="true" CssClass="btn btn-primary" Width="25%" Text="Submit" OnClick="SubmitForm_Click" OnClientClick="ShowSubmitToast();" />
 							</div>
@@ -472,6 +513,8 @@
 			
 		</div>
 	</div>
+
+	<%-- TOAST MESSAGE --%>
 	<div class="toast-container position-fixed bottom-0 end-0 p-3">
 		<div id="submitToast" class='toast <%:toastColor%> border-0 fade-slide-in' role="alert" aria-live="assertive" aria-atomic="true" data-delay="10000" data-animation="true">
 			<div class="d-flex">
@@ -480,6 +523,8 @@
 			</div>
 		</div>
 	</div>
+
+	<%-- JAVASCRIPT --%>
 	<script>
 		var prm = Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
 			GetToastStatus();
