@@ -206,18 +206,29 @@ namespace WebUI
                             {
                                 Accounting accountingItem = new Accounting();
                                 var revItem = rpRevenueTable.Items[i];
-                                DropDownList revFundCode = (DropDownList)revItem.FindControl("revenueFundCode");
-                                DropDownList revAgencyCode = (DropDownList)revItem.FindControl("revenueAgencyCode");
-                                DropDownList revOrgCode = (DropDownList)revItem.FindControl("revenueOrgCode");
-                                DropDownList revActivityCode = (DropDownList)revItem.FindControl("revenueActivityCode");
-                                DropDownList revObjectCode = (DropDownList)revItem.FindControl("revenueObjectCode");
+                                //DropDownList revFundCode = (DropDownList)revItem.FindControl("revenueFundCode");
+                                //DropDownList revAgencyCode = (DropDownList)revItem.FindControl("revenueAgencyCode");
+                                //DropDownList revOrgCode = (DropDownList)revItem.FindControl("revenueOrgCode");
+                                //DropDownList revActivityCode = (DropDownList)revItem.FindControl("revenueActivityCode");
+                                //DropDownList revObjectCode = (DropDownList)revItem.FindControl("revenueObjectCode");
+                                //TextBox revAmount = (TextBox)revItem.FindControl("revenueAmount");
+                                //accountingItem.FundCode = revFundCode.SelectedValue;
+                                //accountingItem.DepartmentCode = revAgencyCode.SelectedValue;
+                                //accountingItem.UnitCode = revOrgCode.SelectedValue;
+                                //accountingItem.ActivityCode = revActivityCode.SelectedValue;
+                                //accountingItem.ObjectCode = revObjectCode.SelectedValue;
+                                TextBox revFundCode = (TextBox)revItem.FindControl("revenueFundCode");                
+                                TextBox revAgencyCode = (TextBox)revItem.FindControl("revenueAgencyCode");
+                                TextBox revOrgCode = (TextBox)revItem.FindControl("revenueOrgCode");
+                                TextBox revActivityCode = (TextBox)revItem.FindControl("revenueActivityCode");
+                                TextBox revObjectCode = (TextBox)revItem.FindControl("revenueObjectCode");
                                 TextBox revAmount = (TextBox)revItem.FindControl("revenueAmount");
                                 accountingItem.AccountingDesc = tableDesc;
-                                accountingItem.FundCode = revFundCode.SelectedValue;
-                                accountingItem.DepartmentCode = revAgencyCode.SelectedValue;
-                                accountingItem.UnitCode = revOrgCode.SelectedValue;
-                                accountingItem.ActivityCode = revActivityCode.SelectedValue;
-                                accountingItem.ObjectCode = revObjectCode.SelectedValue;
+                                accountingItem.FundCode = revFundCode.Text;
+                                accountingItem.DepartmentCode = revAgencyCode.Text;
+                                accountingItem.UnitCode = revOrgCode.Text;
+                                accountingItem.ActivityCode = revActivityCode.Text;
+                                accountingItem.ObjectCode = revObjectCode.Text;
                                 if (revAmount.Text.Length == 0)
                                 {
 
@@ -245,18 +256,30 @@ namespace WebUI
                             {
                                 Accounting accountingItem = new Accounting();
                                 var expItem = rpExpenditureTable.Items[i];
-                                DropDownList expFundCode = (DropDownList)expItem.FindControl("expenditureFundCode");
-                                DropDownList expAgencyCode = (DropDownList)expItem.FindControl("expenditureAgencyCode");
-                                DropDownList expOrgCode = (DropDownList)expItem.FindControl("expenditureOrgCode");
-                                DropDownList expActivityCode = (DropDownList)expItem.FindControl("expenditureActivityCode");
-                                DropDownList expObjectCode = (DropDownList)expItem.FindControl("expenditureObjectCode");
+                                //DropDownList expFundCode = (DropDownList)expItem.FindControl("expenditureFundCode");
+                                //DropDownList expAgencyCode = (DropDownList)expItem.FindControl("expenditureAgencyCode");
+                                //DropDownList expOrgCode = (DropDownList)expItem.FindControl("expenditureOrgCode");
+                                //DropDownList expActivityCode = (DropDownList)expItem.FindControl("expenditureActivityCode");
+                                //DropDownList expObjectCode = (DropDownList)expItem.FindControl("expenditureObjectCode");
+                                //TextBox expAmount = (TextBox)expItem.FindControl("expenditureAmount");
+                                //accountingItem.AccountingDesc = tableDesc;
+                                //accountingItem.FundCode = expFundCode.SelectedValue;
+                                //accountingItem.DepartmentCode = expAgencyCode.SelectedValue;
+                                //accountingItem.UnitCode = expOrgCode.SelectedValue;
+                                //accountingItem.ActivityCode = expActivityCode.SelectedValue;
+                                //accountingItem.ObjectCode = expObjectCode.SelectedValue;
+                                TextBox expFundCode = (TextBox)expItem.FindControl("expenditureFundCode");
+                                TextBox expAgencyCode = (TextBox)expItem.FindControl("expenditureAgencyCode");
+                                TextBox expOrgCode = (TextBox)expItem.FindControl("expenditureOrgCode");
+                                TextBox expActivityCode = (TextBox)expItem.FindControl("expenditureActivityCode");
+                                TextBox expObjectCode = (TextBox)expItem.FindControl("expenditureObjectCode");
                                 TextBox expAmount = (TextBox)expItem.FindControl("expenditureAmount");
                                 accountingItem.AccountingDesc = tableDesc;
-                                accountingItem.FundCode = expFundCode.SelectedValue;
-                                accountingItem.DepartmentCode = expAgencyCode.SelectedValue;
-                                accountingItem.UnitCode = expOrgCode.SelectedValue;
-                                accountingItem.ActivityCode = expActivityCode.SelectedValue;
-                                accountingItem.ObjectCode = expObjectCode.SelectedValue;
+                                accountingItem.FundCode = expFundCode.Text;
+                                accountingItem.DepartmentCode = expAgencyCode.Text;
+                                accountingItem.UnitCode = expOrgCode.Text;
+                                accountingItem.ActivityCode = expActivityCode.Text;
+                                accountingItem.ObjectCode = expObjectCode.Text;
                                 if (expAmount.Text.Length == 0)
                                 {
 
@@ -290,18 +313,30 @@ namespace WebUI
             {
                 case "revenue":
                     var revItem = rpRevenueTable.Items[itemIndex];
-                    DropDownList revFundCode = (DropDownList)revItem.FindControl("revenueFundCode");
-                    DropDownList revAgencyCode = (DropDownList)revItem.FindControl("revenueAgencyCode");
-                    DropDownList revOrgCode = (DropDownList)revItem.FindControl("revenueOrgCode");
-                    DropDownList revActivityCode = (DropDownList)revItem.FindControl("revenueActivityCode");
-                    DropDownList revObjectCode = (DropDownList)revItem.FindControl("revenueObjectCode");
+                    //DropDownList revFundCode = (DropDownList)revItem.FindControl("revenueFundCode");
+                    //DropDownList revAgencyCode = (DropDownList)revItem.FindControl("revenueAgencyCode");
+                    //DropDownList revOrgCode = (DropDownList)revItem.FindControl("revenueOrgCode");
+                    //DropDownList revActivityCode = (DropDownList)revItem.FindControl("revenueActivityCode");
+                    //DropDownList revObjectCode = (DropDownList)revItem.FindControl("revenueObjectCode");
+                    //TextBox revAmount = (TextBox)revItem.FindControl("revenueAmount");
+                    //accountingItem.AccountingDesc = tableDesc;
+                    //accountingItem.FundCode = revFundCode.SelectedValue;
+                    //accountingItem.DepartmentCode = revAgencyCode.SelectedValue;
+                    //accountingItem.UnitCode = revOrgCode.SelectedValue;
+                    //accountingItem.ActivityCode = revActivityCode.SelectedValue;
+                    //accountingItem.ObjectCode = revObjectCode.SelectedValue;
+                    TextBox revFundCode = (TextBox)revItem.FindControl("revenueFundCode");
+                    TextBox revAgencyCode = (TextBox)revItem.FindControl("revenueAgencyCode");
+                    TextBox revOrgCode = (TextBox)revItem.FindControl("revenueOrgCode");
+                    TextBox revActivityCode = (TextBox)revItem.FindControl("revenueActivityCode");
+                    TextBox revObjectCode = (TextBox)revItem.FindControl("revenueObjectCode");
                     TextBox revAmount = (TextBox)revItem.FindControl("revenueAmount");
                     accountingItem.AccountingDesc = tableDesc;
-                    accountingItem.FundCode = revFundCode.SelectedValue;
-                    accountingItem.DepartmentCode = revAgencyCode.SelectedValue;
-                    accountingItem.UnitCode = revOrgCode.SelectedValue;
-                    accountingItem.ActivityCode = revActivityCode.SelectedValue;
-                    accountingItem.ObjectCode = revObjectCode.SelectedValue;
+                    accountingItem.FundCode = revFundCode.Text;
+                    accountingItem.DepartmentCode = revAgencyCode.Text;
+                    accountingItem.UnitCode = revOrgCode.Text;
+                    accountingItem.ActivityCode = revActivityCode.Text;
+                    accountingItem.ObjectCode = revObjectCode.Text;
                     accountingItem.LastUpdateBy = _user.Login;
                     accountingItem.LastUpdateDate = DateTime.Now;
                     accountingItem.EffectiveDate = DateTime.Now;
@@ -318,18 +353,30 @@ namespace WebUI
                     break;
                 case "expenditure":
                     var expItem = rpExpenditureTable.Items[itemIndex];
-                    DropDownList expFundCode = (DropDownList)expItem.FindControl("expenditureFundCode");
-                    DropDownList expAgencyCode = (DropDownList)expItem.FindControl("expenditureAgencyCode");
-                    DropDownList expOrgCode = (DropDownList)expItem.FindControl("expenditureOrgCode");
-                    DropDownList expActivityCode = (DropDownList)expItem.FindControl("expenditureActivityCode");
-                    DropDownList expObjectCode = (DropDownList)expItem.FindControl("expenditureObjectCode");
+                    //DropDownList expFundCode = (DropDownList)expItem.FindControl("expenditureFundCode");
+                    //DropDownList expAgencyCode = (DropDownList)expItem.FindControl("expenditureAgencyCode");
+                    //DropDownList expOrgCode = (DropDownList)expItem.FindControl("expenditureOrgCode");
+                    //DropDownList expActivityCode = (DropDownList)expItem.FindControl("expenditureActivityCode");
+                    //DropDownList expObjectCode = (DropDownList)expItem.FindControl("expenditureObjectCode");
+                    //TextBox expAmount = (TextBox)expItem.FindControl("expenditureAmount");
+                    //accountingItem.AccountingDesc = tableDesc;
+                    //accountingItem.FundCode = expFundCode.SelectedValue;
+                    //accountingItem.DepartmentCode = expAgencyCode.SelectedValue;
+                    //accountingItem.UnitCode = expOrgCode.SelectedValue;
+                    //accountingItem.ActivityCode = expActivityCode.SelectedValue;
+                    //accountingItem.ObjectCode = expObjectCode.SelectedValue;
+                    TextBox expFundCode = (TextBox)expItem.FindControl("expenditureFundCode");
+                    TextBox expAgencyCode = (TextBox)expItem.FindControl("expenditureAgencyCode");
+                    TextBox expOrgCode = (TextBox)expItem.FindControl("expenditureOrgCode");
+                    TextBox expActivityCode = (TextBox)expItem.FindControl("expenditureActivityCode");
+                    TextBox expObjectCode = (TextBox)expItem.FindControl("expenditureObjectCode");
                     TextBox expAmount = (TextBox)expItem.FindControl("expenditureAmount");
                     accountingItem.AccountingDesc = tableDesc;
-                    accountingItem.FundCode = expFundCode.SelectedValue;
-                    accountingItem.DepartmentCode = expAgencyCode.SelectedValue;
-                    accountingItem.UnitCode = expOrgCode.SelectedValue;
-                    accountingItem.ActivityCode = expActivityCode.SelectedValue;
-                    accountingItem.ObjectCode = expObjectCode.SelectedValue;
+                    accountingItem.FundCode = expFundCode.Text;
+                    accountingItem.DepartmentCode = expAgencyCode.Text;
+                    accountingItem.UnitCode = expOrgCode.Text;
+                    accountingItem.ActivityCode = expActivityCode.Text;
+                    accountingItem.ObjectCode = expObjectCode.Text;
                     accountingItem.LastUpdateBy = _user.Login;
                     accountingItem.LastUpdateDate = DateTime.Now;
                     accountingItem.EffectiveDate = DateTime.Now;
@@ -377,9 +424,12 @@ namespace WebUI
             ordinance.ContractEndDate = contractEndDate.Text;
             ordinance.ContractTerm = contractTerm.Value;
             ordinance.ContractAmount = CurrencyToDecimal(contractAmount.Text);
-            //ordinance.ScopeChange = scYes.Checked;
-            //ordinance.ChangeOrderNumber = changeOrderNumber.Text;
-            //ordinance.AdditionalAmount = CurrencyToDecimal(additionalAmount.Text);
+            ordinance.ScopeChange = scYes.Checked;
+            if (scYes.Checked)
+            {
+                ordinance.ChangeOrderNumber = changeOrderNumber.Text;
+                ordinance.AdditionalAmount = CurrencyToDecimal(additionalAmount.Text);
+            }
             ordinance.ContractMethod = purchaseMethod.SelectedValue;
             //ordinance.OtherException = otherException.Text ?? string.Empty;
             //ordinance.PreviousOrdinanceNumbers = prevOrdinanceNums.Text;

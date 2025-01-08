@@ -7,7 +7,9 @@
 			const id = parent.id;
 			if (parent.tagName == 'TD') {
 				var column = $(parent).closest('table').find('th').eq($(parent).index());
-				$(column).append('<span class="required-field"> *</span>');
+				if ($(parent).parent().index() < 1) {
+					$(column).append('<span class="required-field"> *</span>');
+				}
 			}
 			else if (parent.classList.contains('input-group') && id != '' && !alreadyLabeled) {
 				const label = $(`[for="${id}"]`);

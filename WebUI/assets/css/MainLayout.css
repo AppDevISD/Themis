@@ -426,6 +426,13 @@ select:disabled, .disabled-control, .disabled-control input {
 	margin-bottom: 0.75rem;
 }
 
+.pill-container-label {
+	font-size: 24px;
+	font-weight: 500;
+	border-bottom: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
+	margin-bottom: 0.75rem;
+}
+
 .item-label {
 	font-size: 20px;
 	font-weight: 500;
@@ -454,10 +461,7 @@ select:disabled, .disabled-control, .disabled-control input {
 		border-bottom: none;
 	}
 
-
-
-/* --------------- Charts --------------- */
-.jsChartTabs {
+.tab-content {
 	border: var(--bs-border-width) solid var(--custom-theme-border-color);
 	border-radius: 15px;
 	border-top-left-radius: 0;
@@ -465,9 +469,12 @@ select:disabled, .disabled-control, .disabled-control input {
 	background-color: var(--bs-secondary-bg);
 	-webkit-box-shadow: 10px 10px 20px 0px rgba(0, 0, 0, .75);
 	-moz-box-shadow: 10px 10px 20px 0px rgba(0, 0, 0, .75);
-	box-shadow: 10px 10px 20px 0px rgba(0, 0, 0, .75)
+	box-shadow: 10px 10px 20px 0px rgba(0, 0, 0, .75);
 }
 
+
+
+/* --------------- Charts --------------- */
 .jsChart {
 	border: var(--bs-border-width) solid var(--custom-theme-border-color);
 	border-radius: 15px;
