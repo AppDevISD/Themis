@@ -419,16 +419,21 @@ namespace WebUI
             ordinance.OrdinanceTitle = suggestedTitle.Text;
             ordinance.ContractVendorID = 0;
             ordinance.ContractVendorName = vendorName.Text;
-            ordinance.ContractVendorNumber = Convert.ToInt32(vendorNumber.Text);
+            ordinance.ContractVendorNumber = vendorNumber.Text;
             ordinance.ContractStartDate = contractStartDate.Text;
             ordinance.ContractEndDate = contractEndDate.Text;
             ordinance.ContractTerm = contractTerm.Value;
             ordinance.ContractAmount = CurrencyToDecimal(contractAmount.Text);
             ordinance.ScopeChange = scYes.Checked;
+            ordinance.ChangeOrderNumber = changeOrderNumber.Text ?? string.Empty;
             if (scYes.Checked)
             {
-                ordinance.ChangeOrderNumber = changeOrderNumber.Text;
+                
                 ordinance.AdditionalAmount = CurrencyToDecimal(additionalAmount.Text);
+            }
+            else
+            {
+                ordinance.AdditionalAmount = CurrencyToDecimal("-1");
             }
             ordinance.ContractMethod = purchaseMethod.SelectedValue;
             //ordinance.OtherException = otherException.Text ?? string.Empty;

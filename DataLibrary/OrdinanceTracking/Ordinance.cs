@@ -22,7 +22,7 @@ namespace DataLibrary
         public string EmergencyPassageReason { get; set; }
         public int ContractVendorID { get; set; }
         public string ContractVendorName { get; set; }
-        public int ContractVendorNumber { get; set; }
+        public string ContractVendorNumber { get; set; }
         public string ContractStartDate { get; set; } // Added
         public string ContractEndDate { get; set; } // Added
         public string ContractTerm { get; set; }

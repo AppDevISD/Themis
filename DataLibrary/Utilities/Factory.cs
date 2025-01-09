@@ -64,7 +64,17 @@ namespace DataLibrary
                     foreach (var property in classType)
                     {
                         Type propertyType = property.PropertyType;
-                        object value = Convert.ChangeType(rs[property.Name], propertyType);
+                        object value;
+                        try
+                        {
+                            value = Convert.ChangeType(rs[property.Name], propertyType);
+                        }
+                        catch (Exception)
+                        {
+
+                            value = null;
+                        }
+                         
                         property.SetValue(item, value);                      
                     }
                     list.Add(item);
