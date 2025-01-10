@@ -452,10 +452,15 @@ namespace WebUI
             if (retVal > 0)
             {
                 bool revExpTables = false;
+                bool documentation = false;
                 bool finishSubmit = false;
                 if (rpRevenueTable.Items.Count > 0 || rpExpenditureTable.Items.Count > 0)
                 {
                     revExpTables = true;
+                }
+                if (supportingDocumentation.HasFile)
+                {
+                    documentation = true;
                 }
 
                 switch (revExpTables)
@@ -544,6 +549,26 @@ namespace WebUI
                         finishSubmit = true;
                         break;
 
+                }
+
+                switch (documentation)
+                {
+                    case true:
+                        for (int i = 0; i < supportingDocumentation.PostedFiles.Count; i++)
+                        {
+                            OrdinanceDocument ordDoc = new OrdinanceDocument();
+                            ordDoc.OrdinanceID = retVal;
+                            ordDoc.DocumentName = supportingDocumentation.PostedFiles[i].FileName;
+                            //int ret = Factory.Instance.Insert(ordDoc, "sp_InsertlkAccounting");
+                            //int ret = 1;
+                            //if (ret > 0)
+                            //{
+
+                            //}
+                        }
+                        break;
+                    case false:
+                        break;
                 }
 
                 switch (finishSubmit)

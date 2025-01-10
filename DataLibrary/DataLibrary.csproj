@@ -50,6 +50,7 @@
     <Compile Include="OrdinanceTracking\AccountingCode.cs" />
     <Compile Include="OrdinanceTracking\Ordinance.cs" />
     <Compile Include="OrdinanceTracking\OrdinanceAccounting.cs" />
+    <Compile Include="OrdinanceTracking\OrdinanceDocument.cs" />
     <Compile Include="Utilities\ColorTheme.cs" />
     <Compile Include="Utilities\Email.cs" />
     <Compile Include="Utilities\Factory.cs" />
