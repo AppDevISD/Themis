@@ -2,6 +2,7 @@
 using ISD.ActiveDirectory;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using static DataLibrary.Utility;
@@ -447,8 +448,8 @@ namespace WebUI
             ordinance.EffectiveDate = DateTime.Now;
             ordinance.ExpirationDate = DateTime.MaxValue;
 
-            int retVal = Factory.Instance.Insert(ordinance, "sp_InsertOrdinance");
-            //int retVal = 1;
+            //int retVal = Factory.Instance.Insert(ordinance, "sp_InsertOrdinance");
+            int retVal = 1;
             if (retVal > 0)
             {
                 bool revExpTables = false;
@@ -458,8 +459,10 @@ namespace WebUI
                 {
                     revExpTables = true;
                 }
-                if (supportingDocumentation.HasFile)
+                Debug.WriteLine(supportingDocumentation.PostedFiles.Count);
+                if (supportingDocumentation.PostedFiles.Count > 0)
                 {
+
                     documentation = true;
                 }
 
@@ -507,8 +510,8 @@ namespace WebUI
                             for (int i = 0; i < rpExpenditureTable.Items.Count; i++)
                             {
                                 Accounting accountingItem = GetAccountingItem("expenditure", i);
-                                int ret = Factory.Instance.Insert(accountingItem, "sp_InsertlkAccounting");
-                                //int ret = 1;
+                                //int ret = Factory.Instance.Insert(accountingItem, "sp_InsertlkAccounting");
+                                int ret = 1;
                                 if (ret > 0)
                                 {
                                     OrdinanceAccounting oaItem = new OrdinanceAccounting();
@@ -518,8 +521,8 @@ namespace WebUI
                                     oaItem.LastUpdateDate = DateTime.Now;
                                     oaItem.EffectiveDate = DateTime.Now;
                                     oaItem.ExpirationDate = DateTime.MaxValue;
-                                    int finalRet = Factory.Instance.Insert(oaItem, "sp_InsertOrdinance_Accounting");
-                                    //int finalRet = 1;
+                                    //int finalRet = Factory.Instance.Insert(oaItem, "sp_InsertOrdinance_Accounting");
+                                    int finalRet = 1;
                                     if (finalRet > 0)
                                     {
                                         expSubmit = true;
@@ -560,11 +563,11 @@ namespace WebUI
                             ordDoc.OrdinanceID = retVal;
                             ordDoc.DocumentName = supportingDocumentation.PostedFiles[i].FileName;
                             //int ret = Factory.Instance.Insert(ordDoc, "sp_InsertlkAccounting");
-                            //int ret = 1;
-                            //if (ret > 0)
-                            //{
-
-                            //}
+                            int ret = 1;
+                            if (ret > 0)
+                            {
+                                Debug.WriteLine(ordDoc.DocumentName);
+                            }
                         }
                         break;
                     case false:
@@ -577,8 +580,8 @@ namespace WebUI
                         Session["SubmitStatus"] = "success";
                         Session["ToastColor"] = "text-bg-success";
                         Session["ToastMessage"] = "Form Submitted!";
-                        Email.Instance.SendEmail(newEmail, emailList);
-                        Response.Redirect("./NewFactSheet");
+                        //Email.Instance.SendEmail(newEmail, emailList);
+                        //Response.Redirect("./NewFactSheet");
                         break;
                     case false:
                         Session["SubmitStatus"] = "error";
