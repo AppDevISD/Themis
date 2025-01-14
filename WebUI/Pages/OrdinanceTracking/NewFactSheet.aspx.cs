@@ -3,6 +3,7 @@ using ISD.ActiveDirectory;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -553,7 +554,22 @@ namespace WebUI
                     case false:
                         finishSubmit = true;
                         break;
+                }
 
+                try
+                {
+                    foreach (HttpPostedFile postedFile in supportingDocumentation.PostedFiles)
+                    {
+                        string fileName = Path.GetFileName(postedFile.FileName);
+                        postedFile.SaveAs(Server.MapPath(path: "~/Uploads/") + fileName);
+                        Debug.WriteLine(fileName);
+                    }
+                    finishSubmit = true;
+                }
+                catch (Exception)
+                {
+
+                    finishSubmit = false;
                 }
 
                 switch (documentation)
@@ -571,6 +587,7 @@ namespace WebUI
                         //        Debug.WriteLine(ordDoc.DocumentName);
                         //    }
                         //}
+                        
                         break;
                     case false:
                         finishSubmit = true;
