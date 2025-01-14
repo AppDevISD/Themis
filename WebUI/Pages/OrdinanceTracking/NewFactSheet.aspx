@@ -502,7 +502,8 @@
 							<div class="col-md-6">
 								<div class="form-group">
 									<label for="supportingDocumentation">Supporting Documentation (Ex: Contract, Agreement, Change Order, Bid Book)</label>
-									<asp:FileUpload runat="server" ID="supportingDocumentation" CssClass="form-control" AllowMultiple="true" />
+									<asp:FileUpload runat="server" ID="supportingDocumentation" CssClass="form-control" />
+									<%--<input runat="server" id="supportingDocumentation" type="file" name="supportingDocumentation" multiple class="form-control" />--%>
 								</div>
 							</div>
 						</div>
@@ -514,7 +515,7 @@
 						<div class="row mt-3 mb-3 text-center">
 							<%-- SUBMIT BUTTON --%>
 							<div class="col-md-12">
-								<asp:Button runat="server" ID="SubmitFactSheet" UseSubmitBehavior="true" CssClass="btn btn-primary" Width="25%" Text="Submit" OnClick="SubmitForm_Click" OnClientClick="ShowSubmitToast();" />
+								<asp:Button runat="server" ID="SubmitFactSheet" UseSubmitBehavior="false" CausesValidation="false" CssClass="btn btn-primary" Width="25%" Text="Submit" OnClick="SubmitForm_Click" OnClientClick="ShowSubmitToast();" />
 							</div>
 						</div>
 					</div>

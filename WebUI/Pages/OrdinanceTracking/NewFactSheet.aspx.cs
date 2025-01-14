@@ -3,6 +3,7 @@ using ISD.ActiveDirectory;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using static DataLibrary.Utility;
@@ -408,45 +409,45 @@ namespace WebUI
 
             Ordinance ordinance = new Ordinance();
 
-            ordinance.OrdinanceNumber = "6515dfgsaf";
-            ordinance.RequestID = 0;
-            ordinance.RequestDepartment = requestDepartment.SelectedItem.Text;
-            ordinance.RequestContact = requestContact.Text;
-            ordinance.RequestPhone = $"{requestPhone.Text}{requestExt.Text}";
-            ordinance.FirstReadDate = Convert.ToDateTime(firstReadDate.Text);
-            ordinance.EmergencyPassage = epYes.Checked;
-            ordinance.EmergencyPassageReason = epJustification.Text ?? string.Empty;
-            ordinance.OrdinanceFiscalImpact = CurrencyToDecimal(fiscalImpact.Text);
-            ordinance.OrdinanceTitle = suggestedTitle.Text;
-            ordinance.ContractVendorID = 0;
-            ordinance.ContractVendorName = vendorName.Text;
-            ordinance.ContractVendorNumber = vendorNumber.Text;
-            ordinance.ContractStartDate = contractStartDate.Text;
-            ordinance.ContractEndDate = contractEndDate.Text;
-            ordinance.ContractTerm = contractTerm.Value;
-            ordinance.ContractAmount = CurrencyToDecimal(contractAmount.Text);
-            ordinance.ScopeChange = scYes.Checked;
-            ordinance.ChangeOrderNumber = changeOrderNumber.Text ?? string.Empty;
-            if (scYes.Checked)
-            {
+            //ordinance.OrdinanceNumber = "6515dfgsaf";
+            //ordinance.RequestID = 0;
+            //ordinance.RequestDepartment = requestDepartment.SelectedItem.Text;
+            //ordinance.RequestContact = requestContact.Text;
+            //ordinance.RequestPhone = $"{requestPhone.Text}{requestExt.Text}";
+            //ordinance.FirstReadDate = Convert.ToDateTime(firstReadDate.Text);
+            //ordinance.EmergencyPassage = epYes.Checked;
+            //ordinance.EmergencyPassageReason = epJustification.Text ?? string.Empty;
+            //ordinance.OrdinanceFiscalImpact = CurrencyToDecimal(fiscalImpact.Text);
+            //ordinance.OrdinanceTitle = suggestedTitle.Text;
+            //ordinance.ContractVendorID = 0;
+            //ordinance.ContractVendorName = vendorName.Text;
+            //ordinance.ContractVendorNumber = vendorNumber.Text;
+            //ordinance.ContractStartDate = contractStartDate.Text;
+            //ordinance.ContractEndDate = contractEndDate.Text;
+            //ordinance.ContractTerm = contractTerm.Value;
+            //ordinance.ContractAmount = CurrencyToDecimal(contractAmount.Text);
+            //ordinance.ScopeChange = scYes.Checked;
+            //ordinance.ChangeOrderNumber = changeOrderNumber.Text ?? string.Empty;
+            //if (scYes.Checked)
+            //{
                 
-                ordinance.AdditionalAmount = CurrencyToDecimal(additionalAmount.Text);
-            }
-            else
-            {
-                ordinance.AdditionalAmount = CurrencyToDecimal("-1");
-            }
-            ordinance.ContractMethod = purchaseMethod.SelectedValue;
+            //    ordinance.AdditionalAmount = CurrencyToDecimal(additionalAmount.Text);
+            //}
+            //else
+            //{
+            //    ordinance.AdditionalAmount = CurrencyToDecimal("-1");
+            //}
+            //ordinance.ContractMethod = purchaseMethod.SelectedValue;
             //ordinance.OtherException = otherException.Text ?? string.Empty;
             //ordinance.PreviousOrdinanceNumbers = prevOrdinanceNums.Text;
             //ordinance.CodeProvision = codeProvision.Text;
-            ordinance.PAApprovalRequired = paApprovalRequiredYes.Checked;
-            ordinance.PAApprovalIncluded = paApprovalAttachedYes.Checked;
-            ordinance.OrdinanceAnalysis = staffAnalysis.Text;
-            ordinance.LastUpdateBy = _user.Login;
-            ordinance.LastUpdateDate = DateTime.Now;
-            ordinance.EffectiveDate = DateTime.Now;
-            ordinance.ExpirationDate = DateTime.MaxValue;
+            //ordinance.PAApprovalRequired = paApprovalRequiredYes.Checked;
+            //ordinance.PAApprovalIncluded = paApprovalAttachedYes.Checked;
+            //ordinance.OrdinanceAnalysis = staffAnalysis.Text;
+            //ordinance.LastUpdateBy = _user.Login;
+            //ordinance.LastUpdateDate = DateTime.Now;
+            //ordinance.EffectiveDate = DateTime.Now;
+            //ordinance.ExpirationDate = DateTime.MaxValue;
 
             //int retVal = Factory.Instance.Insert(ordinance, "sp_InsertOrdinance");
             int retVal = 1;
@@ -459,12 +460,13 @@ namespace WebUI
                 {
                     revExpTables = true;
                 }
-                Debug.WriteLine(supportingDocumentation.PostedFiles.Count);
-                if (supportingDocumentation.PostedFiles.Count > 0)
-                {
+                string testName = supportingDocumentation.FileName;
+                Debug.WriteLine(testName);
+                //if (supportingDocumentation.PostedFiles.Count > 0)
+                //{
 
-                    documentation = true;
-                }
+                //    documentation = true;
+                //}
 
                 switch (revExpTables)
                 {
@@ -557,20 +559,21 @@ namespace WebUI
                 switch (documentation)
                 {
                     case true:
-                        for (int i = 0; i < supportingDocumentation.PostedFiles.Count; i++)
-                        {
-                            OrdinanceDocument ordDoc = new OrdinanceDocument();
-                            ordDoc.OrdinanceID = retVal;
-                            ordDoc.DocumentName = supportingDocumentation.PostedFiles[i].FileName;
-                            //int ret = Factory.Instance.Insert(ordDoc, "sp_InsertlkAccounting");
-                            int ret = 1;
-                            if (ret > 0)
-                            {
-                                Debug.WriteLine(ordDoc.DocumentName);
-                            }
-                        }
+                        //for (int i = 0; i < supportingDocumentation.PostedFiles.Count; i++)
+                        //{
+                        //    OrdinanceDocument ordDoc = new OrdinanceDocument();
+                        //    ordDoc.OrdinanceID = retVal;
+                        //    ordDoc.DocumentName = supportingDocumentation.PostedFiles[i].FileName;
+                        //    //int ret = Factory.Instance.Insert(ordDoc, "sp_InsertlkAccounting");
+                        //    int ret = 1;
+                        //    if (ret > 0)
+                        //    {
+                        //        Debug.WriteLine(ordDoc.DocumentName);
+                        //    }
+                        //}
                         break;
                     case false:
+                        finishSubmit = true;
                         break;
                 }
 
@@ -581,7 +584,7 @@ namespace WebUI
                         Session["ToastColor"] = "text-bg-success";
                         Session["ToastMessage"] = "Form Submitted!";
                         //Email.Instance.SendEmail(newEmail, emailList);
-                        //Response.Redirect("./NewFactSheet");
+                        Response.Redirect("./NewFactSheet");
                         break;
                     case false:
                         Session["SubmitStatus"] = "error";

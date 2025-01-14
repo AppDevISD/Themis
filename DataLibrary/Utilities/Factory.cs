@@ -63,19 +63,42 @@ namespace DataLibrary
                     T item = (T)Activator.CreateInstance(typeof(T));
                     foreach (var property in classType)
                     {
-                        Type propertyType = property.PropertyType;
-                        object value;
                         try
                         {
-                            value = Convert.ChangeType(rs[property.Name], propertyType);
-                        }
-                        catch (Exception)
-                        {
+                            // Get the property type
+                            Type propertyType = property.PropertyType;
 
-                            value = null;
+                            // Check if the value exists in the result set and is not DBNull
+                            if (rs[property.Name] != DBNull.Value)
+                            {
+                                // Attempt to convert the value
+                                object value = Convert.ChangeType(rs[property.Name], propertyType);
+
+                                // Check if the converted value is compatible with the property type
+                                if (value != null && propertyType.IsAssignableFrom(value.GetType()))
+                                {
+                                    property.SetValue(item, value);
+                                }
+                            }
+                            else
+                            {
+                                // Optionally, handle default values for nullable types
+                                if (Nullable.GetUnderlyingType(propertyType) != null)
+                                {
+                                    property.SetValue(item, null); // Set null for nullable types
+                                }
+                                else
+                                {
+                                    // For non-nullable types, set to default
+                                    property.SetValue(item, Activator.CreateInstance(propertyType));
+                                }
+                            }
                         }
-                         
-                        property.SetValue(item, value);                      
+                        catch (Exception ex)
+                        {
+                            // Log or handle exceptions gracefully
+                            Console.WriteLine($"Error setting property {property.Name}: {ex.Message}");
+                        }
                     }
                     list.Add(item);
                 }
