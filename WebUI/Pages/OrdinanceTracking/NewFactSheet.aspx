@@ -30,7 +30,8 @@
 					<asp:AsyncPostBackTrigger ControlID="scNo" EventName="CheckedChanged" />
 					<asp:AsyncPostBackTrigger ControlID="scNo" EventName="CheckedChanged" />
 					<asp:AsyncPostBackTrigger ControlID="purchaseMethod" EventName="SelectedIndexChanged" />
-					<asp:AsyncPostBackTrigger ControlID="SubmitFactSheet" EventName="Click" />
+					<asp:PostBackTrigger ControlID="SubmitFactSheet" />
+					<%--<asp:AsyncPostBackTrigger ControlID="UploadSupportingDocumentation" EventName="Click"  />--%>
 				</Triggers>
 
 				<%-- FORM CONTENT --%>
@@ -499,11 +500,13 @@
 						<%-- SECOND ROW --%>
 						<div class="row mb-3">
 							<%-- SUPPORTING DOCUMENTATION --%>
-							<div class="col-md-6">
+							<div class="col-md-8">
 								<div class="form-group">
-									<label for="supportingDocumentation">Supporting Documentation (Ex: Contract, Agreement, Change Order, Bid Book)</label>
-									<asp:FileUpload runat="server" ID="supportingDocumentation" CssClass="form-control" AllowMultiple="true" />
-									<%--<input runat="server" id="supportingDocumentation" type="file" name="supportingDocumentation" multiple class="form-control" />--%>
+									<label for="suppDocGroup">Supporting Documentation (Ex: Contract, Agreement, Change Order, Bid Book)</label>
+									<div id="suppDocGroup" class="input-group">
+										<asp:FileUpload runat="server" ID="supportingDocumentation" CssClass="form-control" AllowMultiple="true" />
+										<asp:Button runat="server" ID="UploadSupportingDocumentation" UseSubmitBehavior="false" CausesValidation="false" CssClass="btn btn-success" Width="25%" Text="Upload" OnClick="UploadSupportingDocumentation_Click" />
+									</div>
 								</div>
 							</div>
 						</div>
@@ -515,7 +518,7 @@
 						<div class="row mt-3 mb-3 text-center">
 							<%-- SUBMIT BUTTON --%>
 							<div class="col-md-12">
-								<asp:Button runat="server" ID="SubmitFactSheet" UseSubmitBehavior="false" CausesValidation="false" CssClass="btn btn-primary" Width="25%" Text="Submit" OnClick="SubmitForm_Click" OnClientClick="ShowSubmitToast();" />
+								<asp:Button runat="server" ID="SubmitFactSheet" UseSubmitBehavior="true" CssClass="btn btn-primary" Width="25%" Text="Submit" OnClick="SubmitForm_Click" OnClientClick="ShowSubmitToast();" />
 							</div>
 						</div>
 					</div>

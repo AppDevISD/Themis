@@ -451,7 +451,7 @@ namespace WebUI
             //ordinance.ExpirationDate = DateTime.MaxValue;
 
             //int retVal = Factory.Instance.Insert(ordinance, "sp_InsertOrdinance");
-            int retVal = 1;
+            int retVal = 0;
             if (retVal > 0)
             {
                 bool revExpTables = false;
@@ -461,13 +461,8 @@ namespace WebUI
                 {
                     revExpTables = true;
                 }
-                string testName = supportingDocumentation.FileName;
+                string testName = supportingDocumentation.PostedFiles[0].FileName;
                 Debug.WriteLine(testName);
-                //if (supportingDocumentation.PostedFiles.Count > 0)
-                //{
-
-                //    documentation = true;
-                //}
 
                 switch (revExpTables)
                 {
@@ -632,6 +627,11 @@ namespace WebUI
                 toastColor = (string)Session["ToastColor"];
                 toastMessage = (string)Session["ToastMessage"];
             }
+        }
+
+        protected void UploadSupportingDocumentation_Click(object sender, EventArgs e)
+        {
+            Debug.WriteLine(supportingDocumentation.HasFiles);
         }
     }
 }

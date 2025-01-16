@@ -339,6 +339,15 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.FileUpload supportingDocumentation;
 
         /// <summary>
+        /// UploadSupportingDocumentation control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button UploadSupportingDocumentation;
+
+        /// <summary>
         /// SubmitFactSheet control.
         /// </summary>
         /// <remarks>
