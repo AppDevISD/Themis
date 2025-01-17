@@ -638,6 +638,16 @@ input[type=range]:focus::-webkit-slider-thumb {
   box-shadow: none;
 }
 
+input[type=file]::-webkit-file-upload-button {
+  color: white !important;
+  background-color: var(--bs-primary) !important;
+  transition: background-color 0.15s ease-in-out !important;
+}
+
+input[type=file]:hover::-webkit-file-upload-button {
+  background-color: #024dbc !important;
+}
+
 /* --------------- Prism Code Blocks --------------- */
 [data-bs-theme=dark] pre[class*=language-] {
   background: var(--bs-body-bg) !important;

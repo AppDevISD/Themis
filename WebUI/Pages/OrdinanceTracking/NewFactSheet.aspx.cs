@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices.ComTypes;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -451,18 +452,20 @@ namespace WebUI
             //ordinance.ExpirationDate = DateTime.MaxValue;
 
             //int retVal = Factory.Instance.Insert(ordinance, "sp_InsertOrdinance");
-            int retVal = 0;
+            int retVal = 1;
             if (retVal > 0)
             {
                 bool revExpTables = false;
                 bool documentation = false;
-                bool finishSubmit = false;
+                bool finishSubmit = true;
                 if (rpRevenueTable.Items.Count > 0 || rpExpenditureTable.Items.Count > 0)
                 {
                     revExpTables = true;
                 }
-                string testName = supportingDocumentation.PostedFiles[0].FileName;
-                Debug.WriteLine(testName);
+                if (supportingDocumentation.HasFiles)
+                {
+                    documentation = true;
+                }
 
                 switch (revExpTables)
                 {
@@ -537,55 +540,35 @@ namespace WebUI
                             expSubmit = true;
                         }
 
-                        if (revSubmit && expSubmit)
-                        {
-                            finishSubmit = true;
-                        }
-                        else
+                        if (!revSubmit || !expSubmit)
                         {
                             finishSubmit = false;
                         }
                         break;
-                    case false:
-                        finishSubmit = true;
-                        break;
-                }
-
-                try
-                {
-                    foreach (HttpPostedFile postedFile in supportingDocumentation.PostedFiles)
-                    {
-                        string fileName = Path.GetFileName(postedFile.FileName);
-                        postedFile.SaveAs(Server.MapPath(path: "~/Uploads/") + fileName);
-                        Debug.WriteLine(fileName);
-                    }
-                    finishSubmit = true;
-                }
-                catch (Exception)
-                {
-
-                    finishSubmit = false;
                 }
 
                 switch (documentation)
                 {
                     case true:
-                        //for (int i = 0; i < supportingDocumentation.PostedFiles.Count; i++)
-                        //{
-                        //    OrdinanceDocument ordDoc = new OrdinanceDocument();
-                        //    ordDoc.OrdinanceID = retVal;
-                        //    ordDoc.DocumentName = supportingDocumentation.PostedFiles[i].FileName;
-                        //    //int ret = Factory.Instance.Insert(ordDoc, "sp_InsertlkAccounting");
-                        //    int ret = 1;
-                        //    if (ret > 0)
-                        //    {
-                        //        Debug.WriteLine(ordDoc.DocumentName);
-                        //    }
-                        //}
-                        
-                        break;
-                    case false:
-                        finishSubmit = true;
+
+                        for (int i = 0; i < supportingDocumentation.PostedFiles.Count; i++)
+                        {
+                            OrdinanceDocument ordDoc = new OrdinanceDocument();
+                            ordDoc.OrdinanceID = retVal;
+                            ordDoc.DocumentName = supportingDocumentation.PostedFiles[i].FileName;
+                            Stream stream = supportingDocumentation.PostedFiles[i].InputStream;
+                            using (var fileBytes = new BinaryReader(stream))
+                            {
+                                ordDoc.DocumentData = fileBytes.ReadBytes((int)stream.Length);
+                            }
+                            //int ret = Factory.Instance.Insert(ordDoc, "sp_InsertlkAccounting");
+                            int ret = 1;
+                            if (ret < 0)
+                            {
+                                finishSubmit = false;
+                            }
+                        }
+
                         break;
                 }
 
@@ -627,11 +610,6 @@ namespace WebUI
                 toastColor = (string)Session["ToastColor"];
                 toastMessage = (string)Session["ToastMessage"];
             }
-        }
-
-        protected void UploadSupportingDocumentation_Click(object sender, EventArgs e)
-        {
-            Debug.WriteLine(supportingDocumentation.HasFiles);
         }
     }
 }
