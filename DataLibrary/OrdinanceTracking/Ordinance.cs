@@ -31,9 +31,9 @@ namespace DataLibrary
         public string ChangeOrderNumber { get; set; } // Added
         public decimal AdditionalAmount { get; set; } // Added
         public string ContractMethod { get; set; }
-        //public string OtherException { get; set; } // Added
-        //public string PreviousOrdinanceNumbers { get; set; } // Added
-        //public string CodeProvision { get; set; } // Added
+        public string OtherException { get; set; } // Added
+        public string PreviousOrdinanceNumbers { get; set; } // Added
+        public string CodeProvision { get; set; } // Added
         public bool PAApprovalRequired { get; set; }
         public bool PAApprovalIncluded { get; set; }
         public string LastUpdateBy { get; set; }

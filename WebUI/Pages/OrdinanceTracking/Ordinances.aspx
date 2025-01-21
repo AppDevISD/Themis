@@ -6,46 +6,48 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 	<section>
-		<div class="card">
-			<div class="card-header bg-body">
-				<h3><i class="fas fa-book-section"></i>&nbsp;Ordinances</h3>
-			</div>
-			<asp:UpdatePanel runat="server" ID="pnlOrdinanceTable" UpdateMode="Always">
-				<ContentTemplate>
+		<asp:UpdatePanel runat="server" ID="pnlOrdinanceTable" UpdateMode="Always">
+			<ContentTemplate>
+				<div runat="server" id="ordTable" class="card">
+					<div class="card-header bg-body">
+						<h3><i class="fas fa-book-section"></i>&nbsp;Ordinances</h3>
+					</div>
 					<div class="card-body bg-body-tertiary">
 						<asp:Repeater runat="server" ID="rpOrdinanceTable">
 							<HeaderTemplate>
 								<table id="FormTable" class="table table-bordered table-striped table-hover text-center" style="padding: 0px; margin: 0px">
 									<thead>
 										<tr>
-											<th style="width: 10%; text-align: center"><strong>Date</strong></th>
+											<th style="width: 6%; text-align: center"><strong>Date</strong></th>
 											<th style="width: 39%; text-align: center"><strong>Title</strong></th>
 											<th style="width: 25%; text-align: center"><strong>Department</strong></th>
 											<th style="width: 15%; text-align: center"><strong>Contact</strong></th>
 											<th style="width: 10%; text-align: center"><strong>1<sup>st</sup> Read Date</strong></th>
-											<th style="width: 1%; text-align: center"><strong>Modify</strong></th>
+											<th style="width: 5%; text-align: center"><strong>Action</strong></th>
 										</tr>
 									</thead>
 							</HeaderTemplate>
 							<ItemTemplate>
 								<tr>
-									<td style="vertical-align: middle;">
+									<td class="align-middle">
 										<asp:Label ID="date" Text='<%# DataBinder.Eval(Container.DataItem, "EffectiveDate", "{0:MM/dd/yyyy}") %>' runat="server" />
 									</td>
-									<td style="vertical-align: middle;">
+									<td class="align-middle">
 										<asp:Label ID="formType" Text='<%# DataBinder.Eval(Container.DataItem, "OrdinanceTitle") %>' runat="server" />
 									</td>
-									<td style="vertical-align: middle;">
+									<td class="align-middle">
 										<asp:Label ID="contact" Text='<%# DataBinder.Eval(Container.DataItem, "RequestDepartment") %>' runat="server" />
 									</td>
-									<td style="vertical-align: middle;">
+									<td class="align-middle">
 										<asp:Label ID="employee" Text='<%# DataBinder.Eval(Container.DataItem, "RequestContact") %>' runat="server" />
 									</td>
-									<td style="vertical-align: middle;">
+									<td class="align-middle">
 										<asp:Label ID="notes" Text='<%# DataBinder.Eval(Container.DataItem, "FirstReadDate", "{0:MM/dd/yyyy}") %>' runat="server" />
 									</td>
-									<td style="vertical-align: middle;">
+									<td class="align-middle d-flex justify-content-around">
 										<%--<a runat="server" id="delete" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal" autopostback="false" onclick='<%#$"DeleteForm(\"{DataBinder.Eval(Container.DataItem, "OrdinanceID")}\")"%>'>Delete</a>--%>
+										<asp:LinkButton runat="server" ID="editOrd"><i class="fas fa-pen-to-square text-warning"></i></asp:LinkButton>
+										<asp:LinkButton runat="server" ID="viewOrd"><i class="fas fa-magnifying-glass text-info"></i></asp:LinkButton>
 									</td>
 								</tr>
 							</ItemTemplate>
@@ -79,10 +81,11 @@
 							</table>
 						</asp:Panel>
 					</div>
-				</ContentTemplate>
-			</asp:UpdatePanel>
-		</div>
+				</div>
+			</ContentTemplate>
+		</asp:UpdatePanel>
 	</section>
+
 	<!-- DELETE MODAL -->
 	<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel">
 		<div class="modal-dialog" role="document">

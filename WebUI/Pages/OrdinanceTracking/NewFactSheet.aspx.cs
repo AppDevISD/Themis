@@ -411,48 +411,48 @@ namespace WebUI
 
             Ordinance ordinance = new Ordinance();
 
-            //ordinance.OrdinanceNumber = "6515dfgsaf";
-            //ordinance.RequestID = 0;
-            //ordinance.RequestDepartment = requestDepartment.SelectedItem.Text;
-            //ordinance.RequestContact = requestContact.Text;
-            //ordinance.RequestPhone = $"{requestPhone.Text}{requestExt.Text}";
-            //ordinance.FirstReadDate = Convert.ToDateTime(firstReadDate.Text);
-            //ordinance.EmergencyPassage = epYes.Checked;
-            //ordinance.EmergencyPassageReason = epJustification.Text ?? string.Empty;
-            //ordinance.OrdinanceFiscalImpact = CurrencyToDecimal(fiscalImpact.Text);
-            //ordinance.OrdinanceTitle = suggestedTitle.Text;
-            //ordinance.ContractVendorID = 0;
-            //ordinance.ContractVendorName = vendorName.Text;
-            //ordinance.ContractVendorNumber = vendorNumber.Text;
-            //ordinance.ContractStartDate = contractStartDate.Text;
-            //ordinance.ContractEndDate = contractEndDate.Text;
-            //ordinance.ContractTerm = contractTerm.Value;
-            //ordinance.ContractAmount = CurrencyToDecimal(contractAmount.Text);
-            //ordinance.ScopeChange = scYes.Checked;
-            //ordinance.ChangeOrderNumber = changeOrderNumber.Text ?? string.Empty;
-            //if (scYes.Checked)
-            //{
-                
-            //    ordinance.AdditionalAmount = CurrencyToDecimal(additionalAmount.Text);
-            //}
-            //else
-            //{
-            //    ordinance.AdditionalAmount = CurrencyToDecimal("-1");
-            //}
-            //ordinance.ContractMethod = purchaseMethod.SelectedValue;
-            //ordinance.OtherException = otherException.Text ?? string.Empty;
-            //ordinance.PreviousOrdinanceNumbers = prevOrdinanceNums.Text;
-            //ordinance.CodeProvision = codeProvision.Text;
-            //ordinance.PAApprovalRequired = paApprovalRequiredYes.Checked;
-            //ordinance.PAApprovalIncluded = paApprovalAttachedYes.Checked;
-            //ordinance.OrdinanceAnalysis = staffAnalysis.Text;
-            //ordinance.LastUpdateBy = _user.Login;
-            //ordinance.LastUpdateDate = DateTime.Now;
-            //ordinance.EffectiveDate = DateTime.Now;
-            //ordinance.ExpirationDate = DateTime.MaxValue;
+            ordinance.OrdinanceNumber = "6515dfgsaf";
+            ordinance.RequestID = 0;
+            ordinance.RequestDepartment = requestDepartment.SelectedItem.Text;
+            ordinance.RequestContact = requestContact.Text;
+            ordinance.RequestPhone = $"{requestPhone.Text}{requestExt.Text}";
+            ordinance.FirstReadDate = Convert.ToDateTime(firstReadDate.Text);
+            ordinance.EmergencyPassage = epYes.Checked;
+            ordinance.EmergencyPassageReason = epJustification.Text ?? string.Empty;
+            ordinance.OrdinanceFiscalImpact = CurrencyToDecimal(fiscalImpact.Text);
+            ordinance.OrdinanceTitle = suggestedTitle.Text;
+            ordinance.ContractVendorID = 0;
+            ordinance.ContractVendorName = vendorName.Text;
+            ordinance.ContractVendorNumber = vendorNumber.Text;
+            ordinance.ContractStartDate = contractStartDate.Text;
+            ordinance.ContractEndDate = contractEndDate.Text;
+            ordinance.ContractTerm = contractTerm.Value;
+            ordinance.ContractAmount = CurrencyToDecimal(contractAmount.Text);
+            ordinance.ScopeChange = scYes.Checked;
+            ordinance.ChangeOrderNumber = changeOrderNumber.Text ?? string.Empty;
+            if (scYes.Checked)
+            {
 
-            //int retVal = Factory.Instance.Insert(ordinance, "sp_InsertOrdinance");
-            int retVal = 1;
+                ordinance.AdditionalAmount = CurrencyToDecimal(additionalAmount.Text);
+            }
+            else
+            {
+                ordinance.AdditionalAmount = CurrencyToDecimal("-1");
+            }
+            ordinance.ContractMethod = purchaseMethod.SelectedValue;
+            ordinance.OtherException = otherException.Text ?? string.Empty;
+            ordinance.PreviousOrdinanceNumbers = prevOrdinanceNums.Text;
+            ordinance.CodeProvision = codeProvision.Text;
+            ordinance.PAApprovalRequired = paApprovalRequiredYes.Checked;
+            ordinance.PAApprovalIncluded = paApprovalAttachedYes.Checked;
+            ordinance.OrdinanceAnalysis = staffAnalysis.Text;
+            ordinance.LastUpdateBy = _user.Login;
+            ordinance.LastUpdateDate = DateTime.Now;
+            ordinance.EffectiveDate = DateTime.Now;
+            ordinance.ExpirationDate = DateTime.MaxValue;
+
+            int retVal = Factory.Instance.Insert(ordinance, "sp_InsertOrdinance");
+            //int retVal = 1;
             if (retVal > 0)
             {
                 bool revExpTables = false;
@@ -511,8 +511,8 @@ namespace WebUI
                             for (int i = 0; i < rpExpenditureTable.Items.Count; i++)
                             {
                                 Accounting accountingItem = GetAccountingItem("expenditure", i);
-                                //int ret = Factory.Instance.Insert(accountingItem, "sp_InsertlkAccounting");
-                                int ret = 1;
+                                int ret = Factory.Instance.Insert(accountingItem, "sp_InsertlkAccounting");
+                                //int ret = 1;
                                 if (ret > 0)
                                 {
                                     OrdinanceAccounting oaItem = new OrdinanceAccounting();
@@ -522,8 +522,8 @@ namespace WebUI
                                     oaItem.LastUpdateDate = DateTime.Now;
                                     oaItem.EffectiveDate = DateTime.Now;
                                     oaItem.ExpirationDate = DateTime.MaxValue;
-                                    //int finalRet = Factory.Instance.Insert(oaItem, "sp_InsertOrdinance_Accounting");
-                                    int finalRet = 1;
+                                    int finalRet = Factory.Instance.Insert(oaItem, "sp_InsertOrdinance_Accounting");
+                                    //int finalRet = 1;
                                     if (finalRet > 0)
                                     {
                                         expSubmit = true;
@@ -561,9 +561,13 @@ namespace WebUI
                             {
                                 ordDoc.DocumentData = fileBytes.ReadBytes((int)stream.Length);
                             }
-                            //int ret = Factory.Instance.Insert(ordDoc, "sp_InsertlkAccounting");
-                            int ret = 1;
-                            if (ret < 0)
+                            ordDoc.LastUpdateBy = _user.Login;
+                            ordDoc.LastUpdateDate = DateTime.Now;
+                            ordDoc.EffectiveDate = DateTime.Now;
+                            ordDoc.ExpirationDate = DateTime.MaxValue;
+                            int ret = Factory.Instance.Insert(ordDoc, "sp_InsertOrdinance_Document");
+                            //int ret = 1;
+                            if (ret < 1)
                             {
                                 finishSubmit = false;
                             }
@@ -578,7 +582,7 @@ namespace WebUI
                         Session["SubmitStatus"] = "success";
                         Session["ToastColor"] = "text-bg-success";
                         Session["ToastMessage"] = "Form Submitted!";
-                        //Email.Instance.SendEmail(newEmail, emailList);
+                        Email.Instance.SendEmail(newEmail, emailList);
                         Response.Redirect("./NewFactSheet");
                         break;
                     case false:

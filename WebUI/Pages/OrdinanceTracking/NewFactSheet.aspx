@@ -31,7 +31,6 @@
 					<asp:AsyncPostBackTrigger ControlID="scNo" EventName="CheckedChanged" />
 					<asp:AsyncPostBackTrigger ControlID="purchaseMethod" EventName="SelectedIndexChanged" />
 					<asp:PostBackTrigger ControlID="SubmitFactSheet" />
-					<%--<asp:AsyncPostBackTrigger ControlID="UploadSupportingDocumentation" EventName="Click"  />--%>
 				</Triggers>
 
 				<%-- FORM CONTENT --%>
@@ -515,7 +514,7 @@
 						<div class="row mt-3 mb-3 text-center">
 							<%-- SUBMIT BUTTON --%>
 							<div class="col-md-12">
-								<asp:Button runat="server" ID="SubmitFactSheet" UseSubmitBehavior="false" CausesValidation="false" CssClass="btn btn-primary" Width="25%" Text="Submit" OnClick="SubmitForm_Click" OnClientClick="ShowSubmitToast();" />
+								<asp:Button runat="server" ID="SubmitFactSheet" UseSubmitBehavior="true" CssClass="btn btn-primary" Width="25%" Text="Submit" OnClick="SubmitForm_Click" OnClientClick="ShowSubmitToast();" />
 							</div>
 						</div>
 					</div>
