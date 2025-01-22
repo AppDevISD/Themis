@@ -26,6 +26,7 @@ namespace WebUI
         }
         protected void SetStartupActives()
         {
+            ordView.Visible = false;
         }
         protected void SetPagination(Repeater rpTable, int ItemsPerPage)
         {
