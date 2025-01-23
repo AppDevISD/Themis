@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Ordinances" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Ordinances.aspx.cs" Inherits="WebUI.Ordinances" %>
+﻿<%@ Page Title="Ordinances" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Ordinances.aspx.cs" Inherits="WebUI.Ordinances" ClientIDMode="Static" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
@@ -6,14 +6,18 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 	<section>
-		<asp:UpdatePanel runat="server" ID="pnlOrdinanceTable" UpdateMode="Always">
+		<asp:UpdatePanel runat="server" ID="pnlOrdinanceTable" UpdateMode="Always" class="overlap-panels">
+			<%--<Triggers>
+				<asp:AsyncPostBackTrigger ControlID="rpOrdinanceTable" EventName="edit" />
+				<asp:AsyncPostBackTrigger ControlID="rpOrdinanceTable" EventName="view" />
+			</Triggers>--%>
 			<ContentTemplate>
-				<div runat="server" id="ordTable" class="card">
+				<div runat="server" id="ordTable" class="card show">
 					<div class="card-header bg-body">
 						<h3><i class="fas fa-book-section"></i>&nbsp;Ordinances</h3>
 					</div>
 					<div class="card-body bg-body-tertiary">
-						<asp:Repeater runat="server" ID="rpOrdinanceTable">
+						<asp:Repeater runat="server" ID="rpOrdinanceTable" OnItemCommand="rpOrdinanceTable_ItemCommand">
 							<HeaderTemplate>
 								<table id="FormTable" class="table table-bordered table-striped table-hover text-center" style="padding: 0px; margin: 0px">
 									<thead>
@@ -30,6 +34,7 @@
 							<ItemTemplate>
 								<tr>
 									<td class="align-middle">
+										<asp:HiddenField runat="server" ID="hdnRevID" Value='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' />
 										<asp:Label ID="date" Text='<%# DataBinder.Eval(Container.DataItem, "EffectiveDate", "{0:MM/dd/yyyy}") %>' runat="server" />
 									</td>
 									<td class="align-middle">
@@ -46,8 +51,8 @@
 									</td>
 									<td class="align-middle d-flex justify-content-around">
 										<%--<a runat="server" id="delete" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal" autopostback="false" onclick='<%#$"DeleteForm(\"{DataBinder.Eval(Container.DataItem, "OrdinanceID")}\")"%>'>Delete</a>--%>
-										<asp:LinkButton runat="server" ID="editOrd"><i class="fas fa-pen-to-square text-warning"></i></asp:LinkButton>
-										<asp:LinkButton runat="server" ID="viewOrd"><i class="fas fa-magnifying-glass text-info"></i></asp:LinkButton>
+										<asp:LinkButton runat="server" ID="editOrd" CommandName="edit"><i class="fas fa-pen-to-square text-warning"></i></asp:LinkButton>
+										<asp:LinkButton runat="server" ID="viewOrd" CommandName="view"><i class="fas fa-magnifying-glass text-info"></i></asp:LinkButton>
 									</td>
 								</tr>
 							</ItemTemplate>
@@ -82,7 +87,7 @@
 						</asp:Panel>
 					</div>
 				</div>
-				<div runat="server" id="ordView">
+				<div runat="server" id="ordView" class="fade-out" readonly="false">
 					<%-- FORM HEADER --%>
 					<section class="container form-header bg-body text-center">
 						<div class="row h-100 align-items-center">
@@ -616,5 +621,13 @@
 		function DeleteForm(formID) {
 			hdnID.setAttribute('Value', formID);
 		}
+		FormatForms();
+		var prm = Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
+			//GetToastStatus();
+			FormatForms();
+			$("[data-type='currency']").each(function () {
+				formatCurrency($(this), "blur");
+			});
+		});
 	</script>
 </asp:Content>

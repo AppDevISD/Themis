@@ -1,10 +1,13 @@
 ﻿using DataLibrary;
 using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using System.Timers;
 using static DataLibrary.TablePagination;
 
 namespace WebUI
@@ -12,7 +15,7 @@ namespace WebUI
     public partial class Ordinances : System.Web.UI.Page
     {
         public string toastColor;
-        public string toastMessage;
+        public string toastMessage;        
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -21,6 +24,13 @@ namespace WebUI
                 SetStartupActives();
                 SetPagination(rpOrdinanceTable, 10);
                 GetStartupData();
+            }
+            foreach (RepeaterItem item in rpOrdinanceTable.Items)
+            {
+                LinkButton editButton = item.FindControl("editOrd") as LinkButton;
+                LinkButton viewButton = item.FindControl("viewOrd") as LinkButton;
+                ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(editButton);
+                ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(viewButton);
             }
             SubmitStatus();
         }
@@ -92,6 +102,34 @@ namespace WebUI
                 toastColor = (string)Session["ToastColor"];
                 toastMessage = (string)Session["ToastMessage"];
             }
+        }
+
+        protected void rpOrdinanceTable_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            
+            switch (e.CommandName)
+            {
+                case "view":
+                    ordView.Attributes["readonly"] = "true";
+                    ordTable.Attributes["class"] = ordTable.Attributes["class"].Replace("show", "fade-out");
+                    ordTable.Visible = false;
+                    ordView.Visible = true;
+                    ordView.Attributes["class"] = ordView.Attributes["class"].Replace("fade-out", "fade-in show");
+                    break;
+                case "edit":
+                    ordView.Attributes["readonly"] = "false";
+                    ordTable.Attributes["class"] = ordTable.Attributes["class"].Replace("show", "fade-out");
+                    ordTable.Visible = false;
+                    ordView.Visible = true;
+                    ordView.Attributes["class"] = ordView.Attributes["class"].Replace("fade-out", "fade-in show");
+                    break;
+            }
+        }
+
+
+        protected void SetFormReadOnly(bool readOnly)
+        {
+            //requestContact.ReadOnly
         }
     }
 }

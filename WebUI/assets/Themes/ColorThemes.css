@@ -648,6 +648,17 @@ input[type=file]:hover::-webkit-file-upload-button {
   background-color: #024dbc !important;
 }
 
+[readonly=true] input, [readonly=true] select, [readonly=true] textarea, [readonly=true] .radioListDiv .form-check input {
+  background-color: var(--bs-secondary-bg);
+  opacity: 1;
+  pointer-events: none !important;
+  --bs-form-select-bg-img: none;
+}
+[readonly=true] .radioListDiv .form-check label {
+  opacity: 0.5 !important;
+  pointer-events: none;
+}
+
 /* --------------- Prism Code Blocks --------------- */
 [data-bs-theme=dark] pre[class*=language-] {
   background: var(--bs-body-bg) !important;

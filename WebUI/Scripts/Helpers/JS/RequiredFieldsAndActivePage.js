@@ -1,6 +1,19 @@
 ﻿function pageLoad(sender, args) {
 	var requiredFields = document.querySelectorAll('[required="true"]');
-	if (requiredFields.length > 0) {
+	var readonly;
+	try {
+		var readonlyDiv = document.getElementById('ordView');
+		if (readonlyDiv.getAttribute("readonly") == "true") {
+			console.log(readonlyDiv.getAttribute("readonly"));
+			readonly = true;
+		}
+		else {
+			readonly = false;
+		}
+	} catch (e) {
+		readonly = false;
+	}
+	if (requiredFields.length > 0 && !readonly) {
 		var alreadyLabeled = false;
 		for (const field of requiredFields) {
 			const parent = field.parentElement;

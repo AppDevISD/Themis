@@ -307,8 +307,23 @@ input[type="file"]::-webkit-file-upload-button {
 	background-color: var(--bs-primary) !important;
 	transition: background-color .15s ease-in-out !important;
 }
+
 input[type="file"]:hover::-webkit-file-upload-button {
 	background-color: darken($primary, 15%) !important;
+}
+
+[readonly="true"] {
+	input, select, textarea, .radioListDiv .form-check input {
+		background-color: var(--bs-secondary-bg);
+		opacity: 1;
+		pointer-events: none !important;
+		--bs-form-select-bg-img: none;
+	}
+
+	.radioListDiv .form-check label {
+		opacity: 0.5 !important;
+		pointer-events: none;
+	}
 }
 
 
