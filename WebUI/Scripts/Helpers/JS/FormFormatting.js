@@ -130,3 +130,9 @@ function formatCurrency(input, blur) {
     }
     input.val(input_val);
 }
+
+//function OrdTableFadeOut() {
+//    console.log("Working");
+//    $('#ordTable').fadeOut(1000);
+//    $('#ordView').fadeIn(1000);
+//}

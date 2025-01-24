@@ -4,7 +4,6 @@
 	try {
 		var readonlyDiv = document.getElementById('ordView');
 		if (readonlyDiv.getAttribute("readonly") == "true") {
-			console.log(readonlyDiv.getAttribute("readonly"));
 			readonly = true;
 		}
 		else {

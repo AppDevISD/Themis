@@ -2,17 +2,17 @@
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server"></asp:Content>
+<asp:Content ID="HeadContent" ContentPlaceHolderID="HeadContent" runat="server"></asp:Content>
 
-<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+<asp:Content ID="MainContent" ContentPlaceHolderID="MainContent" runat="server">
 	<section>
 		<asp:UpdatePanel runat="server" ID="pnlOrdinanceTable" UpdateMode="Always" class="overlap-panels">
-			<%--<Triggers>
-				<asp:AsyncPostBackTrigger ControlID="rpOrdinanceTable" EventName="edit" />
-				<asp:AsyncPostBackTrigger ControlID="rpOrdinanceTable" EventName="view" />
-			</Triggers>--%>
+			<Triggers>
+				<%--<asp:AsyncPostBackTrigger ControlID="rpOrdinanceTable" EventName="edit" />--%>
+				<asp:AsyncPostBackTrigger ControlID="backBtn" EventName="Click" />
+			</Triggers>
 			<ContentTemplate>
-				<div runat="server" id="ordTable" class="card show">
+				<div runat="server" id="ordTable" class="card">
 					<div class="card-header bg-body">
 						<h3><i class="fas fa-book-section"></i>&nbsp;Ordinances</h3>
 					</div>
@@ -52,7 +52,7 @@
 									<td class="align-middle d-flex justify-content-around">
 										<%--<a runat="server" id="delete" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal" autopostback="false" onclick='<%#$"DeleteForm(\"{DataBinder.Eval(Container.DataItem, "OrdinanceID")}\")"%>'>Delete</a>--%>
 										<asp:LinkButton runat="server" ID="editOrd" CommandName="edit"><i class="fas fa-pen-to-square text-warning"></i></asp:LinkButton>
-										<asp:LinkButton runat="server" ID="viewOrd" CommandName="view"><i class="fas fa-magnifying-glass text-info"></i></asp:LinkButton>
+										<asp:LinkButton runat="server" ID="viewOrd" CommandName="view" OnClientClick="OrdTableFadeOut();"><i class="fas fa-magnifying-glass text-info"></i></asp:LinkButton>
 									</td>
 								</tr>
 							</ItemTemplate>
@@ -87,9 +87,10 @@
 						</asp:Panel>
 					</div>
 				</div>
-				<div runat="server" id="ordView" class="fade-out" readonly="false">
+				<div runat="server" id="ordView" readonly="false">
 					<%-- FORM HEADER --%>
-					<section class="container form-header bg-body text-center">
+					<section class="container form-header bg-body text-center position-relative">
+						<asp:LinkButton runat="server" ID="backBtn" CssClass="btn bg-danger backBtn" OnClick="backBtn_Click"><span class="fas fa-xmark text-light"></span></asp:LinkButton>
 						<div class="row h-100 align-items-center">
 							<h1><span class="fas fa-book-section"></span>&nbsp;Ordinance</h1>
 						</div>
@@ -590,6 +591,14 @@
 		</asp:UpdatePanel>
 	</section>
 
+	<%--<asp:UpdatePanelAnimationExtender runat="server" ID="testAnimation" TargetControlID="pnlOrdinanceTable">
+		<Animations>
+			<OnUpdated>
+				<FadeOut Duration="1.0" Fps="24" />
+			</OnUpdated>
+		</Animations>
+	</asp:UpdatePanelAnimationExtender>--%>
+
 	<!-- DELETE MODAL -->
 	<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel">
 		<div class="modal-dialog" role="document">
@@ -628,6 +637,12 @@
 			$("[data-type='currency']").each(function () {
 				formatCurrency($(this), "blur");
 			});
+			
 		});
+		function OrdTableFadeOut() {
+			var ordTable = document.getElementById('<%= ordTable.ClientID %>')
+			$(ordTable).fadeOut(1000);
+			$('#ordView').fadeIn(1000);
+		}
 	</script>
 </asp:Content>

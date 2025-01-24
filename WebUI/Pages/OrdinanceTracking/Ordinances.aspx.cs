@@ -9,6 +9,8 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Timers;
 using static DataLibrary.TablePagination;
+using AjaxControlToolkit;
+using System.Diagnostics;
 
 namespace WebUI
 {
@@ -106,30 +108,43 @@ namespace WebUI
 
         protected void rpOrdinanceTable_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
-            
+            //FadeViews("ordView");
             switch (e.CommandName)
             {
                 case "view":
                     ordView.Attributes["readonly"] = "true";
-                    ordTable.Attributes["class"] = ordTable.Attributes["class"].Replace("show", "fade-out");
-                    ordTable.Visible = false;
+                    //ordTable.Visible = false;
                     ordView.Visible = true;
-                    ordView.Attributes["class"] = ordView.Attributes["class"].Replace("fade-out", "fade-in show");
                     break;
                 case "edit":
                     ordView.Attributes["readonly"] = "false";
-                    ordTable.Attributes["class"] = ordTable.Attributes["class"].Replace("show", "fade-out");
-                    ordTable.Visible = false;
-                    ordView.Visible = true;
-                    ordView.Attributes["class"] = ordView.Attributes["class"].Replace("fade-out", "fade-in show");
                     break;
             }
         }
 
-
-        protected void SetFormReadOnly(bool readOnly)
+        protected void backBtn_Click(object sender, EventArgs e)
         {
-            //requestContact.ReadOnly
+            //FadeViews("ordTable");
+        }
+
+        protected void FadeViews(string viewToShow)
+        {
+            switch (viewToShow)
+            {
+                case "ordView":
+                    ordTable.Attributes["class"] = ordTable.Attributes["class"].Replace("show", "fade-out");
+                    ordTable.Visible = false;
+                    ordView.Visible = true;
+                    ordView.Attributes["class"] = ordView.Attributes["class"].Replace("fade-out", "fade-in show");
+                    break;
+
+                case "ordTable":
+                    ordView.Attributes["class"] = ordView.Attributes["class"].Replace("show", "fade-out");
+                    ordView.Visible = false;
+                    ordTable.Visible = true;
+                    ordTable.Attributes["class"] = ordTable.Attributes["class"].Replace("fade-out", "fade-in show");
+                    break;
+            }
         }
     }
 }

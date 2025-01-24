@@ -120,6 +120,7 @@
     <Content Include="Pages\OrdinanceTracking\NewFactSheet.aspx" />
     <Content Include="Pages\OrdinanceTracking\Ordinances.aspx" />
     <Content Include="Pages\OrdinanceTracking\OrdinanceTrackingAdmin.aspx" />
+    <Content Include="Scripts\ChartCode\chart-utils.min.js" />
     <Content Include="Scripts\ChartCode\ChartOptions.js" />
     <Content Include="Scripts\Helpers\JS\ChartHelpers.js" />
     <Content Include="Scripts\Helpers\JS\ChartPrism.js" />
