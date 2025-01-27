@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Ordinances" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Ordinances.aspx.cs" Inherits="WebUI.Ordinances" ClientIDMode="Static" %>
+﻿<%@ Page Title="Ordinances" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Ordinances.aspx.cs" Inherits="WebUI.Ordinances" ClientIDMode="Static" Async="true" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
@@ -52,7 +52,7 @@
 									<td class="align-middle d-flex justify-content-around">
 										<%--<a runat="server" id="delete" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal" autopostback="false" onclick='<%#$"DeleteForm(\"{DataBinder.Eval(Container.DataItem, "OrdinanceID")}\")"%>'>Delete</a>--%>
 										<asp:LinkButton runat="server" ID="editOrd" CommandName="edit"><i class="fas fa-pen-to-square text-warning"></i></asp:LinkButton>
-										<asp:LinkButton runat="server" ID="viewOrd" CommandName="view" OnClientClick="OrdTableFadeOut();"><i class="fas fa-magnifying-glass text-info"></i></asp:LinkButton>
+										<asp:LinkButton runat="server" ID="viewOrd" CommandName="view"><i class="fas fa-magnifying-glass text-info"></i></asp:LinkButton>
 									</td>
 								</tr>
 							</ItemTemplate>
@@ -87,7 +87,7 @@
 						</asp:Panel>
 					</div>
 				</div>
-				<div runat="server" id="ordView" readonly="false">
+				<div runat="server" id="ordView" readonly="false" style="display: none;">
 					<%-- FORM HEADER --%>
 					<section class="container form-header bg-body text-center position-relative">
 						<asp:LinkButton runat="server" ID="backBtn" CssClass="btn bg-danger backBtn" OnClick="backBtn_Click"><span class="fas fa-xmark text-light"></span></asp:LinkButton>
@@ -636,13 +636,16 @@
 			FormatForms();
 			$("[data-type='currency']").each(function () {
 				formatCurrency($(this), "blur");
-			});
-			
+			});			
 		});
 		function OrdTableFadeOut() {
 			var ordTable = document.getElementById('<%= ordTable.ClientID %>')
-			$(ordTable).fadeOut(1000);
-			$('#ordView').fadeIn(1000);
+			var ordView = document.getElementById('<%= ordView.ClientID %>')
+			$(ordTable).fadeOut(500);
+			setTimeout(() => {
+				$(ordView).fadeIn(500);
+			}, 500);
+
 		}
 	</script>
 </asp:Content>

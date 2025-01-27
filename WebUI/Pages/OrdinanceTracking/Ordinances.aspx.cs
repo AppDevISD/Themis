@@ -108,13 +108,33 @@ namespace WebUI
 
         protected void rpOrdinanceTable_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
-            //FadeViews("ordView");
             switch (e.CommandName)
             {
                 case "view":
-                    ordView.Attributes["readonly"] = "true";
-                    //ordTable.Visible = false;
-                    ordView.Visible = true;
+                    FadeTest();
+                    //Task fadeTask = new Task(() => {
+                    //    ordView.Attributes["readonly"] = "true";
+                    //    ordView.Visible = true;
+                    //    ScriptManager.RegisterStartupScript(this, this.GetType(), "FadeOutOrdTable", "OrdTableFadeOut();", true);
+                    //});
+
+                    //await Task.Factory.StartNew(() =>
+                    //{
+                        
+
+                    //    Thread.Sleep(500);
+
+                    //    ordTable.Visible = false;
+                    //});
+
+                    //Task visibleTask = new Task(() =>
+                    //{
+                    //    ordTable.Visible = false;
+                    //});
+                    
+                    //fadeTask.Start();
+                    //await Task.Delay(TimeSpan.FromMilliseconds(500));
+                    //visibleTask.Start();
                     break;
                 case "edit":
                     ordView.Attributes["readonly"] = "false";
@@ -122,8 +142,20 @@ namespace WebUI
             }
         }
 
+        protected async void FadeTest()
+        {
+            ordView.Attributes["readonly"] = "true";
+            ordView.Visible = true;
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "FadeOutOrdTable", "OrdTableFadeOut();", true);
+
+            await Task.Delay(501);
+
+            ordTable.Visible = false;
+        }
+
         protected void backBtn_Click(object sender, EventArgs e)
         {
+            ordTable.Visible = false;
             //FadeViews("ordTable");
         }
 
