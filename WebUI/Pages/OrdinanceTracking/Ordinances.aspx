@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Ordinances" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Ordinances.aspx.cs" Inherits="WebUI.Ordinances" ClientIDMode="Static" Async="true" %>
+﻿<%@ Page Title="Ordinances" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Ordinances.aspx.cs" Inherits="WebUI.Ordinances" ClientIDMode="Static" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
@@ -8,7 +8,6 @@
 	<section>
 		<asp:UpdatePanel runat="server" ID="pnlOrdinanceTable" UpdateMode="Always" class="overlap-panels">
 			<Triggers>
-				<%--<asp:AsyncPostBackTrigger ControlID="rpOrdinanceTable" EventName="edit" />--%>
 				<asp:AsyncPostBackTrigger ControlID="backBtn" EventName="Click" />
 			</Triggers>
 			<ContentTemplate>
@@ -34,7 +33,7 @@
 							<ItemTemplate>
 								<tr>
 									<td class="align-middle">
-										<asp:HiddenField runat="server" ID="hdnRevID" Value='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' />
+										<asp:HiddenField runat="server" ID="hdnID" Value='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' />
 										<asp:Label ID="date" Text='<%# DataBinder.Eval(Container.DataItem, "EffectiveDate", "{0:MM/dd/yyyy}") %>' runat="server" />
 									</td>
 									<td class="align-middle">
@@ -644,6 +643,14 @@
 			$(ordTable).fadeOut(500);
 			setTimeout(() => {
 				$(ordView).fadeIn(500);
+			}, 500);
+		}
+		function OrdTableFadeIn() {
+			var ordTable = document.getElementById('<%= ordTable.ClientID %>')
+			var ordView = document.getElementById('<%= ordView.ClientID %>')
+			$(ordView).fadeOut(500);
+			setTimeout(() => {
+				$(ordTable).fadeIn(500);
 			}, 500);
 
 		}

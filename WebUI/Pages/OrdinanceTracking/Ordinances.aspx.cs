@@ -11,6 +11,8 @@ using System.Timers;
 using static DataLibrary.TablePagination;
 using AjaxControlToolkit;
 using System.Diagnostics;
+using Microsoft.Ajax.Utilities;
+using System.Linq;
 
 namespace WebUI
 {
@@ -23,6 +25,8 @@ namespace WebUI
         {
             if (!Page.IsPostBack && !Response.IsRequestBeingRedirected)
             {
+                GetAllDepartments();
+                GetAllPurchaseMethods();
                 SetStartupActives();
                 SetPagination(rpOrdinanceTable, 10);
                 GetStartupData();
@@ -39,6 +43,25 @@ namespace WebUI
         protected void SetStartupActives()
         {
             ordView.Visible = false;
+        }
+        protected void GetAllDepartments()
+        {
+            Dictionary<string, string> departments = Utility.Instance.DepartmentsList();
+            foreach (var department in departments.Keys)
+            {
+                var value = departments[department];
+                ListItem newItem = new ListItem(department, value);
+                requestDepartment.Items.Add(newItem);
+            }
+        }
+        protected void GetAllPurchaseMethods()
+        {
+            purchaseMethod.Items.Insert(0, new ListItem("Select Purchase Method...", null));
+            purchaseMethod.Items.Insert(1, new ListItem("Low Bid", "Low Bid"));
+            purchaseMethod.Items.Insert(2, new ListItem("Low Bid Meeting Specs", "Low Bid Meeting Specs"));
+            purchaseMethod.Items.Insert(3, new ListItem("Low Evaluated Bid", "Low Evaluated Bid"));
+            purchaseMethod.Items.Insert(4, new ListItem("Other", "Other"));
+            purchaseMethod.Items.Insert(5, new ListItem("Exception", "Exception"));
         }
         protected void SetPagination(Repeater rpTable, int ItemsPerPage)
         {
@@ -108,55 +131,45 @@ namespace WebUI
 
         protected void rpOrdinanceTable_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
+            HiddenField hdnID = (HiddenField)e.Item.FindControl("hdnID");
+            int ordID = Convert.ToInt32(hdnID.Value);
+            Ordinance ord = Factory.Instance.GetByID<Ordinance>(ordID, "sp_GetOrdinanceByOrdinanceID");
+
+            requestDepartment.SelectedValue = Utility.Instance.DepartmentsList()[ord.RequestDepartment];
+            firstReadDate.Text = ord.FirstReadDate.ToString("yyyy-MM-dd");
+            requestContact.Text = ord.RequestContact;
+            requestPhone.Text = ord.RequestPhone.SubstringUpToFirst('x');
+            requestExt.Text = ord.RequestPhone.Substring(14);
+            epYes.Checked = ord.EmergencyPassage;
+            epJustification.Visible = ord.EmergencyPassage;
+            epJustification.Text = ord.EmergencyPassageReason;
+            vendorName.Text = ord.ContractVendorName;
+            vendorNumber.Text = ord.ContractVendorNumber;
+            contractStartDate.Text = ord.ContractStartDate;
+            contractEndDate.Text = ord.ContractEndDate;
+            contractTerm.Value = ord.ContractTerm;
+            contractAmount.Text = ord.ContractAmount.ToString();
+
+
             switch (e.CommandName)
             {
                 case "view":
-                    FadeTest();
-                    //Task fadeTask = new Task(() => {
-                    //    ordView.Attributes["readonly"] = "true";
-                    //    ordView.Visible = true;
-                    //    ScriptManager.RegisterStartupScript(this, this.GetType(), "FadeOutOrdTable", "OrdTableFadeOut();", true);
-                    //});
-
-                    //await Task.Factory.StartNew(() =>
-                    //{
-                        
-
-                    //    Thread.Sleep(500);
-
-                    //    ordTable.Visible = false;
-                    //});
-
-                    //Task visibleTask = new Task(() =>
-                    //{
-                    //    ordTable.Visible = false;
-                    //});
-                    
-                    //fadeTask.Start();
-                    //await Task.Delay(TimeSpan.FromMilliseconds(500));
-                    //visibleTask.Start();
+                    ordView.Attributes["readonly"] = "true";
                     break;
                 case "edit":
                     ordView.Attributes["readonly"] = "false";
                     break;
             }
-        }
 
-        protected async void FadeTest()
-        {
-            ordView.Attributes["readonly"] = "true";
-            ordView.Visible = true;
             ScriptManager.RegisterStartupScript(this, this.GetType(), "FadeOutOrdTable", "OrdTableFadeOut();", true);
+            ordView.Visible = true;
 
-            await Task.Delay(501);
 
-            ordTable.Visible = false;
         }
 
         protected void backBtn_Click(object sender, EventArgs e)
         {
-            ordTable.Visible = false;
-            //FadeViews("ordTable");
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "FadeInOrdTable", "OrdTableFadeIn();", true);
         }
 
         protected void FadeViews(string viewToShow)

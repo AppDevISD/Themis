@@ -138,6 +138,7 @@ namespace DataLibrary
             PropertyInfo[] classType = typeof(T).GetProperties();
             SqlConnection cn = new SqlConnection(Properties.Settings.Default["ThemisDB"].ToString());
             SqlCommand cmd = new SqlCommand(sp, cn);
+            cmd.Parameters.AddWithValue($"@{classType[0].Name}", id);
             cmd.CommandType = CommandType.StoredProcedure;
 
             using (cn)
@@ -149,9 +150,42 @@ namespace DataLibrary
                 {
                     foreach (var property in classType)
                     {
-                        Type propertyType = property.PropertyType;
-                        object value = Convert.ChangeType(rs[property.Name], propertyType);
-                        property.SetValue(item, value);
+                        try
+                        {
+                            // Get the property type
+                            Type propertyType = property.PropertyType;
+
+                            // Check if the value exists in the result set and is not DBNull
+                            if (rs[property.Name] != DBNull.Value)
+                            {
+                                // Attempt to convert the value
+                                object value = Convert.ChangeType(rs[property.Name], propertyType);
+
+                                // Check if the converted value is compatible with the property type
+                                if (value != null && propertyType.IsAssignableFrom(value.GetType()))
+                                {
+                                    property.SetValue(item, value);
+                                }
+                            }
+                            else
+                            {
+                                // Optionally, handle default values for nullable types
+                                if (Nullable.GetUnderlyingType(propertyType) != null)
+                                {
+                                    property.SetValue(item, null); // Set null for nullable types
+                                }
+                                else
+                                {
+                                    // For non-nullable types, set to default
+                                    property.SetValue(item, Activator.CreateInstance(propertyType));
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            // Log or handle exceptions gracefully
+                            Console.WriteLine($"Error setting property {property.Name}: {ex.Message}");
+                        }
                     }
                     cmd.CommandType = CommandType.StoredProcedure;
                 }
