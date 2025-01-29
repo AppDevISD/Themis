@@ -138,7 +138,7 @@ namespace DataLibrary
             PropertyInfo[] classType = typeof(T).GetProperties();
             SqlConnection cn = new SqlConnection(Properties.Settings.Default["ThemisDB"].ToString());
             SqlCommand cmd = new SqlCommand(sp, cn);
-            cmd.Parameters.AddWithValue($"@{classType[0].Name}", id);
+            cmd.Parameters.AddWithValue($"@p{classType[0].Name}", id);
             cmd.CommandType = CommandType.StoredProcedure;
 
             using (cn)

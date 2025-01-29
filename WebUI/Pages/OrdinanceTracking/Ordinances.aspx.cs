@@ -140,9 +140,23 @@ namespace WebUI
             requestContact.Text = ord.RequestContact;
             requestPhone.Text = ord.RequestPhone.SubstringUpToFirst('x');
             requestExt.Text = ord.RequestPhone.Substring(14);
-            epYes.Checked = ord.EmergencyPassage;
-            epJustification.Visible = ord.EmergencyPassage;
+
+            switch (ord.EmergencyPassage)
+            {
+                case true:
+                    epYes.Checked = true;
+                    epJustification.Visible = true;
+                    break;
+                case false:
+                    epNo.Checked = true;
+                    epJustification.Visible = false;
+                    break;
+            }
             epJustification.Text = ord.EmergencyPassageReason;
+
+            fiscalImpact.Text = ord.OrdinanceFiscalImpact.ToString();
+            suggestedTitle.Text = ord.OrdinanceTitle;
+
             vendorName.Text = ord.ContractVendorName;
             vendorNumber.Text = ord.ContractVendorNumber;
             contractStartDate.Text = ord.ContractStartDate;
@@ -150,11 +164,65 @@ namespace WebUI
             contractTerm.Value = ord.ContractTerm;
             contractAmount.Text = ord.ContractAmount.ToString();
 
+            switch (ord.ScopeChange)
+            {
+                case true:
+                    scYes.Checked = true;
+                    scopeChangeOptions.Visible = true;
+                    break;
+                case false:
+                    scNo.Checked = true;
+                    scopeChangeOptions.Visible = false;
+                    break;
+            }
+            changeOrderNumber.Text = ord.ChangeOrderNumber;
+            additionalAmount.Text = ord.AdditionalAmount.ToString();
+
+            purchaseMethod.SelectedValue = ord.ContractMethod;
+            switch (purchaseMethod.SelectedValue)
+            {
+                default:
+                    otherException.Visible = false;
+                    break;
+                case "Other":
+                case "Exception":
+                    otherException.Visible = true;
+                    break;
+            }
+            otherException.Text = ord.OtherException;
+            prevOrdinanceNums.Text = ord.PreviousOrdinanceNumbers;
+            codeProvision.Text = ord.CodeProvision;
+
+            switch (ord.PAApprovalRequired)
+            {
+                case true:
+                    paApprovalRequiredYes.Checked = true;                    
+                    break;
+                case false:
+                    paApprovalRequiredNo.Checked = true;
+                    break;
+            }
+            switch (ord.PAApprovalIncluded)
+            {
+                case true:
+                    paApprovalAttachedYes.Checked = true;                    
+                    break;
+                case false:
+                    paApprovalAttachedNo.Checked = true;
+                    break;
+            }
+
+            List<OrdinanceAccounting> ordAcc = Factory.Instance.GetAll<OrdinanceAccounting>("sp_GetLkAccounting");
+            
+
+
+            staffAnalysis.Text = ord.OrdinanceAnalysis;
 
             switch (e.CommandName)
             {
                 case "view":
                     ordView.Attributes["readonly"] = "true";
+                    prevOrdinanceNums.Attributes["placeholder"] = string.Empty;
                     break;
                 case "edit":
                     ordView.Attributes["readonly"] = "false";

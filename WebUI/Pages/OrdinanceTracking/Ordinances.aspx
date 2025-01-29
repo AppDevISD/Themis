@@ -173,7 +173,7 @@
 												<%-- NO --%>
 												<div class="form-check form-check-inline">
 													<label for="epNo">No</label>
-													<asp:RadioButton runat="server" ID="epNo" CssClass="form-check-input" GroupName="epList" Checked="true" />
+													<asp:RadioButton runat="server" ID="epNo" CssClass="form-check-input" GroupName="epList" />
 												</div>
 											</div>
 										</div>
@@ -293,7 +293,7 @@
 												<%-- NO --%>
 												<div class="form-check form-check-inline">
 													<label for="scNo">No</label>
-													<asp:RadioButton runat="server" ID="scNo" CssClass="form-check-input" GroupName="scopeChangeList" Checked="true" />
+													<asp:RadioButton runat="server" ID="scNo" CssClass="form-check-input" GroupName="scopeChangeList" />
 												</div>
 											</div>
 										</div>
@@ -301,7 +301,7 @@
 								</div>
 
 								<%-- SECOND ROW --%>
-								<div class="row mb-3">
+								<div runat="server" id="scopeChangeOptions" class="row mb-3">
 									<%-- CHANGE ORDER NUMBER --%>
 									<div class="col-md-10">
 										<label for="changeOrderNumber">Change Order Number</label>
@@ -377,7 +377,7 @@
 												<%-- NO --%>
 												<div class="form-check form-check-inline">
 													<label for="paApprovalRequiredNo">No</label>
-													<asp:RadioButton runat="server" ID="paApprovalRequiredNo" CssClass="form-check-input" GroupName="paApprovalRequiredList" Checked="true" />
+													<asp:RadioButton runat="server" ID="paApprovalRequiredNo" CssClass="form-check-input" GroupName="paApprovalRequiredList" />
 												</div>
 											</div>
 										</div>
@@ -400,7 +400,7 @@
 												<%-- NO --%>
 												<div class="form-check form-check-inline">
 													<label for="paApprovalAttachedNo">No</label>
-													<asp:RadioButton runat="server" ID="paApprovalAttachedNo" CssClass="form-check-input" GroupName="paApprovalAttachedList" Checked="true" />
+													<asp:RadioButton runat="server" ID="paApprovalAttachedNo" CssClass="form-check-input" GroupName="paApprovalAttachedList" />
 												</div>
 											</div>
 										</div>
@@ -640,6 +640,9 @@
 		function OrdTableFadeOut() {
 			var ordTable = document.getElementById('<%= ordTable.ClientID %>')
 			var ordView = document.getElementById('<%= ordView.ClientID %>')
+			$("[data-type='currency']").each(function () {
+				formatCurrency($(this), "blur");
+			});	
 			$(ordTable).fadeOut(500);
 			setTimeout(() => {
 				$(ordView).fadeIn(500);
