@@ -86,7 +86,7 @@
 						</asp:Panel>
 					</div>
 				</div>
-				<div runat="server" id="ordView" readonly="false" style="display: none;">
+				<div runat="server" id="ordView" readonly="false" class="readonly-color" style="display: none;">
 					<%-- FORM HEADER --%>
 					<section class="container form-header bg-body text-center position-relative">
 						<asp:LinkButton runat="server" ID="backBtn" CssClass="btn bg-danger backBtn" OnClick="backBtn_Click"><span class="fas fa-xmark text-light"></span></asp:LinkButton>
@@ -460,7 +460,7 @@
 															<td class="position-relative" style="vertical-align: middle">
 																<asp:TextBox runat="server" ID="revenueAmount" CssClass="form-control" TextMode="SingleLine" data-type="currency" placeholder="$10,000.00" AutoCompleteType="Disabled" Text='<%# (Convert.ToInt32(DataBinder.Eval(Container.DataItem, "Amount")) >= 0)?DataBinder.Eval(Container.DataItem, "Amount"):string.Empty%>'></asp:TextBox>
 
-																<div>
+																<div runat="server" id="removeRevRowDiv">
 																	<asp:Button runat="server" ID="removeRevenueRow" CssClass="btn row-delete" UseSubmitBehavior="false" CommandName="delete" CommandArgument="revenue" Text="&#xf068;" />
 																</div>
 															</td>
@@ -527,7 +527,7 @@
 															<td class="position-relative" style="vertical-align: middle">
 																<asp:TextBox runat="server" ID="expenditureAmount" CssClass="form-control" TextMode="SingleLine" data-type="currency" placeholder="$10,000.00" AutoCompleteType="Disabled" Text='<%# (Convert.ToInt32(DataBinder.Eval(Container.DataItem, "Amount")) >= 0)?DataBinder.Eval(Container.DataItem, "Amount"):string.Empty%>'></asp:TextBox>
 
-																<div>
+																<div runat="server" id="removeExpRowDiv">
 																	<asp:Button runat="server" ID="removeExpenditureRow" CssClass="btn row-delete" UseSubmitBehavior="false" CommandName="delete" CommandArgument="expenditure" Text="&#xf068;" />
 																</div>
 															</td>

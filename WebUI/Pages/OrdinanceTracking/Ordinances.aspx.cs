@@ -133,7 +133,7 @@ namespace WebUI
         {
             HiddenField hdnID = (HiddenField)e.Item.FindControl("hdnID");
             int ordID = Convert.ToInt32(hdnID.Value);
-            Ordinance ord = Factory.Instance.GetByID<Ordinance>(ordID, "sp_GetOrdinanceByOrdinanceID");
+            Ordinance ord = Factory.Instance.GetByID<Ordinance>(ordID, "sp_GetOrdinanceByOrdinanceID", "OrdinanceID");
 
             requestDepartment.SelectedValue = Utility.Instance.DepartmentsList()[ord.RequestDepartment];
             firstReadDate.Text = ord.FirstReadDate.ToString("yyyy-MM-dd");
@@ -212,9 +212,50 @@ namespace WebUI
                     break;
             }
 
-            List<OrdinanceAccounting> ordAcc = Factory.Instance.GetAll<OrdinanceAccounting>("sp_GetLkAccounting");
-            
+            List<OrdinanceAccounting> ordAcc = Factory.Instance.GetAllLookup<OrdinanceAccounting>(ordID, "sp_GetOrdinanceAccountingByOrdinanceID", "OrdinanceID");
 
+            if (ordAcc.Count > 0)
+            {
+                List<Accounting> revItems = new List<Accounting>();
+                List<Accounting> expItems = new List<Accounting>();
+                foreach (OrdinanceAccounting item in ordAcc)
+                {
+                    Accounting acctItem = Factory.Instance.GetByID<Accounting>(item.AccountingID, "sp_GetOrdinanceAccountingByAccountingID", "AccountingID");
+                    switch (acctItem.AccountingDesc)
+                    {
+                        case "revenue":
+                            revItems.Add(acctItem);
+                            break;
+                        case "expenditure":
+                            expItems.Add(acctItem);
+                            break;
+                    }
+                }
+
+                if (revItems.Count > 0)
+                {
+                    Session["ordRevTable"] = revItems;
+                    rpRevenueTable.DataSource = revItems;
+                    rpRevenueTable.DataBind();
+                }
+                if (expItems.Count > 0)
+                {
+                    Session["ordExpTable"] = expItems;
+                    rpExpenditureTable.DataSource = expItems;
+                    rpExpenditureTable.DataBind();
+                }
+            }
+            else
+            {
+                Session.Remove("ordRevTable");
+                Session.Remove("ordExpTable");
+                rpRevenueTable.DataSource = null;
+                rpExpenditureTable.DataSource = null;
+                rpRevenueTable.DataBind();
+                rpExpenditureTable.DataBind();
+            }
+                      
+            
 
             staffAnalysis.Text = ord.OrdinanceAnalysis;
 
@@ -223,41 +264,53 @@ namespace WebUI
                 case "view":
                     ordView.Attributes["readonly"] = "true";
                     prevOrdinanceNums.Attributes["placeholder"] = string.Empty;
+                    if (rpRevenueTable.Items.Count > 0)
+                    {
+                        foreach (RepeaterItem item in rpRevenueTable.Items)
+                        {
+                            HtmlGenericControl removeRevRow = item.FindControl("removeRevRowDiv") as HtmlGenericControl;
+                            removeRevRow.Visible = false;
+                        }
+                    }
+                    if (rpExpenditureTable.Items.Count > 0)
+                    {
+                        foreach (RepeaterItem item in rpExpenditureTable.Items)
+                        {
+                            HtmlGenericControl removeExpRow = item.FindControl("removeExpRowDiv") as HtmlGenericControl;
+                            removeExpRow.Visible = false;
+                        }
+                    }
                     break;
                 case "edit":
                     ordView.Attributes["readonly"] = "false";
+                    if (rpRevenueTable.Items.Count > 0)
+                    {
+                        foreach (RepeaterItem item in rpRevenueTable.Items)
+                        {
+                            HtmlGenericControl removeRevRow = item.FindControl("removeRevRowDiv") as HtmlGenericControl;
+                            removeRevRow.Visible = true;
+                            //ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(removeRevRow);
+                        }
+                    }
+                    if (rpExpenditureTable.Items.Count > 0)
+                    {
+                        foreach (RepeaterItem item in rpExpenditureTable.Items)
+                        {
+                            HtmlGenericControl removeExpRow = item.FindControl("removeExpRowDiv") as HtmlGenericControl;
+                            removeExpRow.Visible = true;
+                            //ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(removeExpRow);
+                        }
+                    }
                     break;
             }
 
             ScriptManager.RegisterStartupScript(this, this.GetType(), "FadeOutOrdTable", "OrdTableFadeOut();", true);
             ordView.Visible = true;
-
-
         }
 
         protected void backBtn_Click(object sender, EventArgs e)
         {
             ScriptManager.RegisterStartupScript(this, this.GetType(), "FadeInOrdTable", "OrdTableFadeIn();", true);
-        }
-
-        protected void FadeViews(string viewToShow)
-        {
-            switch (viewToShow)
-            {
-                case "ordView":
-                    ordTable.Attributes["class"] = ordTable.Attributes["class"].Replace("show", "fade-out");
-                    ordTable.Visible = false;
-                    ordView.Visible = true;
-                    ordView.Attributes["class"] = ordView.Attributes["class"].Replace("fade-out", "fade-in show");
-                    break;
-
-                case "ordTable":
-                    ordView.Attributes["class"] = ordView.Attributes["class"].Replace("show", "fade-out");
-                    ordView.Visible = false;
-                    ordTable.Visible = true;
-                    ordTable.Attributes["class"] = ordTable.Attributes["class"].Replace("fade-out", "fade-in show");
-                    break;
-            }
         }
     }
 }
