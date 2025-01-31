@@ -57,7 +57,7 @@ namespace WebUI
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlButton lnkFirstSearchP;
+        protected global::System.Web.UI.WebControls.LinkButton lnkFirstSearchP;
 
         /// <summary>
         /// lnkPreviousSearchP control.
@@ -66,7 +66,7 @@ namespace WebUI
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlButton lnkPreviousSearchP;
+        protected global::System.Web.UI.WebControls.LinkButton lnkPreviousSearchP;
 
         /// <summary>
         /// lblCurrentPageBottomSearchP control.
@@ -84,7 +84,7 @@ namespace WebUI
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlButton lnkNextSearchP;
+        protected global::System.Web.UI.WebControls.LinkButton lnkNextSearchP;
 
         /// <summary>
         /// lnkLastSearchP control.
@@ -93,7 +93,7 @@ namespace WebUI
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlButton lnkLastSearchP;
+        protected global::System.Web.UI.WebControls.LinkButton lnkLastSearchP;
 
         /// <summary>
         /// ordView control.
@@ -105,6 +105,15 @@ namespace WebUI
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl ordView;
 
         /// <summary>
+        /// hdnOrdID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnOrdID;
+
+        /// <summary>
         /// backBtn control.
         /// </summary>
         /// <remarks>
@@ -112,6 +121,15 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton backBtn;
+
+        /// <summary>
+        /// requiredFieldDescriptor control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl requiredFieldDescriptor;
 
         /// <summary>
         /// requestDepartment control.
@@ -393,6 +411,24 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.Repeater rpRevenueTable;
 
         /// <summary>
+        /// newRevenueRowDiv control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl newRevenueRowDiv;
+
+        /// <summary>
+        /// newRevenueRow control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button newRevenueRow;
+
+        /// <summary>
         /// rpExpenditureTable control.
         /// </summary>
         /// <remarks>
@@ -400,6 +436,24 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater rpExpenditureTable;
+
+        /// <summary>
+        /// newExpenditureRowDiv control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl newExpenditureRowDiv;
+
+        /// <summary>
+        /// newExpenditureRow control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button newExpenditureRow;
 
         /// <summary>
         /// staffAnalysis control.
@@ -411,6 +465,24 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.TextBox staffAnalysis;
 
         /// <summary>
+        /// supportingDocumentationDiv control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl supportingDocumentationDiv;
+
+        /// <summary>
+        /// rpSupportingDocumentation control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rpSupportingDocumentation;
+
+        /// <summary>
         /// supportingDocumentation control.
         /// </summary>
         /// <remarks>
@@ -418,6 +490,33 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.FileUpload supportingDocumentation;
+
+        /// <summary>
+        /// submitSection control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl submitSection;
+
+        /// <summary>
+        /// SaveFactSheet control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button SaveFactSheet;
+
+        /// <summary>
+        /// DeleteFactSheet control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button DeleteFactSheet;
 
         /// <summary>
         /// deleteLabel control.

@@ -116,6 +116,7 @@
     <Content Include="assets\css\Site.css" />
     <Content Include="assets\images\icons\theme-dark.svg" />
     <Content Include="assets\images\icons\theme-light.svg" />
+    <Content Include="assets\js\Ordinances.js" />
     <Content Include="assets\js\Site.js" />
     <Content Include="Pages\OrdinanceTracking\NewFactSheet.aspx" />
     <Content Include="Pages\OrdinanceTracking\Ordinances.aspx" />

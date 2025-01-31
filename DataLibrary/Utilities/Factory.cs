@@ -240,6 +240,34 @@ namespace DataLibrary
             return retVal;
         }
 
+        public int Update<T>(T item, string sp)
+        {
+            SqlConnection cn = new SqlConnection(Properties.Settings.Default["ThemisDB"].ToString());
+
+            PropertyInfo[] classType = typeof(T).GetProperties();
+            SqlCommand cmd = new SqlCommand(sp, cn);
+            foreach (var property in classType)
+            {
+                cmd.Parameters.AddWithValue($"@p{property.Name}", property.GetValue(item));
+            }
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            try
+            {
+                using (cn)
+                {
+                    cn.Open();
+                    retVal = cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                errorMsg = ex.Message;
+                retVal = -1;
+            }
+            return retVal;
+        }
+
 
 
         // DELETES //
@@ -259,7 +287,6 @@ namespace DataLibrary
                 {
                     cn.Open();
                     ret = cmd.ExecuteNonQuery();
-                    Debug.WriteLine(ret);
                 }
             }
             catch (Exception ex)
@@ -269,11 +296,11 @@ namespace DataLibrary
             }
             return ret;
         }
-        public int Expire<T>(T item, string tableName) {
+        public int Expire<T>(T item, string sp) {
             SqlConnection cn = new SqlConnection(Properties.Settings.Default["ThemisDB"].ToString());
 
             PropertyInfo[] classType = typeof(T).GetProperties();
-            SqlCommand cmd = new SqlCommand($"sp_Update{tableName}", cn);
+            SqlCommand cmd = new SqlCommand(sp, cn);
             foreach (var property in classType)
             {
                 cmd.Parameters.AddWithValue($"@p{property.Name}", property.GetValue(item));

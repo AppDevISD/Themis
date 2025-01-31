@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Ordinances" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Ordinances.aspx.cs" Inherits="WebUI.Ordinances" ClientIDMode="Static" %>
+﻿<%@ Page Title="Ordinances" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Ordinances.aspx.cs" Inherits="WebUI.Ordinances" ClientIDMode="Static" MaintainScrollPositionOnPostback="true" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
@@ -9,9 +9,14 @@
 		<asp:UpdatePanel runat="server" ID="pnlOrdinanceTable" UpdateMode="Always" class="overlap-panels">
 			<Triggers>
 				<asp:AsyncPostBackTrigger ControlID="backBtn" EventName="Click" />
+				<asp:AsyncPostBackTrigger ControlID="lnkFirstSearchP" EventName="Click" />
+				<asp:AsyncPostBackTrigger ControlID="lnkPreviousSearchP" EventName="Click" />
+				<asp:AsyncPostBackTrigger ControlID="lnkNextSearchP" EventName="Click" />
+				<asp:AsyncPostBackTrigger ControlID="lnkLastSearchP" EventName="Click" />
+				<asp:PostBackTrigger ControlID="SaveFactSheet" />
 			</Triggers>
 			<ContentTemplate>
-				<div runat="server" id="ordTable" class="card">
+				<div runat="server" id="ordTable" class="card" style="min-height: 80vh;">
 					<div class="card-header bg-body">
 						<h3><i class="fas fa-book-section"></i>&nbsp;Ordinances</h3>
 					</div>
@@ -65,10 +70,10 @@
 							<table class="table m-0" runat="server">
 								<tr>
 									<td class="text-left">
-										<button id="lnkFirstSearchP" class="btn btn-primary" runat="server" onserverclick="paginationBtn_Click" data-command="first" style="width: 150px;" causesvalidation="false"><i class="fas fa-angles-left"></i>&nbsp;First</button>
+										<asp:LinkButton ID="lnkFirstSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="first" style="width: 150px;" causesvalidation="false"><i class="fas fa-angles-left"></i>&nbsp;First</asp:LinkButton>
 									</td>
 									<td class="text-center">
-										<button id="lnkPreviousSearchP" class="btn btn-primary" runat="server" onserverclick="paginationBtn_Click" data-command="previous" style="width: 150px;" causesvalidation="false"><i class="fas fa-angle-left"></i>&nbsp;Previous</button>
+										<asp:LinkButton ID="lnkPreviousSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="previous" style="width: 150px;" causesvalidation="false"><i class="fas fa-angle-left"></i>&nbsp;Previous</asp:LinkButton>
 									</td>
 									<td class="text-center">
 										<div style="margin-top: 5px">
@@ -76,17 +81,19 @@
 										</div>
 									</td>
 									<td class="text-center">
-										<button id="lnkNextSearchP" class="btn btn-primary" runat="server" onserverclick="paginationBtn_Click" data-command="next" style="width: 150px;" causesvalidation="false">Next&nbsp;<i class="fas fa-angle-right"></i></button>
+										<asp:LinkButton ID="lnkNextSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="next" style="width: 150px;" causesvalidation="false">Next&nbsp;<i class="fas fa-angle-right"></i></asp:LinkButton>
 									</td>
 									<td class="text-end">
-										<button id="lnkLastSearchP" class="btn btn-primary" runat="server" onserverclick="paginationBtn_Click" data-command="last" style="width: 150px;" causesvalidation="false">Last&nbsp;<i class="fas fa-angles-right"></i></button>
+										<asp:LinkButton ID="lnkLastSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="last" style="width: 150px;" causesvalidation="false">Last&nbsp;<i class="fas fa-angles-right"></i></asp:LinkButton>
 									</td>
 								</tr>
 							</table>
 						</asp:Panel>
 					</div>
 				</div>
-				<div runat="server" id="ordView" readonly="false" class="readonly-color" style="display: none;">
+				<div runat="server" id="ordView" readonly="false" class="readonly-color">
+					<asp:HiddenField runat="server" ID="hdnOrdID" />
+
 					<%-- FORM HEADER --%>
 					<section class="container form-header bg-body text-center position-relative">
 						<asp:LinkButton runat="server" ID="backBtn" CssClass="btn bg-danger backBtn" OnClick="backBtn_Click"><span class="fas fa-xmark text-light"></span></asp:LinkButton>
@@ -97,7 +104,11 @@
 
 					<%-- FORM BODY --%>
 					<div class="container form-page bg-body-tertiary">
+
 						<div class="px-2 py-4">
+							<%-- REQUIRED FIELD DESCRIPTOR --%>
+							<p runat="server" id="requiredFieldDescriptor" class="text-justify" style="color: gray;"><i class="fa-solid fa-asterisk"></i>&nbsp;= Required Field</p>
+
 							<%-- FIRST SECTION --%>
 							<div class="form-section">
 								<%-- FIRST ROW --%>
@@ -432,8 +443,8 @@
 											<%-- TABLE BODY --%>
 											<tbody>
 												<%-- REVENUE TABLE REPEATER --%>
-												<%--OnItemCommand="rpAccountingTable_ItemCommand"--%>
-												<asp:Repeater runat="server" ID="rpRevenueTable">
+												
+												<asp:Repeater runat="server" ID="rpRevenueTable" OnItemCommand="rpAccountingTable_ItemCommand">
 													<ItemTemplate>
 														<tr>
 															<td style="vertical-align: middle">
@@ -461,7 +472,7 @@
 																<asp:TextBox runat="server" ID="revenueAmount" CssClass="form-control" TextMode="SingleLine" data-type="currency" placeholder="$10,000.00" AutoCompleteType="Disabled" Text='<%# (Convert.ToInt32(DataBinder.Eval(Container.DataItem, "Amount")) >= 0)?DataBinder.Eval(Container.DataItem, "Amount"):string.Empty%>'></asp:TextBox>
 
 																<div runat="server" id="removeRevRowDiv">
-																	<asp:Button runat="server" ID="removeRevenueRow" CssClass="btn row-delete" UseSubmitBehavior="false" CommandName="delete" CommandArgument="revenue" Text="&#xf068;" />
+																	<asp:Button runat="server" ID="removeRevenueRow" CssClass="btn row-delete" UseSubmitBehavior="false" CommandName="delete" CommandArgument="ordRevTable" Text="&#xf068;" />
 																</div>
 															</td>
 														</tr>
@@ -471,9 +482,9 @@
 										</table>
 
 										<%-- ADD REVENUE ROW BUTTON --%>
-										<%--<div class="text-center w-100">
-											<asp:Button runat="server" ID="newRevenueRow" CssClass="btn btn-success w-100 row-add" OnClick="newAccountingRow_ServerClick" UseSubmitBehavior="false" CommandName="revenue" Text="Add Row" />
-										</div>--%>
+										<div runat="server" id="newRevenueRowDiv" class="text-center w-100">
+											<asp:Button runat="server" ID="newRevenueRow" CssClass="btn btn-success w-100 row-add" OnClick="newAccountingRow_ServerClick" UseSubmitBehavior="false" CommandName="ordRevTable" Text="Add Row" />
+										</div>
 									</div>
 
 									<%-- BLANK SPACE --%>
@@ -499,8 +510,7 @@
 											<%-- TABLE BODY --%>
 											<tbody>
 												<%-- EXPENDITURE TABLE REPEATER --%>
-												<%--OnItemCommand="rpAccountingTable_ItemCommand"--%>
-												<asp:Repeater runat="server" ID="rpExpenditureTable" >
+												<asp:Repeater runat="server" ID="rpExpenditureTable" OnItemCommand="rpAccountingTable_ItemCommand">
 													<ItemTemplate>
 														<tr>
 															<td style="vertical-align: middle">
@@ -528,7 +538,7 @@
 																<asp:TextBox runat="server" ID="expenditureAmount" CssClass="form-control" TextMode="SingleLine" data-type="currency" placeholder="$10,000.00" AutoCompleteType="Disabled" Text='<%# (Convert.ToInt32(DataBinder.Eval(Container.DataItem, "Amount")) >= 0)?DataBinder.Eval(Container.DataItem, "Amount"):string.Empty%>'></asp:TextBox>
 
 																<div runat="server" id="removeExpRowDiv">
-																	<asp:Button runat="server" ID="removeExpenditureRow" CssClass="btn row-delete" UseSubmitBehavior="false" CommandName="delete" CommandArgument="expenditure" Text="&#xf068;" />
+																	<asp:Button runat="server" ID="removeExpenditureRow" CssClass="btn row-delete" UseSubmitBehavior="false" CommandName="delete" CommandArgument="ordExpTable" Text="&#xf068;" />
 																</div>
 															</td>
 														</tr>
@@ -538,9 +548,9 @@
 										</table>
 
 										<%-- ADD EXPENDITURE ROW BUTTON --%>
-										<%--<div class="text-center w-100">
-											<asp:Button runat="server" ID="newExpenditureRow" CssClass="btn btn-success w-100 row-add" OnClick="newAccountingRow_ServerClick" UseSubmitBehavior="false" CommandName="expenditure" Text="Add Row" />
-										</div>--%>
+										<div runat="server" id="newExpenditureRowDiv" class="text-center w-100">
+											<asp:Button runat="server" ID="newExpenditureRow" CssClass="btn btn-success w-100 row-add" OnClick="newAccountingRow_ServerClick" UseSubmitBehavior="false" CommandName="ordExpTable" Text="Add Row" />
+										</div>
 									</div>
 
 									<%-- BLANK SPACE --%>
@@ -562,25 +572,41 @@
 								</div>
 
 								<%-- SECOND ROW --%>
-								<div class="row mb-3">
+								<div runat="server" id="supportingDocumentationDiv" class="row mb-3">
 									<%-- SUPPORTING DOCUMENTATION --%>
 									<div class="col-md-6">
 										<div class="form-group">
 											<label for="supportingDocumentation">Supporting Documentation (Ex: Contract, Agreement, Change Order, Bid Book)</label>
-											<asp:FileUpload runat="server" ID="supportingDocumentation" CssClass="form-control" AllowMultiple="true" />
+											<ul class="list-group mt-1">
+												<asp:Repeater runat="server" ID="rpSupportingDocumentation" OnItemCommand="rpSupportingDocumentation_ItemCommand">
+													<ItemTemplate>
+														<li class="list-group-item">
+															<asp:HiddenField runat="server" ID="hdnDocID" Value='<%# DataBinder.Eval(Container.DataItem, "DocumentID") %>' />
+															<asp:HiddenField runat="server" ID="hdnDocIndex" Value='<%# Container.ItemIndex %>' />
+															<asp:LinkButton runat="server" ID="supportingDocDownload" CssClass="align-middle lh-1" CommandName="download" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "DocumentName") %>'><%# DataBinder.Eval(Container.DataItem, "DocumentName") %></asp:LinkButton>
+															<asp:LinkButton runat="server" ID="deleteFile" CssClass="btn btn-danger float-end" CommandName="delete"><span class="fas fa-trash-can"></span></asp:LinkButton>
+														</li>
+													</ItemTemplate>
+												</asp:Repeater>
+											</ul>
+											<asp:FileUpload runat="server" ID="supportingDocumentation" CssClass="form-control mt-3" AllowMultiple="true" onchange="console.log('file added');" />
 										</div>
 									</div>
 								</div>
 							</div>
 
 							<%-- SUBMIT SECTION --%>
-							<div class="form-section">
+							<div runat="server" id="submitSection" class="form-section">
 								<%-- FIRST ROW --%>
 								<div class="row mt-3 mb-3 text-center">
-									<%-- SUBMIT BUTTON --%>
-									<%--<div class="col-md-12">
-										<asp:Button runat="server" ID="SubmitFactSheet" UseSubmitBehavior="true" CssClass="btn btn-primary" Width="25%" Text="Submit" OnClick="SubmitForm_Click" OnClientClick="ShowSubmitToast();" />
-									</div>--%>
+									<%-- SAVE BUTTON --%>
+									<div class="col-md-6">
+										<asp:Button runat="server" ID="SaveFactSheet" UseSubmitBehavior="true" CssClass="btn btn-primary float-end" Width="50%" Text="Save" OnClick="SaveFactSheet_Click" OnClientClick="ShowSubmitToast();" />
+									</div>
+									<%-- DELETE BUTTON --%>
+									<div class="col-md-6">
+										<asp:Button runat="server" ID="DeleteFactSheet" UseSubmitBehavior="false" CssClass="btn btn-danger float-start" Width="50%" Text="Delete" data-toggle="modal" data-target="#deleteModal" />
+									</div>
 								</div>
 							</div>
 						</div>
@@ -606,11 +632,11 @@
 					<h4 class="modal-title" id="deleteModalLabel">Delete</h4>
 				</div>
 				<div class="modal-body">
-					<asp:Label runat="server" ID="deleteLabel" Style="font-size: 18px; font-weight: bold" CssClass="text-danger" Text="Are you sure you want to delete this item? (This cannot be undone)" />
+					<asp:Label runat="server" ID="deleteLabel" Style="font-size: 18px; font-weight: bold" CssClass="text-danger" Text="Are you sure you want to delete this ordinance fact sheet? (This cannot be undone)" />
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-					<asp:Button ID="btnDelete" runat="server" Text="Delete" CssClass="btn btn-danger" Visible="true" OnClick="mdlDeleteSubmit_ServerClick" OnClientClick="ShowSubmitToast();" />
+					<asp:Button ID="btnDelete" runat="server" Text="Delete" CssClass="btn btn-danger" CausesValidation="false" UseSubmitBehavior="false" Visible="true" OnClick="mdlDeleteSubmit_ServerClick" OnClientClick="ShowSubmitToast();" />
 				</div>
 			</div>
 		</div>
@@ -625,28 +651,42 @@
 	</div>
 	<asp:HiddenField runat="server" ID="deleteID" Value="0" />
 	<script>
-		var hdnID = document.getElementById('<%= deleteID.ClientID %>')
-		function DeleteForm(formID) {
-			hdnID.setAttribute('Value', formID);
-		}
 		FormatForms();
 		var prm = Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
-			//GetToastStatus();
+			GetToastStatus();
 			FormatForms();
-			$("[data-type='currency']").each(function () {
-				formatCurrency($(this), "blur");
-			});			
+			CurrencyFormatting();		
 		});
-		function OrdTableFadeOut() {
-			var ordTable = document.getElementById('<%= ordTable.ClientID %>')
-			var ordView = document.getElementById('<%= ordView.ClientID %>')
+
+		function CurrencyFormatting() {
 			$("[data-type='currency']").each(function () {
 				formatCurrency($(this), "blur");
 			});	
+		}
+
+		function OrdinanceVisibility(fadeOut) {
+			var dataString = JSON.stringify({ fadeOut: fadeOut });
+			var valArray = [];
+			$.ajax({
+				type: "POST",
+				async: false,
+				url: "./Pages/OrdinanceTracking/Ordinances.aspx.cs/OrdVisibility",
+				data: dataString,
+				contentType: "application/json",
+				dataType: "json"
+			});
+		}
+		function OrdTableFadeOut() {
+			var ordTable = document.getElementById('<%= ordTable.ClientID %>')
+			var ordView = document.getElementById('<%= ordView.ClientID %>')
+			
 			$(ordTable).fadeOut(500);
 			setTimeout(() => {
 				$(ordView).fadeIn(500);
 			}, 500);
+			//setTimeout(() => {
+			//	OrdinanceVisibility("table");
+			//}, 1000);
 		}
 		function OrdTableFadeIn() {
 			var ordTable = document.getElementById('<%= ordTable.ClientID %>')
@@ -655,7 +695,9 @@
 			setTimeout(() => {
 				$(ordTable).fadeIn(500);
 			}, 500);
-
+			//setTimeout(() => {
+			//	OrdinanceVisibility("ord");
+			//}, 1000);
 		}
 	</script>
 </asp:Content>

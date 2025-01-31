@@ -502,7 +502,7 @@
 							<div class="col-md-6">
 								<div class="form-group">
 									<label for="supportingDocumentation">Supporting Documentation (Ex: Contract, Agreement, Change Order, Bid Book)</label>
-									<asp:FileUpload runat="server" ID="supportingDocumentation" CssClass="form-control" AllowMultiple="true" />
+									<asp:FileUpload runat="server" ID="supportingDocumentation" CssClass="form-control mt-3" AllowMultiple="true" />
 								</div>
 							</div>
 						</div>

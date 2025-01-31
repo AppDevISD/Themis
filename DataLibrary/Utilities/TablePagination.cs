@@ -16,10 +16,10 @@ namespace DataLibrary
     public class TablePagination
     {
         public StateBag ViewState = new StateBag();
-        public HtmlButton FirstBtn = new HtmlButton();
-        public HtmlButton PreviousBtn = new HtmlButton();
-        public HtmlButton NextBtn = new HtmlButton();
-        public HtmlButton LastBtn = new HtmlButton();
+        public LinkButton FirstBtn = new LinkButton();
+        public LinkButton PreviousBtn = new LinkButton();
+        public LinkButton NextBtn = new LinkButton();
+        public LinkButton LastBtn = new LinkButton();
         public Repeater TableRepeater = new Repeater();
         public Panel TablePanel = new Panel();
         public Label PageLabel = new Label();
@@ -42,7 +42,7 @@ namespace DataLibrary
             Instance.ViewState = state;
             Instance.ItemsPerPg = ItemsPerPage;
         }
-        public static void GetControls(HtmlButton firstButton, HtmlButton previousButton, HtmlButton nextButton, HtmlButton lastButton, Repeater tableRepeater, Panel tablePanel, Label pageLabel)
+        public static void GetControls(LinkButton firstButton, LinkButton previousButton, LinkButton nextButton, LinkButton lastButton, Repeater tableRepeater, Panel tablePanel, Label pageLabel)
         {
             Instance.FirstBtn = firstButton;
             Instance.PreviousBtn = previousButton;
@@ -128,10 +128,10 @@ namespace DataLibrary
                     Instance.TablePanel.Visible = true;
                 }
                 pDSSearch.CurrentPageIndex = SearchPgNumP - 1;
-                Instance.FirstBtn.Disabled = pDSSearch.IsFirstPage;
-                Instance.LastBtn.Disabled = pDSSearch.IsLastPage;
-                Instance.NextBtn.Disabled = pDSSearch.IsLastPage;
-                Instance.PreviousBtn.Disabled = pDSSearch.IsFirstPage;
+                Instance.FirstBtn.Enabled = !pDSSearch.IsFirstPage;
+                Instance.LastBtn.Enabled = !pDSSearch.IsLastPage;
+                Instance.NextBtn.Enabled = !pDSSearch.IsLastPage;
+                Instance.PreviousBtn.Enabled = !pDSSearch.IsFirstPage;
                 Instance.TableRepeater.DataSource = pDSSearch;
                 Instance.TableRepeater.DataBind();
             }
