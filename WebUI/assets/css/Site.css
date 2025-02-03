@@ -16,8 +16,21 @@
 	right: 10px;
 	border-radius: 100% !important;
 	transform: scale(0.75);
+	transition: all 0.3s;
 }
 
 .backBtn span {
 	transform: scale(1.5);
 }
+
+.backBtn:hover {
+	transform: scale(0.95);
+}
+
+.ordActionBtn {
+	transition: all 0.3s;
+}
+
+	.ordActionBtn:hover {
+		transform: scale(1.2) !important;
+	}

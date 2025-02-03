@@ -327,7 +327,7 @@ input[type="file"]:hover::-webkit-file-upload-button {
 	}
 
 	&.readonly-color {
-		input, select, .form-select, textarea, .radioListDiv .form-check input {
+		input, select, .form-select, textarea, .radioListDiv .form-check input, .list-group-item {
 			color: var(--bs-primary-text-emphasis) !important;
 		}
 	}

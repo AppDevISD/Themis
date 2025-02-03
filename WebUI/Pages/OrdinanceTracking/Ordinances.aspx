@@ -13,6 +13,14 @@
 				<asp:AsyncPostBackTrigger ControlID="lnkPreviousSearchP" EventName="Click" />
 				<asp:AsyncPostBackTrigger ControlID="lnkNextSearchP" EventName="Click" />
 				<asp:AsyncPostBackTrigger ControlID="lnkLastSearchP" EventName="Click" />
+
+				<asp:AsyncPostBackTrigger ControlID="epYes" EventName="CheckedChanged" />
+				<asp:AsyncPostBackTrigger ControlID="epNo" EventName="CheckedChanged" />
+				<asp:AsyncPostBackTrigger ControlID="scYes" EventName="CheckedChanged" />
+				<asp:AsyncPostBackTrigger ControlID="scNo" EventName="CheckedChanged" />
+				<asp:AsyncPostBackTrigger ControlID="scNo" EventName="CheckedChanged" />
+				<asp:AsyncPostBackTrigger ControlID="purchaseMethod" EventName="SelectedIndexChanged" />
+
 				<asp:PostBackTrigger ControlID="SaveFactSheet" />
 			</Triggers>
 			<ContentTemplate>
@@ -55,8 +63,8 @@
 									</td>
 									<td class="align-middle d-flex justify-content-around">
 										<%--<a runat="server" id="delete" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal" autopostback="false" onclick='<%#$"DeleteForm(\"{DataBinder.Eval(Container.DataItem, "OrdinanceID")}\")"%>'>Delete</a>--%>
-										<asp:LinkButton runat="server" ID="editOrd" CommandName="edit"><i class="fas fa-pen-to-square text-warning"></i></asp:LinkButton>
-										<asp:LinkButton runat="server" ID="viewOrd" CommandName="view"><i class="fas fa-magnifying-glass text-info"></i></asp:LinkButton>
+										<asp:LinkButton runat="server" ID="editOrd" CommandName="edit" CssClass="ordActionBtn"><i class="fas fa-pen-to-square text-warning"></i></asp:LinkButton>
+										<asp:LinkButton runat="server" ID="viewOrd" CommandName="view" CssClass="ordActionBtn"><i class="fas fa-magnifying-glass text-info"></i></asp:LinkButton>
 									</td>
 								</tr>
 							</ItemTemplate>
@@ -178,13 +186,13 @@
 												<%-- YES --%>
 												<div class="form-check form-check-inline">
 													<label for="epYes">Yes</label>
-													<asp:RadioButton runat="server" ID="epYes" CssClass="form-check-input" GroupName="epList"/>
+													<asp:RadioButton runat="server" ID="epYes" CssClass="form-check-input" GroupName="epList" OnCheckedChanged="EPCheckedChanged" AutoPostBack="true" />
 												</div>
 
 												<%-- NO --%>
 												<div class="form-check form-check-inline">
 													<label for="epNo">No</label>
-													<asp:RadioButton runat="server" ID="epNo" CssClass="form-check-input" GroupName="epList" />
+													<asp:RadioButton runat="server" ID="epNo" CssClass="form-check-input" GroupName="epList" OnCheckedChanged="EPCheckedChanged" AutoPostBack="true" />
 												</div>
 											</div>
 										</div>
@@ -298,13 +306,13 @@
 												<%-- YES --%>
 												<div class="form-check form-check-inline">
 													<label for="scYes">Yes</label>
-													<asp:RadioButton runat="server" ID="scYes" CssClass="form-check-input" GroupName="scopeChangeList" />
+													<asp:RadioButton runat="server" ID="scYes" CssClass="form-check-input" GroupName="scopeChangeList" OnCheckedChanged="SCCheckedChanged" AutoPostBack="true" />
 												</div>
 
 												<%-- NO --%>
 												<div class="form-check form-check-inline">
 													<label for="scNo">No</label>
-													<asp:RadioButton runat="server" ID="scNo" CssClass="form-check-input" GroupName="scopeChangeList" />
+													<asp:RadioButton runat="server" ID="scNo" CssClass="form-check-input" GroupName="scopeChangeList" OnCheckedChanged="SCCheckedChanged" AutoPostBack="true" />
 												</div>
 											</div>
 										</div>
@@ -337,13 +345,13 @@
 									<div class="col-md-5">
 										<div class="form-group">
 											<label for="purchaseMethod">Method of Purchase</label>
-											<asp:DropDownList ID="purchaseMethod" runat="server" AutoPostBack="true" CssClass="form-select" required="true"></asp:DropDownList>
+											<asp:DropDownList ID="purchaseMethod" runat="server" OnSelectedIndexChanged="PurchaseMethodSelectedIndexChanged" AutoPostBack="true" CssClass="form-select" required="true"></asp:DropDownList>
 										</div>
 									</div>
 
 									<%-- OTHER / EXCEPTION --%>
 									<div class="col-md-4">
-										<div id="otherExceptionDiv" class="form-group">
+										<div runat="server" id="otherExceptionDiv" class="form-group">
 											<label for="otherException">Other/Exception</label>
 											<asp:TextBox runat="server" ID="otherException" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled"></asp:TextBox>
 										</div>
@@ -443,12 +451,12 @@
 											<%-- TABLE BODY --%>
 											<tbody>
 												<%-- REVENUE TABLE REPEATER --%>
-												
 												<asp:Repeater runat="server" ID="rpRevenueTable" OnItemCommand="rpAccountingTable_ItemCommand">
 													<ItemTemplate>
 														<tr>
 															<td style="vertical-align: middle">
-																<asp:HiddenField runat="server" ID="hdnRevID" Value='<%# Container.ItemIndex %>' />
+																<asp:HiddenField runat="server" ID="hdnRevID" Value='<%# DataBinder.Eval(Container.DataItem, "AccountingID") %>' />
+																<asp:HiddenField runat="server" ID="hdnRevIndex" Value='<%# Container.ItemIndex %>' />
 																<%--<asp:DropDownList ID="revenueFundCode" runat="server" CssClass="form-select" required="true" ValidateRequestMode="Enabled" DataSource='<%# fundCodes %>' SelectedValue='<%# DataBinder.Eval(Container.DataItem, "FundCode") %>'></asp:DropDownList>--%>
 																<asp:TextBox runat="server" ID="revenueFundCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "FundCode") %>' required="true"></asp:TextBox>
 															</td>
@@ -580,11 +588,14 @@
 											<ul class="list-group mt-1">
 												<asp:Repeater runat="server" ID="rpSupportingDocumentation" OnItemCommand="rpSupportingDocumentation_ItemCommand">
 													<ItemTemplate>
-														<li class="list-group-item">
+														<li class="list-group-item" style="line-height: 2.25;">
 															<asp:HiddenField runat="server" ID="hdnDocID" Value='<%# DataBinder.Eval(Container.DataItem, "DocumentID") %>' />
 															<asp:HiddenField runat="server" ID="hdnDocIndex" Value='<%# Container.ItemIndex %>' />
-															<asp:LinkButton runat="server" ID="supportingDocDownload" CssClass="align-middle lh-1" CommandName="download" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "DocumentName") %>'><%# DataBinder.Eval(Container.DataItem, "DocumentName") %></asp:LinkButton>
-															<asp:LinkButton runat="server" ID="deleteFile" CssClass="btn btn-danger float-end" CommandName="delete"><span class="fas fa-trash-can"></span></asp:LinkButton>
+															<%# DataBinder.Eval(Container.DataItem, "DocumentName") %>
+															<div class="d-flex float-end">
+																<asp:LinkButton runat="server" ID="supportingDocDownload" CssClass="btn btn-primary" CommandName="download" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "DocumentName") %>' Style="margin-right: 5px;"><span class="fas fa-download"></span></asp:LinkButton>
+																<asp:LinkButton runat="server" ID="deleteFile" CssClass="btn btn-danger" CommandName="delete" Style="margin-left: 5px;"><span class="fas fa-trash-can"></span></asp:LinkButton>
+															</div>
 														</li>
 													</ItemTemplate>
 												</asp:Repeater>
@@ -649,7 +660,6 @@
 			</div>
 		</div>
 	</div>
-	<asp:HiddenField runat="server" ID="deleteID" Value="0" />
 	<script>
 		FormatForms();
 		var prm = Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {

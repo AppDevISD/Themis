@@ -400,18 +400,9 @@ namespace WebUI
         }
         protected void SubmitForm_Click(object sender, EventArgs e)
         {
-            Email.Instance.AddEmailAddress(emailList, _user.Email);
-            string formType = "Ordinance Fact Sheet";
-
-            Email newEmail = new Email();
-
-            newEmail.EmailSubject = "Form Submitted";
-            newEmail.EmailTitle = "Form Submitted";
-            newEmail.EmailText = $"This is a template email body for the {formType}";
-
             Ordinance ordinance = new Ordinance();
 
-            ordinance.OrdinanceNumber = "6515dfgsaf";
+            ordinance.OrdinanceNumber = "TEST";
             ordinance.RequestID = 0;
             ordinance.RequestDepartment = requestDepartment.SelectedItem.Text;
             ordinance.RequestContact = requestContact.Text;
@@ -575,7 +566,14 @@ namespace WebUI
 
                         break;
                 }
+                Email.Instance.AddEmailAddress(emailList, _user.Email);
+                string formType = "Ordinance Fact Sheet";
 
+                Email newEmail = new Email();
+
+                newEmail.EmailSubject = $"{formType} Submitted";
+                newEmail.EmailTitle = $"{formType} Submitted";
+                newEmail.EmailText = $"An {formType} has been submitted <br/><br/>Ordinance: {ordinance.OrdinanceNumber}{retVal}<br/>Date: {DateTime.Now}<br/>Department: {requestDepartment.SelectedItem.Text}<br/>Contact: {requestContact.Text}<br/>Phone: {requestPhone.Text}{requestExt.Text}";
                 switch (finishSubmit)
                 {
                     case true:

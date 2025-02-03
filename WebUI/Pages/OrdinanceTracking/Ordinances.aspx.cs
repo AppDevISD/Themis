@@ -43,8 +43,7 @@ namespace WebUI
                 ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(editButton);
                 ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(viewButton);
             }
-
-            Debug.WriteLine(supportingDocumentation.HasFiles);
+            
             ScriptManager.GetCurrent(Page).RegisterPostBackControl(SaveFactSheet);
             SubmitStatus();
         }
@@ -71,6 +70,56 @@ namespace WebUI
             purchaseMethod.Items.Insert(4, new ListItem("Other", "Other"));
             purchaseMethod.Items.Insert(5, new ListItem("Exception", "Exception"));
         }
+        protected void PurchaseMethodSelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (purchaseMethod.SelectedItem.Value)
+            {
+                default:
+                    otherException.Enabled = false;
+                    otherException.Text = string.Empty;
+                    otherException.Attributes.Remove("required");
+                    break;
+                case "Other":
+                case "Exception":
+                    otherException.Enabled = true;
+                    otherException.Attributes.Add("required", "true");
+                    break;
+            }
+        }
+        protected void EPCheckedChanged(object sender, EventArgs e)
+        {
+            switch (epYes.Checked)
+            {
+                case true:
+                    epJustificationGroup.Visible = true;
+                    epJustification.Attributes.Add("required", "true");
+                    break;
+
+                case false:
+                    epJustificationGroup.Visible = false;
+                    epJustification.Attributes.Remove("required");
+                    break;
+            }
+        }
+        protected void SCCheckedChanged(object sender, EventArgs e)
+        {
+            switch (scYes.Checked)
+            {
+                case true:
+                    changeOrderNumber.Enabled = true;
+                    additionalAmount.Enabled = true;
+                    changeOrderNumber.Attributes.Add("required", "true");
+                    additionalAmount.Attributes.Add("required", "true");
+                    break;
+
+                case false:
+                    changeOrderNumber.Enabled = false;
+                    additionalAmount.Enabled = false;
+                    changeOrderNumber.Attributes.Remove("required");
+                    additionalAmount.Attributes.Remove("required");
+                    break;
+            }
+        }
         protected void SetPagination(Repeater rpTable, int ItemsPerPage)
         {
             SetViewState(ViewState, ItemsPerPage);
@@ -90,7 +139,8 @@ namespace WebUI
         protected void mdlDeleteSubmit_ServerClick(object sender, EventArgs e)
         {
             int ordID = Convert.ToInt32(hdnOrdID.Value);
-            int retVal = Factory.Instance.Delete<Ordinance>(ordID, "Ordinance");
+            Ordinance ord = Factory.Instance.GetByID<Ordinance>(ordID, "sp_GetOrdinanceByOrdinanceID", "OrdinanceID");
+            int retVal = Factory.Instance.Expire<Ordinance>(ord, "sp_UpdateOrdinance");
             if (retVal > 0)
             {
                 List<Ordinance> ord_list = new List<Ordinance>();
@@ -108,7 +158,7 @@ namespace WebUI
             {
                 Session["SubmitStatus"] = "error";
                 Session["ToastColor"] = "text-bg-danger";
-                Session["ToastMessage"] = "Something went wrong while submitting!";
+                Session["ToastMessage"] = "Something went wrong while deleting!";
             }
         }
         protected void paginationBtn_Click(object sender, EventArgs e)
@@ -157,11 +207,11 @@ namespace WebUI
             {
                 case true:
                     epYes.Checked = true;
-                    epJustification.Visible = true;
+                    epJustificationGroup.Visible = true;
                     break;
                 case false:
                     epNo.Checked = true;
-                    epJustification.Visible = false;
+                    epJustificationGroup.Visible = false;
                     break;
             }
             epJustification.Text = ord.EmergencyPassageReason;
@@ -188,17 +238,18 @@ namespace WebUI
                     break;
             }
             changeOrderNumber.Text = ord.ChangeOrderNumber;
-            additionalAmount.Text = ord.AdditionalAmount.ToString();
+            additionalAmount.Text = (ord.AdditionalAmount.ToString() != "-1.00") ? ord.AdditionalAmount.ToString() : string.Empty;
+            
 
             purchaseMethod.SelectedValue = ord.ContractMethod;
             switch (purchaseMethod.SelectedValue)
             {
                 default:
-                    otherException.Visible = false;
+                    otherExceptionDiv.Visible = false;
                     break;
                 case "Other":
                 case "Exception":
-                    otherException.Visible = true;
+                    otherExceptionDiv.Visible = true;
                     break;
             }
             otherException.Text = ord.OtherException;
@@ -335,6 +386,10 @@ namespace WebUI
                         LinkButton deleteFile = item.FindControl("deleteFile") as LinkButton;
                         deleteFile.Visible = false;
                     }
+
+                    otherException.Enabled = true;
+                    changeOrderNumber.Enabled = true;
+                    additionalAmount.Enabled = true;
                     break;
                 case "edit":
                     ordView.Attributes["readonly"] = "false";
@@ -371,6 +426,38 @@ namespace WebUI
                         deleteFile.Visible = true;
                         ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(deleteFile);
                     }
+
+                    switch (scYes.Checked)
+                    {
+                        case true:
+                            changeOrderNumber.Enabled = true;
+                            additionalAmount.Enabled = true;
+                            changeOrderNumber.Attributes.Add("required", "true");
+                            additionalAmount.Attributes.Add("required", "true");
+                            break;
+
+                        case false:
+                            changeOrderNumber.Enabled = false;
+                            additionalAmount.Enabled = false;
+                            changeOrderNumber.Attributes.Remove("required");
+                            additionalAmount.Attributes.Remove("required");
+                            break;
+                    }
+                    switch (purchaseMethod.SelectedItem.Value)
+                    {
+                        default:
+                            otherException.Enabled = false;
+                            otherException.Text = string.Empty;
+                            otherException.Attributes.Remove("required");
+                            break;
+                        case "Other":
+                        case "Exception":
+                            otherException.Enabled = true;
+                            otherException.Attributes.Add("required", "true");
+                            break;
+                    }
+                    scopeChangeOptions.Visible = true;
+                    otherExceptionDiv.Visible = true;
                     break;
             }
 
@@ -449,17 +536,6 @@ namespace WebUI
                             {
                                 Accounting accountingItem = new Accounting();
                                 var revItem = rpRevenueTable.Items[i];
-                                //DropDownList revFundCode = (DropDownList)revItem.FindControl("revenueFundCode");
-                                //DropDownList revAgencyCode = (DropDownList)revItem.FindControl("revenueAgencyCode");
-                                //DropDownList revOrgCode = (DropDownList)revItem.FindControl("revenueOrgCode");
-                                //DropDownList revActivityCode = (DropDownList)revItem.FindControl("revenueActivityCode");
-                                //DropDownList revObjectCode = (DropDownList)revItem.FindControl("revenueObjectCode");
-                                //TextBox revAmount = (TextBox)revItem.FindControl("revenueAmount");
-                                //accountingItem.FundCode = revFundCode.SelectedValue;
-                                //accountingItem.DepartmentCode = revAgencyCode.SelectedValue;
-                                //accountingItem.UnitCode = revOrgCode.SelectedValue;
-                                //accountingItem.ActivityCode = revActivityCode.SelectedValue;
-                                //accountingItem.ObjectCode = revObjectCode.SelectedValue;
                                 TextBox revFundCode = (TextBox)revItem.FindControl("revenueFundCode");
                                 TextBox revAgencyCode = (TextBox)revItem.FindControl("revenueAgencyCode");
                                 TextBox revOrgCode = (TextBox)revItem.FindControl("revenueOrgCode");
@@ -484,12 +560,33 @@ namespace WebUI
                                 prvList.Add(accountingItem);
                             }
                             Session[tableDesc] = prvList;
+                            HiddenField revHdnIndex = (HiddenField)e.Item.FindControl("hdnRevIndex");
                             HiddenField revHdnID = (HiddenField)e.Item.FindControl("hdnRevID");
                             if (Session[tableDesc] != null)
                             {
                                 accountingList = (List<Accounting>)Session[tableDesc];
                             }
-                            accountingList.RemoveAt(Convert.ToInt32(revHdnID.Value));
+
+                            List<Accounting> removeAccs = new List<Accounting>();
+                            List<OrdinanceAccounting> removeOrdAccs = new List<OrdinanceAccounting>();
+                            if (Session["RemoveAccs"] != null)
+                            {
+                                removeAccs = Session["RemoveAccs"] as List<Accounting>;
+                            }
+                            if (Session["RemoveOrdAccs"] != null)
+                            {
+                                removeOrdAccs = Session["RemoveOrdAccs"] as List<OrdinanceAccounting>;
+                            }
+                            if (Convert.ToInt32(revHdnID.Value) > 0)
+                            {
+                                removeAccs.Add(accountingList[Convert.ToInt32(revHdnIndex.Value)]);
+                                OrdinanceAccounting ordAcc = Factory.Instance.GetByID<OrdinanceAccounting>(accountingList[Convert.ToInt32(revHdnIndex.Value)].AccountingID, "sp_GetOrdinanceAccountingByAccountingID", "AccountingID");
+                                removeOrdAccs.Add(ordAcc);
+                            }
+                            Session["RemoveAccs"] = removeAccs;
+                            Session["RemoveOrdAccs"] = removeOrdAccs;
+
+                            accountingList.RemoveAt(Convert.ToInt32(revHdnIndex.Value));
                             Session[tableDesc] = accountingList;
                             rpRevenueTable.DataSource = accountingList;
                             rpRevenueTable.DataBind();
@@ -499,18 +596,6 @@ namespace WebUI
                             {
                                 Accounting accountingItem = new Accounting();
                                 var expItem = rpExpenditureTable.Items[i];
-                                //DropDownList expFundCode = (DropDownList)expItem.FindControl("expenditureFundCode");
-                                //DropDownList expAgencyCode = (DropDownList)expItem.FindControl("expenditureAgencyCode");
-                                //DropDownList expOrgCode = (DropDownList)expItem.FindControl("expenditureOrgCode");
-                                //DropDownList expActivityCode = (DropDownList)expItem.FindControl("expenditureActivityCode");
-                                //DropDownList expObjectCode = (DropDownList)expItem.FindControl("expenditureObjectCode");
-                                //TextBox expAmount = (TextBox)expItem.FindControl("expenditureAmount");
-                                //accountingItem.AccountingDesc = tableDesc;
-                                //accountingItem.FundCode = expFundCode.SelectedValue;
-                                //accountingItem.DepartmentCode = expAgencyCode.SelectedValue;
-                                //accountingItem.UnitCode = expOrgCode.SelectedValue;
-                                //accountingItem.ActivityCode = expActivityCode.SelectedValue;
-                                //accountingItem.ObjectCode = expObjectCode.SelectedValue;
                                 TextBox expFundCode = (TextBox)expItem.FindControl("expenditureFundCode");
                                 TextBox expAgencyCode = (TextBox)expItem.FindControl("expenditureAgencyCode");
                                 TextBox expOrgCode = (TextBox)expItem.FindControl("expenditureOrgCode");
@@ -556,18 +641,6 @@ namespace WebUI
             {
                 case "revenue":
                     var revItem = rpRevenueTable.Items[itemIndex];
-                    //DropDownList revFundCode = (DropDownList)revItem.FindControl("revenueFundCode");
-                    //DropDownList revAgencyCode = (DropDownList)revItem.FindControl("revenueAgencyCode");
-                    //DropDownList revOrgCode = (DropDownList)revItem.FindControl("revenueOrgCode");
-                    //DropDownList revActivityCode = (DropDownList)revItem.FindControl("revenueActivityCode");
-                    //DropDownList revObjectCode = (DropDownList)revItem.FindControl("revenueObjectCode");
-                    //TextBox revAmount = (TextBox)revItem.FindControl("revenueAmount");
-                    //accountingItem.AccountingDesc = tableDesc;
-                    //accountingItem.FundCode = revFundCode.SelectedValue;
-                    //accountingItem.DepartmentCode = revAgencyCode.SelectedValue;
-                    //accountingItem.UnitCode = revOrgCode.SelectedValue;
-                    //accountingItem.ActivityCode = revActivityCode.SelectedValue;
-                    //accountingItem.ObjectCode = revObjectCode.SelectedValue;
                     TextBox revFundCode = (TextBox)revItem.FindControl("revenueFundCode");
                     TextBox revAgencyCode = (TextBox)revItem.FindControl("revenueAgencyCode");
                     TextBox revOrgCode = (TextBox)revItem.FindControl("revenueOrgCode");
@@ -596,18 +669,6 @@ namespace WebUI
                     break;
                 case "expenditure":
                     var expItem = rpExpenditureTable.Items[itemIndex];
-                    //DropDownList expFundCode = (DropDownList)expItem.FindControl("expenditureFundCode");
-                    //DropDownList expAgencyCode = (DropDownList)expItem.FindControl("expenditureAgencyCode");
-                    //DropDownList expOrgCode = (DropDownList)expItem.FindControl("expenditureOrgCode");
-                    //DropDownList expActivityCode = (DropDownList)expItem.FindControl("expenditureActivityCode");
-                    //DropDownList expObjectCode = (DropDownList)expItem.FindControl("expenditureObjectCode");
-                    //TextBox expAmount = (TextBox)expItem.FindControl("expenditureAmount");
-                    //accountingItem.AccountingDesc = tableDesc;
-                    //accountingItem.FundCode = expFundCode.SelectedValue;
-                    //accountingItem.DepartmentCode = expAgencyCode.SelectedValue;
-                    //accountingItem.UnitCode = expOrgCode.SelectedValue;
-                    //accountingItem.ActivityCode = expActivityCode.SelectedValue;
-                    //accountingItem.ObjectCode = expObjectCode.SelectedValue;
                     TextBox expFundCode = (TextBox)expItem.FindControl("expenditureFundCode");
                     TextBox expAgencyCode = (TextBox)expItem.FindControl("expenditureAgencyCode");
                     TextBox expOrgCode = (TextBox)expItem.FindControl("expenditureOrgCode");
@@ -679,16 +740,7 @@ namespace WebUI
 
 
         protected void SaveFactSheet_Click(object sender, EventArgs e)
-        {
-            //Email.Instance.AddEmailAddress(emailList, _user.Email);
-            string formType = "Ordinance Fact Sheet";
-
-            Email newEmail = new Email();
-
-            newEmail.EmailSubject = "Form Submitted";
-            newEmail.EmailTitle = "Form Submitted";
-            newEmail.EmailText = $"This is a template email body for the {formType}";
-
+        {            
             Ordinance ordinance = new Ordinance();
 
             ordinance.OrdinanceID = Convert.ToInt32(hdnOrdID.Value);
@@ -732,10 +784,11 @@ namespace WebUI
             ordinance.EffectiveDate = DateTime.Now;
             ordinance.ExpirationDate = DateTime.MaxValue;
 
-
-
-
             int retVal = Factory.Instance.Update(ordinance, "sp_UpdateOrdinance");
+
+
+
+
 
             int addDocsVal = new int();
             if (supportingDocumentation.HasFiles)
@@ -789,11 +842,99 @@ namespace WebUI
                 removeDocVal = 1;
             }
 
+
+
+
+
+
+
+
+            int removeAccsVal = new int();
+            int removeOrdAccsVal = new int();
+            List<Accounting> removeAccs = new List<Accounting>();
+            List<OrdinanceAccounting> removeOrdAccs = new List<OrdinanceAccounting>();
+            if (Session["RemoveAccs"] != null)
+            {
+                removeAccs = Session["RemoveAccs"] as List<Accounting>;
+            }
+            if (Session["RemoveOrdAccs"] != null)
+            {
+                removeOrdAccs = Session["RemoveOrdAccs"] as List<OrdinanceAccounting>;
+            }
+            if (removeAccs.Count > 0)
+            {
+                foreach (Accounting item in removeAccs)
+                {
+                    item.LastUpdateBy = _user.Login;
+                    item.LastUpdateDate = DateTime.Now;
+                    item.EffectiveDate = DateTime.Now;
+                    removeAccsVal = Factory.Instance.Expire(item, "sp_UpdatelkAccounting");
+
+                    if (removeAccsVal > 1)
+                    {
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                removeAccsVal = 1;
+            }
+
+            if (removeOrdAccs.Count > 0)
+            {
+                foreach (OrdinanceAccounting item in removeOrdAccs)
+                {
+                    item.LastUpdateBy = _user.Login;
+                    item.LastUpdateDate = DateTime.Now;
+                    item.EffectiveDate = DateTime.Now;
+                    removeOrdAccsVal = Factory.Instance.Expire(item, "sp_UpdateOrdinance_Accounting");
+                    if (removeOrdAccsVal > 1)
+                    {
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                removeOrdAccsVal = 1;
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            Email.Instance.AddEmailAddress(emailList, _user.Email);
+            string formType = "Ordinance Fact Sheet";
+
+            Email newEmail = new Email();
+
+            newEmail.EmailSubject = "Fact Sheet UPDATED";
+            newEmail.EmailTitle = "Fact Sheet UPDATED";
+            newEmail.EmailText = $"An {formType} has been updated <br/><br/>Ordinance: {ordinance.OrdinanceNumber}{hdnOrdID.Value}<br/>Date: {DateTime.Now}<br/>Department: {requestDepartment.SelectedItem.Text}<br/>Contact: {requestContact.Text}<br/>Phone: {requestPhone.Text} {requestExt.Text}";
+
             if (retVal > 0 && removeDocVal > 0 && addDocsVal > 0)
             {
                 Session["SubmitStatus"] = "success";
                 Session["ToastColor"] = "text-bg-success";
                 Session["ToastMessage"] = "Form Saved!";
+                Email.Instance.SendEmail(newEmail, emailList);
                 Response.Redirect("./Ordinances");
             }
             else
@@ -802,8 +943,6 @@ namespace WebUI
                 Session["ToastColor"] = "text-bg-danger";
                 Session["ToastMessage"] = "Something went wrong while saving!";
             }
-
-
         }
 
 
@@ -828,11 +967,6 @@ namespace WebUI
                     ordView.Visible = false;
                     break;
             }
-        }
-
-        protected void uploadFiles_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }

@@ -659,7 +659,7 @@ input[type=file]:hover::-webkit-file-upload-button {
   /*opacity: 0.5 !important;*/
   pointer-events: none;
 }
-[readonly=true].readonly-color input, [readonly=true].readonly-color select, [readonly=true].readonly-color .form-select, [readonly=true].readonly-color textarea, [readonly=true].readonly-color .radioListDiv .form-check input {
+[readonly=true].readonly-color input, [readonly=true].readonly-color select, [readonly=true].readonly-color .form-select, [readonly=true].readonly-color textarea, [readonly=true].readonly-color .radioListDiv .form-check input, [readonly=true].readonly-color .list-group-item {
   color: var(--bs-primary-text-emphasis) !important;
 }
 
