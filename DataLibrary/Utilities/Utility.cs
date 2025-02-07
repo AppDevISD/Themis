@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.UI.WebControls;
+using System.Runtime.InteropServices;
 
 namespace DataLibrary
 {
@@ -27,9 +28,9 @@ namespace DataLibrary
                 return _Utility;
             }
         }
-        public ADUser AuthenticateUser()
+        public ADUser AuthenticateUser([Optional] string loginID)
         {
-            bool spoofUser = false;
+            bool spoofUser = loginID != null ? true : false;
             string strLoginID;
             ADUser adu = new ADUser();
             string[] strTemp = { "", "" };
@@ -38,7 +39,7 @@ namespace DataLibrary
                 switch (spoofUser)
                 {
                     case true:
-                        strLoginID = "";
+                        strLoginID = loginID;
                         adu = ISDFactory.Instance.GetUserInformationByLoginName(strLoginID);
                         //adu.Title = EmployeeTitle(Convert.ToInt32(adu.EmployeeID));
                         break;
