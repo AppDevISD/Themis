@@ -116,8 +116,10 @@
     <Content Include="assets\css\Site.css" />
     <Content Include="assets\images\icons\theme-dark.svg" />
     <Content Include="assets\images\icons\theme-light.svg" />
+    <Content Include="assets\js\FileUploadSaving.js" />
     <Content Include="assets\js\Ordinances.js" />
     <Content Include="assets\js\Site.js" />
+    <Content Include="Scripts\Helpers\CSharp\FileUploadSaving.asmx" />
     <Content Include="Pages\OrdinanceTracking\NewFactSheet.aspx" />
     <Content Include="Pages\OrdinanceTracking\Ordinances.aspx" />
     <Content Include="Pages\OrdinanceTracking\OrdinanceTrackingAdmin.aspx" />
@@ -170,6 +172,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Scripts\Helpers\CSharp\FileUploadSaving.asmx.cs">
+      <DependentUpon>FileUploadSaving.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Pages\OrdinanceTracking\NewFactSheet.aspx.cs">
       <DependentUpon>NewFactSheet.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

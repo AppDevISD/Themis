@@ -18,7 +18,6 @@
 				<asp:AsyncPostBackTrigger ControlID="epNo" EventName="CheckedChanged" />
 				<asp:AsyncPostBackTrigger ControlID="scYes" EventName="CheckedChanged" />
 				<asp:AsyncPostBackTrigger ControlID="scNo" EventName="CheckedChanged" />
-				<asp:AsyncPostBackTrigger ControlID="scNo" EventName="CheckedChanged" />
 				<asp:AsyncPostBackTrigger ControlID="purchaseMethod" EventName="SelectedIndexChanged" />
 
 				<asp:PostBackTrigger ControlID="SaveFactSheet" />
@@ -602,7 +601,7 @@
 													</ItemTemplate>
 												</asp:Repeater>
 											</ul>
-											<asp:FileUpload runat="server" ID="supportingDocumentation" CssClass="form-control mt-3" AllowMultiple="true" onchange="console.log('file added');" />
+											<asp:FileUpload runat="server" ID="supportingDocumentation" CssClass="form-control mt-3" AllowMultiple="true" onchange="FileSaveOnPostback();" />
 										</div>
 									</div>
 								</div>
@@ -662,6 +661,7 @@
 			</div>
 		</div>
 	</div>
+	<script type="text/javascript" src="./assets/js/FileUploadSaving.js"></script>
 	<script>
 		FormatForms();
 		var prm = Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
@@ -688,6 +688,7 @@
 				dataType: "json"
 			});
 		}
+		
 		function OrdTableFadeOut() {
 			var ordTable = document.getElementById('<%= ordTable.ClientID %>')
 			var ordView = document.getElementById('<%= ordView.ClientID %>')

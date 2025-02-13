@@ -44,8 +44,14 @@ namespace WebUI
                 ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(editButton);
                 ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(viewButton);
             }
-            
+
+            if (Session["fileUploadControl"] != null)
+            {
+                supportingDocumentation = (FileUpload)Session["fileUploadControl"];
+                Debug.WriteLine(supportingDocumentation.HasFiles);
+            }
             ScriptManager.GetCurrent(Page).RegisterPostBackControl(SaveFactSheet);
+            Session["fileUploadPage"] = Page;
             SubmitStatus();
         }
         protected void SetStartupActives()

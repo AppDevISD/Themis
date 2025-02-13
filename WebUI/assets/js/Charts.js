@@ -110,7 +110,7 @@ const getRandomCoordsCSharp = (count, min, max) => {
 	$.ajax({
 		type: "POST",
 		async: false,
-		url: "./Scripts/Helpers/CSharp/ChartHandler.asmx/GetRandomCoords",
+		url: "./Scripts/Helpers/CSharp/ChartHandler.asmx/SaveFileOnPostback",
 		data: dataString,
 		contentType: "application/json",
 		dataType: "json",

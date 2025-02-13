@@ -500,7 +500,7 @@
 							<div class="col-md-6">
 								<div class="form-group">
 									<label for="supportingDocumentation">Supporting Documentation (Ex: Contract, Agreement, Change Order, Bid Book)</label>
-									<asp:FileUpload runat="server" ID="supportingDocumentation" CssClass="form-control mt-3" AllowMultiple="true" />
+									<asp:FileUpload runat="server" ID="supportingDocumentation" CssClass="form-control mt-3" AllowMultiple="true" onchange="FileSaveOnPostback(1);" />
 								</div>
 							</div>
 						</div>
@@ -533,6 +533,7 @@
 	</div>
 
 	<%-- JAVASCRIPT --%>
+	<script type="text/javascript" src="./assets/js/FileUploadSaving.js"></script>
 	<script>
 		var prm = Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
 			GetToastStatus();
