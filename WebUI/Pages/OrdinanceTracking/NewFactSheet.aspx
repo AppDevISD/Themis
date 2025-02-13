@@ -28,7 +28,6 @@
 					<asp:AsyncPostBackTrigger ControlID="epNo" EventName="CheckedChanged" />
 					<asp:AsyncPostBackTrigger ControlID="scYes" EventName="CheckedChanged" />
 					<asp:AsyncPostBackTrigger ControlID="scNo" EventName="CheckedChanged" />
-					<asp:AsyncPostBackTrigger ControlID="scNo" EventName="CheckedChanged" />
 					<asp:AsyncPostBackTrigger ControlID="purchaseMethod" EventName="SelectedIndexChanged" />
 					<asp:PostBackTrigger ControlID="SubmitFactSheet" />
 				</Triggers>
@@ -168,7 +167,7 @@
 							<div class="col-md-2">
 								<div class="form-group">
 									<label for="vendorNumber">Vendor Number</label>
-									<asp:TextBox runat="server" ID="vendorNumber" CssClass="form-control" TextMode="SingleLine" placeholder="0123456789" AutoCompleteType="Disabled" required="true"></asp:TextBox>
+									<asp:TextBox runat="server" ID="vendorNumber" CssClass="form-control" TextMode="SingleLine" placeholder="0123456789" AutoCompleteType="Disabled"></asp:TextBox>
 								</div>
 							</div>
 						</div>
@@ -181,15 +180,14 @@
 									<label for="datePeriod">Date Period</label>
 									<div id="datePeriod" class="input-group">
 										<%-- START --%>
-										<asp:TextBox runat="server" ID="contractStartDate" CssClass="form-control" TextMode="Date" data-type="datePeriodStart" required="true"></asp:TextBox>
-
+										<asp:TextBox runat="server" ID="contractStartDate" CssClass="form-control" TextMode="Date" data-type="datePeriodStart"></asp:TextBox>
 										<%-- SEPARATOR --%>
 										<div class="input-group-append">
 											<span class="input-group-text date-period-separator"><i class="fas fa-minus"></i></span>
 										</div>
 
 										<%-- END --%>
-										<asp:TextBox runat="server" ID="contractEndDate" CssClass="form-control" TextMode="Date" data-type="datePeriodEnd" required="true"></asp:TextBox>
+										<asp:TextBox runat="server" ID="contractEndDate" CssClass="form-control" TextMode="Date" data-type="datePeriodEnd"></asp:TextBox>
 									</div>
 								</div>
 							</div>
@@ -290,7 +288,7 @@
 							<div class="col-md-4">
 								<div class="form-group">
 									<label for="codeProvision">Code Provision</label>
-									<asp:TextBox runat="server" ID="codeProvision" CssClass="form-control" TextMode="SingleLine" placeholder="123456789" AutoCompleteType="Disabled" required="true"></asp:TextBox>
+									<asp:TextBox runat="server" ID="codeProvision" CssClass="form-control" TextMode="SingleLine" placeholder="123456789" AutoCompleteType="Disabled"></asp:TextBox>
 								</div>
 							</div>
 						</div>

@@ -114,6 +114,10 @@ main {
 		flex-direction: column;
 	}
 
+.user-title {
+	font-size: 10pt;
+}
+
 .user-avatar {
 	margin-right: 20px;
 }

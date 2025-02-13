@@ -49,7 +49,7 @@
 										<asp:HiddenField runat="server" ID="hdnID" Value='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' />
 										<asp:Label ID="date" Text='<%# DataBinder.Eval(Container.DataItem, "EffectiveDate", "{0:MM/dd/yyyy}") %>' runat="server" />
 									</td>
-									<td class="align-middle">
+									<td class="align-middle" style="max-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis !important;">
 										<asp:Label ID="formType" Text='<%# DataBinder.Eval(Container.DataItem, "OrdinanceTitle") %>' runat="server" />
 									</td>
 									<td class="align-middle">
@@ -101,6 +101,7 @@
 				</div>
 				<div runat="server" id="ordView" readonly="false" class="readonly-color">
 					<asp:HiddenField runat="server" ID="hdnOrdID" />
+					<asp:HiddenField runat="server" ID="hdnEffectiveDate" />
 
 					<%-- FORM HEADER --%>
 					<section class="container form-header bg-body text-center position-relative">
@@ -250,7 +251,7 @@
 									<div class="col-md-2">
 										<div class="form-group">
 											<label for="vendorNumber">Vendor Number</label>
-											<asp:TextBox runat="server" ID="vendorNumber" CssClass="form-control" TextMode="SingleLine" placeholder="0123456789" AutoCompleteType="Disabled" required="true"></asp:TextBox>
+											<asp:TextBox runat="server" ID="vendorNumber" CssClass="form-control" TextMode="SingleLine" placeholder="0123456789" AutoCompleteType="Disabled"></asp:TextBox>
 										</div>
 									</div>
 								</div>
@@ -263,7 +264,7 @@
 											<label for="datePeriod">Date Period</label>
 											<div id="datePeriod" class="input-group">
 												<%-- START --%>
-												<asp:TextBox runat="server" ID="contractStartDate" CssClass="form-control" TextMode="Date" data-type="datePeriodStart" required="true"></asp:TextBox>
+												<asp:TextBox runat="server" ID="contractStartDate" CssClass="form-control" TextMode="Date" data-type="datePeriodStart"></asp:TextBox>
 
 												<%-- SEPARATOR --%>
 												<div class="input-group-append">
@@ -271,7 +272,7 @@
 												</div>
 
 												<%-- END --%>
-												<asp:TextBox runat="server" ID="contractEndDate" CssClass="form-control" TextMode="Date" data-type="datePeriodEnd" required="true"></asp:TextBox>
+												<asp:TextBox runat="server" ID="contractEndDate" CssClass="form-control" TextMode="Date" data-type="datePeriodEnd"></asp:TextBox>
 											</div>
 										</div>
 									</div>
@@ -372,7 +373,7 @@
 									<div class="col-md-4">
 										<div class="form-group">
 											<label for="codeProvision">Code Provision</label>
-											<asp:TextBox runat="server" ID="codeProvision" CssClass="form-control" TextMode="SingleLine" placeholder="123456789" AutoCompleteType="Disabled" required="true"></asp:TextBox>
+											<asp:TextBox runat="server" ID="codeProvision" CssClass="form-control" TextMode="SingleLine" placeholder="0123456789" AutoCompleteType="Disabled"></asp:TextBox>
 										</div>
 									</div>
 								</div>

@@ -39,9 +39,9 @@ namespace WebUI
                 Session["UserName"] = _user.Login;
                 string userName = _user.Login.ToUpper();
                 string userDisplayName = $"{_user.FirstName}&nbsp; {_user.LastName}";
-                string userPosition = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_user.Title.ToLower());
+                //string userPosition = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_user.Title.ToLower());
                 lblUser.Text = userDisplayName;
-                lblTitle.Text = userPosition.Length > 0 ? userPosition : _user.Department;
+                lblTitle.Text = _user.Department;
                 imgUser.Src = Photo.Instance.Base64ImgSrc(_user.PhotoLocation);
             }
         }

@@ -196,6 +196,7 @@ namespace WebUI
             int ordID = Convert.ToInt32(hdnID.Value);
             Ordinance ord = Factory.Instance.GetByID<Ordinance>(ordID, "sp_GetOrdinanceByOrdinanceID", "OrdinanceID");
             hdnOrdID.Value = ordID.ToString();
+            hdnEffectiveDate.Value = ord.EffectiveDate.ToString();
 
 
             requestDepartment.SelectedValue = Utility.Instance.DepartmentsList()[ord.RequestDepartment];
@@ -361,7 +362,10 @@ namespace WebUI
                 case "view":
                     ordView.Attributes["readonly"] = "true";
                     requiredFieldDescriptor.Visible = false;
-                    prevOrdinanceNums.Attributes["placeholder"] = string.Empty;
+                    vendorNumber.Attributes["placeholder"] = "N/A";
+                    contractTerm.Attributes["placeholder"] = "N/A";
+                    prevOrdinanceNums.Attributes["placeholder"] = "N/A";
+                    codeProvision.Attributes["placeholder"] = "N/A";
                     newRevenueRowDiv.Visible = false;
                     newExpenditureRowDiv.Visible = false;
                     supportingDocumentation.Visible = false;
@@ -371,7 +375,9 @@ namespace WebUI
                         foreach (RepeaterItem item in rpRevenueTable.Items)
                         {
                             HtmlGenericControl removeRevRow = item.FindControl("removeRevRowDiv") as HtmlGenericControl;
+                            TextBox revAmount = item.FindControl("revenueAmount") as TextBox;
                             removeRevRow.Visible = false;
+                            revAmount.Attributes["placeholder"] = "N/A";
                         }
                     }
                     if (rpExpenditureTable.Items.Count > 0)
@@ -379,13 +385,35 @@ namespace WebUI
                         foreach (RepeaterItem item in rpExpenditureTable.Items)
                         {
                             HtmlGenericControl removeExpRow = item.FindControl("removeExpRowDiv") as HtmlGenericControl;
+                            TextBox expAmount = item.FindControl("expenditureAmount") as TextBox;
                             removeExpRow.Visible = false;
+                            expAmount.Attributes["placeholder"] = "N/A";
                         }
                     }
                     foreach (RepeaterItem item in rpSupportingDocumentation.Items)
                     {
                         LinkButton deleteFile = item.FindControl("deleteFile") as LinkButton;
                         deleteFile.Visible = false;
+                    }
+
+                    if (ord.ContractStartDate.Length < 1)
+                    {
+                        contractStartDate.TextMode = TextBoxMode.SingleLine;
+                        contractStartDate.Attributes["placeholder"] = "N/A";
+                    }
+                    else
+                    {
+                        contractStartDate.TextMode = TextBoxMode.Date;
+                    }
+
+                    if (ord.ContractEndDate.Length < 1)
+                    {
+                        contractEndDate.TextMode = TextBoxMode.SingleLine;
+                        contractEndDate.Attributes["placeholder"] = "N/A";
+                    }
+                    else
+                    {
+                        contractEndDate.TextMode = TextBoxMode.Date;
                     }
 
                     otherException.Enabled = true;
@@ -395,6 +423,12 @@ namespace WebUI
                 case "edit":
                     ordView.Attributes["readonly"] = "false";
                     requiredFieldDescriptor.Visible = true;
+                    vendorNumber.Attributes["placeholder"] = "0123456789";
+                    contractTerm.Attributes["placeholder"] = "Calculating Term...";
+                    prevOrdinanceNums.Attributes["placeholder"] = "123-45-6789";
+                    codeProvision.Attributes["placeholder"] = "0123456789";
+                    contractStartDate.TextMode = TextBoxMode.Date;
+                    contractEndDate.TextMode = TextBoxMode.Date;
                     newRevenueRowDiv.Visible = true;
                     newExpenditureRowDiv.Visible = true;
                     supportingDocumentationDiv.Visible = true;
@@ -409,7 +443,9 @@ namespace WebUI
                         {
                             HtmlGenericControl removeRevRowDiv = item.FindControl("removeRevRowDiv") as HtmlGenericControl;
                             Button removeRevRow = item.FindControl("removeRevenueRow") as Button;
-                            removeRevRowDiv.Visible = true;
+                            TextBox revAmount = item.FindControl("revenueAmount") as TextBox;
+                            removeRevRow.Visible = true;
+                            revAmount.Attributes["placeholder"] = "$10,000.00";
                             ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(removeRevRow);
                         }
                     }
@@ -419,7 +455,9 @@ namespace WebUI
                         {
                             HtmlGenericControl removeExpRowDiv = item.FindControl("removeExpRowDiv") as HtmlGenericControl;
                             Button removeExpRow = item.FindControl("removeExpenditureRow") as Button;
-                            removeExpRowDiv.Visible = true;
+                            TextBox expAmount = item.FindControl("expenditureAmount") as TextBox;
+                            removeExpRow.Visible = true;
+                            expAmount.Attributes["placeholder"] = "$10,000.00";
                             ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(removeExpRow);
                         }
                     }
@@ -821,7 +859,7 @@ namespace WebUI
             ordinance.OrdinanceAnalysis = staffAnalysis.Text;
             ordinance.LastUpdateBy = _user.Login;
             ordinance.LastUpdateDate = DateTime.Now;
-            ordinance.EffectiveDate = DateTime.Now;
+            ordinance.EffectiveDate = Convert.ToDateTime(hdnEffectiveDate.Value);
             ordinance.ExpirationDate = DateTime.MaxValue;
 
             int retVal = Factory.Instance.Update(ordinance, "sp_UpdateOrdinance");

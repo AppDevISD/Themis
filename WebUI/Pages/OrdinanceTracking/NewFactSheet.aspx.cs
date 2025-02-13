@@ -65,8 +65,8 @@ namespace WebUI
                 GetAllDepartments();
                 GetAllPurchaseMethods();
                 SetStartupActives();
-                NewAccountingRow("revenue");
-                NewAccountingRow("expenditure");
+                //NewAccountingRow("revenue");
+                //NewAccountingRow("expenditure");
             }
             SubmitStatus();
         }
