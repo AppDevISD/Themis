@@ -497,10 +497,13 @@
 						<%-- SECOND ROW --%>
 						<div class="row mb-3">
 							<%-- SUPPORTING DOCUMENTATION --%>
-							<div class="col-md-6">
+							<div class="col-md-8">
 								<div class="form-group">
-									<label for="supportingDocumentation">Supporting Documentation (Ex: Contract, Agreement, Change Order, Bid Book)</label>
-									<asp:FileUpload runat="server" ID="supportingDocumentation" CssClass="form-control mt-3" AllowMultiple="true" onchange="FileSaveOnPostback(1);" />
+									<label for="supportingDocumentationDiv">Supporting Documentation (Ex: Contract, Agreement, Change Order, Bid Book)</label>
+									<div id="supportingDocumentationDiv" class="d-flex">
+										<asp:FileUpload runat="server" ID="supportingDocumentation" CssClass="form-control mt-3" AllowMultiple="true" />
+										<asp:Button runat="server" ID="UploadImageBtn" UseSubmitBehavior="true" CssClass="btn btn-success mt-3 ms-3" Width="25%" Text="Upload" OnClick="SubmitForm_Click" OnClientClick="ShowSubmitToast();" />
+									</div>
 								</div>
 							</div>
 						</div>
