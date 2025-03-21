@@ -816,13 +816,6 @@ namespace WebUI
                     break;
             }
         }
-
-
-
-
-
-
-
         protected void SaveFactSheet_Click(object sender, EventArgs e)
         {            
             Ordinance ordinance = new Ordinance();
@@ -1124,15 +1117,6 @@ namespace WebUI
                 Session["ToastMessage"] = "Something went wrong while saving!";
             }
         }
-
-
-
-
-
-
-
-
-
 
 
         [WebMethod]
