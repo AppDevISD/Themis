@@ -30,6 +30,7 @@
 					<asp:AsyncPostBackTrigger ControlID="scNo" EventName="CheckedChanged" />
 					<asp:AsyncPostBackTrigger ControlID="purchaseMethod" EventName="SelectedIndexChanged" />
 					<asp:PostBackTrigger ControlID="SubmitFactSheet" />
+					<asp:PostBackTrigger ControlID="UploadImageBtn" />
 				</Triggers>
 
 				<%-- FORM CONTENT --%>
@@ -500,9 +501,22 @@
 							<div class="col-md-8">
 								<div class="form-group">
 									<label for="supportingDocumentationDiv">Supporting Documentation (Ex: Contract, Agreement, Change Order, Bid Book)</label>
+									<ul class="list-group mt-1">
+										<asp:Repeater runat="server" ID="rpSupportingDocumentation" OnItemCommand="rpSupportingDocumentation_ItemCommand">
+											<ItemTemplate>
+												<li class="list-group-item" style="line-height: 2.25;">
+													<asp:HiddenField runat="server" ID="hdnDocIndex" Value='<%# Container.ItemIndex %>' />
+													<%# DataBinder.Eval(Container.DataItem, "DocumentName") %>
+													<div class="d-flex float-end">
+														<asp:LinkButton runat="server" ID="deleteFile" CssClass="btn btn-danger" CommandName="delete" Style="margin-left: 5px;"><span class="fas fa-trash-can"></span></asp:LinkButton>
+													</div>
+												</li>
+											</ItemTemplate>
+										</asp:Repeater>
+									</ul>
 									<div id="supportingDocumentationDiv" class="d-flex">
 										<asp:FileUpload runat="server" ID="supportingDocumentation" CssClass="form-control mt-3" AllowMultiple="true" />
-										<asp:Button runat="server" ID="UploadImageBtn" UseSubmitBehavior="true" CssClass="btn btn-success mt-3 ms-3" Width="25%" Text="Upload" OnClick="SubmitForm_Click" OnClientClick="ShowSubmitToast();" />
+										<asp:Button runat="server" ID="UploadImageBtn" UseSubmitBehavior="false" CssClass="btn btn-success mt-3 ms-3" Width="25%" Text="Upload" OnClick="UploadImageBtn_Click" />
 									</div>
 								</div>
 							</div>

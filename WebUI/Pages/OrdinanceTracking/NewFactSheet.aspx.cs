@@ -62,12 +62,14 @@ namespace WebUI
             {
                 Session.Remove("revenue");
                 Session.Remove("expenditure");
+                Session.Remove("ordDocs");
                 GetAllDepartments();
                 GetAllPurchaseMethods();
                 SetStartupActives();
                 //NewAccountingRow("revenue");
                 //NewAccountingRow("expenditure");
             }
+            GetUploadedImages();
             SubmitStatus();
         }
         protected void SetStartupActives()
@@ -448,6 +450,8 @@ namespace WebUI
             {
                 bool revExpTables = false;
                 bool documentation = false;
+                bool uploadedDocumentation = false;
+                List<OrdinanceDocument> ordDocs = new List<OrdinanceDocument>();
                 bool finishSubmit = true;
                 if (rpRevenueTable.Items.Count > 0 || rpExpenditureTable.Items.Count > 0)
                 {
@@ -456,6 +460,11 @@ namespace WebUI
                 if (supportingDocumentation.HasFiles)
                 {
                     documentation = true;
+                }
+                if (Session["ordDocs"] != null)
+                {
+                    uploadedDocumentation = true;
+                    ordDocs = Session["ordDocs"] as List<OrdinanceDocument>;
                 }
 
                 switch (revExpTables)
@@ -538,6 +547,23 @@ namespace WebUI
                         break;
                 }
 
+                switch (uploadedDocumentation)
+                {
+                    case true:
+                        foreach (OrdinanceDocument ordDoc in ordDocs)
+                        {                            
+                            ordDoc.OrdinanceID = retVal;
+                            int ret = Factory.Instance.Insert(ordDoc, "sp_InsertOrdinance_Document");
+                            //int ret = 1;
+                            if (ret < 1)
+                            {
+                                finishSubmit = false;
+                            }
+                        }
+
+                        break;
+                }
+
                 switch (documentation)
                 {
                     case true:
@@ -566,6 +592,8 @@ namespace WebUI
 
                         break;
                 }
+
+                
                 Email.Instance.AddEmailAddress(emailList, _user.Email);
                 string formType = "Ordinance Fact Sheet";
 
@@ -612,6 +640,64 @@ namespace WebUI
                 toastColor = (string)Session["ToastColor"];
                 toastMessage = (string)Session["ToastMessage"];
             }
+        }
+
+
+        protected void rpSupportingDocumentation_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            //HiddenField hdnDocID = (HiddenField)e.Item.FindControl("hdnDocID");
+            HiddenField hdnDocIndex = (HiddenField)e.Item.FindControl("hdnDocIndex");
+            List<OrdinanceDocument> ordDocList = Session["ordDocs"] as List<OrdinanceDocument>;
+            OrdinanceDocument ordDocItem = ordDocList[Convert.ToInt32(hdnDocIndex.Value)];
+
+            switch (e.CommandName)
+            {
+                case "delete":
+                    List<OrdinanceDocument> removeDocs = new List<OrdinanceDocument>();
+                    if (Session["RemoveDocs"] != null)
+                    {
+                        removeDocs = Session["RemoveDocs"] as List<OrdinanceDocument>;
+                    }
+                    removeDocs.Add(ordDocItem);
+                    Session["RemoveDocs"] = removeDocs;
+                    ordDocList.Remove(ordDocItem);
+                    Session["ordDocs"] = ordDocList;
+                    rpSupportingDocumentation.DataSource = ordDocList;
+                    rpSupportingDocumentation.DataBind();
+                    break;
+            }
+        }
+        protected void GetUploadedImages()
+        {
+            if (Session["ordDocs"] != null)
+            {
+                List<OrdinanceDocument> ordDocList = Session["ordDocs"] as List<OrdinanceDocument>;
+                rpSupportingDocumentation.DataSource = ordDocList;
+                rpSupportingDocumentation.DataBind();
+            }
+        }
+        protected void UploadImageBtn_Click(object sender, EventArgs e)
+        {
+            List<OrdinanceDocument> ordDocList = (Session["ordDocs"] != null) ? Session["ordDocs"] as List<OrdinanceDocument> : new List<OrdinanceDocument>();
+
+            for (int i = 0; i < supportingDocumentation.PostedFiles.Count; i++)
+            {
+                OrdinanceDocument ordDoc = new OrdinanceDocument();
+                ordDoc.DocumentName = supportingDocumentation.PostedFiles[i].FileName;
+                Stream stream = supportingDocumentation.PostedFiles[i].InputStream;
+                using (var fileBytes = new BinaryReader(stream))
+                {
+                    ordDoc.DocumentData = fileBytes.ReadBytes((int)stream.Length);
+                }
+                ordDoc.LastUpdateBy = _user.Login;
+                ordDoc.LastUpdateDate = DateTime.Now;
+                ordDoc.EffectiveDate = DateTime.Now;
+                ordDoc.ExpirationDate = DateTime.MaxValue;
+                ordDocList.Add(ordDoc);
+            }
+            Session["ordDocs"] = ordDocList;
+            rpSupportingDocumentation.DataSource = ordDocList;
+            rpSupportingDocumentation.DataBind();
         }
     }
 }
