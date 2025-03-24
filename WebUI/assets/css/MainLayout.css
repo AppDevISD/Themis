@@ -486,6 +486,35 @@ select:disabled, .disabled-control, .disabled-control input {
 		grid-column-start: 1;
 	}
 
+.tooltip {
+	--bs-tooltip-max-width: 400px;
+}
+.tooltip .arrow {
+	display: block;
+    width: var(--bs-tooltip-arrow-width);
+    height: var(--bs-tooltip-arrow-height);
+
+}
+
+.tooltip .arrow::before {
+	position: absolute;
+	content: "";
+	border-color: transparent;
+	border-style: solid;
+}
+
+.bs-tooltip-end .arrow, .bs-tooltip-right .arrow {
+	position: absolute;
+	left: -5px;
+	width: var(--bs-tooltip-arrow-height);
+	height: var(--bs-tooltip-arrow-width);
+}
+
+	.bs-tooltip-end .arrow::before, .bs-tooltip-right .arrow::before {
+		left: -1px;
+		border-width: calc(var(--bs-tooltip-arrow-width) * 0.5) var(--bs-tooltip-arrow-height) calc(var(--bs-tooltip-arrow-width) * 0.5) 0;
+		border-right-color: var(--bs-tooltip-bg);
+	}
 
 
 /* --------------- Charts --------------- */

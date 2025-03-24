@@ -5,6 +5,12 @@
 <asp:Content ID="HeadContent" ContentPlaceHolderID="HeadContent" runat="server"></asp:Content>
 
 <asp:Content ID="MainContent" ContentPlaceHolderID="MainContent" runat="server">
+	<style>
+		.custom-tooltip {
+			--bs-tooltip-bg: var(--bd-violet-bg);
+			--bs-tooltip-color: var(--bs-white);
+		}
+	</style>
 	<section>
 		<asp:UpdatePanel runat="server" ID="pnlOrdinanceTable" UpdateMode="Always" class="overlap-panels">
 			<Triggers>
@@ -49,7 +55,7 @@
 										<asp:HiddenField runat="server" ID="hdnID" Value='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' />
 										<asp:Label ID="date" Text='<%# DataBinder.Eval(Container.DataItem, "EffectiveDate", "{0:MM/dd/yyyy}") %>' runat="server" />
 									</td>
-									<td class="align-middle" style="max-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis !important;">
+									<td id="titleCell" class="align-middle" style="max-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis !important;" data-tooltip="tooltip" data-placement="right" title='<%# DataBinder.Eval(Container.DataItem, "OrdinanceTitle") %>'>
 										<asp:Label ID="formType" Text='<%# DataBinder.Eval(Container.DataItem, "OrdinanceTitle") %>' runat="server" />
 									</td>
 									<td class="align-middle">
@@ -663,8 +669,17 @@
 		var prm = Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
 			GetToastStatus();
 			FormatForms();
-			CurrencyFormatting();		
+			CurrencyFormatting();
+
+			
 		});
+
+		$(function () {
+			$('[data-tooltip="tooltip"]').tooltip({
+				whitelist: 'td',
+				container: '#titleCell'
+			});
+		})
 
 		function CurrencyFormatting() {
 			$("[data-type='currency']").each(function () {

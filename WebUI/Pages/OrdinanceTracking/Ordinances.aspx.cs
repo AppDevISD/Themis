@@ -218,9 +218,11 @@ namespace WebUI
             {
                 case true:
                     epYes.Checked = true;
+                    epNo.Checked = false;
                     epJustificationGroup.Visible = true;
                     break;
                 case false:
+                    epYes.Checked = false;
                     epNo.Checked = true;
                     epJustificationGroup.Visible = false;
                     break;
@@ -241,9 +243,11 @@ namespace WebUI
             {
                 case true:
                     scYes.Checked = true;
+                    scNo.Checked = false;
                     scopeChangeOptions.Visible = true;
                     break;
                 case false:
+                    scYes.Checked = false;
                     scNo.Checked = true;
                     scopeChangeOptions.Visible = false;
                     break;
@@ -270,18 +274,22 @@ namespace WebUI
             switch (ord.PAApprovalRequired)
             {
                 case true:
-                    paApprovalRequiredYes.Checked = true;                    
+                    paApprovalRequiredYes.Checked = true;
+                    paApprovalRequiredNo.Checked = false;
                     break;
                 case false:
+                    paApprovalRequiredYes.Checked = false;
                     paApprovalRequiredNo.Checked = true;
                     break;
             }
             switch (ord.PAApprovalIncluded)
             {
                 case true:
-                    paApprovalAttachedYes.Checked = true;                    
+                    paApprovalAttachedYes.Checked = true;
+                    paApprovalAttachedNo.Checked = false;
                     break;
                 case false:
+                    paApprovalAttachedYes.Checked = false;
                     paApprovalAttachedNo.Checked = true;
                     break;
             }
