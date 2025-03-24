@@ -243,7 +243,7 @@
 									<div class="col-md-10">
 										<div class="form-group">
 											<label for="vendorName">Vendor Name</label>
-											<asp:TextBox runat="server" ID="vendorName" CssClass="form-control" TextMode="SingleLine" placeholder="Vendor Incorporated LLC" AutoCompleteType="Company" required="true"></asp:TextBox>
+											<asp:TextBox runat="server" ID="vendorName" CssClass="form-control" TextMode="SingleLine" placeholder="Vendor Incorporated LLC" AutoCompleteType="Company"></asp:TextBox>
 										</div>
 									</div>
 
@@ -629,7 +629,7 @@
 					</div>
 				</div>
 			</ContentTemplate>
-		</asp:UpdatePanel>
+		</asp:UpdatePanel>		
 	</section>
 
 	<!-- DELETE MODAL -->

@@ -24,6 +24,15 @@ namespace WebUI
         protected global::System.Web.UI.UpdatePanel formUpdatePanel;
 
         /// <summary>
+        /// userFields control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl userFields;
+
+        /// <summary>
         /// requestDepartment control.
         /// </summary>
         /// <remarks>
@@ -121,6 +130,15 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox suggestedTitle;
+
+        /// <summary>
+        /// adminFields control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl adminFields;
 
         /// <summary>
         /// vendorName control.

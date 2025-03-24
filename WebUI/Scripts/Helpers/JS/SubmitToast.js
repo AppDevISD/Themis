@@ -8,7 +8,7 @@ $(document).ready(function () {
 	if (getStoredToast() == 'show') {
 		try {
 			$('#submitToast').toast('show');
-			localStorage.setItem('showToast', '');
+			localStorage.setItem('showToast', 'hide');
 		} catch (e) { }
 	}
 });
@@ -20,7 +20,7 @@ function GetToastStatus() {
 	if (getStoredToast() == 'show') {
 		try {
 			$('#submitToast').toast('show');
-			localStorage.setItem('showToast', '');
+			localStorage.setItem('showToast', 'hide');
 		} catch (e) { }
 	}
 }
