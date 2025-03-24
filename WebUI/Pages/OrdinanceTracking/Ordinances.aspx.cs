@@ -31,6 +31,8 @@ namespace WebUI
             {
                 Session.Remove("ordRevTable");
                 Session.Remove("ordExpTable");
+                Session.Remove("ordDocs");
+                Session.Remove("addOrdDocs");
                 GetAllDepartments();
                 GetAllPurchaseMethods();
                 SetStartupActives();
@@ -52,6 +54,7 @@ namespace WebUI
             }
             ScriptManager.GetCurrent(Page).RegisterPostBackControl(SaveFactSheet);
             Session["fileUploadPage"] = Page;
+            GetUploadedImages();
             SubmitStatus();
         }
         protected void SetStartupActives()
@@ -375,6 +378,7 @@ namespace WebUI
                     newRevenueRowDiv.Visible = false;
                     newExpenditureRowDiv.Visible = false;
                     supportingDocumentation.Visible = false;
+                    UploadImageBtn.Visible = false;
                     submitSection.Visible = false;
                     if (rpRevenueTable.Items.Count > 0)
                     {
@@ -439,6 +443,7 @@ namespace WebUI
                     newExpenditureRowDiv.Visible = true;
                     supportingDocumentationDiv.Visible = true;
                     supportingDocumentation.Visible = true;
+                    UploadImageBtn.Visible = true;
                     Session.Remove("RemoveAccs");
                     Session.Remove("RemoveOrdAccs");
                     Session.Remove("RemoveDocs");
@@ -842,7 +847,6 @@ namespace WebUI
             ordinance.ChangeOrderNumber = changeOrderNumber.Text ?? string.Empty;
             if (scYes.Checked)
             {
-
                 ordinance.AdditionalAmount = CurrencyToDecimal(additionalAmount.Text);
             }
             else
@@ -868,6 +872,25 @@ namespace WebUI
 
 
             int addDocsVal = new int();
+            int addUploadedDocsVal = new int();
+            List<OrdinanceDocument> ordDocs = Session["addOrdDocs"] as List<OrdinanceDocument>;
+            if (Session["addOrdDocs"] != null)
+            {
+                foreach (OrdinanceDocument ordDoc in ordDocs)
+                {
+                    ordDoc.OrdinanceID = Convert.ToInt32(hdnOrdID.Value);
+                    addUploadedDocsVal = Factory.Instance.Insert(ordDoc, "sp_InsertOrdinance_Document");
+                    //int ret = 1;
+                    if (addUploadedDocsVal < 1)
+                    {
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                addUploadedDocsVal = 1;
+            }
             if (supportingDocumentation.HasFiles)
             {
                 for (int i = 0; i < supportingDocumentation.PostedFiles.Count; i++)
@@ -896,6 +919,8 @@ namespace WebUI
             {
                 addDocsVal = 1;
             }
+
+            
 
             int removeDocVal = new int();
             List<OrdinanceDocument> removeDocs = new List<OrdinanceDocument>();
@@ -1096,6 +1121,7 @@ namespace WebUI
                 retVal,
                 removeDocVal,
                 addDocsVal,
+                addUploadedDocsVal,
                 removeAccsVal,
                 removeOrdAccsVal,
                 updateRevAccsVal,
@@ -1117,7 +1143,42 @@ namespace WebUI
                 Session["ToastMessage"] = "Something went wrong while saving!";
             }
         }
+        protected void GetUploadedImages()
+        {
+            if (Session["addOrdDocs"] != null && Session["ordDocs"] != null)
+            {
+                List<OrdinanceDocument> originalOrdDocList = Session["ordDocs"] as List<OrdinanceDocument>;
+                List<OrdinanceDocument> ordDocList = Session["addOrdDocs"] as List<OrdinanceDocument>;
+                originalOrdDocList.AddRange(ordDocList);
+                rpSupportingDocumentation.DataSource = originalOrdDocList;
+                rpSupportingDocumentation.DataBind();
+            }
+        }
+        protected void UploadImageBtn_Click(object sender, EventArgs e)
+        {
+            List<OrdinanceDocument> originalOrdDocList = (Session["ordDocs"] != null) ? Session["ordDocs"] as List<OrdinanceDocument> : new List<OrdinanceDocument>();
+            List<OrdinanceDocument> ordDocList = (Session["addOrdDocs"] != null) ? Session["addOrdDocs"] as List<OrdinanceDocument> : new List<OrdinanceDocument>();
 
+            for (int i = 0; i < supportingDocumentation.PostedFiles.Count; i++)
+            {
+                OrdinanceDocument ordDoc = new OrdinanceDocument();
+                ordDoc.DocumentName = supportingDocumentation.PostedFiles[i].FileName;
+                Stream stream = supportingDocumentation.PostedFiles[i].InputStream;
+                using (var fileBytes = new BinaryReader(stream))
+                {
+                    ordDoc.DocumentData = fileBytes.ReadBytes((int)stream.Length);
+                }
+                ordDoc.LastUpdateBy = _user.Login;
+                ordDoc.LastUpdateDate = DateTime.Now;
+                ordDoc.EffectiveDate = DateTime.Now;
+                ordDoc.ExpirationDate = DateTime.MaxValue;
+                ordDocList.Add(ordDoc);
+            }
+            Session["addOrdDocs"] = ordDocList;
+            originalOrdDocList.AddRange(ordDocList);
+            rpSupportingDocumentation.DataSource = originalOrdDocList;
+            rpSupportingDocumentation.DataBind();
+        }
 
         [WebMethod]
         public void OrdVisibility(string fadeOut)

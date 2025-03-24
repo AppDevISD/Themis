@@ -20,6 +20,7 @@
 				<asp:AsyncPostBackTrigger ControlID="scNo" EventName="CheckedChanged" />
 				<asp:AsyncPostBackTrigger ControlID="purchaseMethod" EventName="SelectedIndexChanged" />
 
+				<asp:PostBackTrigger ControlID="UploadImageBtn" />
 				<asp:PostBackTrigger ControlID="SaveFactSheet" />
 			</Triggers>
 			<ContentTemplate>
@@ -585,7 +586,7 @@
 									<%-- SUPPORTING DOCUMENTATION --%>
 									<div class="col-md-6">
 										<div class="form-group">
-											<label for="supportingDocumentation">Supporting Documentation (Ex: Contract, Agreement, Change Order, Bid Book)</label>
+											<label for="supportingDocumentationGroup">Supporting Documentation (Ex: Contract, Agreement, Change Order, Bid Book)</label>
 											<ul class="list-group mt-1">
 												<asp:Repeater runat="server" ID="rpSupportingDocumentation" OnItemCommand="rpSupportingDocumentation_ItemCommand">
 													<ItemTemplate>
@@ -601,7 +602,10 @@
 													</ItemTemplate>
 												</asp:Repeater>
 											</ul>
-											<asp:FileUpload runat="server" ID="supportingDocumentation" CssClass="form-control mt-3" AllowMultiple="true" onchange="FileSaveOnPostback();" />
+											<div id="supportingDocumentationGroup" class="d-flex">
+												<asp:FileUpload runat="server" ID="supportingDocumentation" CssClass="form-control mt-3" AllowMultiple="true" onchange="SetUploadActive();" />
+												<asp:Button runat="server" ID="UploadImageBtn" UseSubmitBehavior="false" CssClass="btn btn-success mt-3 ms-3" Width="25%" Text="Upload" OnClick="UploadImageBtn_Click" disabled="disabled" />
+											</div>
 										</div>
 									</div>
 								</div>
@@ -627,14 +631,6 @@
 			</ContentTemplate>
 		</asp:UpdatePanel>
 	</section>
-
-	<%--<asp:UpdatePanelAnimationExtender runat="server" ID="testAnimation" TargetControlID="pnlOrdinanceTable">
-		<Animations>
-			<OnUpdated>
-				<FadeOut Duration="1.0" Fps="24" />
-			</OnUpdated>
-		</Animations>
-	</asp:UpdatePanelAnimationExtender>--%>
 
 	<!-- DELETE MODAL -->
 	<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel">
@@ -711,6 +707,18 @@
 			//setTimeout(() => {
 			//	OrdinanceVisibility("ord");
 			//}, 1000);
+		}
+
+		function SetUploadActive() {
+			const supportingDocumentation = document.getElementById('<%= supportingDocumentation.ClientID %>')
+			var UploadImageBtn = document.getElementById('<%= UploadImageBtn.ClientID %>')
+			if (supportingDocumentation.files.length > 0) {
+				UploadImageBtn.disabled = false;
+			}
+			else {
+				UploadImageBtn.disabled = true;
+			}
+			
 		}
 	</script>
 </asp:Content>
