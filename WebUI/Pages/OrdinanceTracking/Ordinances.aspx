@@ -44,7 +44,7 @@
 											<th style="width: 39%; text-align: center"><strong>Title</strong></th>
 											<th style="width: 25%; text-align: center"><strong>Department</strong></th>
 											<th style="width: 15%; text-align: center"><strong>Contact</strong></th>
-											<th style="width: 10%; text-align: center"><strong>1<sup>st</sup> Read Date</strong></th>
+											<th style="width: 10%; text-align: center"><strong>Status</strong></th>
 											<th style="width: 5%; text-align: center"><strong>Action</strong></th>
 										</tr>
 									</thead>
@@ -53,19 +53,19 @@
 								<tr>
 									<td class="align-middle">
 										<asp:HiddenField runat="server" ID="hdnID" Value='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' />
-										<asp:Label ID="date" Text='<%# DataBinder.Eval(Container.DataItem, "EffectiveDate", "{0:MM/dd/yyyy}") %>' runat="server" />
+										<asp:Label ID="ordTableDate" Text='<%# DataBinder.Eval(Container.DataItem, "EffectiveDate", "{0:MM/dd/yyyy}") %>' runat="server" />
 									</td>
-									<td id="titleCell" class="align-middle" style="max-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis !important;" data-tooltip="tooltip" data-placement="right" title='<%# DataBinder.Eval(Container.DataItem, "OrdinanceTitle") %>'>
-										<asp:Label ID="formType" Text='<%# DataBinder.Eval(Container.DataItem, "OrdinanceTitle") %>' runat="server" />
-									</td>
-									<td class="align-middle">
-										<asp:Label ID="contact" Text='<%# DataBinder.Eval(Container.DataItem, "RequestDepartment") %>' runat="server" />
+									<td id="titleCell" class="align-middle text-start mw-0 text-truncate" data-overflow-tooltip="true" data-tooltip="tooltip" data-placement="right" title='<%# DataBinder.Eval(Container.DataItem, "OrdinanceTitle") %>'>
+										<asp:Label ID="ordTableTitle" Text='<%# DataBinder.Eval(Container.DataItem, "OrdinanceTitle") %>' runat="server" />
 									</td>
 									<td class="align-middle">
-										<asp:Label ID="employee" Text='<%# DataBinder.Eval(Container.DataItem, "RequestContact") %>' runat="server" />
+										<asp:Label ID="ordTableDepartment" Text='<%# DataBinder.Eval(Container.DataItem, "RequestDepartment") %>' runat="server" />
 									</td>
 									<td class="align-middle">
-										<asp:Label ID="notes" Text='<%# DataBinder.Eval(Container.DataItem, "FirstReadDate", "{0:MM/dd/yyyy}") %>' runat="server" />
+										<asp:Label ID="ordTableContact" Text='<%# DataBinder.Eval(Container.DataItem, "RequestContact") %>' runat="server" />
+									</td>
+									<td class="align-middle">
+										<asp:Label ID="ordTableStatus" Text='' runat="server" />
 									</td>
 									<td class="align-middle d-flex justify-content-around">
 										<%--<a runat="server" id="delete" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal" autopostback="false" onclick='<%#$"DeleteForm(\"{DataBinder.Eval(Container.DataItem, "OrdinanceID")}\")"%>'>Delete</a>--%>
@@ -666,21 +666,27 @@
 	<script type="text/javascript" src="./assets/js/FileUploadSaving.js"></script>
 	<script>
 		FormatForms();
+		SetTitleTooltips();
+
 		var prm = Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
 			GetToastStatus();
 			FormatForms();
 			CurrencyFormatting();
-
+			SetTitleTooltips();
 			
 		});
 
-		$(function () {
-			$('[data-tooltip="tooltip"]').tooltip({
-				whitelist: 'td',
-				container: '#titleCell'
+		function SetTitleTooltips() {
+			var tooltipTitles = $('[data-overflow-tooltip="true"]');
+			$(tooltipTitles).each(function (i) {
+				if (this.scrollWidth > this.offsetWidth) {
+					$(this).tooltip({
+						whitelist: 'td',
+						container: '#titleCell'
+					});
+				}
 			});
-		})
-
+		}
 		function CurrencyFormatting() {
 			$("[data-type='currency']").each(function () {
 				formatCurrency($(this), "blur");

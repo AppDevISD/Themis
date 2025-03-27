@@ -666,6 +666,10 @@ input[type=file]:hover::-webkit-file-upload-button {
   display: none;
 }
 
+.mw-0 {
+  max-width: 0;
+}
+
 /* --------------- Prism Code Blocks --------------- */
 [data-bs-theme=dark] pre[class*=language-] {
   background: var(--bs-body-bg) !important;
