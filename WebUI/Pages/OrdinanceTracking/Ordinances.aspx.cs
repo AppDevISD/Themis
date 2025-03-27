@@ -58,7 +58,7 @@ namespace WebUI
             GetUploadedImages();
             SubmitStatus();
 
-            OrdStatus = "Denied";
+            OrdStatus = "New";
         }
         protected void SetStartupActives()
         {
