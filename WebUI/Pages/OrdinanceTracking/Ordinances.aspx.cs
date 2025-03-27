@@ -22,6 +22,7 @@ namespace WebUI
         private string emailList = "NewFactSheetEmailList";
         public string toastColor;
         public string toastMessage;
+        public string OrdStatus;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -56,6 +57,8 @@ namespace WebUI
             Session["fileUploadPage"] = Page;
             GetUploadedImages();
             SubmitStatus();
+
+            OrdStatus = "Denied";
         }
         protected void SetStartupActives()
         {
@@ -378,6 +381,8 @@ namespace WebUI
             {
                 case "view":
                     ordView.Attributes["readonly"] = "true";
+                    ddStatusDiv.Visible = false;
+                    statusDiv.Visible = true;
                     requiredFieldDescriptor.Visible = false;
                     vendorNumber.Attributes["placeholder"] = "N/A";
                     contractTerm.Attributes["placeholder"] = "N/A";
@@ -437,9 +442,36 @@ namespace WebUI
                     otherException.Enabled = true;
                     changeOrderNumber.Enabled = true;
                     additionalAmount.Enabled = true;
+
+                    statusLabel.InnerHtml = OrdStatus;
+                    switch (OrdStatus)
+                    {
+                        case "New":
+                            statusIcon.Attributes["class"] = "fas fa-sparkles text-primary";
+                            statusLabel.Attributes["class"] = "text-primary";
+                            break;
+                        case "In Progress":
+                            statusIcon.Attributes["class"] = "fas fa-hourglass-clock text-info";
+                            statusLabel.Attributes["class"] = "text-info";
+                            break;
+                        case "Action Needed":
+                            statusIcon.Attributes["class"] = "fas fa-triangle-exclamation text-warning";
+                            statusLabel.Attributes["class"] = "text-warning";
+                            break;
+                        case "Completed":
+                            statusIcon.Attributes["class"] = "fas fa-badge-check text-success";
+                            statusLabel.Attributes["class"] = "text-success";
+                            break;
+                        case "Denied":
+                            statusIcon.Attributes["class"] = "fas fa-ban text-danger";
+                            statusLabel.Attributes["class"] = "text-danger";
+                            break;
+                    }
                     break;
                 case "edit":
                     ordView.Attributes["readonly"] = "false";
+                    ddStatusDiv.Visible = true;
+                    statusDiv.Visible = false;
                     requiredFieldDescriptor.Visible = true;
                     vendorNumber.Attributes["placeholder"] = "0123456789";
                     contractTerm.Attributes["placeholder"] = "Calculating Term...";

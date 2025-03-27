@@ -5,12 +5,6 @@
 <asp:Content ID="HeadContent" ContentPlaceHolderID="HeadContent" runat="server"></asp:Content>
 
 <asp:Content ID="MainContent" ContentPlaceHolderID="MainContent" runat="server">
-	<style>
-		.custom-tooltip {
-			--bs-tooltip-bg: var(--bd-violet-bg);
-			--bs-tooltip-color: var(--bs-white);
-		}
-	</style>
 	<section>
 		<asp:UpdatePanel runat="server" ID="pnlOrdinanceTable" UpdateMode="Always" class="overlap-panels">
 			<Triggers>
@@ -29,6 +23,7 @@
 				<asp:PostBackTrigger ControlID="UploadImageBtn" />
 				<asp:PostBackTrigger ControlID="SaveFactSheet" />
 			</Triggers>
+
 			<ContentTemplate>
 				<div runat="server" id="ordTable" class="card" style="min-height: 80vh;">
 					<div class="card-header bg-body">
@@ -105,15 +100,27 @@
 						</asp:Panel>
 					</div>
 				</div>
+
 				<div runat="server" id="ordView" readonly="false" class="readonly-color">
 					<asp:HiddenField runat="server" ID="hdnOrdID" />
 					<asp:HiddenField runat="server" ID="hdnEffectiveDate" />
 
 					<%-- FORM HEADER --%>
 					<section class="container form-header bg-body text-center position-relative">
-						<asp:LinkButton runat="server" ID="backBtn" CssClass="btn bg-danger backBtn" OnClick="backBtn_Click"><span class="fas fa-xmark text-light"></span></asp:LinkButton>
 						<div class="row h-100 align-items-center">
 							<h1><span class="fas fa-book-section"></span>&nbsp;Ordinance</h1>
+						</div>
+						<asp:LinkButton runat="server" ID="backBtn" CssClass="btn bg-danger backBtn" OnClick="backBtn_Click"><span class="fas fa-xmark text-light"></span></asp:LinkButton>
+
+						<div class="statusDropDown text-end">
+							<div runat="server" id="ddStatusDiv" class="form-group text-start w-75 ms-auto">
+								<label for="ordViewStatus">Status</label>
+								<asp:DropDownList ID="ordViewStatus" runat="server" AutoPostBack="false" CssClass="form-select"></asp:DropDownList>
+							</div>
+							<div runat="server" id="statusDiv" class="d-flex fw-bold fs-4 justify-content-end">
+								<label runat="server" id="statusIcon"></label>
+								<label runat="server" id="statusLabel"></label>
+							</div>
 						</div>
 					</section>
 
@@ -673,7 +680,6 @@
 			FormatForms();
 			CurrencyFormatting();
 			SetTitleTooltips();
-			
 		});
 
 		function SetTitleTooltips() {

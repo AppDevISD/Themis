@@ -19,6 +19,22 @@
 	transition: all 0.3s;
 }
 
+.statusDropDown {
+	position: absolute;
+	bottom: 25px;
+	right: 75px;
+	width: 25%;
+}
+
+.statusDropDown select {
+	background-color: var(--bs-tertiary-bg);
+}
+
+#statusIcon {
+	line-height: 1.5;
+	margin-right: 30px;
+}
+
 .backBtn span {
 	transform: scale(1.5);
 }
