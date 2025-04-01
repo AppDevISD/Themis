@@ -60,7 +60,7 @@
 										<asp:Label ID="ordTableContact" Text='<%# DataBinder.Eval(Container.DataItem, "RequestContact") %>' runat="server" />
 									</td>
 									<td class="align-middle">
-										<asp:Label ID="ordTableStatus" Text='' runat="server" />
+										<asp:Label ID="ordTableStatus" Text='<%# DataBinder.Eval(Container.DataItem, "StatusDescription") %>' runat="server" />
 									</td>
 									<td class="align-middle d-flex justify-content-around">
 										<%--<a runat="server" id="delete" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal" autopostback="false" onclick='<%#$"DeleteForm(\"{DataBinder.Eval(Container.DataItem, "OrdinanceID")}\")"%>'>Delete</a>--%>
@@ -118,8 +118,8 @@
 								<asp:DropDownList ID="ordViewStatus" runat="server" AutoPostBack="false" CssClass="form-select"></asp:DropDownList>
 							</div>
 							<div runat="server" id="statusDiv" class="d-flex fw-bold fs-4 justify-content-end">
-								<label runat="server" id="statusIcon"></label>
 								<label runat="server" id="statusLabel"></label>
+								<label runat="server" id="statusIcon"></label>
 							</div>
 						</div>
 					</section>

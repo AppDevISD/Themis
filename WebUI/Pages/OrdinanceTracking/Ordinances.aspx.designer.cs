@@ -159,15 +159,6 @@ namespace WebUI
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl statusDiv;
 
         /// <summary>
-        /// statusIcon control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl statusIcon;
-
-        /// <summary>
         /// statusLabel control.
         /// </summary>
         /// <remarks>
@@ -175,6 +166,15 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl statusLabel;
+
+        /// <summary>
+        /// statusIcon control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl statusIcon;
 
         /// <summary>
         /// requiredFieldDescriptor control.

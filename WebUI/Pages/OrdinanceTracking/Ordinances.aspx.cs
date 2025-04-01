@@ -147,8 +147,8 @@ namespace WebUI
             {
                 foreach (Ordinance ord in ord_list)
                 {
-                    List<OrdinanceStatus> ordStatus = Factory.Instance.GetAllLookup<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
-                    ord.StatusDescription = ordStatus[0].StatusDescription;
+                    OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
+                    ord.StatusDescription = ordStatus.StatusDescription;
                 }
                 BindDataRepeaterPagination("yes", ord_list);
                 
@@ -450,9 +450,11 @@ namespace WebUI
                     changeOrderNumber.Enabled = true;
                     additionalAmount.Enabled = true;
 
-                    statusLabel.InnerHtml = OrdStatus;
-                    switch (OrdStatus)
-                    {
+                    OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
+                    ord.StatusDescription = ordStatus.StatusDescription;
+                    statusLabel.InnerHtml = ord.StatusDescription;
+                    switch (ord.StatusDescription)
+                    {                        
                         case "New":
                             statusIcon.Attributes["class"] = "fas fa-sparkles text-primary";
                             statusLabel.Attributes["class"] = "text-primary";

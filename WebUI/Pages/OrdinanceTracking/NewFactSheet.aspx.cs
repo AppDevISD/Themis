@@ -641,8 +641,6 @@ namespace WebUI
                 toastMessage = (string)Session["ToastMessage"];
             }
         }
-
-
         protected void rpSupportingDocumentation_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
             //HiddenField hdnDocID = (HiddenField)e.Item.FindControl("hdnDocID");
