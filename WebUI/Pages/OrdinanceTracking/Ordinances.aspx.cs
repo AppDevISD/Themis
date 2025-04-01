@@ -459,19 +459,19 @@ namespace WebUI
                             statusIcon.Attributes["class"] = "fas fa-sparkles text-primary";
                             statusLabel.Attributes["class"] = "text-primary";
                             break;
-                        case "In Progress":
+                        case "Under Review":
                             statusIcon.Attributes["class"] = "fas fa-hourglass-clock text-info";
                             statusLabel.Attributes["class"] = "text-info";
                             break;
-                        case "Action Needed":
+                        case "Being Held":
                             statusIcon.Attributes["class"] = "fas fa-triangle-exclamation text-warning";
                             statusLabel.Attributes["class"] = "text-warning";
                             break;
-                        case "Completed":
+                        case "Drafted":
                             statusIcon.Attributes["class"] = "fas fa-badge-check text-success";
                             statusLabel.Attributes["class"] = "text-success";
                             break;
-                        case "Denied":
+                        case "Rejected":
                             statusIcon.Attributes["class"] = "fas fa-ban text-danger";
                             statusLabel.Attributes["class"] = "text-danger";
                             break;

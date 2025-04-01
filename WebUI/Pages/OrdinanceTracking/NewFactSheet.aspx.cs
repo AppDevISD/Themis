@@ -444,7 +444,7 @@ namespace WebUI
             ordinance.EffectiveDate = DateTime.Now;
             ordinance.ExpirationDate = DateTime.MaxValue;
 
-            int retVal = Factory.Instance.Insert(ordinance, "sp_InsertOrdinance");
+            int retVal = Factory.Instance.Insert(ordinance, "sp_InsertOrdinance", 2);
             //int retVal = 1;
             if (retVal > 0)
             {
@@ -591,6 +591,20 @@ namespace WebUI
                         }
 
                         break;
+                }
+
+                OrdinanceStatus ordStatus = new OrdinanceStatus();
+                ordStatus.OrdinanceID = retVal;
+                ordStatus.StatusID = 1;
+                ordStatus.LastUpdateBy = _user.Login;
+                ordStatus.LastUpdateDate = DateTime.Now;
+                ordStatus.EffectiveDate = DateTime.Now;
+                ordStatus.ExpirationDate = DateTime.MaxValue;
+                int statusRet = Factory.Instance.Insert(ordStatus, "sp_InsertOrdinance_Status");
+
+                if (statusRet < 0)
+                {
+                    finishSubmit = false;
                 }
 
                 

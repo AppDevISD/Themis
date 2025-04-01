@@ -203,13 +203,13 @@ namespace DataLibrary
 
 
         // INSERTS //
-        public int Insert<T>(T item, string sp)
+        public int Insert<T>(T item, string sp, int skips = 1)
         {
             SqlConnection cn = new SqlConnection(Properties.Settings.Default["ThemisDB"].ToString());
             
             PropertyInfo[] classType = typeof(T).GetProperties();
             SqlCommand cmd = new SqlCommand(sp, cn);
-            foreach (var property in classType.Skip(1))
+            foreach (var property in classType.Skip(skips))
             {
                 cmd.Parameters.AddWithValue($"@p{property.Name}", property.GetValue(item));
             }
@@ -239,7 +239,6 @@ namespace DataLibrary
 
             return retVal;
         }
-
         public int Update<T>(T item, string sp)
         {
             SqlConnection cn = new SqlConnection(Properties.Settings.Default["ThemisDB"].ToString());
