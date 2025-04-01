@@ -13,6 +13,7 @@ using static DataLibrary.Utility;
 using ISD.ActiveDirectory;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 
 namespace WebUI
 {
@@ -144,7 +145,13 @@ namespace WebUI
             ord_list = Factory.Instance.GetAll<Ordinance>("sp_GetOrdinanceByEffective");
             if (ord_list.Count > 0)
             {
+                foreach (Ordinance ord in ord_list)
+                {
+                    List<OrdinanceStatus> ordStatus = Factory.Instance.GetAllLookup<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
+                    ord.StatusDescription = ordStatus[0].StatusDescription;
+                }
                 BindDataRepeaterPagination("yes", ord_list);
+                
             }
 
             Session["ord_list"] = ord_list;

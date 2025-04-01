@@ -36,6 +36,7 @@ namespace DataLibrary
         public string CodeProvision { get; set; } // Added
         public bool PAApprovalRequired { get; set; }
         public bool PAApprovalIncluded { get; set; }
+        public string StatusDescription { get; set; }
         public string LastUpdateBy { get; set; }
         public DateTime LastUpdateDate { get; set; }
         public DateTime EffectiveDate { get; set; }

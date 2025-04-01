@@ -670,7 +670,6 @@
 			</div>
 		</div>
 	</div>
-	<script type="text/javascript" src="./assets/js/FileUploadSaving.js"></script>
 	<script>
 		FormatForms();
 		SetTitleTooltips();
