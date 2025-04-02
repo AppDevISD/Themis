@@ -52,6 +52,7 @@
     <Compile Include="OrdinanceTracking\OrdinanceAccounting.cs" />
     <Compile Include="OrdinanceTracking\OrdinanceDocument.cs" />
     <Compile Include="OrdinanceTracking\OrdinanceStatus.cs" />
+    <Compile Include="OrdinanceTracking\Status.cs" />
     <Compile Include="Utilities\ColorTheme.cs" />
     <Compile Include="Utilities\Email.cs" />
     <Compile Include="Utilities\Factory.cs" />

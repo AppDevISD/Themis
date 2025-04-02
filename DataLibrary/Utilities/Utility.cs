@@ -106,6 +106,18 @@ namespace DataLibrary
             return dictionary;
         }
 
+        public Dictionary<string, string> StatusList()
+        {
+            List<Status> statusList = new List<Status>();
+            statusList = Factory.Instance.GetAll<Status>("sp_GetLkStatus");
+            Dictionary<string, string> dictionary = new Dictionary<string, string>();
+            dictionary.Add("Select Status...", null);
+            foreach (Status status in statusList)
+            {
+                dictionary.Add(status.StatusDescription, status.StatusID.ToString());
+            }
+            return dictionary;
+        }
         public static decimal CurrencyToDecimal(string currency)
         {
             return decimal.Parse(currency, NumberStyles.Any);

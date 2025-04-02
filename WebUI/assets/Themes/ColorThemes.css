@@ -10,6 +10,9 @@
   --chart-border-color: rgba(0, 0, 0, 0.35);
   --chart-line-color: rgba(35, 35, 35, 0.75);
   --bs-primary-text-emphasis: #005ce3;
+  --bs-table-dark-bg: #fafafa;
+  /*--bs-warning-light: #cf9c00;*/
+  --bs-warning-light: #e2aa00;
 }
 
 [data-bs-theme=light][data-color-theme=base] {
@@ -552,7 +555,7 @@ label:has(+ .form-control:disabled) {
 }
 
 [data-bs-theme=light] .table-striped > tbody > tr:nth-of-type(odd) > * {
-  background-color: var(--bs-tertiary-bg);
+  background-color: var(--bs-table-dark-bg);
 }
 
 .table-striped > tbody > tr:nth-of-type(odd) > td .form-select, .table-striped > tbody > tr:nth-of-type(odd) > td .form-control {
@@ -639,6 +642,22 @@ input[type=range]:focus::-webkit-slider-thumb {
   box-shadow: none;
 }
 
+.btn-sort {
+  padding: unset !important;
+  width: 100%;
+  color: unset !important;
+  --bs-btn-bg: transparent;
+  --bs-btn-border-color: transparent;
+  --bs-btn-hover-color: var(--bs-link-hover-color);
+  --bs-btn-hover-border-color: transparent;
+  --bs-btn-active-color: var(--bs-link-hover-color);
+  --bs-btn-active-border-color: transparent;
+  --bs-btn-disabled-color: #6c757d;
+  --bs-btn-disabled-border-color: transparent;
+  --bs-btn-box-shadow: 0 0 0 #000;
+  --bs-btn-focus-shadow-rgb: 49, 132, 253;
+}
+
 input[type=file]::-webkit-file-upload-button {
   color: white !important;
   background-color: var(--bs-primary) !important;
@@ -706,4 +725,16 @@ input[type=file]:hover::-webkit-file-upload-button {
 [data-bs-theme=light] .token.namespace {
   color: #994200 !important;
   background-color: transparent !important;
+}
+
+[data-bs-theme=light] .text-warning-light {
+  color: var(--bs-warning-light);
+}
+
+[data-bs-theme=dark] .text-warning-light {
+  color: var(--bs-warning);
+}
+
+.lh-1p5 {
+  line-height: 1.5;
 }

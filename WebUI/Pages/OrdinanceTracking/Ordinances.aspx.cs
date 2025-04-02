@@ -24,6 +24,9 @@ namespace WebUI
         public string toastColor;
         public string toastMessage;
         public string OrdStatus;
+        public string SortBtnID;
+        public string ArrowDir;
+        public string PrvArrowDir;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -35,10 +38,12 @@ namespace WebUI
                 Session.Remove("ordExpTable");
                 Session.Remove("ordDocs");
                 Session.Remove("addOrdDocs");
+                Session["sortDir"] = "desc";
                 GetAllDepartments();
+                GetAllStatuses();
                 GetAllPurchaseMethods();
                 SetStartupActives();
-                SetPagination(rpOrdinanceTable, 13);
+                SetPagination(rpOrdinanceTable, 10);
                 GetStartupData();
             }
             foreach (RepeaterItem item in rpOrdinanceTable.Items)
@@ -57,9 +62,8 @@ namespace WebUI
             ScriptManager.GetCurrent(Page).RegisterPostBackControl(SaveFactSheet);
             Session["fileUploadPage"] = Page;
             GetUploadedImages();
-            SubmitStatus();
 
-            OrdStatus = "New";
+            SubmitStatus();
         }
         protected void SetStartupActives()
         {
@@ -73,6 +77,18 @@ namespace WebUI
                 var value = departments[department];
                 ListItem newItem = new ListItem(department, value);
                 requestDepartment.Items.Add(newItem);
+                filterDepartment.Items.Add(newItem);
+            }
+        }
+        protected void GetAllStatuses()
+        {
+            Dictionary<string, string> statuses = Utility.Instance.StatusList();
+            foreach (var status in statuses.Keys)
+            {
+                var value = statuses[status];
+                ListItem newItem = new ListItem(status, value);
+                ordViewStatus.Items.Add(newItem);
+                filterStatus.Items.Add(newItem);
             }
         }
         protected void GetAllPurchaseMethods()
@@ -151,7 +167,6 @@ namespace WebUI
                     ord.StatusDescription = ordStatus.StatusDescription;
                 }
                 BindDataRepeaterPagination("yes", ord_list);
-                
             }
 
             Session["ord_list"] = ord_list;
@@ -264,7 +279,7 @@ namespace WebUI
             }
             changeOrderNumber.Text = ord.ChangeOrderNumber;
             additionalAmount.Text = (ord.AdditionalAmount.ToString() != "-1.00") ? ord.AdditionalAmount.ToString() : string.Empty;
-            
+
 
             purchaseMethod.SelectedValue = ord.ContractMethod;
             switch (purchaseMethod.SelectedValue)
@@ -384,6 +399,8 @@ namespace WebUI
 
             staffAnalysis.Text = ord.OrdinanceAnalysis;
 
+            OrdinanceStatus ordStatus = new OrdinanceStatus();
+
             switch (e.CommandName)
             {
                 case "view":
@@ -450,11 +467,11 @@ namespace WebUI
                     changeOrderNumber.Enabled = true;
                     additionalAmount.Enabled = true;
 
-                    OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
+                    ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
                     ord.StatusDescription = ordStatus.StatusDescription;
                     statusLabel.InnerHtml = ord.StatusDescription;
                     switch (ord.StatusDescription)
-                    {                        
+                    {
                         case "New":
                             statusIcon.Attributes["class"] = "fas fa-sparkles text-primary";
                             statusLabel.Attributes["class"] = "text-primary";
@@ -464,8 +481,8 @@ namespace WebUI
                             statusLabel.Attributes["class"] = "text-info";
                             break;
                         case "Being Held":
-                            statusIcon.Attributes["class"] = "fas fa-triangle-exclamation text-warning";
-                            statusLabel.Attributes["class"] = "text-warning";
+                            statusIcon.Attributes["class"] = "fas fa-triangle-exclamation text-warning-light";
+                            statusLabel.Attributes["class"] = "text-warning-light";
                             break;
                         case "Drafted":
                             statusIcon.Attributes["class"] = "fas fa-badge-check text-success";
@@ -480,6 +497,9 @@ namespace WebUI
                 case "edit":
                     ordView.Attributes["readonly"] = "false";
                     ddStatusDiv.Visible = true;
+                    ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
+                    ord.StatusDescription = ordStatus.StatusDescription;
+                    ordViewStatus.SelectedValue = ordStatus.StatusID.ToString();
                     statusDiv.Visible = false;
                     requiredFieldDescriptor.Visible = true;
                     vendorNumber.Attributes["placeholder"] = "0123456789";
@@ -1239,6 +1259,45 @@ namespace WebUI
                     break;
                 case "ord":
                     ordView.Visible = false;
+                    break;
+            }
+        }
+
+        protected void sortBtn_Click(object sender, EventArgs e)
+        {
+            SetPagination(rpOrdinanceTable, 10);
+            List<Ordinance> ord_list = new List<Ordinance>();
+            ord_list = (List<Ordinance>)Session["ord_list"];
+            LinkButton button = (LinkButton)sender;
+            string commandName = button.Attributes["data-command"];
+            string commandArgument = Session["sortDir"].ToString();
+            
+            string sortDir = SortButtonClick(ord_list, commandName, commandArgument);
+
+            Session["sortBtn"] = button.ID;
+            Session["sortDir"] = sortDir;
+
+            List<LinkButton> sortButtonsList = new List<LinkButton>()
+            {
+                sortDate,
+                sortTitle,
+                sortDepartment,
+                sortContact,
+                sortStatus
+            };
+
+            foreach (LinkButton item in sortButtonsList)
+            {
+                item.Text = $"<strong>{item.Attributes["data-command"]}<span runat='server' class='float-end lh-1p5'></span></strong>";
+            }
+
+            switch (sortDir)
+            {
+                case "asc":
+                    button.Text = $"<strong>{commandName}<span runat='server' class='float-end lh-1p5 fas fa-arrow-up'></span></strong>";
+                    break;
+                case "desc":
+                    button.Text = $"<strong>{commandName}<span runat='server' class='float-end lh-1p5 fas fa-arrow-down'></span></strong>";
                     break;
             }
         }

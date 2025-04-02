@@ -100,6 +100,81 @@ namespace DataLibrary
             BindDataRepeaterPagination("no", DataList);
         }
 
+        public static string SortButtonClick(List<Ordinance> DataList, string command, string argument)
+        {
+            string ret = string.Empty;
+            switch (command)
+            {
+                case "Date":
+                    switch (argument)
+                    {
+                        case "asc":
+                            DataList = DataList.OrderByDescending(o => o.EffectiveDate).ToList();
+                            ret = "desc";
+                            break;
+                        case "desc":
+                            DataList = DataList.OrderBy(o => o.EffectiveDate).ToList();
+                            ret = "asc";
+                            break;
+                    }
+                    break;
+                case "Title":
+                    switch (argument)
+                    {
+                        case "asc":
+                            DataList = DataList.OrderByDescending(o => o.OrdinanceTitle).ToList();
+                            ret = "desc";
+                            break;
+                        case "desc":
+                            DataList = DataList.OrderBy(o => o.OrdinanceTitle).ToList();
+                            ret = "asc";
+                            break;
+                    }
+                    break;
+                case "Department":
+                    switch (argument)
+                    {
+                        case "asc":
+                            DataList = DataList.OrderByDescending(o => o.RequestDepartment).ToList();
+                            ret = "desc";
+                            break;
+                        case "desc":
+                            DataList = DataList.OrderBy(o => o.RequestDepartment).ToList();
+                            ret = "asc";
+                            break;
+                    }
+                    break;
+                case "Contact":
+                    switch (argument)
+                    {
+                        case "asc":
+                            DataList = DataList.OrderByDescending(o => o.RequestContact).ToList();
+                            ret = "desc";
+                            break;
+                        case "desc":
+                            DataList = DataList.OrderBy(o => o.RequestContact).ToList();
+                            ret = "asc";
+                            break;
+                    }
+                    break;
+                case "Status":
+                    switch (argument)
+                    {
+                        case "asc":
+                            DataList = DataList.OrderByDescending(o => o.StatusDescription).ToList();
+                            ret = "desc";
+                            break;
+                        case "desc":
+                            DataList = DataList.OrderBy(o => o.StatusDescription).ToList();
+                            ret = "asc";
+                            break;
+                    }
+                    break;
+            }
+            BindDataRepeaterPagination("yes", DataList);
+            return ret;
+        }
+
         public static void BindDataRepeaterPagination<T>(string isNewSearch, List<T> _list)
         {
             PagedDataSource pDSSearch = new PagedDataSource();

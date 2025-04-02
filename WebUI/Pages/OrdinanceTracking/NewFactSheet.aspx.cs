@@ -600,9 +600,9 @@ namespace WebUI
                 ordStatus.LastUpdateDate = DateTime.Now;
                 ordStatus.EffectiveDate = DateTime.Now;
                 ordStatus.ExpirationDate = DateTime.MaxValue;
-                int statusRet = Factory.Instance.Insert(ordStatus, "sp_InsertOrdinance_Status");
+                int statusRet = Factory.Instance.Insert(ordStatus, "sp_InsertOrdinance_Status", 2);
 
-                if (statusRet < 0)
+                if (statusRet < 1)
                 {
                     finishSubmit = false;
                 }
