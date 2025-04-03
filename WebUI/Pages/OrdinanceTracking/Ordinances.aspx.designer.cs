@@ -51,6 +51,15 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.DropDownList filterStatus;
 
         /// <summary>
+        /// formTableDiv control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl formTableDiv;
+
+        /// <summary>
         /// sortDate control.
         /// </summary>
         /// <remarks>
@@ -103,6 +112,15 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater rpOrdinanceTable;
+
+        /// <summary>
+        /// lblNoItems control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblNoItems;
 
         /// <summary>
         /// pnlPagingP control.

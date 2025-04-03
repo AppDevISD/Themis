@@ -66,6 +66,7 @@ namespace WebUI
         protected void SetStartupActives()
         {
             ordView.Visible = false;
+            lblNoItems.Visible = false;
         }
         protected void GetAllDepartments()
         {
@@ -171,6 +172,7 @@ namespace WebUI
             }
 
             Session["ord_list"] = ord_list;
+            Session["noFilterOrdList"] = ord_list;
         }
         protected void mdlDeleteSubmit_ServerClick(object sender, EventArgs e)
         {
@@ -1254,7 +1256,7 @@ namespace WebUI
             rpSupportingDocumentation.DataSource = originalOrdDocList;
             rpSupportingDocumentation.DataBind();
         }
-        protected void sortBtn_Click(object sender, EventArgs e)
+        protected void SortBtn_Click(object sender, EventArgs e)
         {
             SetPagination(rpOrdinanceTable, 10);
             List<Ordinance> ord_list = new List<Ordinance>();
@@ -1290,6 +1292,53 @@ namespace WebUI
                 case "desc":
                     button.Text = $"<strong>{commandName}<span runat='server' class='float-end lh-1p5 fas fa-arrow-down'></span></strong>";
                     break;
+            }
+        }
+
+        protected void Filter_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SetPagination(rpOrdinanceTable, 10);
+            List<Ordinance> ord_list = new List<Ordinance>();
+            List<Ordinance> noFilterOrdList = new List<Ordinance>();
+            
+            DropDownList dropDown = (DropDownList)sender;
+            string commandName = dropDown.Attributes["data-command"];
+            string commandArgument = dropDown.SelectedItem.ToString();
+
+            if (filterDepartment.SelectedValue != "" && filterStatus.SelectedValue != "")
+            {
+                ord_list = (List<Ordinance>)Session["ord_list"];
+            }
+            else
+            {
+                ord_list = (List<Ordinance>)Session["noFilterOrdList"];
+            }
+            //else if (dropDown.ID == "filterDepartment" && filterStatus.SelectedValue == "" && Session["ord_list"] != null)
+            //{
+            //    List<Ordinance> existingFilter = (List<Ordinance>)Session["noFilterOrdList"];
+            //    ord_list = FilterList(ord_list, "department", filterDepartment.SelectedItem.ToString());
+            //}
+            //else if (filterDepartment.SelectedValue == "" && dropDown.ID == "filterStatus" && Session["ord_list"] != null)
+            //{
+            //    List<Ordinance> existingFilter = (List<Ordinance>)Session["noFilterOrdList"];
+            //    ord_list = FilterList(ord_list, "status", filterStatus.SelectedItem.ToString());
+            //}
+
+
+            List<Ordinance> filteredList = FilterList(ord_list, commandName, commandArgument);
+
+
+
+            Session["ord_list"] = filteredList;
+            if (filteredList.Count > 0)
+            {
+                formTableDiv.Visible = true;
+                lblNoItems.Visible = false;
+            }
+            else
+            {
+                formTableDiv.Visible = false;
+                lblNoItems.Visible = true;
             }
         }
     }

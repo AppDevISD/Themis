@@ -10,6 +10,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
+using System.Security.AccessControl;
 
 namespace DataLibrary
 {
@@ -175,13 +176,62 @@ namespace DataLibrary
             return ret;
         }
 
+        public static List<Ordinance> FilterList(List<Ordinance> DataList, string command, string argument)
+        {
+            string ret = string.Empty;
+            List<Ordinance> newList = new List<Ordinance>();
+            switch (command)
+            {
+                case "department":
+                    switch (!argument.Contains("Select"))
+                    {
+                        case true:
+                            foreach (Ordinance item in DataList.Where(o => o.RequestDepartment.Equals(argument)))
+                            {
+                                newList.Add(item);
+                            }
+                            DataList = newList;
+                            break;
+                        case false:
+                            foreach (Ordinance item in DataList)
+                            {
+                                newList.Add(item);
+                            }
+                            DataList = newList;
+                            break;
+                    }
+                    break;
+                case "status":
+                    switch (!argument.Contains("Select"))
+                    {
+                        case true:
+                            foreach (Ordinance item in DataList.Where(o => o.StatusDescription.Equals(argument)))
+                            {
+                                newList.Add(item);
+                            }
+                            DataList = newList;
+                            break;
+                        case false:
+                            foreach (Ordinance item in DataList)
+                            {
+                                newList.Add(item);
+                            }
+                            DataList = newList;
+                            break;
+                    }
+                    break;                
+            }
+            BindDataRepeaterPagination("no", DataList);
+            return newList;
+        }
+
         public static void BindDataRepeaterPagination<T>(string isNewSearch, List<T> _list)
         {
             PagedDataSource pDSSearch = new PagedDataSource();
             pDSSearch.DataSource = _list;
             pDSSearch.AllowPaging = true;
             pDSSearch.PageSize = Instance.ItemsPerPg;
-            if (isNewSearch == "yes")
+            if (isNewSearch == "yes" || _list.Count <= Instance.ItemsPerPg)
             {
                 SearchPgNumP = 1;
             }

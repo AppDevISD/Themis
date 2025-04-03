@@ -42,60 +42,67 @@
 							<div class="col-md-3">
 								<div class="form-group">
 									<label for="filterDepartment">Filter by Department</label>
-									<asp:DropDownList ID="filterDepartment" runat="server" AutoPostBack="true" CssClass="form-select"></asp:DropDownList>
+									<asp:DropDownList ID="filterDepartment" runat="server" AutoPostBack="true" CssClass="form-select" OnSelectedIndexChanged="Filter_SelectedIndexChanged" data-command="department"></asp:DropDownList>
 								</div>
 							</div>
 							<div class="col-md-3">
 								<div class="form-group">
 									<label for="filterStatus">Filter by Status</label>
-									<asp:DropDownList ID="filterStatus" runat="server" AutoPostBack="true" CssClass="form-select"></asp:DropDownList>
+									<asp:DropDownList ID="filterStatus" runat="server" AutoPostBack="true" CssClass="form-select" OnSelectedIndexChanged="Filter_SelectedIndexChanged" data-command="status"></asp:DropDownList>
 								</div>
 							</div>
 						</div>
 
 						<%-- TABLE --%>
-						<table id="FormTable" class="table table-bordered table-striped table-hover text-center" style="padding: 0px; margin: 0px">
-							<thead>
-								<tr>
-									<th style="width: 6%; text-align: center"><asp:LinkButton runat="server" ID="sortDate" data-command="Date" OnClick="sortBtn_Click" class="btn btn-sort"><strong>Date<span runat="server" class='float-end lh-1p5 fas fa-arrow-down'></span></strong></asp:LinkButton></th>
-									<th style="width: 39%; text-align: center"><asp:LinkButton runat="server" ID="sortTitle" data-command="Title" OnClick="sortBtn_Click" class="btn btn-sort"><strong>Title<span class="float-end lh-1p5"></span></strong></asp:LinkButton></th>
-									<th style="width: 25%; text-align: center"><asp:LinkButton runat="server" ID="sortDepartment" data-command="Department" OnClick="sortBtn_Click" class="btn btn-sort"><strong>Department<span class="float-end lh-1p5"></span></strong></asp:LinkButton></th>
-									<th style="width: 15%; text-align: center"><asp:LinkButton runat="server" ID="sortContact" data-command="Contact" OnClick="sortBtn_Click" class="btn btn-sort"><strong>Contact<span class="float-end lh-1p5"></span></strong></asp:LinkButton></th>
-									<th style="width: 10%; text-align: center"><asp:LinkButton runat="server" ID="sortStatus" data-command="Status" OnClick="sortBtn_Click" class="btn btn-sort"><strong>Status<span class="float-end lh-1p5"></span></strong></asp:LinkButton></th>
-									<th style="width: 5%; text-align: center"><strong>Action</strong></th>
-								</tr>
-							</thead>
-							<asp:Repeater runat="server" ID="rpOrdinanceTable" OnItemCommand="rpOrdinanceTable_ItemCommand">
-								<HeaderTemplate></HeaderTemplate>
-								<ItemTemplate>
+						<div runat="server" id="formTableDiv">
+							<table id="FormTable" class="table table-bordered table-striped table-hover text-center" style="padding: 0px; margin: 0px">
+								<thead>
 									<tr>
-										<td class="align-middle">
-											<asp:HiddenField runat="server" ID="hdnID" Value='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' />
-											<asp:Label ID="ordTableDate" Text='<%# DataBinder.Eval(Container.DataItem, "EffectiveDate", "{0:MM/dd/yyyy}") %>' runat="server" />
-										</td>
-										<td id="titleCell" class="align-middle text-start mw-0 text-truncate" data-overflow-tooltip="true" data-tooltip="tooltip" data-placement="right" title='<%# DataBinder.Eval(Container.DataItem, "OrdinanceTitle") %>'>
-											<asp:Label ID="ordTableTitle" Text='<%# DataBinder.Eval(Container.DataItem, "OrdinanceTitle") %>' runat="server" />
-										</td>
-										<td class="align-middle">
-											<asp:Label ID="ordTableDepartment" Text='<%# DataBinder.Eval(Container.DataItem, "RequestDepartment") %>' runat="server" />
-										</td>
-										<td class="align-middle">
-											<asp:Label ID="ordTableContact" Text='<%# DataBinder.Eval(Container.DataItem, "RequestContact") %>' runat="server" />
-										</td>
-										<td class="align-middle">
-											<asp:Label ID="ordTableStatus" Text='<%# DataBinder.Eval(Container.DataItem, "StatusDescription") %>' runat="server" />
-										</td>
-										<td class="align-middle d-flex justify-content-around">
-											<asp:LinkButton runat="server" ID="editOrd" CommandName="edit" CssClass="ordActionBtn"><i class="fas fa-pen-to-square text-warning-light"></i></asp:LinkButton>
-											<asp:LinkButton runat="server" ID="viewOrd" CommandName="view" CssClass="ordActionBtn"><i class="fas fa-magnifying-glass text-info"></i></asp:LinkButton>
-										</td>
+										<th style="width: 6%; text-align: center"><asp:LinkButton runat="server" ID="sortDate" data-command="Date" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Date<span runat="server" class='float-end lh-1p5 fas fa-arrow-down'></span></strong></asp:LinkButton></th>
+										<th style="width: 39%; text-align: center"><asp:LinkButton runat="server" ID="sortTitle" data-command="Title" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Title<span class="float-end lh-1p5"></span></strong></asp:LinkButton></th>
+										<th style="width: 25%; text-align: center"><asp:LinkButton runat="server" ID="sortDepartment" data-command="Department" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Department<span class="float-end lh-1p5"></span></strong></asp:LinkButton></th>
+										<th style="width: 15%; text-align: center"><asp:LinkButton runat="server" ID="sortContact" data-command="Contact" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Contact<span class="float-end lh-1p5"></span></strong></asp:LinkButton></th>
+										<th style="width: 10%; text-align: center"><asp:LinkButton runat="server" ID="sortStatus" data-command="Status" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Status<span class="float-end lh-1p5"></span></strong></asp:LinkButton></th>
+										<th style="width: 5%; text-align: center"><strong>Action</strong></th>
 									</tr>
-								</ItemTemplate>
-								<FooterTemplate>
+								</thead>
+								<asp:Repeater runat="server" ID="rpOrdinanceTable" OnItemCommand="rpOrdinanceTable_ItemCommand">
+									<HeaderTemplate></HeaderTemplate>
+									<ItemTemplate>
+										<tr>
+											<td class="align-middle">
+												<asp:HiddenField runat="server" ID="hdnID" Value='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' />
+												<asp:Label ID="ordTableDate" Text='<%# DataBinder.Eval(Container.DataItem, "EffectiveDate", "{0:MM/dd/yyyy}") %>' runat="server" />
+											</td>
+											<td id="titleCell" class="align-middle text-start mw-0 text-truncate" data-overflow-tooltip="true" data-tooltip="tooltip" data-placement="right" title='<%# DataBinder.Eval(Container.DataItem, "OrdinanceTitle") %>'>
+												<asp:Label ID="ordTableTitle" Text='<%# DataBinder.Eval(Container.DataItem, "OrdinanceTitle") %>' runat="server" />
+											</td>
+											<td class="align-middle">
+												<asp:Label ID="ordTableDepartment" Text='<%# DataBinder.Eval(Container.DataItem, "RequestDepartment") %>' runat="server" />
+											</td>
+											<td class="align-middle">
+												<asp:Label ID="ordTableContact" Text='<%# DataBinder.Eval(Container.DataItem, "RequestContact") %>' runat="server" />
+											</td>
+											<td class="align-middle">
+												<asp:Label ID="ordTableStatus" Text='<%# DataBinder.Eval(Container.DataItem, "StatusDescription") %>' runat="server" />
+											</td>
+											<td class="align-middle d-flex justify-content-around">
+												<asp:LinkButton runat="server" ID="editOrd" CommandName="edit" CssClass="ordActionBtn"><i class="fas fa-pen-to-square text-warning-light"></i></asp:LinkButton>
+												<asp:LinkButton runat="server" ID="viewOrd" CommandName="view" CssClass="ordActionBtn"><i class="fas fa-magnifying-glass text-info"></i></asp:LinkButton>
+											</td>
+										</tr>
+									</ItemTemplate>
+									<FooterTemplate>
 								
-								</FooterTemplate>
-							</asp:Repeater>
-						</table>
+									</FooterTemplate>
+								</asp:Repeater>
+							</table>
+						</div>
+						<div runat="server" id="lblNoItems" class="row text-center" style="margin-top: 12.5%;">
+							<div class="col-md-12">
+								<h4 class="text-danger">There are no items to show for the current filter(s)</h4>
+							</div>
+						</div>
 					</div>
 					<div class="card-footer p-0">
 						<asp:Panel ID="pnlPagingP" CssClass="panel m-0" runat="server" Visible="false">
