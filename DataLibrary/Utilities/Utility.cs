@@ -85,7 +85,7 @@ namespace DataLibrary
         {
             Dictionary<string, string> dictionary = new Dictionary<string, string>()
             {
-                {"Select Department...",                null},
+                {"Select Department...",                ""},
                 { "Budget & Management",                "5"},
                 {"City Clerk",                          "13"},
                 {"City Council",                        "7"},
@@ -111,7 +111,7 @@ namespace DataLibrary
             List<Status> statusList = new List<Status>();
             statusList = Factory.Instance.GetAll<Status>("sp_GetLkStatus");
             Dictionary<string, string> dictionary = new Dictionary<string, string>();
-            dictionary.Add("Select Status...", null);
+            dictionary.Add("Select Status...", "");
             foreach (Status status in statusList)
             {
                 dictionary.Add(status.StatusDescription, status.StatusID.ToString());

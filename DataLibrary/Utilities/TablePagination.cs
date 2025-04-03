@@ -171,7 +171,7 @@ namespace DataLibrary
                     }
                     break;
             }
-            BindDataRepeaterPagination("yes", DataList);
+            BindDataRepeaterPagination("no", DataList);
             return ret;
         }
 

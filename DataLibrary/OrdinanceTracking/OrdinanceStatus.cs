@@ -8,8 +8,8 @@ namespace DataLibrary
 {
     public class OrdinanceStatus
     {
-        public int OrdinanceStatusID { get; set; }
         public string StatusDescription { get; set; }
+        public int OrdinanceStatusID { get; set; }
         public int OrdinanceID { get; set; }
         public int StatusID { get; set; }
         public string Signature { get; set; }

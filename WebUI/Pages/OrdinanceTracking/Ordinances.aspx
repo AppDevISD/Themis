@@ -5,6 +5,7 @@
 <asp:Content ID="HeadContent" ContentPlaceHolderID="HeadContent" runat="server"></asp:Content>
 
 <asp:Content ID="MainContent" ContentPlaceHolderID="MainContent" runat="server">
+	<%-- PAGE CONTENT --%>
 	<section>
 		<asp:UpdatePanel runat="server" ID="pnlOrdinanceTable" UpdateMode="Always" class="overlap-panels">
 			<Triggers>
@@ -37,7 +38,7 @@
 					</div>
 					<div class="card-body bg-body-tertiary">
 						<%-- FILTERS & SORTING --%>
-						<div class="row mb-5">
+						<div class="row mb-4">
 							<div class="col-md-3">
 								<div class="form-group">
 									<label for="filterDepartment">Filter by Department</label>
@@ -85,7 +86,6 @@
 											<asp:Label ID="ordTableStatus" Text='<%# DataBinder.Eval(Container.DataItem, "StatusDescription") %>' runat="server" />
 										</td>
 										<td class="align-middle d-flex justify-content-around">
-											<%--<a runat="server" id="delete" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal" autopostback="false" onclick='<%#$"DeleteForm(\"{DataBinder.Eval(Container.DataItem, "OrdinanceID")}\")"%>'>Delete</a>--%>
 											<asp:LinkButton runat="server" ID="editOrd" CommandName="edit" CssClass="ordActionBtn"><i class="fas fa-pen-to-square text-warning-light"></i></asp:LinkButton>
 											<asp:LinkButton runat="server" ID="viewOrd" CommandName="view" CssClass="ordActionBtn"><i class="fas fa-magnifying-glass text-info"></i></asp:LinkButton>
 										</td>
@@ -127,6 +127,7 @@
 				<div runat="server" id="ordView" readonly="false" class="readonly-color">
 					<asp:HiddenField runat="server" ID="hdnOrdID" />
 					<asp:HiddenField runat="server" ID="hdnEffectiveDate" />
+					<asp:HiddenField runat="server" ID="hdnEmail" />
 
 					<%-- FORM HEADER --%>
 					<section class="container form-header bg-body text-center position-relative">
@@ -137,8 +138,9 @@
 
 						<div class="statusDropDown text-end">
 							<div runat="server" id="ddStatusDiv" class="form-group text-start w-75 ms-auto">
-								<label for="ordViewStatus">Status</label>
-								<asp:DropDownList ID="ordViewStatus" runat="server" AutoPostBack="false" CssClass="form-select"></asp:DropDownList>
+								<label for="ddStatus">Status</label>
+								<asp:DropDownList ID="ddStatus" runat="server" AutoPostBack="false" CssClass="form-select" required="true" ValidateRequestMode="Enabled" ></asp:DropDownList>
+								<asp:HiddenField runat="server" ID="hdnOrdStatusID" />
 							</div>
 							<div runat="server" id="statusDiv" class="d-flex fw-bold fs-4 justify-content-end">
 								<label runat="server" id="statusLabel"></label>
@@ -685,6 +687,8 @@
 			</div>
 		</div>
 	</div>
+
+	<%-- TOAST MESSAGE --%>
 	<div class="toast-container position-fixed bottom-0 end-0 p-3">
 		<div id="submitToast" class='toast <%:toastColor%> border-0 fade-slide-in' role="alert" aria-live="assertive" aria-atomic="true" data-delay="10000" data-animation="true">
 			<div class="d-flex">
@@ -694,16 +698,52 @@
 		</div>
 	</div>
 
+	<%-- JAVASCRIPT --%>
 	<script>
 		FormatForms();
 		SetTitleTooltips();
+		//DisableDDInitialOption();
 
 		var prm = Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
 			GetToastStatus();
 			FormatForms();
 			CurrencyFormatting();
 			SetTitleTooltips();
+			DisableDDInitialOption();
 		});
+
+		function DisableDDInitialOption() {
+			var ddStatus = document.getElementById('<%= ddStatus.ClientID %>');
+			var ddDepartment = document.getElementById('<%= requestDepartment.ClientID %>');
+			var ddMethod = document.getElementById('<%= purchaseMethod.ClientID %>');
+			if (ddStatus != null) {
+				if (ddStatus.options[0].selected) {
+					ddStatus.style.color = "rgb(from var(--bs-body-color) r g b / 75%)"
+				}
+				else {
+					ddStatus.style.color = "unset";
+				}
+				ddStatus.options[0].disabled = true;
+			}
+			if (ddDepartment != null) {
+				if (ddDepartment.options[0].selected) {
+					ddDepartment.style.color = "rgb(from var(--bs-body-color) r g b / 75%)"
+				}
+				else {
+					ddDepartment.style.color = "unset";
+				}
+				ddDepartment.options[0].disabled = true;
+			}
+			if (ddMethod != null) {
+				if (ddMethod.options[0].selected) {
+					ddMethod.style.color = "rgb(from var(--bs-body-color) r g b / 75%)"
+				}
+				else {
+					ddMethod.style.color = "unset";
+				}
+				ddMethod.options[0].disabled = true;
+			}
+		}
 
 		function SetTitleTooltips() {
 			var tooltipTitles = $('[data-overflow-tooltip="true"]');

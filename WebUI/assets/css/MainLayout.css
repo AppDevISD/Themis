@@ -419,6 +419,14 @@ select:disabled, .disabled-control, .disabled-control input {
 		background-color: white;
 	}
 
+option:disabled {
+	color: rgb(from var(--bs-body-color) r g b / 25%) !important;
+}
+
+option:not([selected]):not(:disabled) {
+	color: rgb(from var(--bs-body-color) r g b / 100%) !important;
+}
+
 
 
 /* --------------- SECTIONS, CONTAINERS, CARDS, & TABS --------------- */
@@ -491,8 +499,8 @@ select:disabled, .disabled-control, .disabled-control input {
 }
 .tooltip .arrow {
 	display: block;
-    width: var(--bs-tooltip-arrow-width);
-    height: var(--bs-tooltip-arrow-height);
+	width: var(--bs-tooltip-arrow-width);
+	height: var(--bs-tooltip-arrow-height);
 
 }
 

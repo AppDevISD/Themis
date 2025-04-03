@@ -71,6 +71,9 @@ namespace WebUI
             }
             GetUploadedImages();
             SubmitStatus();
+
+            requestContact.Text = $"{_user.FirstName} {_user.LastName}";
+            requestExt.Text = _user.IPPhone;
         }
         protected void SetStartupActives()
         {
@@ -409,6 +412,7 @@ namespace WebUI
             ordinance.RequestDepartment = requestDepartment.SelectedItem.Text;
             ordinance.RequestContact = requestContact.Text;
             ordinance.RequestPhone = $"{requestPhone.Text}{requestExt.Text}";
+            ordinance.RequestEmail = _user.Email;
             ordinance.FirstReadDate = Convert.ToDateTime(firstReadDate.Text);
             ordinance.EmergencyPassage = epYes.Checked;
             ordinance.EmergencyPassageReason = epJustification.Text ?? string.Empty;
@@ -615,7 +619,7 @@ namespace WebUI
 
                 newEmail.EmailSubject = $"{formType} Submitted";
                 newEmail.EmailTitle = $"{formType} Submitted";
-                newEmail.EmailText = $"An {formType} has been submitted <br/><br/>Ordinance: {ordinance.OrdinanceNumber}{retVal}<br/>Date: {DateTime.Now}<br/>Department: {requestDepartment.SelectedItem.Text}<br/>Contact: {requestContact.Text}<br/>Phone: {requestPhone.Text}{requestExt.Text}";
+                newEmail.EmailText = $"An {formType} has been submitted <br/><br/>Ordinance: {ordinance.OrdinanceNumber} {retVal}<br/>Date: {DateTime.Now}<br/>Department: {requestDepartment.SelectedItem.Text}<br/>Contact: {requestContact.Text}<br/>Phone: {requestPhone.Text}{requestExt.Text}";
                 switch (finishSubmit)
                 {
                     case true:

@@ -38,7 +38,7 @@ namespace WebUI
                 _user = (ADUser)Session["CurrentUser"];
                 Session["UserName"] = _user.Login;
                 string userName = _user.Login.ToUpper();
-                string userDisplayName = $"{_user.FirstName}&nbsp; {_user.LastName}";
+                string userDisplayName = $"{_user.FirstName} {_user.LastName}";
                 //string userPosition = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_user.Title.ToLower());
                 lblUser.Text = userDisplayName;
                 lblTitle.Text = _user.Department;

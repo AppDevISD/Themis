@@ -8,8 +8,8 @@ namespace DataLibrary
 {
     public class Ordinance
     {
-        public int OrdinanceID { get; set; }
         public string StatusDescription { get; set; }
+        public int OrdinanceID { get; set; }
         public string OrdinanceNumber { get; set; }
         public string OrdinanceTitle { get; set; }
         public string OrdinanceAnalysis { get; set; }
@@ -18,6 +18,7 @@ namespace DataLibrary
         public string RequestDepartment { get; set; }
         public string RequestContact { get; set; }
         public string RequestPhone { get; set; }
+        public string RequestEmail { get; set; }
         public DateTime FirstReadDate { get; set; }
         public bool EmergencyPassage { get; set; }
         public string EmergencyPassageReason { get; set; }

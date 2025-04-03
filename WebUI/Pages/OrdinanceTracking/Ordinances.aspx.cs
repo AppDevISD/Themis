@@ -14,6 +14,8 @@ using ISD.ActiveDirectory;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using System.ComponentModel.DataAnnotations;
+using System.Web.ModelBinding;
 
 namespace WebUI
 {
@@ -23,10 +25,6 @@ namespace WebUI
         private string emailList = "NewFactSheetEmailList";
         public string toastColor;
         public string toastMessage;
-        public string OrdStatus;
-        public string SortBtnID;
-        public string ArrowDir;
-        public string PrvArrowDir;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -87,7 +85,10 @@ namespace WebUI
             {
                 var value = statuses[status];
                 ListItem newItem = new ListItem(status, value);
-                ordViewStatus.Items.Add(newItem);
+                if (newItem.Text != "New")
+                {
+                    ddStatus.Items.Add(newItem);
+                }               
                 filterStatus.Items.Add(newItem);
             }
         }
@@ -238,6 +239,8 @@ namespace WebUI
             requestContact.Text = ord.RequestContact;
             requestPhone.Text = ord.RequestPhone.SubstringUpToFirst('x');
             requestExt.Text = ord.RequestPhone.Substring(14);
+
+            hdnEmail.Value = ord.RequestEmail;
 
             switch (ord.EmergencyPassage)
             {
@@ -499,7 +502,15 @@ namespace WebUI
                     ddStatusDiv.Visible = true;
                     ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
                     ord.StatusDescription = ordStatus.StatusDescription;
-                    ordViewStatus.SelectedValue = ordStatus.StatusID.ToString();
+                    if (ordStatus.StatusDescription != "New")
+                    {
+                        ddStatus.SelectedValue = ordStatus.StatusID.ToString();
+                    }
+                    else
+                    {
+                        ddStatus.SelectedIndex = 0;
+                    }
+                        hdnOrdStatusID.Value = ordStatus.OrdinanceStatusID.ToString();
                     statusDiv.Visible = false;
                     requiredFieldDescriptor.Visible = true;
                     vendorNumber.Attributes["placeholder"] = "0123456789";
@@ -900,6 +911,7 @@ namespace WebUI
             ordinance.RequestDepartment = requestDepartment.SelectedItem.Text;
             ordinance.RequestContact = requestContact.Text;
             ordinance.RequestPhone = $"{requestPhone.Text}{requestExt.Text}";
+            ordinance.RequestEmail = hdnEmail.Value;
             ordinance.FirstReadDate = Convert.ToDateTime(firstReadDate.Text);
             ordinance.EmergencyPassage = epYes.Checked;
             ordinance.EmergencyPassageReason = epJustification.Text ?? string.Empty;
@@ -934,9 +946,19 @@ namespace WebUI
             ordinance.EffectiveDate = Convert.ToDateTime(hdnEffectiveDate.Value);
             ordinance.ExpirationDate = DateTime.MaxValue;
 
-            int retVal = Factory.Instance.Update(ordinance, "sp_UpdateOrdinance");
+            int retVal = Factory.Instance.Update(ordinance, "sp_UpdateOrdinance", 1);
 
-
+            OrdinanceStatus ordStatus = new OrdinanceStatus();
+            ordStatus.OrdinanceStatusID = Convert.ToInt32(hdnOrdStatusID.Value);
+            ordStatus.OrdinanceID = Convert.ToInt32(hdnOrdID.Value);
+            ordStatus.StatusID = Convert.ToInt32(ddStatus.SelectedValue);
+            ordStatus.Signature = string.Empty;
+            ordStatus.LastUpdateBy = _user.Login;
+            ordStatus.LastUpdateDate = DateTime.Now;
+            ordStatus.EffectiveDate = Convert.ToDateTime(hdnEffectiveDate.Value);
+            ordStatus.ExpirationDate = DateTime.MaxValue;
+            ordinance.StatusDescription = ddStatus.SelectedItem.ToString();
+            int statusVal = Factory.Instance.Update(ordStatus, "sp_UpdateOrdinance_Status", 1);
 
 
 
@@ -1159,35 +1181,19 @@ namespace WebUI
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             Email.Instance.AddEmailAddress(emailList, _user.Email);
+            Email.Instance.AddEmailAddress(emailList, ordinance.RequestEmail);
             string formType = "Ordinance Fact Sheet";
 
             Email newEmail = new Email();
 
             newEmail.EmailSubject = "Fact Sheet UPDATED";
             newEmail.EmailTitle = "Fact Sheet UPDATED";
-            newEmail.EmailText = $"An {formType} has been updated <br/><br/>Ordinance: {ordinance.OrdinanceNumber}{hdnOrdID.Value}<br/>Date: {DateTime.Now}<br/>Department: {requestDepartment.SelectedItem.Text}<br/>Contact: {requestContact.Text}<br/>Phone: {requestPhone.Text} {requestExt.Text}";
+            newEmail.EmailText = $"An {formType} has been updated <br/><br/>Ordinance: {ordinance.OrdinanceNumber} {hdnOrdID.Value}<br/>Date: {DateTime.Now}<br/>Department: {requestDepartment.SelectedItem.Text}<br/>Contact: {requestContact.Text}<br/>Phone: {requestPhone.Text} {requestExt.Text}<br/><br/>Status: {ordinance.StatusDescription}";
 
             List<int> submitVals = new List<int>( new int[] {
                 retVal,
+                statusVal,
                 removeDocVal,
                 addDocsVal,
                 addUploadedDocsVal,
@@ -1202,7 +1208,7 @@ namespace WebUI
                 Session["SubmitStatus"] = "success";
                 Session["ToastColor"] = "text-bg-success";
                 Session["ToastMessage"] = "Form Saved!";
-                //Email.Instance.SendEmail(newEmail, emailList);
+                Email.Instance.SendEmail(newEmail, emailList);
                 Response.Redirect("./Ordinances");
             }
             else
@@ -1248,21 +1254,6 @@ namespace WebUI
             rpSupportingDocumentation.DataSource = originalOrdDocList;
             rpSupportingDocumentation.DataBind();
         }
-
-        [WebMethod]
-        public void OrdVisibility(string fadeOut)
-        {
-            switch (fadeOut)
-            {
-                case "table":
-                    ordTable.Visible = false;
-                    break;
-                case "ord":
-                    ordView.Visible = false;
-                    break;
-            }
-        }
-
         protected void sortBtn_Click(object sender, EventArgs e)
         {
             SetPagination(rpOrdinanceTable, 10);

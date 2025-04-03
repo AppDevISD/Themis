@@ -186,6 +186,15 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.HiddenField hdnEffectiveDate;
 
         /// <summary>
+        /// hdnEmail control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnEmail;
+
+        /// <summary>
         /// backBtn control.
         /// </summary>
         /// <remarks>
@@ -204,13 +213,22 @@ namespace WebUI
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl ddStatusDiv;
 
         /// <summary>
-        /// ordViewStatus control.
+        /// ddStatus control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ordViewStatus;
+        protected global::System.Web.UI.WebControls.DropDownList ddStatus;
+
+        /// <summary>
+        /// hdnOrdStatusID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnOrdStatusID;
 
         /// <summary>
         /// statusDiv control.

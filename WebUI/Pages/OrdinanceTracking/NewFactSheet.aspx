@@ -36,7 +36,6 @@
 
 				<%-- FORM CONTENT --%>
 				<ContentTemplate>
-
 					<%-- USER VISIBLE FIELDS --%>
 					<div id="userFields" runat="server">
 						<%-- FIRST SECTION --%>
@@ -560,9 +559,12 @@
 	<%-- JAVASCRIPT --%>
 	<script type="text/javascript" src="./assets/js/FileUploadSaving.js"></script>
 	<script>
+		DisableDDInitialOption();
+
 		var prm = Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
 			GetToastStatus();
 			FormatForms();
+			DisableDDInitialOption();
 			$("[data-type='currency']").each(function () {
 				formatCurrency($(this), "blur");
 			});
@@ -578,6 +580,29 @@
 				UploadImageBtn.disabled = true;
 			}
 
+		}
+
+		function DisableDDInitialOption() {
+			var ddDepartment = document.getElementById('<%= requestDepartment.ClientID %>');
+			var ddMethod = document.getElementById('<%= purchaseMethod.ClientID %>');
+			if (ddDepartment != null) {
+				if (ddDepartment.options[0].selected) {
+					ddDepartment.style.color = "rgb(from var(--bs-body-color) r g b / 75%)"
+				}
+				else {
+					ddDepartment.style.color = "unset";
+				}
+				ddDepartment.options[0].disabled = true;
+			}
+			if (ddMethod != null) {
+				if (ddMethod.options[0].selected) {
+					ddMethod.style.color = "rgb(from var(--bs-body-color) r g b / 75%)"
+				}
+				else {
+					ddMethod.style.color = "unset";
+				}
+				ddMethod.options[0].disabled = true;
+			}
 		}
 	</script>
 </asp:Content>
