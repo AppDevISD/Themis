@@ -11,6 +11,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 using System.Security.AccessControl;
+using System.Reflection;
 
 namespace DataLibrary
 {
@@ -101,78 +102,33 @@ namespace DataLibrary
             BindDataRepeaterPagination("no", DataList);
         }
 
-        public static string SortButtonClick(List<Ordinance> DataList, string command, string argument)
+        public static Dictionary<string, object> SortButtonClick<T>(List<T> DataList, string command, string argument)
         {
-            string ret = string.Empty;
-            switch (command)
+            Dictionary<string, object> ret = new Dictionary<string, object>();
+
+            PropertyInfo property = typeof(T).GetProperty(command);            
+            switch (argument)
             {
-                case "Date":
-                    switch (argument)
-                    {
-                        case "asc":
-                            DataList = DataList.OrderByDescending(o => o.EffectiveDate).ToList();
-                            ret = "desc";
-                            break;
-                        case "desc":
-                            DataList = DataList.OrderBy(o => o.EffectiveDate).ToList();
-                            ret = "asc";
-                            break;
-                    }
+                case "asc":
+                    DataList = (from n in DataList orderby property.GetValue(n, null) descending
+                                select n).ToList();
+                    ret.Add("dir", "desc");
+                    ret.Add("arrow", "down");
+                    ret.Add("curDir", "asc");
                     break;
-                case "Title":
-                    switch (argument)
-                    {
-                        case "asc":
-                            DataList = DataList.OrderByDescending(o => o.OrdinanceTitle).ToList();
-                            ret = "desc";
-                            break;
-                        case "desc":
-                            DataList = DataList.OrderBy(o => o.OrdinanceTitle).ToList();
-                            ret = "asc";
-                            break;
-                    }
-                    break;
-                case "Department":
-                    switch (argument)
-                    {
-                        case "asc":
-                            DataList = DataList.OrderByDescending(o => o.RequestDepartment).ToList();
-                            ret = "desc";
-                            break;
-                        case "desc":
-                            DataList = DataList.OrderBy(o => o.RequestDepartment).ToList();
-                            ret = "asc";
-                            break;
-                    }
-                    break;
-                case "Contact":
-                    switch (argument)
-                    {
-                        case "asc":
-                            DataList = DataList.OrderByDescending(o => o.RequestContact).ToList();
-                            ret = "desc";
-                            break;
-                        case "desc":
-                            DataList = DataList.OrderBy(o => o.RequestContact).ToList();
-                            ret = "asc";
-                            break;
-                    }
-                    break;
-                case "Status":
-                    switch (argument)
-                    {
-                        case "asc":
-                            DataList = DataList.OrderByDescending(o => o.StatusDescription).ToList();
-                            ret = "desc";
-                            break;
-                        case "desc":
-                            DataList = DataList.OrderBy(o => o.StatusDescription).ToList();
-                            ret = "asc";
-                            break;
-                    }
+                case "desc":
+                    DataList = (from n in DataList
+                                orderby property.GetValue(n, null) ascending
+                                select n).ToList();
+                    ret.Add("dir", "asc");
+                    ret.Add("arrow", "up");
+                    ret.Add("curDir", "desc");
                     break;
             }
+            
             BindDataRepeaterPagination("no", DataList);
+            ret.Add("list", DataList);
+            ret.Add("curCmd", command);
             return ret;
         }
 
@@ -180,46 +136,22 @@ namespace DataLibrary
         {
             string ret = string.Empty;
             List<Ordinance> newList = new List<Ordinance>();
-            switch (command)
+            switch (!argument.Contains("Select"))
             {
-                case "department":
-                    switch (!argument.Contains("Select"))
+                case true:
+                    foreach (Ordinance item in DataList.Where(o => o.RequestDepartment.Equals(argument)))
                     {
-                        case true:
-                            foreach (Ordinance item in DataList.Where(o => o.RequestDepartment.Equals(argument)))
-                            {
-                                newList.Add(item);
-                            }
-                            DataList = newList;
-                            break;
-                        case false:
-                            foreach (Ordinance item in DataList)
-                            {
-                                newList.Add(item);
-                            }
-                            DataList = newList;
-                            break;
+                        newList.Add(item);
                     }
+                    DataList = newList;
                     break;
-                case "status":
-                    switch (!argument.Contains("Select"))
+                case false:
+                    foreach (Ordinance item in DataList)
                     {
-                        case true:
-                            foreach (Ordinance item in DataList.Where(o => o.StatusDescription.Equals(argument)))
-                            {
-                                newList.Add(item);
-                            }
-                            DataList = newList;
-                            break;
-                        case false:
-                            foreach (Ordinance item in DataList)
-                            {
-                                newList.Add(item);
-                            }
-                            DataList = newList;
-                            break;
+                        newList.Add(item);
                     }
-                    break;                
+                    DataList = newList;
+                    break;
             }
             BindDataRepeaterPagination("no", DataList);
             return newList;

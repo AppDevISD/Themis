@@ -58,11 +58,11 @@
 							<table id="FormTable" class="table table-bordered table-striped table-hover text-center" style="padding: 0px; margin: 0px">
 								<thead>
 									<tr>
-										<th style="width: 6%; text-align: center"><asp:LinkButton runat="server" ID="sortDate" data-command="Date" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Date<span runat="server" class='float-end lh-1p5 fas fa-arrow-down'></span></strong></asp:LinkButton></th>
-										<th style="width: 39%; text-align: center"><asp:LinkButton runat="server" ID="sortTitle" data-command="Title" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Title<span class="float-end lh-1p5"></span></strong></asp:LinkButton></th>
-										<th style="width: 25%; text-align: center"><asp:LinkButton runat="server" ID="sortDepartment" data-command="Department" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Department<span class="float-end lh-1p5"></span></strong></asp:LinkButton></th>
-										<th style="width: 15%; text-align: center"><asp:LinkButton runat="server" ID="sortContact" data-command="Contact" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Contact<span class="float-end lh-1p5"></span></strong></asp:LinkButton></th>
-										<th style="width: 10%; text-align: center"><asp:LinkButton runat="server" ID="sortStatus" data-command="Status" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Status<span class="float-end lh-1p5"></span></strong></asp:LinkButton></th>
+										<th style="width: 6%; text-align: center"><asp:LinkButton runat="server" ID="sortDate" data-command="EffectiveDate" data-text="Date" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Date<span runat="server" class='float-end lh-1p5 fas fa-arrow-down'></span></strong></asp:LinkButton></th>
+										<th style="width: 39%; text-align: center"><asp:LinkButton runat="server" ID="sortTitle" data-command="OrdinanceTitle" data-text="Title" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Title<span class="float-end lh-1p5"></span></strong></asp:LinkButton></th>
+										<th style="width: 25%; text-align: center"><asp:LinkButton runat="server" ID="sortDepartment" data-command="RequestDepartment" data-text="Department" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Department<span class="float-end lh-1p5"></span></strong></asp:LinkButton></th>
+										<th style="width: 15%; text-align: center"><asp:LinkButton runat="server" ID="sortContact" data-command="RequestContact" data-text="Contact" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Contact<span class="float-end lh-1p5"></span></strong></asp:LinkButton></th>
+										<th style="width: 10%; text-align: center"><asp:LinkButton runat="server" ID="sortStatus" data-command="StatusDescription" data-text="Status" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Status<span class="float-end lh-1p5"></span></strong></asp:LinkButton></th>
 										<th style="width: 5%; text-align: center"><strong>Action</strong></th>
 									</tr>
 								</thead>
