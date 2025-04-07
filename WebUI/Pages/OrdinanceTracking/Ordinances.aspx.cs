@@ -13,15 +13,14 @@ using static DataLibrary.Utility;
 using ISD.ActiveDirectory;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
-using System.ComponentModel.DataAnnotations;
-using System.Web.ModelBinding;
 
 namespace WebUI
 {
     public partial class Ordinances : System.Web.UI.Page
     {
         private ADUser _user = new ADUser();
+        private UserInfo userInfo = new UserInfo();
+        List<ADGroups> aDGroups = new List<ADGroups>();
         private string emailList = "NewFactSheetEmailList";
         public string toastColor;
         public string toastMessage;
@@ -30,6 +29,9 @@ namespace WebUI
         {
             Page.Form.Attributes.Add("enctype", "multipart/form-data");
             _user = Session["CurrentUser"] as ADUser;
+            userInfo = Session["UserInformation"] as UserInfo;
+            aDGroups = ISDFactory.Instance.GetAllGroupsByLoginName(_user.Login);
+
             if (!Page.IsPostBack && !Response.IsRequestBeingRedirected)
             {
                 Session.Remove("ordRevTable");
@@ -51,7 +53,7 @@ namespace WebUI
                 LinkButton viewButton = item.FindControl("viewOrd") as LinkButton;
                 ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(editButton);
                 ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(viewButton);
-            }            
+            }
 
             GetUploadedImages();
             SubmitStatus();
@@ -71,6 +73,12 @@ namespace WebUI
                 {
                     OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
                     ord.StatusDescription = ordStatus.StatusDescription;
+                }
+
+                ADGroups adminGroup = aDGroups.Single(i => i.GroupName.Equals("PG-THEMIS-ADMIN"));
+                if (userInfo.UserDepartmentName != null && !aDGroups.Contains(adminGroup))
+                {
+                    ord_list = FilterList(ord_list, "department", userInfo.UserDepartmentName);
                 }
                 BindDataRepeaterPagination("yes", ord_list);
             }

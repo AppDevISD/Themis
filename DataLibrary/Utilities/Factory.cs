@@ -200,7 +200,26 @@ namespace DataLibrary
             return item;
         }
 
+        public int GetUserDepartmentID(string email)
+        {
+            int departmentID = 0;
+            SqlConnection cn = new SqlConnection(Properties.Settings.Default["EmployeeDirectoryDB"].ToString());
+            SqlCommand cmd = new SqlCommand("spGetEmployeeInformationByEmail", cn);
+            cmd.Parameters.AddWithValue($"@pemail", email);
+            cmd.CommandType = CommandType.StoredProcedure;
 
+            using (cn)
+            {
+                cn.Open();
+                SqlDataReader rs;
+                rs = cmd.ExecuteReader();
+                while (rs.Read())
+                {
+                    departmentID = Convert.ToInt32(rs["deptCode"]);
+                }
+            }
+            return departmentID;
+        }
 
         // INSERTS //
         public int Insert<T>(T item, string sp, int skips = 1)

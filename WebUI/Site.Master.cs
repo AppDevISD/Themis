@@ -5,6 +5,10 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Web.UI;
+using System.Diagnostics;
+using static DataLibrary.Utility;
+using System.Collections.Generic;
+using System.Web.UI.WebControls;
 
 namespace WebUI
 {
@@ -37,6 +41,25 @@ namespace WebUI
             {
                 _user = (ADUser)Session["CurrentUser"];
                 Session["UserName"] = _user.Login;
+                UserInfo userInfo = new UserInfo()
+                {
+                    UserFirstName = _user.FirstName,
+                    UserLastName = _user.LastName,
+                    UserDisplayName = $"{_user.FirstName} {_user.LastName}",
+                    UserEmail = _user.Email,
+                    UserDepartmentID = Factory.Instance.GetUserDepartmentID(_user.Email)
+                };
+                Dictionary<string, string> departments = Utility.Instance.DepartmentsList();
+                foreach (var department in departments.Keys)
+                {
+                    var value = departments[department];
+                    ListItem newItem = new ListItem(department, value);
+                    if (newItem.Value == userInfo.UserDepartmentID.ToString())
+                    {
+                        userInfo.UserDepartmentName = newItem.Text;
+                    }
+                }
+                Session["UserInformation"] = userInfo;
                 string userName = _user.Login.ToUpper();
                 string userDisplayName = $"{_user.FirstName} {_user.LastName}";
                 //string userPosition = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_user.Title.ToLower());

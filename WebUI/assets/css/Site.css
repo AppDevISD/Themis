@@ -1,9 +1,8 @@
 ﻿.themis-logo {
-	position: absolute;
-	left: 50%;
-	transform: translateX(-50%);
 	background: url('../images/icons/favicon/web-app-manifest-512x512.png') no-repeat;
 	background-size: contain;
+	width: 200px;
+	height: 200px;
 }
 
 .site-title {
@@ -50,3 +49,55 @@
 	.ordActionBtn:hover {
 		transform: scale(1.2) !important;
 	}
+
+.btn-home-link {
+	position: relative;
+	height: 500px;
+	font-size: 100pt;
+	background-color: var(--active-bg-subtle);
+	border-color: var(--active-bg-subtle);
+}
+
+	.btn-home-link:hover {
+		background-color: var(--active-bg) !important;
+		border-color: var(--active-bg) !important;
+	}
+
+	.btn-home-link:hover .home-link-icon {
+		color: var(--bs-body) !important;
+	}
+
+	.btn-home-link:hover .home-link-text-div {
+		color: var(--bs-body) !important;
+		height: 100px;
+	}
+
+	.btn-home-link:hover .home-link-text {
+		color: var(--bs-body) !important;
+		opacity: 1;
+	}
+
+.home-link-icon {
+	margin: 25% 0;
+	transform: translateY(-25%);
+	color: var(--bs-gray-500);
+	transition: color 0.3s ease;
+}
+
+.home-link-text-div {
+	position: absolute;
+	width: 100%;
+	bottom: 0;
+	left: 0;
+	height: 0;
+	transition: height 0.75s ease;
+	font-size: 50px;
+	overflow: hidden;
+}
+
+.home-link-text {
+	font-size: 50px;
+	color: var(--bs-gray-500);
+	opacity: 0;
+	transition: color 0.3s ease, opacity 1s ease;
+}

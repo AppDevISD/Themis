@@ -63,6 +63,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Utilities\TablePagination.cs" />
+    <Compile Include="Utilities\UserInfo.cs" />
     <Compile Include="Utilities\UserTheme.cs" />
     <Compile Include="Utilities\Utility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

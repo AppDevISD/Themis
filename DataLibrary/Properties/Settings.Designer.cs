@@ -80,5 +80,16 @@ namespace DataLibrary.Properties {
                 return ((string)(this["NewFactSheetEmailList"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=mcwintdb14\\sqlinternal;Initial Catalog=EmployeeDirectory;Integrated S" +
+            "ecurity=True")]
+        public string EmployeeDirectoryDB {
+            get {
+                return ((string)(this["EmployeeDirectoryDB"]));
+            }
+        }
     }
 }
