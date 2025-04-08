@@ -296,10 +296,12 @@ input[type="range"]:focus::-webkit-slider-thumb {
 
 .form-switch.theme-switch .form-check-input:checked {
 	background-image: url('../images/icons/theme-dark.svg') !important;
+	background-color: var(--active-bg) !important;
 }
 
 .form-switch.theme-switch .form-check-input {
 	background-image: url('../images/icons/theme-light.svg') !important;
+	background-color: var(--active-bg-subtle) !important;
 }
 
 .btn-close:focus {

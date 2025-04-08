@@ -19,6 +19,7 @@
 				<asp:AsyncPostBackTrigger ControlID="epNo" EventName="CheckedChanged" />
 				<asp:AsyncPostBackTrigger ControlID="scYes" EventName="CheckedChanged" />
 				<asp:AsyncPostBackTrigger ControlID="scNo" EventName="CheckedChanged" />
+
 				<asp:AsyncPostBackTrigger ControlID="purchaseMethod" EventName="SelectedIndexChanged" />
 
 				<asp:AsyncPostBackTrigger ControlID="sortDate" EventName="Click" />
@@ -39,7 +40,7 @@
 					<div class="card-body bg-body-tertiary">
 						<%-- FILTERS & SORTING --%>
 						<div class="row mb-4">
-							<div class="col-md-3">
+							<div class="col-md-3" runat="server" id="filterDepartmentDiv">
 								<div class="form-group">
 									<label for="filterDepartment">Filter by Department</label>
 									<asp:DropDownList ID="filterDepartment" runat="server" AutoPostBack="true" CssClass="form-select" OnSelectedIndexChanged="Filter_SelectedIndexChanged" data-command="department"></asp:DropDownList>

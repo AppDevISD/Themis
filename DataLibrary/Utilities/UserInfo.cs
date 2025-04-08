@@ -12,6 +12,7 @@ namespace DataLibrary
         public string UserLastName { get; set; }
         public string UserDisplayName { get; set; }
         public string UserEmail { get; set; }
+        public bool IsAdmin { get; set; }
         public string UserDepartmentName { get; set; }
         public int UserDepartmentID { get; set; }
     }

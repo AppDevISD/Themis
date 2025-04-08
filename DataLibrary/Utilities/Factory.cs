@@ -199,13 +199,12 @@ namespace DataLibrary
             }
             return item;
         }
-
-        public int GetUserDepartmentID(string email)
+        public int GetUserDepartmentID(string employeeID)
         {
             int departmentID = 0;
             SqlConnection cn = new SqlConnection(Properties.Settings.Default["EmployeeDirectoryDB"].ToString());
-            SqlCommand cmd = new SqlCommand("spGetEmployeeInformationByEmail", cn);
-            cmd.Parameters.AddWithValue($"@pemail", email);
+            SqlCommand cmd = new SqlCommand("spGetEmployeeDetail", cn);
+            cmd.Parameters.AddWithValue($"@pIntID", employeeID);
             cmd.CommandType = CommandType.StoredProcedure;
 
             using (cn)
@@ -220,6 +219,8 @@ namespace DataLibrary
             }
             return departmentID;
         }
+
+
 
         // INSERTS //
         public int Insert<T>(T item, string sp, int skips = 1)

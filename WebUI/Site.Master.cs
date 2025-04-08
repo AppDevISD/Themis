@@ -25,9 +25,20 @@ namespace WebUI
                 Session["CurrentUser"] = _user;
                 imgUser.Src = Photo.Instance.Base64ImgSrc(_user.PhotoLocation);
             }
-            if (!Page.IsPostBack && !Response.IsRequestBeingRedirected)
+            if (!Page.IsPostBack)
             {
-                RouteConfig.FolderRedirect(Response, Page);
+                if (!Response.IsRequestBeingRedirected)
+                {
+                    RouteConfig.FolderRedirect(Response, Page);
+                }
+                
+            }
+            if (Page.IsPostBack && Page.Request.Params.Get("__EVENTTARGET").Contains("adminSwitch"))
+            {
+                if (!SettingsMenu.Attributes["class"].Contains("show"))
+                {
+                    SettingsMenu.Attributes["class"] += " show";
+                }
             }
         }
         protected void Page_PreRender(object sender, EventArgs e)
@@ -39,34 +50,51 @@ namespace WebUI
             SetPageTitle();
             if (!Page.IsPostBack)
             {
-                _user = (ADUser)Session["CurrentUser"];
-                Session["UserName"] = _user.Login;
-                UserInfo userInfo = new UserInfo()
+                if (Session["adminSwitch"] != null)
                 {
-                    UserFirstName = _user.FirstName,
-                    UserLastName = _user.LastName,
-                    UserDisplayName = $"{_user.FirstName} {_user.LastName}",
-                    UserEmail = _user.Email,
-                    UserDepartmentID = Factory.Instance.GetUserDepartmentID(_user.Email)
-                };
-                Dictionary<string, string> departments = Utility.Instance.DepartmentsList();
-                foreach (var department in departments.Keys)
-                {
-                    var value = departments[department];
-                    ListItem newItem = new ListItem(department, value);
-                    if (newItem.Value == userInfo.UserDepartmentID.ToString())
-                    {
-                        userInfo.UserDepartmentName = newItem.Text;
-                    }
+                    adminSwitch.Checked = (bool)Session["adminSwitch"];
                 }
-                Session["UserInformation"] = userInfo;
-                string userName = _user.Login.ToUpper();
-                string userDisplayName = $"{_user.FirstName} {_user.LastName}";
-                //string userPosition = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_user.Title.ToLower());
-                lblUser.Text = userDisplayName;
-                lblTitle.Text = _user.Department;
-                imgUser.Src = Photo.Instance.Base64ImgSrc(_user.PhotoLocation);
+                else
+                {
+                    Session["adminSwitch"] = false;
+                }
             }
+            GetUser();
+            SetStartupActives();
+        }
+        protected void GetUser()
+        {
+            _user = (ADUser)Session["CurrentUser"];
+            List<ADGroups> aDGroups = ISDFactory.Instance.GetAllGroupsByLoginName(_user.Login);
+            Session["UserName"] = _user.Login;
+            int employeeID = Convert.ToInt32(_user.EmployeeID.TrimStart());
+            UserInfo userInfo = new UserInfo()
+            {
+                UserFirstName = _user.FirstName,
+                UserLastName = _user.LastName,
+                UserDisplayName = $"{_user.FirstName} {_user.LastName}",
+                UserEmail = _user.Email,
+                IsAdmin = aDGroups.Any(i => i.GroupName.Equals("PG-THEMIS-ADMIN")),
+                UserDepartmentID = Factory.Instance.GetUserDepartmentID(employeeID.ToString())
+            };
+
+            Dictionary<string, string> departments = Utility.Instance.DepartmentsList();
+            foreach (var department in departments.Keys)
+            {
+                var value = departments[department];
+                ListItem newItem = new ListItem(department, value);
+                if (newItem.Value == userInfo.UserDepartmentID.ToString())
+                {
+                    userInfo.UserDepartmentName = newItem.Text;
+                }
+            }
+            Session["UserInformation"] = userInfo;
+            string userName = _user.Login.ToUpper();
+            string userDisplayName = $"{_user.FirstName} {_user.LastName}";
+            //string userPosition = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_user.Title.ToLower());
+            lblUser.Text = userDisplayName;
+            lblTitle.Text = userInfo.UserDepartmentName;
+            imgUser.Src = Photo.Instance.Base64ImgSrc(_user.PhotoLocation);
         }
         protected void SetPageTitle()
         {
@@ -101,6 +129,24 @@ namespace WebUI
             }
 
             return activePage;
+        }
+        protected void SetStartupActives()
+        {
+            _user = (ADUser)Session["CurrentUser"];
+            List<ADGroups> aDGroups = ISDFactory.Instance.GetAllGroupsByLoginName(_user.Login);
+            adminSwitchDiv.Visible = aDGroups.Any(i => i.GroupName.Equals("PG-THEMIS-ADMIN"));
+        }
+        protected void adminSwitch_CheckedChanged(object sender, EventArgs e)
+        {
+            UserInfo userInfo = new UserInfo();
+            if (Session["UserInformation"] != null && Request.Path.ToLower().Equals("/default.aspx"))
+            {
+                userInfo = (UserInfo)Session["UserInformation"];
+                userInfo.IsAdmin = !userInfo.IsAdmin;
+                Session["UserInformation"] = userInfo;
+                Session["adminSwitch"] = !userInfo.IsAdmin;
+            }
+            
         }
     }
 }

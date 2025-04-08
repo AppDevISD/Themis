@@ -20,7 +20,6 @@ namespace WebUI
     {
         private ADUser _user = new ADUser();
         private UserInfo userInfo = new UserInfo();
-        List<ADGroups> aDGroups = new List<ADGroups>();
         private string emailList = "NewFactSheetEmailList";
         public string toastColor;
         public string toastMessage;
@@ -29,20 +28,27 @@ namespace WebUI
         {
             Page.Form.Attributes.Add("enctype", "multipart/form-data");
             _user = Session["CurrentUser"] as ADUser;
-            userInfo = Session["UserInformation"] as UserInfo;
-            aDGroups = ISDFactory.Instance.GetAllGroupsByLoginName(_user.Login);
 
             if (!Page.IsPostBack && !Response.IsRequestBeingRedirected)
-            {
+            {                
                 Session.Remove("ordRevTable");
                 Session.Remove("ordExpTable");
                 Session.Remove("ordDocs");
                 Session.Remove("addOrdDocs");
                 Session["sortBtn"] = "sortDate";
                 Session["sortDir"] = "desc";
+                Session["curCmd"] = "EffectiveDate";
+                Session["curDir"] = "desc";
                 GetAllDepartments();
                 GetAllStatuses();
                 GetAllPurchaseMethods();
+                if (Session["UserInformation"] != null)
+                {
+                    bool isAdmin = (bool)Session["adminSwitch"];
+                    userInfo = (UserInfo)Session["UserInformation"];
+                    userInfo.IsAdmin = !isAdmin;
+                    Session["UserInformation"] = userInfo;
+                }
                 SetStartupActives();
                 SetPagination(rpOrdinanceTable, 10);
                 GetStartupData();
@@ -55,6 +61,29 @@ namespace WebUI
                 ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(viewButton);
             }
 
+            if (Page.IsPostBack && Page.Request.Params.Get("__EVENTTARGET").Contains("adminSwitch"))
+            {
+                Session.Remove("ordRevTable");
+                Session.Remove("ordExpTable");
+                Session.Remove("ordDocs");
+                Session.Remove("addOrdDocs");
+                Session["sortBtn"] = "sortDate";
+                Session["sortDir"] = "desc";
+                Session["curCmd"] = "EffectiveDate";
+                Session["curDir"] = "desc";
+                if (Session["UserInformation"] != null)
+                {
+                    userInfo = (UserInfo)Session["UserInformation"];
+                    userInfo.IsAdmin = (bool)Session["adminSwitch"];
+                    Session["UserInformation"] = userInfo;
+                    Session["adminSwitch"] = !userInfo.IsAdmin;
+                }
+                SetStartupActives();
+                SetPagination(rpOrdinanceTable, 10);
+                GetStartupData();
+                filterStatus.SelectedIndex = 0;
+            }
+
             GetUploadedImages();
             SubmitStatus();
         }
@@ -62,8 +91,9 @@ namespace WebUI
         {
             ordView.Visible = false;
             lblNoItems.Visible = false;
+            filterDepartmentDiv.Visible = userInfo.IsAdmin;
         }
-        protected void GetStartupData()
+        public void GetStartupData()
         {
             List<Ordinance> ord_list = new List<Ordinance>();
             ord_list = Factory.Instance.GetAll<Ordinance>("sp_GetOrdinanceByEffective");
@@ -74,9 +104,7 @@ namespace WebUI
                     OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
                     ord.StatusDescription = ordStatus.StatusDescription;
                 }
-
-                ADGroups adminGroup = aDGroups.Single(i => i.GroupName.Equals("PG-THEMIS-ADMIN"));
-                if (userInfo.UserDepartmentName != null && !aDGroups.Contains(adminGroup))
+                if (userInfo.UserDepartmentName != null && !userInfo.IsAdmin)
                 {
                     ord_list = FilterList(ord_list, "department", userInfo.UserDepartmentName);
                 }
@@ -1314,6 +1342,8 @@ namespace WebUI
             string commandName = dropDown.Attributes["data-command"];
             string commandArgument = dropDown.SelectedItem.ToString();
             List<Ordinance> filteredList = new List<Ordinance>();
+            userInfo = (UserInfo)Session["UserInformation"];
+            userInfo.IsAdmin = (bool)Session["adminSwitch"] ? false : true;
 
 
             switch (commandName)
@@ -1386,6 +1416,7 @@ namespace WebUI
                     if (filterStatus.SelectedValue != "")
                     {
                         filteredList = Factory.Instance.GetAllLookup<Ordinance>(Convert.ToInt32(dropDown.SelectedValue), "sp_GetOrdinanceByStatusID", "StatusID");
+
                         if (filteredList.Count > 0)
                         {
                             foreach (Ordinance ord in filteredList)
@@ -1398,14 +1429,22 @@ namespace WebUI
                         switch (filterDepartment.SelectedValue.Equals(""))
                         {
                             case true:
-                                BindDataRepeaterPagination("no", filteredList);
+                                switch (userInfo.IsAdmin)
+                                {
+                                    case true:
+                                        BindDataRepeaterPagination("no", filteredList);
+                                        break;
+
+                                    case false:
+                                        filteredList = FilterList(filteredList, "department", userInfo.UserDepartmentName);
+                                        break;
+                                }
                                 break;
 
                             case false:
                                 filteredList = FilterList(filteredList, "department", filterDepartment.SelectedItem.ToString());
                                 break;
                         }
-                        
                     }
                     else
                     {
@@ -1421,14 +1460,24 @@ namespace WebUI
                         switch (filterDepartment.SelectedValue.Equals(""))
                         {
                             case true:
-                                BindDataRepeaterPagination("no", filteredList);
+                                switch (userInfo.IsAdmin)
+                                {
+                                    case true:
+                                        BindDataRepeaterPagination("no", filteredList);
+                                        break;
+
+                                    case false:
+                                        filteredList = FilterList(filteredList, "department", userInfo.UserDepartmentName);
+                                        break;
+                                }
                                 break;
 
                             case false:
                                 filteredList = FilterList(filteredList, "department", filterDepartment.SelectedItem.ToString());
                                 break;
                         }
-                    }                    
+
+                    }
                     break;
             }
             Dictionary<string, object> sortRet = new Dictionary<string, object>();

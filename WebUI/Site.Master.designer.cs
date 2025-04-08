@@ -42,6 +42,15 @@ namespace WebUI
         protected global::System.Web.UI.HtmlControls.HtmlTitle title;
 
         /// <summary>
+        /// formMain control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlForm formMain;
+
+        /// <summary>
         /// lblUser control.
         /// </summary>
         /// <remarks>
@@ -105,13 +114,22 @@ namespace WebUI
         protected global::System.Web.UI.HtmlControls.HtmlInputCheckBox themeSwitch;
 
         /// <summary>
-        /// formMain control.
+        /// adminSwitchDiv control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm formMain;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl adminSwitchDiv;
+
+        /// <summary>
+        /// adminSwitch control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox adminSwitch;
 
         /// <summary>
         /// MainContent control.
