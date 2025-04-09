@@ -9,12 +9,14 @@ using System.Diagnostics;
 using static DataLibrary.Utility;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
+using System.Web.SessionState;
 
 namespace WebUI
 {
     public partial class SiteMaster : System.Web.UI.MasterPage
     {
         private ADUser _user = new ADUser();
+        private UserInfo userInfo = new UserInfo();
         public string PageTitle;
 
         protected void Page_Init(object sender, EventArgs e)
@@ -24,14 +26,36 @@ namespace WebUI
                 _user = Utility.Instance.AuthenticateUser();
                 Session["CurrentUser"] = _user;
                 imgUser.Src = Photo.Instance.Base64ImgSrc(_user.PhotoLocation);
+                GetUser();
+            }
+            else
+            {
+                _user = Session["CurrentUser"] as ADUser;
+                UserInfo existingInfo = (UserInfo)Session["UserInformation"];
+                string userName = _user.Login.ToUpper();
+                string userDisplayName = $"{_user.FirstName} {_user.LastName}";
+                //string userPosition = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_user.Title.ToLower());
+                lblUser.Text = userDisplayName;
+                lblTitle.Text = existingInfo.UserDepartmentName;
+                imgUser.Src = Photo.Instance.Base64ImgSrc(_user.PhotoLocation);
             }
             if (!Page.IsPostBack)
             {
+
                 if (!Response.IsRequestBeingRedirected)
                 {
                     RouteConfig.FolderRedirect(Response, Page);
+
                 }
-                
+                if (Session["adminSwitch"] != null)
+                {
+                    adminSwitch.Checked = (bool)Session["adminSwitch"];
+                }
+                else
+                {
+                    Session["adminSwitch"] = false;
+                }
+
             }
             if (Page.IsPostBack && Page.Request.Params.Get("__EVENTTARGET").Contains("adminSwitch"))
             {
@@ -47,19 +71,7 @@ namespace WebUI
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            SetPageTitle();
-            if (!Page.IsPostBack)
-            {
-                if (Session["adminSwitch"] != null)
-                {
-                    adminSwitch.Checked = (bool)Session["adminSwitch"];
-                }
-                else
-                {
-                    Session["adminSwitch"] = false;
-                }
-            }
-            GetUser();
+            SetPageTitle();            
             SetStartupActives();
         }
         protected void GetUser()
@@ -68,7 +80,7 @@ namespace WebUI
             List<ADGroups> aDGroups = ISDFactory.Instance.GetAllGroupsByLoginName(_user.Login);
             Session["UserName"] = _user.Login;
             int employeeID = Convert.ToInt32(_user.EmployeeID.TrimStart());
-            UserInfo userInfo = new UserInfo()
+            userInfo = new UserInfo()
             {
                 UserFirstName = _user.FirstName,
                 UserLastName = _user.LastName,
@@ -138,15 +150,22 @@ namespace WebUI
         }
         protected void adminSwitch_CheckedChanged(object sender, EventArgs e)
         {
-            UserInfo userInfo = new UserInfo();
-            if (Session["UserInformation"] != null && Request.Path.ToLower().Equals("/default.aspx"))
+            if (Request.Path.ToLower().Equals("/default.aspx"))
+            {
+                Session["UserInformation"] = UserView();
+            }            
+        }
+        public UserInfo UserView()
+        {
+            UserInfo ret = new UserInfo();
+            if (Session["UserInformation"] != null)
             {
                 userInfo = (UserInfo)Session["UserInformation"];
-                userInfo.IsAdmin = !userInfo.IsAdmin;
-                Session["UserInformation"] = userInfo;
+                userInfo.IsAdmin = !adminSwitch.Checked;
                 Session["adminSwitch"] = !userInfo.IsAdmin;
+                ret = userInfo;
             }
-            
+            return ret;
         }
     }
 }

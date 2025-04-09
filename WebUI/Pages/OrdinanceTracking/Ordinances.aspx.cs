@@ -23,11 +23,13 @@ namespace WebUI
         private string emailList = "NewFactSheetEmailList";
         public string toastColor;
         public string toastMessage;
+        public bool isAdmin;
 
         protected void Page_Load(object sender, EventArgs e)
         {
             Page.Form.Attributes.Add("enctype", "multipart/form-data");
             _user = Session["CurrentUser"] as ADUser;
+            userInfo = Session["UserInformation"] as UserInfo;
 
             if (!Page.IsPostBack && !Response.IsRequestBeingRedirected)
             {                
@@ -42,27 +44,13 @@ namespace WebUI
                 GetAllDepartments();
                 GetAllStatuses();
                 GetAllPurchaseMethods();
-                if (Session["UserInformation"] != null)
-                {
-                    bool isAdmin = (bool)Session["adminSwitch"];
-                    userInfo = (UserInfo)Session["UserInformation"];
-                    userInfo.IsAdmin = !isAdmin;
-                    Session["UserInformation"] = userInfo;
-                }
                 SetStartupActives();
                 SetPagination(rpOrdinanceTable, 10);
-                GetStartupData();
-            }
-            foreach (RepeaterItem item in rpOrdinanceTable.Items)
-            {
-                LinkButton editButton = item.FindControl("editOrd") as LinkButton;
-                LinkButton viewButton = item.FindControl("viewOrd") as LinkButton;
-                ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(editButton);
-                ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(viewButton);
-            }
-
+                GetStartupData(userInfo.IsAdmin);
+            }            
             if (Page.IsPostBack && Page.Request.Params.Get("__EVENTTARGET").Contains("adminSwitch"))
             {
+                userInfo = ((SiteMaster)Page.Master).UserView();
                 Session.Remove("ordRevTable");
                 Session.Remove("ordExpTable");
                 Session.Remove("ordDocs");
@@ -71,17 +59,19 @@ namespace WebUI
                 Session["sortDir"] = "desc";
                 Session["curCmd"] = "EffectiveDate";
                 Session["curDir"] = "desc";
-                if (Session["UserInformation"] != null)
-                {
-                    userInfo = (UserInfo)Session["UserInformation"];
-                    userInfo.IsAdmin = (bool)Session["adminSwitch"];
-                    Session["UserInformation"] = userInfo;
-                    Session["adminSwitch"] = !userInfo.IsAdmin;
-                }
                 SetStartupActives();
                 SetPagination(rpOrdinanceTable, 10);
-                GetStartupData();
                 filterStatus.SelectedIndex = 0;
+                filterDepartment.SelectedIndex = 0;
+                GetStartupData(userInfo.IsAdmin);
+            }
+
+            foreach (RepeaterItem item in rpOrdinanceTable.Items)
+            {
+                LinkButton editButton = item.FindControl("editOrd") as LinkButton;
+                LinkButton viewButton = item.FindControl("viewOrd") as LinkButton;
+                ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(editButton);
+                ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(viewButton);
             }
 
             GetUploadedImages();
@@ -93,7 +83,7 @@ namespace WebUI
             lblNoItems.Visible = false;
             filterDepartmentDiv.Visible = userInfo.IsAdmin;
         }
-        public void GetStartupData()
+        public void GetStartupData(bool isAdmin)
         {
             List<Ordinance> ord_list = new List<Ordinance>();
             ord_list = Factory.Instance.GetAll<Ordinance>("sp_GetOrdinanceByEffective");
@@ -104,7 +94,7 @@ namespace WebUI
                     OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
                     ord.StatusDescription = ordStatus.StatusDescription;
                 }
-                if (userInfo.UserDepartmentName != null && !userInfo.IsAdmin)
+                if (userInfo.UserDepartmentName != null && !isAdmin)
                 {
                     ord_list = FilterList(ord_list, "department", userInfo.UserDepartmentName);
                 }
@@ -113,6 +103,16 @@ namespace WebUI
 
             Session["ord_list"] = ord_list;
             Session["noFilterOrdList"] = ord_list;
+            if (ord_list.Count > 0)
+            {
+                formTableDiv.Visible = true;
+                lblNoItems.Visible = false;
+            }
+            else
+            {
+                formTableDiv.Visible = false;
+                lblNoItems.Visible = true;
+            }
         }
         protected void GetAllStatuses()
         {
