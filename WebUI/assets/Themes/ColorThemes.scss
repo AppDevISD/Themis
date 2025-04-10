@@ -1,6 +1,7 @@
 ﻿@import "bootstrap-scss/_functions.scss";
 @import "bootstrap-scss/_variables.scss";
 @import "bootstrap-scss/_mixins.scss";
+@import "bootstrap-scss/_forms.scss";
 @import "../css/Colors.scss";
 @import "_data-color-theme.scss";
 
@@ -60,6 +61,7 @@
 		$color-theme-text: color-theme-text(light, $color, $value);
 		$color-theme-active-bg: tint-color($value, 15%);
 		$color-theme-active-bg-subtle: color-theme-subtle(light, $color, $value);
+		$color-theme-active-border-subtle: rgba($color-theme-active-bg-subtle, 0.01);
 		$color-theme-border-color: $color-theme-text;
 		$color-theme-check-color: rgba($color-theme-text, 0.99);
 		$checkbox-checked-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'><path fill='none' stroke='#{$color-theme-check-color}' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/></svg>");
@@ -67,6 +69,7 @@
 		--color-theme-text: #{$color-theme-text};
 		--active-bg: #{$color-theme-active-bg};
 		--active-bg-subtle: #{$color-theme-active-bg-subtle};
+		--active-border-subtle: #{$color-theme-active-border-subtle};
 		--active-text: white;
 		--custom-theme-border-color: #{$color-theme-border-color};
 
@@ -284,24 +287,26 @@ input[type="range"]:focus::-webkit-slider-thumb {
 	color: var(--bs-body-color);
 }
 
-.form-switch:not(.theme-switch) .form-check-input:not([name="colorThemeRadio"]) {
+.form-switch .form-check-input:not([name="colorThemeRadio"]), .form-switch .setting-form-check-input input {
 	background-color: var(--active-bg-subtle) !important;
 	border: 1px solid var(--active-bg);
 }
 
-.form-switch:not(.theme-switch) .form-check-input:not([name="colorThemeRadio"]):checked {
+.form-switch .form-check-input:not([name="colorThemeRadio"]):checked, .form-switch .setting-form-check-input input:checked {
 	background-color: var(--active-bg) !important;
 	border: none;
 }
 
 .form-switch.theme-switch .form-check-input:checked {
 	background-image: url('../images/icons/theme-dark.svg') !important;
-	background-color: var(--active-bg) !important;
+	border: 2px solid var(--active-bg) !important;
+	/*background-color: var(--active-bg) !important;*/
 }
 
 .form-switch.theme-switch .form-check-input {
 	background-image: url('../images/icons/theme-light.svg') !important;
-	background-color: var(--active-bg-subtle) !important;
+	border: 2px solid var(--active-border-subtle) !important;
+	/*background-color: var(--active-bg-subtle) !important;*/
 }
 
 .btn-close:focus {

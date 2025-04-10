@@ -239,6 +239,10 @@
     <Content Include="assets\Themes\bootstrap-scss\_variables.scss" />
     <Content Include="assets\Themes\_data-color-theme.scss" />
     <Content Include="assets\css\Colors.scss" />
+    <Content Include="assets\Themes\bootstrap-scss\forms\_setting-form-check.scss" />
+    <Content Include="assets\Themes\bootstrap-scss\_forms.scss" />
+    <Content Include="assets\Themes\bootstrap-scss\mixins\_transition.scss" />
+    <Content Include="assets\Themes\bootstrap-scss\mixins\_border-radius.scss" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>

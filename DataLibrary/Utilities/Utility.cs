@@ -102,10 +102,9 @@ namespace DataLibrary
                 {"Public Utilities",                    "3"},
                 {"Public Works",                        "9"},
             };
-            
+
             return dictionary;
         }
-
         public Dictionary<string, string> StatusList()
         {
             List<Status> statusList = new List<Status>();
@@ -121,6 +120,13 @@ namespace DataLibrary
         public static decimal CurrencyToDecimal(string currency)
         {
             return decimal.Parse(currency, NumberStyles.Any);
+        }
+        public static void ConsoleLog(string message)
+        {
+            string scriptTag = "<script type=\"\" language=\"\">{0}</script>";
+            string function = "console.log('{0}');";
+            string log = string.Format(string.Format(scriptTag, function), message);
+            HttpContext.Current.Response.Write(log);
         }
     }
 }

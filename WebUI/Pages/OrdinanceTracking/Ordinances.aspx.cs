@@ -31,8 +31,12 @@ namespace WebUI
             _user = Session["CurrentUser"] as ADUser;
             userInfo = Session["UserInformation"] as UserInfo;
 
+            Session["adminSwitch"] = ((SiteMaster)Page.Master.Session["adminSwitch"]).ToString();
+            bool aSwitch = (bool)Session["adminSwitch"];
+            ((SiteMaster)Page.Master).UserSwitch.Checked = !aSwitch;
+
             if (!Page.IsPostBack && !Response.IsRequestBeingRedirected)
-            {                
+            {
                 Session.Remove("ordRevTable");
                 Session.Remove("ordExpTable");
                 Session.Remove("ordDocs");

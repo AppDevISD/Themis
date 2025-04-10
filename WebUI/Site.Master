@@ -117,13 +117,13 @@
 									<div class="Settings nav-link switchSetting">
 										<p class="m-0 fs-6 noto-sans-semi-bold">Mode</p>
 										<div class="form-check form-switch theme-switch" style="display: flex; align-items: center;">
-											<input runat="server" type="checkbox" class="form-check-input" id="themeSwitch" style="width: 3em; height: 1.5em; margin: 0; cursor: pointer;"/>
+											<input runat="server" type="checkbox" class="form-check-input settingSwitch" id="themeSwitch"/>
 										</div>
 									</div>
 									<div class="Settings nav-link switchSetting" runat="server" id="adminSwitchDiv">
 										<p class="m-0 fs-6 noto-sans-semi-bold">User View</p>
 										<div class="form-check form-switch" style="display: flex; align-items: center;">
-											<asp:CheckBox runat="server" ID="adminSwitch" AutoPostBack="true" OnCheckedChanged="adminSwitch_CheckedChanged" />
+											<asp:CheckBox runat="server" ID="adminSwitch" AutoPostBack="true" OnCheckedChanged="adminSwitch_CheckedChanged" CssClass="setting-form-check-input settingSwitch-input" />
 										</div>
 									</div>
 								</div>
@@ -164,6 +164,6 @@
 
 		<%-- LIGHT/DARK MODE SWITCHER --%>
 		<script type="text/javascript" src="./Scripts/Helpers/JS/ColorMode.js"></script>
-		<script type="text/javascript" src="./Scripts/Helpers/JS/Settings.js"></script>
+		<%--<script type="text/javascript" src="./Scripts/Helpers/JS/Settings.js"></script>--%>
 	</body>
 </html>

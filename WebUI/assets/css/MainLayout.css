@@ -427,6 +427,13 @@ option:not([selected]):not(:disabled) {
 	color: rgb(from var(--bs-body-color) r g b / 100%) !important;
 }
 
+.settingSwitch, .settingSwitch-input input {
+	width: 3em !important;
+	height: 1.5em !important;
+	margin: 0 !important;
+	cursor: pointer !important;
+}
+
 
 
 /* --------------- SECTIONS, CONTAINERS, CARDS, & TABS --------------- */
@@ -629,6 +636,7 @@ pre[class*=language-] {
 		width: 250px;
 		height: 100%;
 		display: flex;
+		flex-direction: column;
 		position: fixed;
 		top: 0;
 		-webkit-box-shadow: 10px 10px 20px 0px rgba(0, 0, 0, .75);

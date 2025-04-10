@@ -9,7 +9,7 @@ using System.Diagnostics;
 using static DataLibrary.Utility;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
-using System.Web.SessionState;
+using System.Web.UI.HtmlControls;
 
 namespace WebUI
 {
@@ -18,6 +18,8 @@ namespace WebUI
         private ADUser _user = new ADUser();
         private UserInfo userInfo = new UserInfo();
         public string PageTitle;
+        public bool IsAdminSwitch;
+        public CheckBox UserSwitch;
 
         protected void Page_Init(object sender, EventArgs e)
         {
@@ -41,22 +43,16 @@ namespace WebUI
             }
             if (!Page.IsPostBack)
             {
-
+                UserSwitch = adminSwitch;
                 if (!Response.IsRequestBeingRedirected)
                 {
                     RouteConfig.FolderRedirect(Response, Page);
-
                 }
-                if (Session["adminSwitch"] != null)
-                {
-                    adminSwitch.Checked = (bool)Session["adminSwitch"];
-                }
-                else
-                {
-                    Session["adminSwitch"] = false;
-                }
-
             }
+        }
+        protected void Page_PreRender(object sender, EventArgs e)
+        {
+            UserTheme.Instance.GetUserTheme(Request, html, Response);
             if (Page.IsPostBack && Page.Request.Params.Get("__EVENTTARGET").Contains("adminSwitch"))
             {
                 if (!SettingsMenu.Attributes["class"].Contains("show"))
@@ -65,13 +61,9 @@ namespace WebUI
                 }
             }
         }
-        protected void Page_PreRender(object sender, EventArgs e)
-        {
-            UserTheme.Instance.GetUserTheme(Request, html, Response);
-        }
         protected void Page_Load(object sender, EventArgs e)
         {
-            SetPageTitle();            
+            SetPageTitle();
             SetStartupActives();
         }
         protected void GetUser()
@@ -162,7 +154,8 @@ namespace WebUI
             {
                 userInfo = (UserInfo)Session["UserInformation"];
                 userInfo.IsAdmin = !adminSwitch.Checked;
-                Session["adminSwitch"] = !userInfo.IsAdmin;
+                IsAdminSwitch = !adminSwitch.Checked;
+                Page.Session["adminSwitch"] = !adminSwitch.Checked;
                 ret = userInfo;
             }
             return ret;
