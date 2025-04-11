@@ -28,7 +28,7 @@ namespace DataLibrary
                 return _Utility;
             }
         }
-        public ADUser AuthenticateUser([Optional] string loginID)
+        public static ADUser AuthenticateUser([Optional] string loginID)
         {
             bool spoofUser = loginID != null ? true : false;
             string strLoginID;
@@ -81,7 +81,7 @@ namespace DataLibrary
         //    }
         //    return employeeTitle;
         //}
-        public Dictionary<string, string> DepartmentsList()
+        public static Dictionary<string, string> DepartmentsList()
         {
             Dictionary<string, string> dictionary = new Dictionary<string, string>()
             {
@@ -105,7 +105,7 @@ namespace DataLibrary
 
             return dictionary;
         }
-        public Dictionary<string, string> StatusList()
+        public static Dictionary<string, string> StatusList()
         {
             List<Status> statusList = new List<Status>();
             statusList = Factory.Instance.GetAll<Status>("sp_GetLkStatus");
@@ -121,7 +121,7 @@ namespace DataLibrary
         {
             return decimal.Parse(currency, NumberStyles.Any);
         }
-        public static void ConsoleLog(string message)
+        public static void ConsoleLog(object message)
         {
             string scriptTag = "<script type=\"\" language=\"\">{0}</script>";
             string function = "console.log('{0}');";

@@ -18,37 +18,48 @@ namespace WebUI
         private ADUser _user = new ADUser();
         private UserInfo userInfo = new UserInfo();
         public string PageTitle;
-        public bool IsAdminSwitch;
-        public CheckBox UserSwitch;
 
         protected void Page_Init(object sender, EventArgs e)
         {
             if (Session["CurrentUser"] == null)
             {
-                _user = Utility.Instance.AuthenticateUser();
+                _user = AuthenticateUser();
+                imgUser.Src = Photo.Instance.Base64ImgSrc(_user.PhotoLocation);
                 Session["CurrentUser"] = _user;
-                imgUser.Src = Photo.Instance.Base64ImgSrc(_user.PhotoLocation);
-                GetUser();
-            }
-            else
-            {
-                _user = Session["CurrentUser"] as ADUser;
-                UserInfo existingInfo = (UserInfo)Session["UserInformation"];
-                string userName = _user.Login.ToUpper();
-                string userDisplayName = $"{_user.FirstName} {_user.LastName}";
-                //string userPosition = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_user.Title.ToLower());
-                lblUser.Text = userDisplayName;
-                lblTitle.Text = existingInfo.UserDepartmentName;
-                imgUser.Src = Photo.Instance.Base64ImgSrc(_user.PhotoLocation);
-            }
-            if (!Page.IsPostBack)
-            {
-                UserSwitch = adminSwitch;
-                if (!Response.IsRequestBeingRedirected)
+
+                List<ADGroups> aDGroups = ISDFactory.Instance.GetAllGroupsByLoginName(_user.Login);
+                int employeeID = Convert.ToInt32(_user.EmployeeID.TrimStart());
+                if (Session["UserInformation"] == null)
                 {
-                    RouteConfig.FolderRedirect(Response, Page);
+                    userInfo = new UserInfo()
+                    {
+                        UserFirstName = _user.FirstName,
+                        UserLastName = _user.LastName,
+                        UserDisplayName = $"{_user.FirstName} {_user.LastName}",
+                        UserEmail = _user.Email,
+                        IsAdmin = aDGroups.Any(i => i.GroupName.Equals("PG-THEMIS-ADMIN")),
+                        UserView = false,
+                        UserDepartmentID = Factory.Instance.GetUserDepartmentID(employeeID.ToString())
+                    };
+                    Dictionary<string, string> departments = DepartmentsList();
+                    foreach (var department in departments.Keys)
+                    {
+                        var value = departments[department];
+                        ListItem newItem = new ListItem(department, value);
+                        if (newItem.Value == userInfo.UserDepartmentID.ToString())
+                        {
+                            userInfo.UserDepartmentName = newItem.Text;
+                        }
+                    }
+                    Session["UserInformation"] = userInfo;
                 }
             }
+            
+            if (!Page.IsPostBack && !Response.IsRequestBeingRedirected)
+            {
+                RouteConfig.FolderRedirect(Response, Page);
+            }
+            GetUser();
         }
         protected void Page_PreRender(object sender, EventArgs e)
         {
@@ -66,36 +77,23 @@ namespace WebUI
             SetPageTitle();
             SetStartupActives();
         }
-        protected void GetUser()
+        public void GetUser()
         {
             _user = (ADUser)Session["CurrentUser"];
             List<ADGroups> aDGroups = ISDFactory.Instance.GetAllGroupsByLoginName(_user.Login);
             Session["UserName"] = _user.Login;
-            int employeeID = Convert.ToInt32(_user.EmployeeID.TrimStart());
-            userInfo = new UserInfo()
-            {
-                UserFirstName = _user.FirstName,
-                UserLastName = _user.LastName,
-                UserDisplayName = $"{_user.FirstName} {_user.LastName}",
-                UserEmail = _user.Email,
-                IsAdmin = aDGroups.Any(i => i.GroupName.Equals("PG-THEMIS-ADMIN")),
-                UserDepartmentID = Factory.Instance.GetUserDepartmentID(employeeID.ToString())
-            };
+            
 
-            Dictionary<string, string> departments = Utility.Instance.DepartmentsList();
-            foreach (var department in departments.Keys)
+            userInfo = (UserInfo)Session["UserInformation"];
+            if (userInfo.IsAdmin)
             {
-                var value = departments[department];
-                ListItem newItem = new ListItem(department, value);
-                if (newItem.Value == userInfo.UserDepartmentID.ToString())
-                {
-                    userInfo.UserDepartmentName = newItem.Text;
-                }
+                adminSwitch.Checked = userInfo.UserView;
             }
+
+            
             Session["UserInformation"] = userInfo;
             string userName = _user.Login.ToUpper();
             string userDisplayName = $"{_user.FirstName} {_user.LastName}";
-            //string userPosition = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_user.Title.ToLower());
             lblUser.Text = userDisplayName;
             lblTitle.Text = userInfo.UserDepartmentName;
             imgUser.Src = Photo.Instance.Base64ImgSrc(_user.PhotoLocation);
@@ -142,7 +140,7 @@ namespace WebUI
         }
         protected void adminSwitch_CheckedChanged(object sender, EventArgs e)
         {
-            if (Request.Path.ToLower().Equals("/default.aspx"))
+            if (Request.Path.ToLower().Contains("/default.aspx"))
             {
                 Session["UserInformation"] = UserView();
             }            
@@ -150,14 +148,8 @@ namespace WebUI
         public UserInfo UserView()
         {
             UserInfo ret = new UserInfo();
-            if (Session["UserInformation"] != null)
-            {
-                userInfo = (UserInfo)Session["UserInformation"];
-                userInfo.IsAdmin = !adminSwitch.Checked;
-                IsAdminSwitch = !adminSwitch.Checked;
-                Page.Session["adminSwitch"] = !adminSwitch.Checked;
-                ret = userInfo;
-            }
+            userInfo.UserView = adminSwitch.Checked;
+            ret = userInfo;
             return ret;
         }
     }

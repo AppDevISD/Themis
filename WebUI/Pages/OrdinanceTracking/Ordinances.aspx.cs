@@ -23,17 +23,13 @@ namespace WebUI
         private string emailList = "NewFactSheetEmailList";
         public string toastColor;
         public string toastMessage;
-        public bool isAdmin;
+        public bool fakeUser;
 
         protected void Page_Load(object sender, EventArgs e)
         {
             Page.Form.Attributes.Add("enctype", "multipart/form-data");
             _user = Session["CurrentUser"] as ADUser;
             userInfo = Session["UserInformation"] as UserInfo;
-
-            Session["adminSwitch"] = ((SiteMaster)Page.Master.Session["adminSwitch"]).ToString();
-            bool aSwitch = (bool)Session["adminSwitch"];
-            ((SiteMaster)Page.Master).UserSwitch.Checked = !aSwitch;
 
             if (!Page.IsPostBack && !Response.IsRequestBeingRedirected)
             {
@@ -85,7 +81,7 @@ namespace WebUI
         {
             ordView.Visible = false;
             lblNoItems.Visible = false;
-            filterDepartmentDiv.Visible = userInfo.IsAdmin;
+            filterDepartmentDiv.Visible = !userInfo.IsAdmin || userInfo.UserView ? false : true;
         }
         public void GetStartupData(bool isAdmin)
         {
@@ -98,7 +94,7 @@ namespace WebUI
                     OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
                     ord.StatusDescription = ordStatus.StatusDescription;
                 }
-                if (userInfo.UserDepartmentName != null && !isAdmin)
+                if ((userInfo.UserDepartmentName != null && !isAdmin) || userInfo.UserView)
                 {
                     ord_list = FilterList(ord_list, "department", userInfo.UserDepartmentName);
                 }
@@ -120,7 +116,7 @@ namespace WebUI
         }
         protected void GetAllStatuses()
         {
-            Dictionary<string, string> statuses = Utility.Instance.StatusList();
+            Dictionary<string, string> statuses = StatusList();
             foreach (var status in statuses.Keys)
             {
                 var value = statuses[status];
@@ -134,7 +130,7 @@ namespace WebUI
         }
         protected void GetAllDepartments()
         {
-            Dictionary<string, string> departments = Utility.Instance.DepartmentsList();
+            Dictionary<string, string> departments = DepartmentsList();
             foreach (var department in departments.Keys)
             {
                 var value = departments[department];
@@ -269,7 +265,7 @@ namespace WebUI
             hdnEffectiveDate.Value = ord.EffectiveDate.ToString();
 
 
-            requestDepartment.SelectedValue = Utility.Instance.DepartmentsList()[ord.RequestDepartment];
+            requestDepartment.SelectedValue = DepartmentsList()[ord.RequestDepartment];
             firstReadDate.Text = ord.FirstReadDate.ToString("yyyy-MM-dd");
             requestContact.Text = ord.RequestContact;
             requestPhone.Text = ord.RequestPhone.SubstringUpToFirst('x');
@@ -1347,7 +1343,6 @@ namespace WebUI
             string commandArgument = dropDown.SelectedItem.ToString();
             List<Ordinance> filteredList = new List<Ordinance>();
             userInfo = (UserInfo)Session["UserInformation"];
-            userInfo.IsAdmin = (bool)Session["adminSwitch"] ? false : true;
 
 
             switch (commandName)
@@ -1433,7 +1428,7 @@ namespace WebUI
                         switch (filterDepartment.SelectedValue.Equals(""))
                         {
                             case true:
-                                switch (userInfo.IsAdmin)
+                                switch (userInfo.IsAdmin && !userInfo.UserView)
                                 {
                                     case true:
                                         BindDataRepeaterPagination("no", filteredList);
@@ -1464,7 +1459,7 @@ namespace WebUI
                         switch (filterDepartment.SelectedValue.Equals(""))
                         {
                             case true:
-                                switch (userInfo.IsAdmin)
+                                switch (userInfo.IsAdmin && !userInfo.UserView)
                                 {
                                     case true:
                                         BindDataRepeaterPagination("no", filteredList);

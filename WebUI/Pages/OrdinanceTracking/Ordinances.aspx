@@ -20,8 +20,6 @@
 				<asp:AsyncPostBackTrigger ControlID="scYes" EventName="CheckedChanged" />
 				<asp:AsyncPostBackTrigger ControlID="scNo" EventName="CheckedChanged" />
 
-				<%--<asp:AsyncPostBackTrigger ControlID="adminSwitch" EventName="CheckedChanged" />--%>
-
 				<asp:AsyncPostBackTrigger ControlID="purchaseMethod" EventName="SelectedIndexChanged" />
 
 				<asp:AsyncPostBackTrigger ControlID="sortDate" EventName="Click" />

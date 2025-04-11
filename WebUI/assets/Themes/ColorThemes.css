@@ -661,13 +661,24 @@ label:has(+ .form-control:disabled) {
   box-shadow: 0 0 0 0.25rem var(--custom-theme-border-color);
 }
 
-.form-check-input {
-  border: none;
+.form-check-input:not(:checked):focus {
+  border-color: rgba(0, 0, 0, 0.25) !important;
+  box-shadow: none !important;
 }
 
-.form-check-input:checked {
-  background-color: rgb(29, 30, 32) !important;
-  border: none;
+.form-check-input:checked:focus {
+  box-shadow: none !important;
+}
+
+.setting-form-check-input input:not(:checked):focus {
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='3' fill='rgba(0, 0, 0, 0.25)'/></svg>");
+  border-color: rgba(0, 0, 0, 0.25);
+  box-shadow: none;
+}
+
+.setting-form-check-input input:checked:focus {
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='3' fill='rgb(255, 255, 255)'/></svg>");
+  box-shadow: none;
 }
 
 [data-bs-theme=dark] .table-striped > tbody > tr:nth-of-type(odd) > * {
@@ -700,7 +711,7 @@ td .form-select, td .form-control {
   border-radius: 0;
 }
 
-.form-check-input:focus, td .form-select:focus, td .form-control {
+.form-check-input:not(.settingSwitch):focus, td .form-select:focus, td .form-control {
   border: none;
   box-shadow: unset;
 }
@@ -744,26 +755,28 @@ input[type=range]:focus::-webkit-slider-thumb {
   color: var(--bs-body-color);
 }
 
+.active-bg-subtle {
+  fill: var(--active-bg-subtle);
+}
+
 .form-switch .form-check-input:not([name=colorThemeRadio]), .form-switch .setting-form-check-input input {
   background-color: var(--active-bg-subtle) !important;
-  border: 1px solid var(--active-bg);
 }
 
 .form-switch .form-check-input:not([name=colorThemeRadio]):checked, .form-switch .setting-form-check-input input:checked {
   background-color: var(--active-bg) !important;
-  border: none;
 }
 
 .form-switch.theme-switch .form-check-input:checked {
   background-image: url("../images/icons/theme-dark.svg") !important;
-  border: 2px solid var(--active-bg) !important;
-  /*background-color: var(--active-bg) !important;*/
+  background-size: 38.2% !important;
+  background-position-x: 90%;
 }
 
 .form-switch.theme-switch .form-check-input {
   background-image: url("../images/icons/theme-light.svg") !important;
-  border: 2px solid var(--active-border-subtle) !important;
-  /*background-color: var(--active-bg-subtle) !important;*/
+  background-size: 38.9% !important;
+  background-position-x: 10%;
 }
 
 .btn-close:focus {

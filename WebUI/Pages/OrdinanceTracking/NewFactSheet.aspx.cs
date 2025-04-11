@@ -84,7 +84,7 @@ namespace WebUI
         }
         protected void GetAllDepartments()
         {
-            Dictionary<string, string> departments = Utility.Instance.DepartmentsList();
+            Dictionary<string, string> departments = DepartmentsList();
             foreach (var department in departments.Keys)
             {
                 var value = departments[department];
