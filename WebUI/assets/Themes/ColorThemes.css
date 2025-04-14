@@ -661,12 +661,21 @@ label:has(+ .form-control:disabled) {
   box-shadow: 0 0 0 0.25rem var(--custom-theme-border-color);
 }
 
-.form-check-input:not(:checked):focus {
+.form-check-input {
+  border: none;
+}
+
+.form-check-input:checked {
+  background-color: rgb(29, 30, 32) !important;
+  border: none;
+}
+
+.form-switch .form-check-input:not(:checked):focus {
   border-color: rgba(0, 0, 0, 0.25) !important;
   box-shadow: none !important;
 }
 
-.form-check-input:checked:focus {
+.form-switch .form-check-input:checked:focus {
   box-shadow: none !important;
 }
 
@@ -711,12 +720,12 @@ td .form-select, td .form-control {
   border-radius: 0;
 }
 
-.form-check-input:not(.settingSwitch):focus, td .form-select:focus, td .form-control {
+.form-switch .form-check-input:not(.settingSwitch):focus, td .form-select:focus, td .form-control {
   border: none;
   box-shadow: unset;
 }
 
-.form-check-input input:hover {
+.form-switch .form-check-input input:hover {
   cursor: pointer !important;
 }
 

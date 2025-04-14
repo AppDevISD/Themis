@@ -56,6 +56,9 @@
     <Compile Include="Utilities\ColorTheme.cs" />
     <Compile Include="Utilities\Email.cs" />
     <Compile Include="Utilities\Factory.cs" />
+    <Compile Include="Utilities\InactiveRefreshPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Utilities\Photo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>

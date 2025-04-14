@@ -13,6 +13,7 @@ using static DataLibrary.Utility;
 using ISD.ActiveDirectory;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 
 namespace WebUI
 {
@@ -23,7 +24,6 @@ namespace WebUI
         private string emailList = "NewFactSheetEmailList";
         public string toastColor;
         public string toastMessage;
-        public bool fakeUser;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -79,6 +79,7 @@ namespace WebUI
         }
         protected void SetStartupActives()
         {
+            ordTable.Visible = true;
             ordView.Visible = false;
             lblNoItems.Visible = false;
             filterDepartmentDiv.Visible = !userInfo.IsAdmin || userInfo.UserView ? false : true;

@@ -10,6 +10,7 @@ using static DataLibrary.Utility;
 using System.Collections.Generic;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
+using System.Web.Services.Description;
 
 namespace WebUI
 {
@@ -75,7 +76,7 @@ namespace WebUI
         protected void Page_Load(object sender, EventArgs e)
         {
             SetPageTitle();
-            SetStartupActives();
+            SetStartupActives();          
         }
         public void GetUser()
         {
@@ -151,6 +152,10 @@ namespace WebUI
             userInfo.UserView = adminSwitch.Checked;
             ret = userInfo;
             return ret;
+        }
+        protected void lnkInactivityRefresh_Click(object sender, EventArgs e)
+        {
+            //FOR INACTIVE REFRESHING - DO NOT REMOVE
         }
     }
 }

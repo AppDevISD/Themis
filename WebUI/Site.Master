@@ -156,6 +156,9 @@
 					</article>
 				</main>
 			</div>
+
+			<!-- Hidden trigger for JS -->
+			<asp:LinkButton ID="lnkInactivityRefresh" runat="server" OnClick="lnkInactivityRefresh_Click" Style="display: none;" data-inactivity-trigger="true" />
 		</form>
 		
 
@@ -164,6 +167,6 @@
 
 		<%-- LIGHT/DARK MODE SWITCHER --%>
 		<script type="text/javascript" src="./Scripts/Helpers/JS/ColorMode.js"></script>
-		<%--<script type="text/javascript" src="./Scripts/Helpers/JS/Settings.js"></script>--%>
+		<script type="text/javascript" src="./Scripts/Helpers/JS/InactiveTimer.js"></script>
 	</body>
 </html>

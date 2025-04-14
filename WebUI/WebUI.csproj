@@ -143,6 +143,7 @@
     <Content Include="assets\js\Charts.js" />
     <Content Include="Global.asax" />
     <None Include="assets\images\icons\favicon\manifest.json" />
+    <Content Include="Scripts\Helpers\JS\InactiveTimer.js" />
     <Content Include="Scripts\Helpers\JS\RequiredFieldsAndActivePage.js" />
     <Content Include="Scripts\Helpers\JS\Settings.js" />
     <Content Include="Scripts\Helpers\JS\SubmitToast.js" />
@@ -279,7 +280,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>60459</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://localhost:44360/</IISUrl>
+          <IISUrl>https://localhost:44360/Themis/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

@@ -28,6 +28,8 @@
 				<asp:AsyncPostBackTrigger ControlID="sortContact" EventName="Click" />
 				<asp:AsyncPostBackTrigger ControlID="sortStatus" EventName="Click" />
 
+				<asp:AsyncPostBackTrigger ControlID="lnkInactivityRefresh" EventName="Click" />
+
 				<asp:PostBackTrigger ControlID="UploadImageBtn" />
 				<asp:PostBackTrigger ControlID="SaveFactSheet" />
 			</Triggers>

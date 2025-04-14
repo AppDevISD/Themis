@@ -12,7 +12,7 @@ using static DataLibrary.Utility;
 
 namespace WebUI
 {
-    public partial class NewFactSheet : System.Web.UI.Page
+    public partial class NewFactSheet : InactiveRefreshPage
     {
         private ADUser _user = new ADUser();
         private string emailList = "NewFactSheetEmailList";

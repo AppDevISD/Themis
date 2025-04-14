@@ -21,7 +21,7 @@
 			<p class="text-justify" style="color: gray;"><i class="fa-solid fa-asterisk"></i>&nbsp;= Required Field</p>
 
 			<%-- FORM UPDATE PANEL --%>
-			<asp:UpdatePanel runat="server" ID="formUpdatePanel" UpdateMode="Always">
+			<asp:UpdatePanel runat="server" ID="formUpdatePanel" UpdateMode="Always" data-inactivity-refresh="true">
 				<%-- TRIGGERS --%>
 				<Triggers>
 					<asp:AsyncPostBackTrigger ControlID="epYes" EventName="CheckedChanged" />
