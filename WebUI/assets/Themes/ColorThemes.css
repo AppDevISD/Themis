@@ -661,11 +661,11 @@ label:has(+ .form-control:disabled) {
   box-shadow: 0 0 0 0.25rem var(--custom-theme-border-color);
 }
 
-.form-check-input {
+.form-check:not(.form-switch) .form-check-input {
   border: none;
 }
 
-.form-check-input:checked {
+.form-check:not(.form-switch) .form-check-input:checked {
   background-color: rgb(29, 30, 32) !important;
   border: none;
 }

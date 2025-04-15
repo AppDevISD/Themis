@@ -32,6 +32,8 @@
 
 					<asp:PostBackTrigger ControlID="UploadImageBtn" />
 					<asp:PostBackTrigger ControlID="SubmitFactSheet" />
+
+					<asp:AsyncPostBackTrigger ControlID="lnkInactivityRefresh" EventName="Click" />
 				</Triggers>
 
 				<%-- FORM CONTENT --%>

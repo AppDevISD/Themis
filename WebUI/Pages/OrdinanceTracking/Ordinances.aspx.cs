@@ -14,6 +14,7 @@ using ISD.ActiveDirectory;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using Microsoft.Reporting.WebForms;
 
 namespace WebUI
 {
@@ -355,11 +356,10 @@ namespace WebUI
             }
 
             List<OrdinanceAccounting> ordAcc = Factory.Instance.GetAllLookup<OrdinanceAccounting>(ordID, "sp_GetOrdinanceAccountingByOrdinanceID", "OrdinanceID");
-
+            List<Accounting> revItems = new List<Accounting>();
+            List<Accounting> expItems = new List<Accounting>();
             if (ordAcc.Count > 0)
             {
-                List<Accounting> revItems = new List<Accounting>();
-                List<Accounting> expItems = new List<Accounting>();
                 foreach (OrdinanceAccounting item in ordAcc)
                 {
                     Accounting acctItem = Factory.Instance.GetByID<Accounting>(item.AccountingID, "sp_GetLkAccountingByAccountingID", "AccountingID");
@@ -622,6 +622,47 @@ namespace WebUI
                     }
                     scopeChangeOptions.Visible = true;
                     otherExceptionDiv.Visible = true;
+                    break;
+                case "download":
+                    ReportViewer viewer = new ReportViewer();
+                    viewer.LocalReport.ReportPath = "./Reports/OrdinanceTracking/Ordinance.rdlc";
+                    if (ord.ContractStartDate.Length > 0)
+                    {
+                        ord.ContractStartDate = Convert.ToDateTime(ord.ContractStartDate).ToString("MM/dd/yyyy");
+                    }
+                    if (ord.ContractEndDate.Length > 0)
+                    {
+                        ord.ContractEndDate = Convert.ToDateTime(ord.ContractEndDate).ToString("MM/dd/yyyy");
+                    }
+                    IEnumerable<Ordinance> ordData = new[] { ord };
+                    ReportDataSource ordinanceData = new ReportDataSource() { Name = "dsOrdinance", Value = ordData };
+                    ReportDataSource ordinanceRevAccountingData = new ReportDataSource() { Name = "dsRevAccounting", Value = revItems };
+                    ReportDataSource ordinanceExpAccountingData = new ReportDataSource() { Name = "dsExpAccounting", Value = expItems };
+                    ReportDataSource ordinanceStatusData = new ReportDataSource() { Name = "dsOrdinanceStatus" };
+
+                    viewer.LocalReport.DataSources.Add(ordinanceData);
+                    viewer.LocalReport.DataSources.Add(ordinanceRevAccountingData);
+                    viewer.LocalReport.DataSources.Add(ordinanceExpAccountingData);
+                    viewer.LocalReport.DataSources.Add(ordinanceStatusData);
+
+                    viewer.LocalReport.Refresh();
+
+                    Warning[] warnings;
+                    string[] streamIds;
+                    string mimeType = string.Empty;
+                    string encoding = string.Empty;
+                    string extension = string.Empty;
+
+                    byte[] bytes = viewer.LocalReport.Render("PDF", null, out mimeType, out encoding, out extension, out streamIds, out warnings);
+
+                    Response.Clear();
+                    Response.ClearContent();
+                    Response.ClearHeaders();
+                    Response.Buffer = true;
+                    Response.ContentType = "application/pdf";
+                    Response.AddHeader("content-disposition", "inline; filename=Bill.pdf");
+                    Response.BinaryWrite(bytes); // create the file
+                    Context.ApplicationInstance.CompleteRequest();
                     break;
             }
 

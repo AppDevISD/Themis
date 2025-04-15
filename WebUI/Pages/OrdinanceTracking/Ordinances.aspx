@@ -28,10 +28,10 @@
 				<asp:AsyncPostBackTrigger ControlID="sortContact" EventName="Click" />
 				<asp:AsyncPostBackTrigger ControlID="sortStatus" EventName="Click" />
 
-				<asp:AsyncPostBackTrigger ControlID="lnkInactivityRefresh" EventName="Click" />
-
 				<asp:PostBackTrigger ControlID="UploadImageBtn" />
 				<asp:PostBackTrigger ControlID="SaveFactSheet" />
+
+				<asp:AsyncPostBackTrigger ControlID="lnkInactivityRefresh" EventName="Click" />
 			</Triggers>
 
 			<ContentTemplate>
@@ -62,11 +62,11 @@
 								<thead>
 									<tr>
 										<th style="width: 6%; text-align: center"><asp:LinkButton runat="server" ID="sortDate" data-command="EffectiveDate" data-text="Date" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Date<span runat="server" class='float-end lh-1p5 fas fa-arrow-down'></span></strong></asp:LinkButton></th>
-										<th style="width: 39%; text-align: center"><asp:LinkButton runat="server" ID="sortTitle" data-command="OrdinanceTitle" data-text="Title" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Title<span class="float-end lh-1p5"></span></strong></asp:LinkButton></th>
+										<th style="width: 38%; text-align: center"><asp:LinkButton runat="server" ID="sortTitle" data-command="OrdinanceTitle" data-text="Title" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Title<span class="float-end lh-1p5"></span></strong></asp:LinkButton></th>
 										<th style="width: 25%; text-align: center"><asp:LinkButton runat="server" ID="sortDepartment" data-command="RequestDepartment" data-text="Department" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Department<span class="float-end lh-1p5"></span></strong></asp:LinkButton></th>
 										<th style="width: 15%; text-align: center"><asp:LinkButton runat="server" ID="sortContact" data-command="RequestContact" data-text="Contact" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Contact<span class="float-end lh-1p5"></span></strong></asp:LinkButton></th>
 										<th style="width: 10%; text-align: center"><asp:LinkButton runat="server" ID="sortStatus" data-command="StatusDescription" data-text="Status" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Status<span class="float-end lh-1p5"></span></strong></asp:LinkButton></th>
-										<th style="width: 5%; text-align: center"><strong>Action</strong></th>
+										<th style="width: 6%; text-align: center"><strong>Action</strong></th>
 									</tr>
 								</thead>
 								<asp:Repeater runat="server" ID="rpOrdinanceTable" OnItemCommand="rpOrdinanceTable_ItemCommand">
@@ -90,8 +90,9 @@
 												<asp:Label ID="ordTableStatus" Text='<%# DataBinder.Eval(Container.DataItem, "StatusDescription") %>' runat="server" />
 											</td>
 											<td class="align-middle d-flex justify-content-around">
-												<asp:LinkButton runat="server" ID="editOrd" CommandName="edit" CssClass="ordActionBtn"><i class="fas fa-pen-to-square text-warning-light"></i></asp:LinkButton>
-												<asp:LinkButton runat="server" ID="viewOrd" CommandName="view" CssClass="ordActionBtn"><i class="fas fa-magnifying-glass text-info"></i></asp:LinkButton>
+												<asp:LinkButton runat="server" ID="editOrd" CommandName="edit" CssClass="ordActionBtn" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="Edit"><i class="fas fa-pen-to-square text-warning-light"></i></asp:LinkButton>
+												<asp:LinkButton runat="server" ID="viewOrd" CommandName="view" CssClass="ordActionBtn" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="View"><i class="fas fa-magnifying-glass text-info"></i></asp:LinkButton>
+												<asp:LinkButton runat="server" ID="downloadOrd" CommandName="download" CssClass="ordActionBtn" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="Download"><i class="fas fa-download text-primary"></i></asp:LinkButton>
 											</td>
 										</tr>
 									</ItemTemplate>
@@ -711,14 +712,14 @@
 	<%-- JAVASCRIPT --%>
 	<script>
 		FormatForms();
-		SetTitleTooltips();
+		SetTooltips();
 		//DisableDDInitialOption();
 
 		var prm = Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
 			GetToastStatus();
 			FormatForms();
 			CurrencyFormatting();
-			SetTitleTooltips();
+			SetTooltips();
 			DisableDDInitialOption();
 		});
 
@@ -755,7 +756,7 @@
 			}
 		}
 
-		function SetTitleTooltips() {
+		function SetTooltips() {
 			var tooltipTitles = $('[data-overflow-tooltip="true"]');
 			$(tooltipTitles).each(function (i) {
 				if (this.scrollWidth > this.offsetWidth) {
@@ -765,7 +766,9 @@
 					});
 				}
 			});
+			$('[data-action-tooltip="true"]').tooltip();
 		}
+
 		function CurrencyFormatting() {
 			$("[data-type='currency']").each(function () {
 				formatCurrency($(this), "blur");

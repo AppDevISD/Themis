@@ -504,6 +504,11 @@ option:not([selected]):not(:disabled) {
 .tooltip {
 	--bs-tooltip-max-width: 400px;
 }
+
+.tooltip[x-placement=top] {
+	top: -5px !important;
+}
+
 .tooltip .arrow {
 	display: block;
 	width: var(--bs-tooltip-arrow-width);
@@ -531,6 +536,18 @@ option:not([selected]):not(:disabled) {
 		border-right-color: var(--bs-tooltip-bg);
 	}
 
+.bs-tooltip-top .arrow {
+	position: absolute;
+	bottom: -5px;
+	width: var(--bs-tooltip-arrow-height);
+	height: var(--bs-tooltip-arrow-width);
+}
+
+	.bs-tooltip-top .arrow::before {
+		bottom: -1px;
+		border-width: calc(var(--bs-tooltip-arrow-width) * 0.5) var(--bs-tooltip-arrow-height) calc(var(--bs-tooltip-arrow-width) * 0.5) 0;
+		border-right-color: var(--bs-tooltip-bg);
+	}
 
 /* --------------- Charts --------------- */
 .jsChart {

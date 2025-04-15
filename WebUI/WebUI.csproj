@@ -55,6 +55,7 @@
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\lib\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -174,6 +175,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Reports\OrdinanceTracking\OrdinanceData.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OrdinanceData.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Scripts\Helpers\CSharp\FileUploadSaving.asmx.cs">
       <DependentUpon>FileUploadSaving.asmx</DependentUpon>
       <SubType>Component</SubType>
@@ -230,7 +236,6 @@
       <DependentUpon>Site.Master</DependentUpon>
     </Compile>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="assets\Themes\ColorThemes.scss" />
     <Content Include="assets\Themes\bootstrap-scss\mixins\_color-mode.scss" />
@@ -252,6 +257,17 @@
     <Content Include="Scripts\ChartCode\ChartHTMLJS.json" />
     <Content Include="Scripts\ChartCode\DataOptions.json" />
     <None Include="Properties\PublishProfiles\TEST.pubxml" />
+    <Content Include="Reports\OrdinanceTracking\OrdinanceData.xsc">
+      <DependentUpon>OrdinanceData.xsd</DependentUpon>
+    </Content>
+    <None Include="Reports\OrdinanceTracking\OrdinanceData.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>OrdinanceData.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Reports\OrdinanceTracking\OrdinanceData.xss">
+      <DependentUpon>OrdinanceData.xsd</DependentUpon>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -264,6 +280,9 @@
       <Project>{b585274b-dd30-46f1-97a3-d2472aa8681e}</Project>
       <Name>DataLibrary</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Reports\OrdinanceTracking\Ordinance.rdlc" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
