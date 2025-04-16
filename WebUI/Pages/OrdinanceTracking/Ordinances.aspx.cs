@@ -15,6 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using Microsoft.Reporting.WebForms;
+using System.Data;
 
 namespace WebUI
 {
@@ -634,13 +635,23 @@ namespace WebUI
                     {
                         ord.ContractEndDate = Convert.ToDateTime(ord.ContractEndDate).ToString("MM/dd/yyyy");
                     }
+                    bool hideTables = true;
+                    if (revItems.Count > 0 || expItems.Count > 0)
+                    {
+                        hideTables = false;
+                    }
+                    RevExpBool HideTables = new RevExpBool() { HideTables = hideTables};
+
                     IEnumerable<Ordinance> ordData = new[] { ord };
+                    IEnumerable<RevExpBool> revExpBoolData = new[] { HideTables };
                     ReportDataSource ordinanceData = new ReportDataSource() { Name = "dsOrdinance", Value = ordData };
-                    ReportDataSource ordinanceRevAccountingData = new ReportDataSource() { Name = "dsRevAccounting", Value = revItems };
+                    ReportDataSource revExpTableBoolData = new ReportDataSource() { Name = "dsRevExpBool", Value = revExpBoolData };
+                    ReportDataSource ordinanceRevAccountingData = new ReportDataSource() { Name = "dsRevAccounting", Value = revItems,  };
                     ReportDataSource ordinanceExpAccountingData = new ReportDataSource() { Name = "dsExpAccounting", Value = expItems };
                     ReportDataSource ordinanceStatusData = new ReportDataSource() { Name = "dsOrdinanceStatus" };
 
                     viewer.LocalReport.DataSources.Add(ordinanceData);
+                    viewer.LocalReport.DataSources.Add(revExpTableBoolData);
                     viewer.LocalReport.DataSources.Add(ordinanceRevAccountingData);
                     viewer.LocalReport.DataSources.Add(ordinanceExpAccountingData);
                     viewer.LocalReport.DataSources.Add(ordinanceStatusData);
