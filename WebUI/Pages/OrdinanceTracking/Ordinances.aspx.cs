@@ -671,7 +671,7 @@ namespace WebUI
                     Response.ClearHeaders();
                     Response.Buffer = true;
                     Response.ContentType = "application/pdf";
-                    Response.AddHeader("content-disposition", "inline; filename=Bill.pdf");
+                    Response.AddHeader("content-disposition", $"attachment; filename=Ordinance_{ord.OrdinanceID}.pdf");
                     Response.BinaryWrite(bytes); // create the file
                     Context.ApplicationInstance.CompleteRequest();
                     break;
