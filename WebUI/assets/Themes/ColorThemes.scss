@@ -227,6 +227,7 @@ label:has(+ .form-control:disabled) {
 	border-color: rgba(0, 0, 0, 0.25);
 	box-shadow: none;
 }
+
 .setting-form-check-input input:checked:focus {
 	background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='3' fill='rgb(255, 255, 255)'/></svg>");
 	box-shadow: none;
@@ -422,7 +423,6 @@ input[type="file"]:hover::-webkit-file-upload-button {
 	color: #808080 !important;
 	background-color: transparent !important;
 }
-
 [data-bs-theme="light"] .token.namespace {
 	color: #994200 !important;
 	background-color: transparent !important;
