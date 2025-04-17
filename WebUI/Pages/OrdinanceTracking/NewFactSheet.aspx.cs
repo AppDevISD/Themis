@@ -600,6 +600,7 @@ namespace WebUI
                 OrdinanceStatus ordStatus = new OrdinanceStatus();
                 ordStatus.OrdinanceID = retVal;
                 ordStatus.StatusID = 1;
+                ordStatus.Signature = string.Empty;
                 ordStatus.LastUpdateBy = _user.Login;
                 ordStatus.LastUpdateDate = DateTime.Now;
                 ordStatus.EffectiveDate = DateTime.Now;

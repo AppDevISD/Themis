@@ -315,12 +315,12 @@ namespace DataLibrary
             }
             return ret;
         }
-        public int Expire<T>(T item, string sp) {
+        public int Expire<T>(T item, string sp, int skips = 0) {
             SqlConnection cn = new SqlConnection(Properties.Settings.Default["ThemisDB"].ToString());
 
             PropertyInfo[] classType = typeof(T).GetProperties();
             SqlCommand cmd = new SqlCommand(sp, cn);
-            foreach (var property in classType)
+            foreach (var property in classType.Skip(skips))
             {
                 cmd.Parameters.AddWithValue($"@p{property.Name}", property.GetValue(item));
             }

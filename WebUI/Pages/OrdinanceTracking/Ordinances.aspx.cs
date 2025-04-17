@@ -210,7 +210,7 @@ namespace WebUI
         {
             int ordID = Convert.ToInt32(hdnOrdID.Value);
             Ordinance ord = Factory.Instance.GetByID<Ordinance>(ordID, "sp_GetOrdinanceByOrdinanceID", "OrdinanceID");
-            int retVal = Factory.Instance.Expire<Ordinance>(ord, "sp_UpdateOrdinance");
+            int retVal = Factory.Instance.Expire<Ordinance>(ord, "sp_UpdateOrdinance", 1);
             if (retVal > 0)
             {
                 List<Ordinance> ord_list = new List<Ordinance>();
@@ -543,7 +543,7 @@ namespace WebUI
                     {
                         ddStatus.SelectedIndex = 0;
                     }
-                        hdnOrdStatusID.Value = ordStatus.OrdinanceStatusID.ToString();
+                    hdnOrdStatusID.Value = ordStatus.OrdinanceStatusID.ToString();
                     statusDiv.Visible = false;
                     requiredFieldDescriptor.Visible = true;
                     vendorNumber.Attributes["placeholder"] = "0123456789";
