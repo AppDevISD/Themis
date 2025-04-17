@@ -305,9 +305,11 @@ input[type="range"]:focus::-webkit-slider-thumb {
 [data-color-theme="base"] [data-control-type="shape-button"] {
 	color: var(--bs-body-color);
 }
+
 .active-bg-subtle {
 	fill: var(--active-bg-subtle);
 }
+
 .form-switch .form-check-input:not([name="colorThemeRadio"]), .form-switch .setting-form-check-input input {
 	background-color: var(--active-bg-subtle) !important;
 }
@@ -331,6 +333,7 @@ input[type="range"]:focus::-webkit-slider-thumb {
 .btn-close:focus {
 	box-shadow: none;
 }
+
 .btn-sort {
 	padding: unset !important;
 	width: 100%;
