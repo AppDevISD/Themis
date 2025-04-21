@@ -1232,7 +1232,7 @@ namespace WebUI
                             updateExpAccsVal = Factory.Instance.Update(accountingItem, "sp_UpdatelkAccounting");
                         }
                         else
-                        {
+                         {
                             int ret = Factory.Instance.Insert(accountingItem, "sp_InsertlkAccounting");
                             if (ret > 0)
                             {
@@ -1243,7 +1243,7 @@ namespace WebUI
                                 oaItem.LastUpdateDate = DateTime.Now;
                                 oaItem.EffectiveDate = DateTime.Now;
                                 oaItem.ExpirationDate = DateTime.MaxValue;
-                                updateRevAccsVal = Factory.Instance.Insert(oaItem, "sp_InsertOrdinance_Accounting");
+                                updateExpAccsVal = Factory.Instance.Insert(oaItem, "sp_InsertOrdinance_Accounting");
                             }
                             else
                             {

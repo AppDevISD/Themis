@@ -126,6 +126,10 @@
 											<asp:CheckBox runat="server" ID="adminSwitch" AutoPostBack="true" OnCheckedChanged="adminSwitch_CheckedChanged" CssClass="setting-form-check-input settingSwitch-input" />
 										</div>
 									</div>
+									<asp:LinkButton runat="server" ID="TriggerError" class='nav-link' OnClick="TriggerError_Click">
+										<span class="fas fa-triangle-exclamation"></span>
+										<p class="m-0 fs-6 noto-sans-semi-bold">Trigger Error</p>
+									</asp:LinkButton>
 								</div>
 							</div>
 						</nav>

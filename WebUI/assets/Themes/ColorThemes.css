@@ -888,3 +888,8 @@ input[type=file]:hover::-webkit-file-upload-button {
 .lh-1p5 {
   line-height: 1.5;
 }
+
+.support-link {
+  text-decoration: none;
+  color: var(--color-theme-text);
+}

@@ -73,6 +73,11 @@
 	animation: fade-slide-in 1s 2s ease-out forwards;
 }
 
+.fade-slide-down {
+	animation: fade-slide-down 0.75s ease-out forwards;
+}
+
+
 @keyframes fade-in {
 	from {
 		opacity: 0;
@@ -114,5 +119,15 @@
 	to {
 		opacity: 0;
 		transform: translateY(2%);
+	}
+}
+
+@keyframes fade-slide-down {
+	from {
+		transform: translateY(0%);
+	}
+
+	to {
+		transform: translateY(25%);
 	}
 }

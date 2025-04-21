@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Web;
 using System.Web.Routing;
+using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace WebUI
 {
@@ -9,6 +12,28 @@ namespace WebUI
         {
             // Code that runs on application startup
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+        }
+        protected void Application_Error(object sender, EventArgs e)
+        {
+            try
+            {
+                Exception exception = Server.GetLastError();
+                HttpException httpException = exception as HttpException;
+                StackTrace trace = new StackTrace(httpException.GetBaseException(), true);
+                Session["Error"] = httpException;
+                StackFrame frame = trace.GetFrame(0);
+                string file = frame.GetFileName();
+                int line = frame.GetFileLineNumber();
+                string lineText = Regex.Replace(frame.ToString(), @"\s+in\b.*", "");
+                Response.Redirect("./GenericError");
+            }
+            catch (Exception ex)
+            {
+                Exception exception = ex as HttpException;
+                HttpException httpException = exception as HttpException;
+                StackTrace trace = new StackTrace(httpException.GetBaseException(), true);
+            }
+            Server.ClearError();
         }
     }
 }

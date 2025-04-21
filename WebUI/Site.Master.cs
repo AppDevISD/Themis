@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 using System.Web.Services.Description;
+using System.Web;
 
 namespace WebUI
 {
@@ -76,7 +77,7 @@ namespace WebUI
         protected void Page_Load(object sender, EventArgs e)
         {
             SetPageTitle();
-            SetStartupActives();          
+            SetStartupActives();
         }
         public void GetUser()
         {
@@ -114,7 +115,7 @@ namespace WebUI
                     string fileName = new FileInfo(Page.Request.Url.LocalPath).Name;
                     string pageTitle = string.Concat(fileName.Select(x => Char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ');
                     PageTitle = pageTitle.Replace(" ", string.Empty).ToLower();
-                    Page.Title = $"{ProjectName} | {Page.Title}";
+                    Page.Title = $"{ProjectName} | {PageTitle}";
                     break;
             }
         }
@@ -138,6 +139,7 @@ namespace WebUI
             _user = (ADUser)Session["CurrentUser"];
             List<ADGroups> aDGroups = ISDFactory.Instance.GetAllGroupsByLoginName(_user.Login);
             adminSwitchDiv.Visible = aDGroups.Any(i => i.GroupName.Equals("PG-THEMIS-ADMIN"));
+            TriggerError.Visible = aDGroups.Any(i => i.GroupName.Equals("DG-PublicUtilities-InformationSystems-AppDev"));
         }
         protected void adminSwitch_CheckedChanged(object sender, EventArgs e)
         {
@@ -156,6 +158,11 @@ namespace WebUI
         protected void lnkInactivityRefresh_Click(object sender, EventArgs e)
         {
             //FOR INACTIVE REFRESHING - DO NOT REMOVE
+        }
+        protected void TriggerError_Click(object sender, EventArgs e)
+        {
+            int errorCode = 500;
+            throw new HttpException(errorCode, $"Error");
         }
     }
 }
