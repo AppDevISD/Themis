@@ -61,6 +61,7 @@ namespace WebUI
             {
                 RouteConfig.FolderRedirect(Response, Page);
             }
+
             GetUser();
         }
         protected void Page_PreRender(object sender, EventArgs e)
@@ -78,6 +79,10 @@ namespace WebUI
         {
             SetPageTitle();
             SetStartupActives();
+            if (Request.QueryString["err"] == null && Session["Error"] != null && !Response.IsRequestBeingRedirected)
+            {
+                Session.Remove("Error");
+            }
         }
         public void GetUser()
         {

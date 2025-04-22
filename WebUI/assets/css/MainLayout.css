@@ -458,6 +458,34 @@ option:not([selected]):not(:disabled) {
 	margin-bottom: 0.25rem;
 }
 
+.card {
+	min-height: 80vh;
+	border: var(--bs-border-width) solid var(--custom-theme-border-color);
+}
+
+.tab-pane .card {
+	min-height: 75vh;
+	max-width: 100%;
+	border: none;
+	border-radius: 15px;
+	border-top-left-radius: 0;
+}
+
+	.tab-pane .card .card-header {
+		border-top: var(--bs-border-width) solid var(--custom-theme-border-color);
+		border-left: var(--bs-border-width) solid var(--custom-theme-border-color);
+		border-right: var(--bs-border-width) solid var(--custom-theme-border-color);
+		border-top-left-radius: 0;
+		border-top-right-radius: 15px;
+	}
+
+	.tab-pane .card .card-body {
+		border: var(--bs-border-width) solid var(--custom-theme-border-color);
+		border-top: none;
+		border-bottom-left-radius: 15px;
+		border-bottom-right-radius: 15px;
+	}
+
 .card-header {
 	padding: 25px;
 }
@@ -465,6 +493,10 @@ option:not([selected]):not(:disabled) {
 	.card-header h3 {
 		margin: 0;
 	}
+
+.card-footer .panel, .card-footer .table {
+border-bottom: transparent;
+}
 
 .nav-tabs {
 	border-bottom: none;
@@ -489,6 +521,23 @@ option:not([selected]):not(:disabled) {
 	-webkit-box-shadow: 10px 10px 20px 0px rgba(0, 0, 0, .75);
 	-moz-box-shadow: 10px 10px 20px 0px rgba(0, 0, 0, .75);
 	box-shadow: 10px 10px 20px 0px rgba(0, 0, 0, .75);
+}
+
+.tab-border-header {
+	border: var(--bs-border-width) solid var(--custom-theme-border-color);
+	border-bottom: none;
+	border-top-right-radius: 15px;
+}
+
+.tab-border-body {
+	border: var(--bs-border-width) solid var(--custom-theme-border-color);
+	border-top: none;
+	border-bottom-left-radius: 15px;
+	border-bottom-right-radius: 15px;
+}
+
+.nav-tabs .nav-link.active {
+	border: var(--bs-border-width) solid var(--custom-theme-border-color);
 }
 
 .overlap-panels {
@@ -696,6 +745,11 @@ pre[class*=language-] {
 
 
 	/* ----------- Sections, Containers, Cards, & Tabs ----------- */
+	.custom-tab-div {
+		max-width: 1320px;
+		margin: 0 auto;
+	}	
+
 	.col-md-1hf {
 		flex: 0 0 auto;
 		width: 4.166666666%;

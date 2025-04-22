@@ -23,7 +23,7 @@ namespace WebUI
     {
         private ADUser _user = new ADUser();
         private UserInfo userInfo = new UserInfo();
-        private string emailList = "NewFactSheetEmailList";
+        private readonly string emailList = "NewFactSheetEmailList";
         public string toastColor;
         public string toastMessage;
 
@@ -441,6 +441,7 @@ namespace WebUI
             {
                 case "view":
                     ordView.Attributes["readonly"] = "true";
+                    ordinanceTabs.Visible = true;
                     ddStatusDiv.Visible = false;
                     statusDiv.Visible = true;
                     requiredFieldDescriptor.Visible = false;
@@ -532,6 +533,7 @@ namespace WebUI
                     break;
                 case "edit":
                     ordView.Attributes["readonly"] = "false";
+                    ordinanceTabs.Visible = false;
                     ddStatusDiv.Visible = true;
                     ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
                     ord.StatusDescription = ordStatus.StatusDescription;
@@ -672,7 +674,7 @@ namespace WebUI
                     Response.Buffer = true;
                     Response.ContentType = "application/pdf";
                     Response.AddHeader("content-disposition", $"attachment; filename=Ordinance_{ord.OrdinanceID}.pdf");
-                    Response.BinaryWrite(bytes); // create the file
+                    Response.BinaryWrite(bytes); // create the file                    
                     Context.ApplicationInstance.CompleteRequest();
                     break;
             }

@@ -25,7 +25,8 @@ namespace WebUI
                 string file = frame.GetFileName();
                 int line = frame.GetFileLineNumber();
                 string lineText = Regex.Replace(frame.ToString(), @"\s+in\b.*", "");
-                Response.Redirect("./GenericError");
+                int httpCode = httpException?.GetHttpCode() ?? 500;
+                Response.Redirect($"./GenericError?err={httpCode}");
             }
             catch (Exception ex)
             {
