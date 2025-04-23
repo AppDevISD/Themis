@@ -23,7 +23,7 @@ namespace WebUI
     {
         private ADUser _user = new ADUser();
         private UserInfo userInfo = new UserInfo();
-        private readonly string emailList = "NewFactSheetEmailList";
+        private readonly string emailList = HttpContext.Current.IsDebuggingEnabled ? "NewFactSheetEmailListTEST" : "NewFactSheetEmailList";
         public string toastColor;
         public string toastMessage;
 
@@ -78,6 +78,8 @@ namespace WebUI
 
             GetUploadedImages();
             SubmitStatus();
+
+            ConsoleLog(Factory.Instance.EmailListString(emailList));
         }
         protected void SetStartupActives()
         {
@@ -668,12 +670,14 @@ namespace WebUI
 
                     byte[] bytes = viewer.LocalReport.Render("PDF", null, out mimeType, out encoding, out extension, out streamIds, out warnings);
 
+                    string delivery = HttpContext.Current.IsDebuggingEnabled ? "inline" : "attachment";
+
                     Response.Clear();
                     Response.ClearContent();
                     Response.ClearHeaders();
                     Response.Buffer = true;
                     Response.ContentType = "application/pdf";
-                    Response.AddHeader("content-disposition", $"attachment; filename=Ordinance_{ord.OrdinanceID}.pdf");
+                    Response.AddHeader("content-disposition", $"{delivery}; filename=Ordinance_{ord.OrdinanceID}.pdf");
                     Response.BinaryWrite(bytes); // create the file                    
                     Context.ApplicationInstance.CompleteRequest();
                     break;

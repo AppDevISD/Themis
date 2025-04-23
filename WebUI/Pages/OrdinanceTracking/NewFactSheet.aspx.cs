@@ -15,7 +15,7 @@ namespace WebUI
     public partial class NewFactSheet : InactiveRefreshPage
     {
         private ADUser _user = new ADUser();
-        private readonly string emailList = "NewFactSheetEmailList";
+        private readonly string emailList = HttpContext.Current.IsDebuggingEnabled ? "NewFactSheetEmailListTEST" : "NewFactSheetEmailList";
         public string toastColor;
         public string toastMessage;
 
