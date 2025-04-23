@@ -22,10 +22,10 @@
 &lt;/SerializableConnectionString&gt;</DesignTimeValue>
       <Value Profile="(Default)">Data Source=gthintdbt6\sqltest2017;Initial Catalog=THEMIS;Integrated Security=True</Value>
     </Setting>
-    <Setting Name="NewFactSheetEmailList" Type="System.String" Scope="Application">
+    <Setting Name="NewFactSheetEmailListPROD" Type="System.String" Scope="Application">
       <Value Profile="(Default)">gregory.moredock@springfield.il.us,mike.lesko@cwlp.com</Value>
     </Setting>
-    <Setting Name="NewFactSheetEmailListTEST" Type="System.String" Scope="Application">
+    <Setting Name="NewFactSheetEmailList" Type="System.String" Scope="Application">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="EmployeeDirectoryDB" Type="(Connection string)" Scope="Application">
