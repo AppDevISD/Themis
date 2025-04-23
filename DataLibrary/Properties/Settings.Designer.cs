@@ -66,18 +66,18 @@ namespace DataLibrary.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("gregory.moredock@springfield.il.us,mike.lesko@cwlp.com")]
-        public string NewFactSheetEmailListPROD {
+        public string NewFactSheetEmailList {
             get {
-                return ((string)(this["NewFactSheetEmailListPROD"]));
+                return ((string)(this["NewFactSheetEmailList"]));
             }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string NewFactSheetEmailList {
+        public string NewFactSheetEmailListTEST {
             get {
-                return ((string)(this["NewFactSheetEmailList"]));
+                return ((string)(this["NewFactSheetEmailListTEST"]));
             }
         }
         

@@ -509,7 +509,7 @@
 														<%-- REVENUE TABLE REPEATER --%>
 														<asp:Repeater runat="server" ID="rpRevenueTable" OnItemCommand="rpAccountingTable_ItemCommand">
 															<ItemTemplate>
-																<tr>
+																<tr class="upperCaseField">
 																	<td style="vertical-align: middle">
 																		<asp:HiddenField runat="server" ID="hdnRevID" Value='<%# DataBinder.Eval(Container.DataItem, "AccountingID") %>' />
 																		<asp:HiddenField runat="server" ID="hdnRevIndex" Value='<%# Container.ItemIndex %>' />
@@ -576,7 +576,7 @@
 														<%-- EXPENDITURE TABLE REPEATER --%>
 														<asp:Repeater runat="server" ID="rpExpenditureTable" OnItemCommand="rpAccountingTable_ItemCommand">
 															<ItemTemplate>
-																<tr>
+																<tr class="upperCaseField">
 																	<td style="vertical-align: middle">
 																		<asp:HiddenField runat="server" ID="hdnExpID" Value='<%# DataBinder.Eval(Container.DataItem, "AccountingID") %>' />
 																		<asp:HiddenField runat="server" ID="hdnExpIndex" Value='<%# Container.ItemIndex %>' />

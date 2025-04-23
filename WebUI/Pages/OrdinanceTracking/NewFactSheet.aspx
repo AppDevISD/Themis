@@ -378,7 +378,7 @@
 											<%-- REVENUE TABLE REPEATER --%>
 											<asp:Repeater runat="server" ID="rpRevenueTable" OnItemCommand="rpAccountingTable_ItemCommand" >
 												<ItemTemplate>
-													<tr>
+													<tr class="upperCaseField">
 														<td style="vertical-align: middle">
 															<asp:HiddenField runat="server" ID="hdnRevID" Value='<%# Container.ItemIndex %>' />
 															<%--<asp:DropDownList ID="revenueFundCode" runat="server" CssClass="form-select" required="true" ValidateRequestMode="Enabled" DataSource='<%# fundCodes %>' SelectedValue='<%# DataBinder.Eval(Container.DataItem, "FundCode") %>'></asp:DropDownList>--%>
@@ -442,9 +442,9 @@
 										<%-- TABLE BODY --%>
 										<tbody>
 											<%-- EXPENDITURE TABLE REPEATER --%>
-											<asp:Repeater runat="server" ID="rpExpenditureTable" OnItemCommand="rpAccountingTable_ItemCommand">
+											<asp:Repeater runat="server" ID="rpExpenditureTable" OnItemCommand="rpAccountingTable_ItemCommand" >
 												<ItemTemplate>
-													<tr>
+													<tr class="upperCaseField">
 														<td style="vertical-align: middle">
 															<asp:HiddenField runat="server" ID="hdnExpID" Value='<%# Container.ItemIndex %>' />
 															<%--<asp:DropDownList ID="expenditureFundCode" runat="server" CssClass="form-select" required="true" ValidateRequestMode="Enabled" DataSource='<%# fundCodes %>' SelectedValue='<%# DataBinder.Eval(Container.DataItem, "FundCode") %>'></asp:DropDownList>--%>

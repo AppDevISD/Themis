@@ -22,9 +22,6 @@ namespace WebUI
                 StackTrace trace = new StackTrace(httpException.GetBaseException(), true);
                 Session["Error"] = httpException;
                 StackFrame frame = trace.GetFrame(0);
-                string file = frame.GetFileName();
-                int line = frame.GetFileLineNumber();
-                string lineText = Regex.Replace(frame.ToString(), @"\s+in\b.*", "");
                 int httpCode = httpException?.GetHttpCode() ?? 500;
                 Response.Redirect($"./GenericError?err={httpCode}");
             }

@@ -434,6 +434,10 @@ option:not([selected]):not(:disabled) {
 	cursor: pointer !important;
 }
 
+.upperCaseField input {
+	text-transform: uppercase;
+}
+
 
 
 /* --------------- SECTIONS, CONTAINERS, CARDS, & TABS --------------- */

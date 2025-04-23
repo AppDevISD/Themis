@@ -16,7 +16,7 @@ namespace WebUI
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["Error"] != null && Response.IsRequestBeingRedirected)
+            if (Session["Error"] != null)
             {
                 HttpException httpException = (HttpException)Session["Error"];
                 StackTrace trace = new StackTrace(httpException.InnerException.GetBaseException(), true);
@@ -32,7 +32,7 @@ namespace WebUI
                 errorMessageLine.InnerHtml = $"File: {file}<br />Line ({line}:{column}): {lineText}";
                 errorMessage.InnerHtml = CodeDict["message"].ToString();
             }
-            else if (Request.QueryString["err"] != null)
+            else if (Request.QueryString["err"] != null && Session["Error"] == null)
             {
                 int httpCode = Convert.ToInt32(Request.QueryString["err"].ToString());
                 Dictionary<string, object> CodeDict = GetErrorLabel(httpCode, "");
