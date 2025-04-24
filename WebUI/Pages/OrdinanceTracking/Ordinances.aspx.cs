@@ -22,7 +22,7 @@ namespace WebUI
     public partial class Ordinances : System.Web.UI.Page
     {
         private ADUser _user = new ADUser();
-        private UserInfo userInfo = new UserInfo();
+        public UserInfo userInfo = new UserInfo();
         private readonly string emailList = HttpContext.Current.IsDebuggingEnabled ? "NewFactSheetEmailListTEST" : "NewFactSheetEmailList";
         public string toastColor;
         public string toastMessage;
@@ -89,7 +89,8 @@ namespace WebUI
         public void GetStartupData(bool isAdmin)
         {
             List<Ordinance> ord_list = new List<Ordinance>();
-            ord_list = Factory.Instance.GetAll<Ordinance>("sp_GetOrdinanceByEffective");
+            //ord_list = Factory.Instance.GetAll<Ordinance>("sp_GetOrdinanceByEffective");
+            ord_list = Factory.Instance.GetAllLookup<Ordinance>(0, "sp_GetOrdinanceByFilteredStatusID", "StatusID");
             if (ord_list.Count > 0)
             {
                 foreach (Ordinance ord in ord_list)
@@ -124,7 +125,7 @@ namespace WebUI
             {
                 var value = statuses[status];
                 ListItem newItem = new ListItem(status, value);
-                if (newItem.Text != "New")
+                if (newItem.Text != "New" && newItem.Text != "Deleted")
                 {
                     ddStatus.Items.Add(newItem);
                 }
@@ -210,19 +211,37 @@ namespace WebUI
         {
             int ordID = Convert.ToInt32(hdnOrdID.Value);
             Ordinance ord = Factory.Instance.GetByID<Ordinance>(ordID, "sp_GetOrdinanceByOrdinanceID", "OrdinanceID");
+            OrdinanceStatus ordStatus = new OrdinanceStatus();
+            ordStatus.OrdinanceStatusID = Convert.ToInt32(hdnOrdStatusID.Value);
+            ordStatus.OrdinanceID = Convert.ToInt32(hdnOrdID.Value);
+            ordStatus.StatusID = 7;
+            ordStatus.Signature = string.Empty;
+            ordStatus.LastUpdateBy = _user.Login;
+            ordStatus.LastUpdateDate = DateTime.Now;
+            ordStatus.EffectiveDate = Convert.ToDateTime(hdnEffectiveDate.Value);
+            ordStatus.ExpirationDate = DateTime.MaxValue;
             int retVal = Factory.Instance.Expire<Ordinance>(ord, "sp_UpdateOrdinance", 1);
             if (retVal > 0)
             {
-                List<Ordinance> ord_list = new List<Ordinance>();
-                ord_list = Session["ord_list"] as List<Ordinance>;
-                ord_list = Factory.Instance.GetAll<Ordinance>("sp_GetOrdinanceByEffective");
-                rpOrdinanceTable.DataSource = ord_list;
-                rpOrdinanceTable.DataBind();
-                Session["ord_list"] = ord_list;
-                Session["SubmitStatus"] = "success";
-                Session["ToastColor"] = "text-bg-success";
-                Session["ToastMessage"] = "Entry Deleted!";
-                Response.Redirect("./Ordinances");
+                int statusVal = Factory.Instance.Update(ordStatus, "sp_UpdateOrdinance_Status", 1);
+                if (statusVal > 0)
+                {
+                    List<Ordinance> ord_list = new List<Ordinance>();
+                    ord_list = Factory.Instance.GetAllLookup<Ordinance>(0, "sp_GetOrdinanceByFilteredStatusID", "StatusID");
+                    rpOrdinanceTable.DataSource = ord_list;
+                    rpOrdinanceTable.DataBind();
+                    Session["ord_list"] = ord_list;
+                    Session["SubmitStatus"] = "success";
+                    Session["ToastColor"] = "text-bg-success";
+                    Session["ToastMessage"] = "Entry Deleted!";
+                    Response.Redirect("./Ordinances");
+                }
+                else
+                {
+                    Session["SubmitStatus"] = "error";
+                    Session["ToastColor"] = "text-bg-danger";
+                    Session["ToastMessage"] = "Something went wrong while deleting!";
+                }
             }
             else
             {
@@ -513,13 +532,17 @@ namespace WebUI
                             statusIcon.Attributes["class"] = "fas fa-sparkles text-primary";
                             statusLabel.Attributes["class"] = "text-primary";
                             break;
+                        case "Pending":
+                            statusIcon.Attributes["class"] = "fas fa-hourglass-clock text-warning-light";
+                            statusLabel.Attributes["class"] = "text-warning-light";
+                            break;
                         case "Under Review":
-                            statusIcon.Attributes["class"] = "fas fa-hourglass-clock text-info";
+                            statusIcon.Attributes["class"] = "fas fa-memo-circle-info text-info";
                             statusLabel.Attributes["class"] = "text-info";
                             break;
                         case "Being Held":
-                            statusIcon.Attributes["class"] = "fas fa-triangle-exclamation text-warning-light";
-                            statusLabel.Attributes["class"] = "text-warning-light";
+                            statusIcon.Attributes["class"] = "fas fa-triangle-exclamation text-hazard";
+                            statusLabel.Attributes["class"] = "text-hazard";
                             break;
                         case "Drafted":
                             statusIcon.Attributes["class"] = "fas fa-badge-check text-success";
@@ -529,24 +552,65 @@ namespace WebUI
                             statusIcon.Attributes["class"] = "fas fa-ban text-danger";
                             statusLabel.Attributes["class"] = "text-danger";
                             break;
+                        case "Deleted":
+                            statusIcon.Attributes["class"] = "fas fa-trash-xmark text-danger";
+                            statusLabel.Attributes["class"] = "text-danger";
+                            break;
                     }
                     break;
                 case "edit":
                     ordView.Attributes["readonly"] = "false";
                     ordinanceTabs.Visible = false;
-                    ddStatusDiv.Visible = true;
+                    ddStatusDiv.Visible = !userInfo.IsAdmin || userInfo.UserView ? false : true;
                     ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
                     ord.StatusDescription = ordStatus.StatusDescription;
-                    if (ordStatus.StatusDescription != "New")
+                    bool adminUser = (userInfo.IsAdmin || !userInfo.UserView) ? true : false;
+                    if (ordStatus.StatusDescription != "New" && adminUser)
                     {
                         ddStatus.SelectedValue = ordStatus.StatusID.ToString();
+                    }
+                    else if (ordStatus.StatusDescription == "New" && adminUser)
+                    {
+                        hdnStatusID.Value = ordStatus.StatusID.ToString();
                     }
                     else
                     {
                         ddStatus.SelectedIndex = 0;
                     }
+                        statusLabel.InnerHtml = ord.StatusDescription;
+                    switch (ord.StatusDescription)
+                    {
+                        case "New":
+                            statusIcon.Attributes["class"] = "fas fa-sparkles text-primary";
+                            statusLabel.Attributes["class"] = "text-primary";
+                            break;
+                        case "Pending":
+                            statusIcon.Attributes["class"] = "fas fa-hourglass-clock text-warning-light";
+                            statusLabel.Attributes["class"] = "text-warning-light";
+                            break;
+                        case "Under Review":
+                            statusIcon.Attributes["class"] = "fas fa-memo-circle-info text-info";
+                            statusLabel.Attributes["class"] = "text-info";
+                            break;
+                        case "Being Held":
+                            statusIcon.Attributes["class"] = "fas fa-triangle-exclamation text-hazard";
+                            statusLabel.Attributes["class"] = "text-hazard";
+                            break;
+                        case "Drafted":
+                            statusIcon.Attributes["class"] = "fas fa-badge-check text-success";
+                            statusLabel.Attributes["class"] = "text-success";
+                            break;
+                        case "Rejected":
+                            statusIcon.Attributes["class"] = "fas fa-ban text-danger";
+                            statusLabel.Attributes["class"] = "text-danger";
+                            break;
+                        case "Deleted":
+                            statusIcon.Attributes["class"] = "fas fa-trash-xmark text-danger";
+                            statusLabel.Attributes["class"] = "text-danger";
+                            break;
+                    }
                     hdnOrdStatusID.Value = ordStatus.OrdinanceStatusID.ToString();
-                    statusDiv.Visible = false;
+                    statusDiv.Visible = !userInfo.IsAdmin || userInfo.UserView ? true : false;
                     requiredFieldDescriptor.Visible = true;
                     vendorNumber.Attributes["placeholder"] = "0123456789";
                     contractTerm.Attributes["placeholder"] = "Calculating Term...";
@@ -1039,7 +1103,14 @@ namespace WebUI
             OrdinanceStatus ordStatus = new OrdinanceStatus();
             ordStatus.OrdinanceStatusID = Convert.ToInt32(hdnOrdStatusID.Value);
             ordStatus.OrdinanceID = Convert.ToInt32(hdnOrdID.Value);
-            ordStatus.StatusID = Convert.ToInt32(ddStatus.SelectedValue);
+            try
+            {
+                ordStatus.StatusID = Convert.ToInt32(ddStatus.SelectedValue);
+            }
+            catch (Exception)
+            {
+                ordStatus.StatusID = Convert.ToInt32(hdnStatusID.Value);
+            }
             ordStatus.Signature = string.Empty;
             ordStatus.LastUpdateBy = _user.Login;
             ordStatus.LastUpdateDate = DateTime.Now;
@@ -1410,7 +1481,8 @@ namespace WebUI
                         switch (filterStatus.SelectedValue.Equals(""))
                         {
                             case true:
-                                filteredList = Factory.Instance.GetAll<Ordinance>("sp_GetOrdinanceByEffective");
+                                //filteredList = Factory.Instance.GetAll<Ordinance>("sp_GetOrdinanceByEffective");
+                                filteredList = Factory.Instance.GetAllLookup<Ordinance>(0, "sp_GetOrdinanceByFilteredStatusID", "StatusID");
                                 if (filteredList.Count > 0)
                                 {
                                     foreach (Ordinance ord in filteredList)
@@ -1422,16 +1494,32 @@ namespace WebUI
                                 break;
 
                             case false:
-                                filteredList = Factory.Instance.GetAllLookup<Ordinance>(Convert.ToInt32(filterStatus.SelectedValue), "sp_GetOrdinanceByStatusID", "StatusID");
-                                if (filteredList.Count > 0)
+                                if (filterStatus.SelectedValue != "7")
                                 {
-                                    foreach (Ordinance ord in filteredList)
+                                    filteredList = Factory.Instance.GetAllLookup<Ordinance>(Convert.ToInt32(filterStatus.SelectedValue), "sp_GetOrdinanceByStatusID", "StatusID");
+                                    if (filteredList.Count > 0)
                                     {
-                                        OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
-                                        ord.StatusDescription = ordStatus.StatusDescription;
+                                        foreach (Ordinance ord in filteredList)
+                                        {
+                                            OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
+                                            ord.StatusDescription = ordStatus.StatusDescription;
+                                        }
                                     }
                                 }
-                                break;
+                                else
+                                {
+                                    filteredList = Factory.Instance.GetAll<Ordinance>("sp_GetDeletedOrdinanceByEffective");
+
+                                    if (filteredList.Count > 0)
+                                    {
+                                        foreach (Ordinance ord in filteredList)
+                                        {
+                                            OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
+                                            ord.StatusDescription = ordStatus.StatusDescription;
+                                        }
+                                    }
+                                }
+                                    break;
                         }
                         filteredList = FilterList(filteredList, commandName, commandArgument);
                     }
@@ -1440,7 +1528,8 @@ namespace WebUI
                         switch (filterStatus.SelectedValue.Equals(""))
                         {
                             case true:
-                                filteredList = Factory.Instance.GetAll<Ordinance>("sp_GetOrdinanceByEffective");
+                                //filteredList = Factory.Instance.GetAll<Ordinance>("sp_GetOrdinanceByEffective");
+                                filteredList = Factory.Instance.GetAllLookup<Ordinance>(0, "sp_GetOrdinanceByFilteredStatusID", "StatusID");
                                 if (filteredList.Count > 0)
                                 {
                                     foreach (Ordinance ord in filteredList)
@@ -1453,13 +1542,29 @@ namespace WebUI
                                 break;
 
                             case false:
-                                filteredList = Factory.Instance.GetAllLookup<Ordinance>(Convert.ToInt32(filterStatus.SelectedValue), "sp_GetOrdinanceByStatusID", "StatusID");
-                                if (filteredList.Count > 0)
+                                if (filterStatus.SelectedValue != "7")
                                 {
-                                    foreach (Ordinance ord in filteredList)
+                                    filteredList = Factory.Instance.GetAllLookup<Ordinance>(Convert.ToInt32(filterStatus.SelectedValue), "sp_GetOrdinanceByStatusID", "StatusID");
+                                    if (filteredList.Count > 0)
                                     {
-                                        OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
-                                        ord.StatusDescription = ordStatus.StatusDescription;
+                                        foreach (Ordinance ord in filteredList)
+                                        {
+                                            OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
+                                            ord.StatusDescription = ordStatus.StatusDescription;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    filteredList = Factory.Instance.GetAll<Ordinance>("sp_GetDeletedOrdinanceByEffective");
+
+                                    if (filteredList.Count > 0)
+                                    {
+                                        foreach (Ordinance ord in filteredList)
+                                        {
+                                            OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
+                                            ord.StatusDescription = ordStatus.StatusDescription;
+                                        }
                                     }
                                 }
                                 BindDataRepeaterPagination("no", filteredList);
@@ -1471,40 +1576,77 @@ namespace WebUI
                 case "status":
                     if (filterStatus.SelectedValue != "")
                     {
-                        filteredList = Factory.Instance.GetAllLookup<Ordinance>(Convert.ToInt32(dropDown.SelectedValue), "sp_GetOrdinanceByStatusID", "StatusID");
-
-                        if (filteredList.Count > 0)
+                        if (filterStatus.SelectedValue != "7")
                         {
-                            foreach (Ordinance ord in filteredList)
+                            filteredList = Factory.Instance.GetAllLookup<Ordinance>(Convert.ToInt32(dropDown.SelectedValue), "sp_GetOrdinanceByStatusID", "StatusID");
+
+                            if (filteredList.Count > 0)
                             {
-                                OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
-                                ord.StatusDescription = ordStatus.StatusDescription;
+                                foreach (Ordinance ord in filteredList)
+                                {
+                                    OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
+                                    ord.StatusDescription = ordStatus.StatusDescription;
+                                }
+                            }
+
+                            switch (filterDepartment.SelectedValue.Equals(""))
+                            {
+                                case true:
+                                    switch (userInfo.IsAdmin && !userInfo.UserView)
+                                    {
+                                        case true:
+                                            BindDataRepeaterPagination("no", filteredList);
+                                            break;
+
+                                        case false:
+                                            filteredList = FilterList(filteredList, "department", userInfo.UserDepartmentName);
+                                            break;
+                                    }
+                                    break;
+
+                                case false:
+                                    filteredList = FilterList(filteredList, "department", filterDepartment.SelectedItem.ToString());
+                                    break;
                             }
                         }
-
-                        switch (filterDepartment.SelectedValue.Equals(""))
+                        else
                         {
-                            case true:
-                                switch (userInfo.IsAdmin && !userInfo.UserView)
+                            filteredList = Factory.Instance.GetAll<Ordinance>("sp_GetDeletedOrdinanceByEffective");
+
+                            if (filteredList.Count > 0)
+                            {
+                                foreach (Ordinance ord in filteredList)
                                 {
-                                    case true:
-                                        BindDataRepeaterPagination("no", filteredList);
-                                        break;
-
-                                    case false:
-                                        filteredList = FilterList(filteredList, "department", userInfo.UserDepartmentName);
-                                        break;
+                                    OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
+                                    ord.StatusDescription = ordStatus.StatusDescription;
                                 }
-                                break;
+                            }
 
-                            case false:
-                                filteredList = FilterList(filteredList, "department", filterDepartment.SelectedItem.ToString());
-                                break;
+                            switch (filterDepartment.SelectedValue.Equals(""))
+                            {
+                                case true:
+                                    switch (userInfo.IsAdmin && !userInfo.UserView)
+                                    {
+                                        case true:
+                                            BindDataRepeaterPagination("no", filteredList);
+                                            break;
+
+                                        case false:
+                                            filteredList = FilterList(filteredList, "department", userInfo.UserDepartmentName);
+                                            break;
+                                    }
+                                    break;
+
+                                case false:
+                                    filteredList = FilterList(filteredList, "department", filterDepartment.SelectedItem.ToString());
+                                    break;
+                            }
                         }
                     }
                     else
                     {
-                        filteredList = Factory.Instance.GetAll<Ordinance>("sp_GetOrdinanceByEffective");
+                        //filteredList = Factory.Instance.GetAll<Ordinance>("sp_GetOrdinanceByEffective");
+                        filteredList = Factory.Instance.GetAllLookup<Ordinance>(0, "sp_GetOrdinanceByFilteredStatusID", "StatusID");
                         if (filteredList.Count > 0)
                         {
                             foreach (Ordinance ord in filteredList)

@@ -878,11 +878,19 @@ input[type=file]:hover::-webkit-file-upload-button {
 }
 
 [data-bs-theme=light] .text-warning-light {
-  color: var(--bs-warning-light);
+  color: rgb(221.2, 165.9, 0);
 }
 
 [data-bs-theme=dark] .text-warning-light {
   color: var(--bs-warning);
+}
+
+[data-bs-theme=light] .text-hazard {
+  color: rgb(230.2405063291, 105.8126582278, 1.9594936709);
+}
+
+[data-bs-theme=dark] .text-hazard {
+  color: #fd7e14;
 }
 
 .lh-1p5 {

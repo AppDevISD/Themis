@@ -90,7 +90,7 @@
 												<asp:Label ID="ordTableStatus" Text='<%# DataBinder.Eval(Container.DataItem, "StatusDescription") %>' runat="server" />
 											</td>
 											<td class="align-middle d-flex justify-content-around">
-												<asp:LinkButton runat="server" ID="editOrd" CommandName="edit" CssClass="ordActionBtn" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="Edit"><i class="fas fa-pen-to-square text-warning-light"></i></asp:LinkButton>
+												<asp:LinkButton runat="server" ID="editOrd" CommandName="edit" CssClass="ordActionBtn" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="Edit" Visible='<%# !DataBinder.Eval(Container.DataItem, "StatusDescription").Equals("Deleted") %>'><i class="fas fa-pen-to-square text-warning-light"></i></asp:LinkButton>
 												<asp:LinkButton runat="server" ID="viewOrd" CommandName="view" CssClass="ordActionBtn" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="View"><i class="fas fa-magnifying-glass text-info"></i></asp:LinkButton>
 												<asp:LinkButton runat="server" ID="downloadOrd" CommandName="download" CssClass="ordActionBtn" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="Download"><i class="fas fa-download text-primary"></i></asp:LinkButton>
 											</td>
@@ -158,6 +158,7 @@
 										<label for="ddStatus">Status</label>
 										<asp:DropDownList ID="ddStatus" runat="server" AutoPostBack="false" CssClass="form-select" required="true" ValidateRequestMode="Enabled" ></asp:DropDownList>
 										<asp:HiddenField runat="server" ID="hdnOrdStatusID" />
+										<asp:HiddenField runat="server" ID="hdnStatusID" />
 									</div>
 									<div runat="server" id="statusDiv" class="d-flex fw-bold fs-4 justify-content-end">
 										<label runat="server" id="statusLabel"></label>
