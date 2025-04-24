@@ -78,8 +78,6 @@ namespace WebUI
 
             GetUploadedImages();
             SubmitStatus();
-
-            ConsoleLog(Factory.Instance.EmailListString(emailList));
         }
         protected void SetStartupActives()
         {

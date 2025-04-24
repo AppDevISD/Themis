@@ -43,10 +43,6 @@ namespace DataLibrary
             _cn.Close();
         }
 
-        public string EmailListString(string emailList)
-        {
-            return Properties.Settings.Default[emailList].ToString();
-        }
 
 
         // GETS //
