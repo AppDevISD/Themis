@@ -577,36 +577,43 @@ namespace WebUI
                     {
                         ddStatus.SelectedIndex = 0;
                     }
-                        statusLabel.InnerHtml = ord.StatusDescription;
+                    statusLabel.InnerHtml = ord.StatusDescription;
                     switch (ord.StatusDescription)
                     {
                         case "New":
                             statusIcon.Attributes["class"] = "fas fa-sparkles text-primary";
                             statusLabel.Attributes["class"] = "text-primary";
+                            signatureSection.Visible = false;
                             break;
                         case "Pending":
                             statusIcon.Attributes["class"] = "fas fa-hourglass-clock text-warning-light";
                             statusLabel.Attributes["class"] = "text-warning-light";
+                            signatureSection.Visible = true;
                             break;
                         case "Under Review":
                             statusIcon.Attributes["class"] = "fas fa-memo-circle-info text-info";
                             statusLabel.Attributes["class"] = "text-info";
+                            signatureSection.Visible = true;
                             break;
                         case "Being Held":
                             statusIcon.Attributes["class"] = "fas fa-triangle-exclamation text-hazard";
                             statusLabel.Attributes["class"] = "text-hazard";
+                            signatureSection.Visible = true;
                             break;
                         case "Drafted":
                             statusIcon.Attributes["class"] = "fas fa-badge-check text-success";
                             statusLabel.Attributes["class"] = "text-success";
+                            signatureSection.Visible = true;
                             break;
                         case "Rejected":
                             statusIcon.Attributes["class"] = "fas fa-ban text-danger";
                             statusLabel.Attributes["class"] = "text-danger";
+                            signatureSection.Visible = true;
                             break;
                         case "Deleted":
                             statusIcon.Attributes["class"] = "fas fa-trash-xmark text-danger";
                             statusLabel.Attributes["class"] = "text-danger";
+                            signatureSection.Visible = true;
                             break;
                     }
                     hdnOrdStatusID.Value = ordStatus.OrdinanceStatusID.ToString();

@@ -177,8 +177,12 @@
 
 
 /* --------------- Forms --------------- */
-.form-control, .form-select {
+.form-control, .form-select, .input-group-text {
 	border-color: var(--custom-theme-border-color);
+}
+
+.input-group-text {
+	background-color: var(--active-bg-subtle);
 }
 
 .form-control:read-only {

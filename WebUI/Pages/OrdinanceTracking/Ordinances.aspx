@@ -667,6 +667,169 @@
 										</div>
 									</div>
 
+									<%-- TENTH SECTION --%>
+									<div runat="server" id="signatureSection" class="form-section">
+										<%-- FIRST ROW --%>
+										<div class="row mb-3">
+											<%-- FUNDS CHECK BY --%>
+											<div class="col-md-12">
+												<div class="form-group">
+													<label for="fundsCheckByGroup">Funds Check By</label>
+													<div id="fundsCheckByGroup" class="row">
+														<div runat="server" id="fundsCheckByBtnDiv">
+															<%-- SIGN BUTTON --%>
+															<div class="col-md-6">
+																<asp:Button runat="server" ID="fundsCheckByBtn" UseSubmitBehavior="false" CssClass="btn btn-primary float-start" Width="50%" Text="Sign" data-toggle="modal" data-target="#signatureModal" />
+															</div>
+														</div>
+														<div runat="server" id="fundsCheckByInputGroup" visible="false">
+															<div class="col-md-4">
+																<div class="input-group">
+																	<span class="input-group-text fas fa-signature"></span>
+																	<asp:TextBox runat="server" ID="fundsCheckBySig" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" required="true"></asp:TextBox>
+																</div>
+															</div>
+															<div class="col-md-2">
+																<div class="input-group">
+																	<span class="input-group-text fas fa-calendar-days"></span>
+																	<asp:TextBox runat="server" ID="fundsCheckByDate" CssClass="form-control" TextMode="Date"></asp:TextBox>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+
+										<%-- SECOND ROW --%>
+										<div class="row mb-3">
+											<%-- DIRECTOR/SUPERVISOR --%>
+											<div class="col-md-12">
+												<div class="form-group">
+													<label for="directorSupervisorGroup">Director/Supervisor</label>
+													<div id="directorSupervisorGroup" class="row">
+														<div runat="server" id="directorSupervisorBtnDiv">
+															<%-- SIGN BUTTON --%>
+															<div class="col-md-6">
+																<asp:Button runat="server" ID="directorSupervisorBtn" UseSubmitBehavior="false" CssClass="btn btn-primary float-start" Width="50%" Text="Sign" data-toggle="modal" data-target="#signatureModal" />
+															</div>
+														</div>
+														<div runat="server" id="directorSupervisorInputGroup" visible="false">
+															<div class="col-md-4">
+																<div class="input-group">
+																	<span class="input-group-text fas fa-signature"></span>
+																	<asp:TextBox runat="server" ID="directorSupervisorSig" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" required="true"></asp:TextBox>
+																</div>
+															</div>
+															<div class="col-md-2">
+																<div class="input-group">
+																	<span class="input-group-text fas fa-calendar-days"></span>
+																	<asp:TextBox runat="server" ID="directorSupervisorDate" CssClass="form-control" TextMode="Date"></asp:TextBox>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+
+										<%-- THIRD ROW --%>
+										<div class="row mb-3">
+											<%-- CITY PURCHASING AGENT --%>
+											<div class="col-md-12">
+												<div class="form-group">
+													<label for="cPAGroup">City Purchasing Agent</label>
+													<div id="cPAGroup" class="row">
+														<div runat="server" id="cPABtnDiv">
+															<%-- SIGN BUTTON --%>
+															<div class="col-md-6">
+																<asp:Button runat="server" ID="cPABtn" UseSubmitBehavior="false" CssClass="btn btn-primary float-start" Width="50%" Text="Sign" data-toggle="modal" data-target="#signatureModal" />
+															</div>
+														</div>
+														<div runat="server" id="cPAInputGroup" visible="false">
+															<div class="col-md-4">
+																<div class="input-group">
+																	<span class="input-group-text fas fa-signature"></span>
+																	<asp:TextBox runat="server" ID="cPASig" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" required="true"></asp:TextBox>
+																</div>
+															</div>
+															<div class="col-md-2">
+																<div class="input-group">
+																	<span class="input-group-text fas fa-calendar-days"></span>
+																	<asp:TextBox runat="server" ID="cPABtnDate" CssClass="form-control" TextMode="Date"></asp:TextBox>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+
+										<%-- FOURTH ROW --%>
+										<div class="row mb-3">
+											<%-- OBM DIRECTOR --%>
+											<div class="col-md-12">
+												<div class="form-group">
+													<label for="obmDirectorGroup">OBM Director</label>
+													<div id="obmDirectorGroup" class="row">
+														<div runat="server" id="obmDirectorBtnDiv">
+															<%-- SIGN BUTTON --%>
+															<div class="col-md-6">
+																<asp:Button runat="server" ID="obmDirectorBtn" UseSubmitBehavior="false" CssClass="btn btn-primary float-start" Width="50%" Text="Sign" data-toggle="modal" data-target="#signatureModal" />
+															</div>
+														</div>
+														<div runat="server" id="obmDirectorInputGroup" visible="false">
+															<div class="col-md-4">
+																<div class="input-group">
+																	<span class="input-group-text fas fa-signature"></span>
+																	<asp:TextBox runat="server" ID="obmDirectorSig" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" required="true"></asp:TextBox>
+																</div>
+															</div>
+															<div class="col-md-2">
+																<div class="input-group">
+																	<span class="input-group-text fas fa-calendar-days"></span>
+																	<asp:TextBox runat="server" ID="obmDirectorDate" CssClass="form-control" TextMode="Date"></asp:TextBox>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+
+										<%-- FIFTH ROW --%>
+										<div class="row mb-3">
+											<%-- MAYOR --%>
+											<div class="col-md-12">
+												<div class="form-group">
+													<label for="mayorGroup">Mayor</label>
+													<div id="mayorGroup" class="row">
+														<div runat="server" id="mayorBtnDiv">
+															<%-- SIGN BUTTON --%>
+															<div class="col-md-6">
+																<asp:Button runat="server" ID="mayorBtn" UseSubmitBehavior="false" CssClass="btn btn-primary float-start" Width="50%" Text="Sign" data-toggle="modal" data-target="#signatureModal" />
+															</div>
+														</div>
+														<div runat="server" id="mayorInputGroup" visible="false">
+															<div class="col-md-4">
+																<div class="input-group">
+																	<span class="input-group-text fas fa-signature"></span>
+																	<asp:TextBox runat="server" ID="mayorSig" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" required="true"></asp:TextBox>
+																</div>
+															</div>
+															<div class="col-md-2">
+																<div class="input-group">
+																	<span class="input-group-text fas fa-calendar-days"></span>
+																	<asp:TextBox runat="server" ID="mayorDate" CssClass="form-control" TextMode="Date"></asp:TextBox>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
 									<%-- SUBMIT SECTION --%>
 									<div runat="server" id="submitSection" class="form-section">
 										<%-- FIRST ROW --%>
@@ -728,6 +891,47 @@
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 					<asp:Button ID="btnDelete" runat="server" Text="Delete" CssClass="btn btn-danger" CausesValidation="false" UseSubmitBehavior="false" Visible="true" OnClick="mdlDeleteSubmit_ServerClick" OnClientClick="ShowSubmitToast();" />
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- SIGNATURE MODAL -->
+	<div class="modal fade" id="signatureModal" tabindex="-1" role="dialog" aria-labelledby="signatureModalLabel">
+		<div class="modal-dialog" role="document" style="max-width: 750px;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="signatureModalLabel">Signature</h4>
+				</div>
+				<div class="modal-body bg-body-tertiary">
+					<div class="row mb-5">
+						<div class="col-md-8">
+							<div class="input-group">
+								<span class="input-group-text fas fa-signature"></span>
+								<asp:TextBox runat="server" ID="sigName" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" placeholder="John Doe"></asp:TextBox>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="input-group">
+								<span class="input-group-text fas fa-calendar-days"></span>
+								<asp:TextBox runat="server" ID="sigDate" CssClass="form-control" TextMode="Date"></asp:TextBox>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-10">
+							<div class="form-group">
+								<div class="form-check form-check-inline">
+									<label for="certifySig" class="ps-2">By clicking this checkbox and the "Sign Document" button, I agree that this will serve as the electronic representation of my signature for the electronic document.</label>
+									<asp:CheckBox runat="server" ID="certifySig" CssClass="form-check-input" style="transform: scale(1.5);"/>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+					<asp:Button ID="btnSignDoc" runat="server" Text="Sign Document" CssClass="btn btn-success" CausesValidation="false" UseSubmitBehavior="false" Visible="true" />
 				</div>
 			</div>
 		</div>
