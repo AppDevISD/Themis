@@ -1773,7 +1773,7 @@ namespace WebUI
                 else
                 {
                     string[] longTextArr = descArray[i].Split('\\');
-                    string longText = $"<p class='m-0'>{longTextArr[0]}</p> <div class='d-flex align-items-center change-bg mw-100'> <div class='mw-50 pe-2'>{longTextArr[1]}</div> {longTextArr[2]} <div class='mw-50 ps-2'>{longTextArr[3]}</div> </div>";
+                    string longText = $"<p class='m-0'>{longTextArr[0]}</p> <div class='d-flex align-items-center change-bg mw-100 lh-1p5'> <div class='mw-50 pe-2'>{longTextArr[1]}</div> {longTextArr[2]} <div class='mw-50 ps-2'>{longTextArr[3]}</div> </div>";
                     descList.Add(longText);
                 }
             }
