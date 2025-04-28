@@ -18,10 +18,16 @@
 	transition: all 0.3s;
 }
 
+.copyBtn {
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
+}
+
 .statusDropDown {
 	position: absolute;
 	bottom: 25px;
-	right: 75px;
+	left: 50px;
 	width: 25%;
 }
 
@@ -100,4 +106,38 @@
 	color: var(--bs-gray-500);
 	opacity: 0;
 	transition: color 0.3s ease, opacity 1s ease;
+}
+
+.table-standard > tbody > tr:has(td > .btn-accordion[aria-expanded="true"]) > * {
+	background-color: var(--active-bg-subtle);
+}
+
+.btn-accordion p {
+	transition: color 0.25s ease;
+}
+
+.btn-accordion[aria-expanded="true"] p {
+	color: var(--color-theme-text);
+	font-weight: bold;
+}
+
+.btn-accordion span.fa-chevron-down {
+	transition: transform 0.5s ease;
+}
+
+.btn-accordion[aria-expanded="true"] span.fa-chevron-down {
+	transform: rotate(-180deg);
+}
+
+.change-bg {
+	padding: 2.5px 8px;
+	background-color: var(--bs-tertiary-bg);
+	border: var(--bs-border-width) solid var(--bs-blue);
+	border-radius: 5px;
+	width: fit-content;
+}
+
+.auditList {
+	line-height: 2.25;
+	list-style-type: '– ';
 }

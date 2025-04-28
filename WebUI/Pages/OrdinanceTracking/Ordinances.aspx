@@ -152,15 +152,16 @@
 									<h1><span class="fas fa-book-section"></span>&nbsp;Ordinance</h1>
 								</div>
 								<asp:LinkButton runat="server" ID="backBtn" CssClass="btn bg-danger backBtn" OnClick="backBtn_Click"><span class="fas fa-xmark text-light"></span></asp:LinkButton>
+								<asp:LinkButton runat="server" ID="copyOrd" CssClass="btn btn-primary copyBtn" OnClick="copyOrd_Click"><span class="fas fa-copy"></span>&nbsp;Copy</asp:LinkButton>
 
-								<div class="statusDropDown text-end">
-									<div runat="server" id="ddStatusDiv" class="form-group text-start w-75 ms-auto">
+								<div class="statusDropDown text-start">
+									<div runat="server" id="ddStatusDiv" class="form-group text-start w-75 me-auto">
 										<label for="ddStatus">Status</label>
 										<asp:DropDownList ID="ddStatus" runat="server" AutoPostBack="false" CssClass="form-select" required="true" ValidateRequestMode="Enabled" ></asp:DropDownList>
 										<asp:HiddenField runat="server" ID="hdnOrdStatusID" />
 										<asp:HiddenField runat="server" ID="hdnStatusID" />
 									</div>
-									<div runat="server" id="statusDiv" class="d-flex fw-bold fs-4 justify-content-end">
+									<div runat="server" id="statusDiv" class="d-flex fw-bold fs-4 justify-content-start">
 										<label runat="server" id="statusLabel"></label>
 										<label runat="server" id="statusIcon"></label>
 									</div>
@@ -854,19 +855,42 @@
 								</div>
 
 								<div class="card-body bg-body-tertiary">
-									<table id="historyTable" class="table table-bordered table-striped table-hover text-center" style="padding: 0px; margin: 0px">
+									<table id="historyTable" class="table table-bordered table-standard table-hover text-center" style="padding: 0px; margin: 0px">
 										<thead>
 											<tr>
-												<th style="width: 100%; text-align: left"><strong>Date - Modified By</strong></th>
+												<th style="width: 100%; text-align: left">
+													<strong>Date &mdash; Modified By &mdash; Modification Type</strong>
+													<div class="float-end">
+														<strong class="mx-2"><span class="fas fa-plus text-success"></span> Addition</strong>
+														<strong class="mx-2"><span class="fas fa-arrow-right-long text-warning-light"></span> Modified</strong>
+														<strong class="mx-2"><span class="fas fa-minus text-danger"></span> Removed</strong>
+													</div>
+												</th>
 											</tr>
 										</thead>
 										<tbody>
-											<tr>
-												<td class="align-middle text-start mw-0 text-truncate"><span runat="server" class='float-end lh-1p5 fas fa-chevron-down'></span></td>
-											</tr>
-											<tr>
-												<td class="align-middle text-start mw-0 text-truncate"><span runat="server" class='float-end lh-1p5 fas fa-chevron-down'></span></td>
-											</tr>
+											<asp:Repeater runat="server" ID="rpAudit" OnItemDataBound="rpAudit_ItemDataBound">
+												<ItemTemplate>
+													<tr id='auditRow<%# DataBinder.Eval(Container.DataItem, "AuditID") %>'>
+														<asp:HiddenField runat="server" ID="hdnAuditItem" Value='<%# DataBinder.Eval(Container.DataItem, "AuditID") %>' />
+														<td class="align-middle text-start mw-0">
+															<a href="javascript:void(0);" class="btn-accordion nav-link" data-toggle="collapse" data-target='#auditItem<%# DataBinder.Eval(Container.DataItem, "AuditID") %>'>
+																<p class="m-0"><%# DataBinder.Eval(Container.DataItem, "DateModified", "{0:MM/dd/yyyy}") %> &mdash; <%# DataBinder.Eval(Container.DataItem, "ModifiedBy") %> &mdash; <%# DataBinder.Eval(Container.DataItem, "ModificationType") %><span runat="server" class='float-end lh-1p5 fas fa-chevron-down'></span></p>
+															</a>
+															<div id='auditItem<%# DataBinder.Eval(Container.DataItem, "AuditID") %>' class="collapse border-top mt-2 pt-3" data-parent='#auditRow<%# DataBinder.Eval(Container.DataItem, "AuditID") %>'>
+																<p class="m-0">Changes:</p>
+																<ul class="auditList">
+																	<asp:Repeater runat="server" ID="rpAuditDesc">
+																		<ItemTemplate>
+																			<li><%# Container.DataItem %></li>
+																		</ItemTemplate>
+																	</asp:Repeater>
+																</ul>
+															</div>
+														</td>
+													</tr>
+												</ItemTemplate>
+											</asp:Repeater>
 										</tbody>
 									</table>
 								</div>
@@ -1009,7 +1033,7 @@
 		function CurrencyFormatting() {
 			$("[data-type='currency']").each(function () {
 				formatCurrency($(this), "blur");
-			});	
+			});
 		}
 
 		function OrdinanceVisibility(fadeOut) {

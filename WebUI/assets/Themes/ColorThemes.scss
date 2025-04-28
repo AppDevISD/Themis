@@ -257,6 +257,10 @@ label:has(+ .form-control:disabled) {
 	background-color: var(--bs-secondary-bg);
 }
 
+.table-standard > tbody > tr > * {
+	background-color: var(--bs-secondary-bg);
+}
+
 td:has(.form-select), td:has(.form-control) {
 	padding: 0;
 }

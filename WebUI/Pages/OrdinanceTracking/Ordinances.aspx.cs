@@ -16,6 +16,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using Microsoft.Reporting.WebForms;
 using System.Data;
+using DataLibrary.OrdinanceTracking;
 
 namespace WebUI
 {
@@ -26,6 +27,12 @@ namespace WebUI
         private readonly string emailList = HttpContext.Current.IsDebuggingEnabled ? "NewFactSheetEmailListTEST" : "NewFactSheetEmailList";
         public string toastColor;
         public string toastMessage;
+        public string editSymbol = "<span class='fas fa-arrow-right-long mx-1 text-warning-light fw-bold'></span>";
+        public string addSymbol = "<span class='fas fa-plus mx-1 text-success fw-bold'></span>";
+        public string removeSymbol = "<span class='fas fa-minus mx-1 text-danger fw-bold'></span>";
+
+
+
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -49,6 +56,8 @@ namespace WebUI
                 SetStartupActives();
                 SetPagination(rpOrdinanceTable, 10);
                 GetStartupData(userInfo.IsAdmin);
+
+                GetTestAuditData();
             }            
             if (Page.IsPostBack && Page.Request.Params.Get("__EVENTTARGET").Contains("adminSwitch"))
             {
@@ -118,6 +127,37 @@ namespace WebUI
                 lblNoItems.Visible = true;
             }
         }
+
+        public void GetTestAuditData()
+        {
+            List<OrdinanceAudit> testAudit = new List<OrdinanceAudit>()
+            {
+                new OrdinanceAudit
+                {
+                    AuditID = 1,
+                    OrdinanceID = 0,
+                    DateModified = Convert.ToDateTime("04/15/2025"),
+                    ModifiedBy = "Kyle Bolinger",
+                    ModificationType = "Updated",
+                    Description = $"Suggested Title: \\ \\{addSymbol} \\AN ORDINANCE AUTHORIZING THE EXTENSION OF CONTRACT# PW21-21 WITH BLH COMPUTERS, INC. FOR COLLECTION, RECYCLING, AND DISPOSAL OF ELECTRONIC WASTE, IN AN AMOUNT NOT TO EXCEED $50,000.00 FOR THE OFFICE OF PUBLIC WORKS|Vendor Name: <span class='change-bg'>VI LLC {editSymbol} LRS</span>|Method of Purchase: <span class='change-bg'>Low Bid {editSymbol} Other</span>|Other/Exception: <span class='change-bg'>{addSymbol} RPF-100</span>"
+                },
+                new OrdinanceAudit
+                {
+                    AuditID = 2,
+                    OrdinanceID = 0,
+                    DateModified = Convert.ToDateTime("04/01/2025"),
+                    ModifiedBy = "Chip McCrunch",
+                    ModificationType = "Updated",
+                    Description = $"First Read Date: <span class='change-bg'>03/25/2025 {editSymbol} 03/26/2025</span>|Requesting Contact: <span class='change-bg'>Chip McCrunch {editSymbol} Kyle Bolinger</span>|Ext: <span class='change-bg'>x5684 {editSymbol} x2811</span>|Fiscal Impact: <span class='change-bg'>$10,000.00 {editSymbol} $100,000.00</span>|Code Provision: <span class='change-bg'>{removeSymbol} 56519813</span>"
+                }
+            };
+            Session["ordAudit"] = testAudit;
+
+            rpAudit.DataSource = testAudit;
+            rpAudit.DataBind();
+        }
+
+
         protected void GetAllStatuses()
         {
             Dictionary<string, string> statuses = StatusList();
@@ -461,6 +501,7 @@ namespace WebUI
                 case "view":
                     ordView.Attributes["readonly"] = "true";
                     ordinanceTabs.Visible = true;
+                    copyOrd.Visible = true;
                     ddStatusDiv.Visible = false;
                     statusDiv.Visible = true;
                     requiredFieldDescriptor.Visible = false;
@@ -561,6 +602,7 @@ namespace WebUI
                 case "edit":
                     ordView.Attributes["readonly"] = "false";
                     ordinanceTabs.Visible = false;
+                    copyOrd.Visible = false;
                     ddStatusDiv.Visible = !userInfo.IsAdmin || userInfo.UserView ? false : true;
                     ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
                     ord.StatusDescription = ordStatus.StatusDescription;
@@ -1701,6 +1743,43 @@ namespace WebUI
                 formTableDiv.Visible = false;
                 lblNoItems.Visible = true;
             }
+        }
+        protected void copyOrd_Click(object sender, EventArgs e)
+        {
+            Response.Redirect($"./NewFactSheet?id={hdnOrdID.Value}");
+        }
+
+
+
+
+        protected void rpAudit_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            HiddenField hdnAuditItem = (HiddenField)e.Item.FindControl("hdnAuditItem");
+            int auditID = Convert.ToInt32(hdnAuditItem.Value);
+            Repeater rpAuditDesc = (Repeater)e.Item.FindControl("rpAuditDesc");
+
+            List<OrdinanceAudit> ordAuditList = Session["ordAudit"] as List<OrdinanceAudit>;
+            OrdinanceAudit ordAudit = ordAuditList.First(i => i.AuditID.Equals(auditID));
+
+            string[] descArray = ordAudit.Description.Split('|');
+            List<string> descList = new List<string>();
+
+            for (int i = 0; i < descArray.Length; i++)
+            {
+                if (!descArray[i].SubstringUpToFirst(':').Contains("Emergency Passage Justification") && !descArray[i].SubstringUpToFirst(':').Contains("Staff Analysis") && !descArray[i].SubstringUpToFirst(':').Contains("Suggested Title"))
+                {
+                    descList.Add(descArray[i]);
+                }
+                else
+                {
+                    string[] longTextArr = descArray[i].Split('\\');
+                    string longText = $"<p class='m-0'>{longTextArr[0]}</p> <div class='d-flex align-items-center change-bg mw-100'> <div class='mw-50 pe-2'>{longTextArr[1]}</div> {longTextArr[2]} <div class='mw-50 ps-2'>{longTextArr[3]}</div> </div>";
+                    descList.Add(longText);
+                }
+            }
+
+            rpAuditDesc.DataSource = descList;
+            rpAuditDesc.DataBind();
         }
     }
 }

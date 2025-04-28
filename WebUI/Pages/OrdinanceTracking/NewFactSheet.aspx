@@ -567,9 +567,7 @@
 			GetToastStatus();
 			FormatForms();
 			DisableDDInitialOption();
-			$("[data-type='currency']").each(function () {
-				formatCurrency($(this), "blur");
-			});
+			CurrencyFormatting();
 		});
 
 		function SetUploadActive() {
@@ -605,6 +603,12 @@
 				}
 				ddMethod.options[0].disabled = true;
 			}
+		}
+
+		function CurrencyFormatting() {
+			$("[data-type='currency']").each(function () {
+				formatCurrency($(this), "blur");
+			});
 		}
 	</script>
 </asp:Content>

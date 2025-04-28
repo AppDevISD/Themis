@@ -1,5 +1,6 @@
 ﻿using DataLibrary;
 using ISD.ActiveDirectory;
+using Microsoft.Ajax.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -69,7 +70,13 @@ namespace WebUI
                 //NewAccountingRow("revenue");
                 //NewAccountingRow("expenditure");
             }
-            GetUploadedImages();
+
+            if (!Page.IsPostBack && Request.QueryString["id"] != null)
+            {
+                GetCopyOrdinance(Convert.ToInt32(Request.QueryString["id"].ToString()));
+            }
+
+            GetUploadedDocs();
             SubmitStatus();
 
             requestContact.Text = $"{_user.FirstName} {_user.LastName}";
@@ -684,7 +691,7 @@ namespace WebUI
                     break;
             }
         }
-        protected void GetUploadedImages()
+        protected void GetUploadedDocs()
         {
             if (Session["ordDocs"] != null)
             {
@@ -715,6 +722,178 @@ namespace WebUI
             Session["ordDocs"] = ordDocList;
             rpSupportingDocumentation.DataSource = ordDocList;
             rpSupportingDocumentation.DataBind();
+        }
+        protected void GetCopyOrdinance(int ordID)
+        {
+            Session.Remove("ordRevTable");
+            Session.Remove("ordExpTable");
+            Ordinance ord = Factory.Instance.GetByID<Ordinance>(ordID, "sp_GetOrdinanceByOrdinanceID", "OrdinanceID");
+
+
+            requestDepartment.SelectedValue = DepartmentsList()[ord.RequestDepartment];
+            //firstReadDate.Text = ord.FirstReadDate.ToString("yyyy-MM-dd");
+            //requestContact.Text = ord.RequestContact;
+            //requestPhone.Text = ord.RequestPhone.SubstringUpToFirst('x');
+            //requestExt.Text = ord.RequestPhone.Substring(14);
+
+            switch (ord.EmergencyPassage)
+            {
+                case true:
+                    epYes.Checked = true;
+                    epNo.Checked = false;
+                    epJustificationGroup.Visible = true;
+                    epJustification.Attributes.Add("required", "true");
+                    break;
+                case false:
+                    epYes.Checked = false;
+                    epNo.Checked = true;
+                    epJustificationGroup.Visible = false;
+                    epJustification.Attributes.Remove("required");
+                    break;
+            }
+            epJustification.Text = ord.EmergencyPassageReason;
+
+            fiscalImpact.Text = ord.OrdinanceFiscalImpact.ToString();
+            suggestedTitle.Text = ord.OrdinanceTitle;
+
+            vendorName.Text = ord.ContractVendorName;
+            vendorNumber.Text = ord.ContractVendorNumber;
+            contractStartDate.Text = ord.ContractStartDate;
+            contractEndDate.Text = ord.ContractEndDate;
+            contractTerm.Value = ord.ContractTerm;
+            contractAmount.Text = ord.ContractAmount.ToString();
+
+            switch (ord.ScopeChange)
+            {
+                case true:
+                    scYes.Checked = true;
+                    scNo.Checked = false;
+                    changeOrderNumber.Enabled = true;
+                    additionalAmount.Enabled = true;
+                    changeOrderNumber.Attributes.Add("required", "true");
+                    additionalAmount.Attributes.Add("required", "true");
+                        break;
+                case false:
+                    scYes.Checked = false;
+                    scNo.Checked = true;
+                        changeOrderNumber.Enabled = false;
+                        additionalAmount.Enabled = false;
+                        changeOrderNumber.Attributes.Remove("required");
+                        additionalAmount.Attributes.Remove("required");
+                        break;
+            }
+            changeOrderNumber.Text = ord.ChangeOrderNumber;
+            additionalAmount.Text = (ord.AdditionalAmount.ToString() != "-1.00") ? ord.AdditionalAmount.ToString() : string.Empty;
+
+
+            purchaseMethod.SelectedValue = ord.ContractMethod;
+            switch (purchaseMethod.SelectedItem.Value)
+            {
+                default:
+                    otherException.Enabled = false;
+                    otherException.Text = string.Empty;
+                    otherException.Attributes.Remove("required");
+                    break;
+                case "Other":
+                case "Exception":
+                    otherException.Enabled = true;
+                    otherException.Attributes.Add("required", "true");
+                    break;
+            }
+            otherException.Text = ord.OtherException;
+            if (ord.PreviousOrdinanceNumbers != "")
+            {
+                ord.PreviousOrdinanceNumbers += $", {ord.OrdinanceNumber}";
+                prevOrdinanceNums.Text = ord.PreviousOrdinanceNumbers;
+            }
+            else
+            {
+                prevOrdinanceNums.Text = ord.OrdinanceNumber;
+            }
+            
+
+            codeProvision.Text = ord.CodeProvision;
+
+            switch (ord.PAApprovalRequired)
+            {
+                case true:
+                    paApprovalRequiredYes.Checked = true;
+                    paApprovalRequiredNo.Checked = false;
+                    break;
+                case false:
+                    paApprovalRequiredYes.Checked = false;
+                    paApprovalRequiredNo.Checked = true;
+                    break;
+            }
+            switch (ord.PAApprovalIncluded)
+            {
+                case true:
+                    paApprovalAttachedYes.Checked = true;
+                    paApprovalAttachedNo.Checked = false;
+                    break;
+                case false:
+                    paApprovalAttachedYes.Checked = false;
+                    paApprovalAttachedNo.Checked = true;
+                    break;
+            }
+
+            List<OrdinanceAccounting> ordAcc = Factory.Instance.GetAllLookup<OrdinanceAccounting>(ordID, "sp_GetOrdinanceAccountingByOrdinanceID", "OrdinanceID");
+            List<Accounting> revItems = new List<Accounting>();
+            List<Accounting> expItems = new List<Accounting>();
+            if (ordAcc.Count > 0)
+            {
+                foreach (OrdinanceAccounting item in ordAcc)
+                {
+                    Accounting acctItem = Factory.Instance.GetByID<Accounting>(item.AccountingID, "sp_GetLkAccountingByAccountingID", "AccountingID");
+                    switch (acctItem.AccountingDesc)
+                    {
+                        case "revenue":
+                            revItems.Add(acctItem);
+                            break;
+                        case "expenditure":
+                            expItems.Add(acctItem);
+                            break;
+                    }
+                }
+
+                if (revItems.Count > 0)
+                {
+                    Session["ordRevTable"] = revItems;
+                    rpRevenueTable.DataSource = revItems;
+                    rpRevenueTable.DataBind();
+                }
+                else
+                {
+                    Session.Remove("ordRevTable");
+                    rpRevenueTable.DataSource = null;
+                    rpRevenueTable.DataBind();
+                }
+                if (expItems.Count > 0)
+                {
+                    Session["ordExpTable"] = expItems;
+                    rpExpenditureTable.DataSource = expItems;
+                    rpExpenditureTable.DataBind();
+                }
+                else
+                {
+                    Session.Remove("ordExpTable");
+                    rpExpenditureTable.DataSource = null;
+                    rpExpenditureTable.DataBind();
+                }
+            }
+            else
+            {
+                Session.Remove("ordRevTable");
+                Session.Remove("ordExpTable");
+                rpRevenueTable.DataSource = null;
+                rpExpenditureTable.DataSource = null;
+                rpRevenueTable.DataBind();
+                rpExpenditureTable.DataBind();
+            }
+
+            staffAnalysis.Text = ord.OrdinanceAnalysis;
+
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "CurrencyFormatting", "CurrencyFormatting();", true);
         }
     }
 }
