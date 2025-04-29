@@ -17,6 +17,7 @@ using System.Security.Cryptography;
 using Microsoft.Reporting.WebForms;
 using System.Data;
 using DataLibrary.OrdinanceTracking;
+using System.Reflection;
 
 namespace WebUI
 {
@@ -25,14 +26,12 @@ namespace WebUI
         private ADUser _user = new ADUser();
         public UserInfo userInfo = new UserInfo();
         private readonly string emailList = HttpContext.Current.IsDebuggingEnabled ? "NewFactSheetEmailListTEST" : "NewFactSheetEmailList";
+        private readonly Dictionary<string, string> fieldLabels = FieldLabels();
         public string toastColor;
         public string toastMessage;
-        public string editSymbol = "<span class='fas fa-arrow-right-long mx-1 text-warning-light fw-bold'></span>";
-        public string addSymbol = "<span class='fas fa-plus mx-1 text-success fw-bold'></span>";
-        public string removeSymbol = "<span class='fas fa-minus mx-1 text-danger fw-bold'></span>";
-
-
-
+        public string editSymbol = "<span class='fas fa-arrow-right-long mx-1 text-warning-light fw-bold align-self-center'></span>";
+        public string addSymbol = "<span class='fas fa-plus mx-1 text-success fw-bold align-self-center'></span>";
+        public string removeSymbol = "<span class='fas fa-minus mx-1 text-danger fw-bold align-self-center'></span>";
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -85,6 +84,13 @@ namespace WebUI
                 ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(viewButton);
             }
 
+            if (!Page.IsPostBack && Request.QueryString["id"] != null)
+            {
+                string id = Request.QueryString["id"];
+                string cmd = Request.QueryString["v"] ?? "view";
+                GetByID(id.ToString(), cmd.ToString());
+            }
+
             GetUploadedImages();
             SubmitStatus();
         }
@@ -128,6 +134,7 @@ namespace WebUI
             }
         }
 
+
         public void GetTestAuditData()
         {
             List<OrdinanceAudit> testAudit = new List<OrdinanceAudit>()
@@ -148,7 +155,7 @@ namespace WebUI
                     DateModified = Convert.ToDateTime("04/01/2025"),
                     ModifiedBy = "Chip McCrunch",
                     ModificationType = "Updated",
-                    Description = $"First Read Date: <span class='change-bg'>03/25/2025 {editSymbol} 03/26/2025</span>|Requesting Contact: <span class='change-bg'>Chip McCrunch {editSymbol} Kyle Bolinger</span>|Ext: <span class='change-bg'>x5684 {editSymbol} x2811</span>|Fiscal Impact: <span class='change-bg'>$10,000.00 {editSymbol} $100,000.00</span>|Code Provision: <span class='change-bg'>{removeSymbol} 56519813</span>"
+                    Description = $"First Read Date: <span class='change-bg'>03/25/2025 {editSymbol} 03/26/2025</span>|Requesting Contact: <span class='change-bg'>Chip McCrunch {editSymbol} Kyle Bolinger</span>|Ext: <span class='change-bg'>x5684 {editSymbol} x2811</span>|Fiscal Impact: <span class='change-bg'>$10,000.00 {editSymbol} $100,000.00</span>|Emergency Passage Justification: \\Vestibulum enim enim, vestibulum id consequat vitae, imperdiet at nisi. Duis rhoncus massa sit amet mi porta, bibendum dignissim lorem pretium. Suspendisse ultricies iaculis libero, sit amet rhoncus quam dictum sit amet. Praesent maximus vehicula tortor, bibendum auctor libero blandit ut. Quisque diam mi, finibus quis diam in, elementum finibus arcu. Donec congue rhoncus mauris. Suspendisse sit amet cursus augue. Sed aliquet arcu ac ante vehicula, a blandit ligula laoreet. Nunc vel diam auctor, aliquet nisl eget, venenatis sapien. Maecenas non leo ut felis maximus convallis eu sed nibh. Vestibulum nisl tortor, tempor quis ex ut, lobortis accumsan orci. Aenean scelerisque dictum nisi, at mattis nunc eleifend consectetur. Fusce semper metus sit amet dui mollis consectetur. Pellentesque lorem ipsum, iaculis quis lacinia et, ultricies eget nunc. \\{editSymbol} \\Vestibulum enim enim, vestibulum id consequat vitae, imperdiet at nisi. Duis rhoncus massa sit amet mi porta, bibendum dignissim lorem pretium. Suspendisse ultricies iaculis libero, sit amet rhoncus quam dictum sit amet. Praesent maximus vehicula tortor, bibendum auctor libero blandit ut. Quisque diam mi, finibus quis diam in, elementum finibus arcu. Donec congue rhoncus mauris. Suspendisse sit amet cursus augue. Sed aliquet arcu ac ante vehicula, a blandit ligula laoreet.|Code Provision: <span class='change-bg'>{removeSymbol} 56519813</span>"
                 }
             };
             Session["ordAudit"] = testAudit;
@@ -315,13 +322,20 @@ namespace WebUI
                 toastMessage = (string)Session["ToastMessage"];
             }
         }
+        protected void GetByID(string id, string cmd)
+        {
+            CommandEventArgs eventArgs = new CommandEventArgs(cmd, id);
+            RepeaterItem rpItem = new RepeaterItem(0, ListItemType.Item);
+            RepeaterCommandEventArgs args = new RepeaterCommandEventArgs(rpItem, rpOrdinanceTable, eventArgs);
+            rpOrdinanceTable_ItemCommand(rpOrdinanceTable, args);
+        }
         protected void rpOrdinanceTable_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
             ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(backBtn);
             Session.Remove("ordRevTable");
             Session.Remove("ordExpTable");
-            HiddenField hdnID = (HiddenField)e.Item.FindControl("hdnID");
-            int ordID = Convert.ToInt32(hdnID.Value);
+            //HiddenField hdnID = (HiddenField)e.Item.FindControl("hdnID");
+            int ordID = Convert.ToInt32(e.CommandArgument);
             Ordinance ord = Factory.Instance.GetByID<Ordinance>(ordID, "sp_GetOrdinanceByOrdinanceID", "OrdinanceID");
             hdnOrdID.Value = ordID.ToString();
             hdnEffectiveDate.Value = ord.EffectiveDate.ToString();
@@ -800,10 +814,17 @@ namespace WebUI
             ordTable.Visible = false;
         }
         protected void backBtn_Click(object sender, EventArgs e)
-        {
-            ordTable.Visible = true;
-            //ScriptManager.RegisterStartupScript(this, this.GetType(), "FadeInOrdTable", "OrdTableFadeIn();", true);
-            ordView.Visible = false;
+        {            
+            if (Request.QueryString["id"] != null)
+            {
+                Response.Redirect("./Ordinances");
+            }
+            else
+            {
+                ordTable.Visible = true;
+                //ScriptManager.RegisterStartupScript(this, this.GetType(), "FadeInOrdTable", "OrdTableFadeIn();", true);
+                ordView.Visible = false;
+            }
         }
         protected void NewAccountingRow(string tableDesc)
         {
@@ -1748,10 +1769,6 @@ namespace WebUI
         {
             Response.Redirect($"./NewFactSheet?id={hdnOrdID.Value}");
         }
-
-
-
-
         protected void rpAudit_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             HiddenField hdnAuditItem = (HiddenField)e.Item.FindControl("hdnAuditItem");
@@ -1773,7 +1790,16 @@ namespace WebUI
                 else
                 {
                     string[] longTextArr = descArray[i].Split('\\');
-                    string longText = $"<p class='m-0'>{longTextArr[0]}</p> <div class='d-flex align-items-center change-bg mw-100 lh-1p5'> <div class='mw-50 pe-2'>{longTextArr[1]}</div> {longTextArr[2]} <div class='mw-50 ps-2'>{longTextArr[3]}</div> </div>";
+                    string longText = string.Empty;
+                    switch (!longTextArr[1].IsNullOrWhiteSpace())
+                    {
+                        case true:
+                            longText = $"<p class='m-0'>{longTextArr[0]}</p> <div class='d-flex change-bg mw-100 lh-1p5'> <div class='w-50 pe-2'>{longTextArr[1]}</div> {longTextArr[2]} <div class='w-50 ps-2'>{longTextArr[3]}</div> </div>";
+                            break;
+                        case false:
+                            longText = $"<p class='m-0'>{longTextArr[0]}</p> <div class='d-flex change-bg w-50 lh-1p5'> {longTextArr[2]} <div class='w-100 ps-2'>{longTextArr[3]}</div> </div>";
+                            break;
+                    }
                     descList.Add(longText);
                 }
             }

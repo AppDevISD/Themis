@@ -72,6 +72,7 @@
 		--active-border-subtle: #{$color-theme-active-border-subtle};
 		--active-text: white;
 		--custom-theme-border-color: #{$color-theme-border-color};
+		--tooltip-color: white;
 
 		.form-check-inline input:checked[type=checkbox] {
 			--bs-form-check-bg-image: #{$checkbox-checked-image} !important;
@@ -122,6 +123,7 @@
 		--active-bg-subtle: #{$color-theme-active-bg-subtle};
 		--active-text: white;
 		--custom-theme-border-color: #{$color-theme-border-color};
+		--tooltip-color: white;
 
 		.form-check-inline input:checked[type=checkbox] {
 			--bs-form-check-bg-image: #{$checkbox-checked-image} !important;
@@ -462,4 +464,10 @@ input[type="file"]:hover::-webkit-file-upload-button {
 .support-link {
 	text-decoration: none;
 	color: var(--color-theme-text);
+}
+
+.tooltip {
+	--bs-tooltip-bg: var(--color-theme-text);
+	--bs-tooltip-opacity: 1;
+	--bs-tooltip-color: var(--tooltip-color);
 }

@@ -77,8 +77,8 @@
 												<asp:HiddenField runat="server" ID="hdnID" Value='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' />
 												<asp:Label ID="ordTableDate" Text='<%# DataBinder.Eval(Container.DataItem, "EffectiveDate", "{0:MM/dd/yyyy}") %>' runat="server" />
 											</td>
-											<td id="titleCell" class="align-middle text-start mw-0 text-truncate" data-overflow-tooltip="true" data-tooltip="tooltip" data-placement="right" title='<%# DataBinder.Eval(Container.DataItem, "OrdinanceTitle") %>'>
-												<asp:Label ID="ordTableTitle" Text='<%# DataBinder.Eval(Container.DataItem, "OrdinanceTitle") %>' runat="server" />
+											<td id="titleCell" class="align-middle text-start mw-0 text-truncate">
+												<asp:Label ID="ordTableTitle" Text='<%# DataBinder.Eval(Container.DataItem, "OrdinanceTitle") %>' runat="server" data-overflow-tooltip="true" data-tooltip="tooltip" data-placement="right" title='<%# DataBinder.Eval(Container.DataItem, "OrdinanceTitle") %>' CssClass="cellTT" />
 											</td>
 											<td class="align-middle">
 												<asp:Label ID="ordTableDepartment" Text='<%# DataBinder.Eval(Container.DataItem, "RequestDepartment") %>' runat="server" />
@@ -90,9 +90,9 @@
 												<asp:Label ID="ordTableStatus" Text='<%# DataBinder.Eval(Container.DataItem, "StatusDescription") %>' runat="server" />
 											</td>
 											<td class="align-middle d-flex justify-content-around">
-												<asp:LinkButton runat="server" ID="editOrd" CommandName="edit" CssClass="ordActionBtn" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="Edit" Visible='<%# !DataBinder.Eval(Container.DataItem, "StatusDescription").Equals("Deleted") %>'><i class="fas fa-pen-to-square text-warning-light"></i></asp:LinkButton>
-												<asp:LinkButton runat="server" ID="viewOrd" CommandName="view" CssClass="ordActionBtn" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="View"><i class="fas fa-magnifying-glass text-info"></i></asp:LinkButton>
-												<asp:LinkButton runat="server" ID="downloadOrd" CommandName="download" CssClass="ordActionBtn" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="Download"><i class="fas fa-download text-primary"></i></asp:LinkButton>
+												<asp:LinkButton runat="server" ID="editOrd" CommandName="edit" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' CssClass="ordActionBtn" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="Edit" Visible='<%# !DataBinder.Eval(Container.DataItem, "StatusDescription").Equals("Deleted") %>'><i class="fas fa-pen-to-square text-warning-light"></i></asp:LinkButton>
+												<asp:LinkButton runat="server" ID="viewOrd" CommandName="view" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' CssClass="ordActionBtn" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="View"><i class="fas fa-magnifying-glass text-info"></i></asp:LinkButton>
+												<asp:LinkButton runat="server" ID="downloadOrd" CommandName="download" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' CssClass="ordActionBtn" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="Download"><i class="fas fa-download text-primary"></i></asp:LinkButton>
 											</td>
 										</tr>
 									</ItemTemplate>
@@ -874,7 +874,7 @@
 													<tr id='auditRow<%# DataBinder.Eval(Container.DataItem, "AuditID") %>'>
 														<asp:HiddenField runat="server" ID="hdnAuditItem" Value='<%# DataBinder.Eval(Container.DataItem, "AuditID") %>' />
 														<td class="align-middle text-start mw-0">
-															<a href="javascript:void(0);" class="btn-accordion nav-link" data-toggle="collapse" data-target='#auditItem<%# DataBinder.Eval(Container.DataItem, "AuditID") %>'>
+															<a href="javascript:void(0);" class="btn-accordion audit-link" data-toggle="collapse" data-target='#auditItem<%# DataBinder.Eval(Container.DataItem, "AuditID") %>'>
 																<p class="m-0"><%# DataBinder.Eval(Container.DataItem, "DateModified", "{0:MM/dd/yyyy}") %> &mdash; <%# DataBinder.Eval(Container.DataItem, "ModifiedBy") %> &mdash; <%# DataBinder.Eval(Container.DataItem, "ModificationType") %><span runat="server" class='float-end lh-1p5 fas fa-chevron-down'></span></p>
 															</a>
 															<div id='auditItem<%# DataBinder.Eval(Container.DataItem, "AuditID") %>' class="collapse border-top mt-2 pt-3" data-parent='#auditRow<%# DataBinder.Eval(Container.DataItem, "AuditID") %>'>
@@ -1020,12 +1020,10 @@
 		function SetTooltips() {
 			var tooltipTitles = $('[data-overflow-tooltip="true"]');
 			$(tooltipTitles).each(function (i) {
-				if (this.scrollWidth > this.offsetWidth) {
-					$(this).tooltip({
-						whitelist: 'td',
-						container: '#titleCell'
-					});
-				}
+				$(this).tooltip('show',{
+					whitelist: 'span',
+					container: '#titleCell'
+				});
 			});
 			$('[data-action-tooltip="true"]').tooltip();
 		}

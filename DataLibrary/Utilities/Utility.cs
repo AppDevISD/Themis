@@ -117,6 +117,38 @@ namespace DataLibrary
             }
             return dictionary;
         }
+        public static Dictionary<string, string> FieldLabels()
+        {
+            Dictionary<string, string> dictionary = new Dictionary<string, string>()
+            {
+                { "requestDepartment", "Requesting Department" },
+                { "firstReadDate", "First Read Date" },
+                { "requestContact", "Requesting Contact" },
+                { "requestPhone", "Phone Number" },
+                { "requestExt", "Ext" },
+                { "epCheck", "Emergency Passage" },
+                { "epJustification", "Emergency Passage Justification" },
+                { "fiscalImpact", "Fiscal Impact" },
+                { "suggestedTitle", "Suggested Title" },
+                { "vendorName", "Vendor Name" },
+                { "vendorNumber", "Vendor Number" },
+                { "contractStartDate", "Start Date" },
+                { "contractEndDate", "End Date" },
+                { "dateTerm", "Date Term" },
+                { "contractAmount", "Contract Amount" },
+                { "scCheck", "Change In Scope" },
+                { "changeOrderNumber", "Change Order Number" },
+                { "additionalAmount", "Additional Amount" },
+                { "purchaseMethod", "Purchase Method" },
+                { "otherException", "Other/Exception" },
+                { "prevOrdinanceNums", "Previous Ordinance Numbers" },
+                { "codeProvision", "Code Provision" },
+                { "paApprovalRequiredCheck", "Purchasing Agent Approval Required" },
+                { "paApprovalAttachedCheck", "Purchasing Agent Approval Attached" },
+                { "staffAnalysis", "Staff Analysis" }
+            };
+            return dictionary;
+        }
         public static decimal CurrencyToDecimal(string currency)
         {
             return decimal.Parse(currency, NumberStyles.Any);

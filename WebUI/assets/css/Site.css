@@ -116,7 +116,7 @@
 	transition: color 0.25s ease;
 }
 
-.btn-accordion[aria-expanded="true"] p {
+.btn-accordion[aria-expanded="true"]:not(.nav-link) p {
 	color: var(--color-theme-text);
 	font-weight: bold;
 }
@@ -125,7 +125,7 @@
 	transition: transform 0.5s ease;
 }
 
-.btn-accordion[aria-expanded="true"] span.fa-chevron-down {
+.btn-accordion[aria-expanded="true"]:not(.nav-link) span.fa-chevron-down {
 	transform: rotate(-180deg);
 }
 
