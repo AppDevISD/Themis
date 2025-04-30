@@ -91,5 +91,14 @@ namespace DataLibrary.Properties {
                 return ((string)(this["EmployeeDirectoryDB"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SingleEmail {
+            get {
+                return ((string)(this["SingleEmail"]));
+            }
+        }
     }
 }

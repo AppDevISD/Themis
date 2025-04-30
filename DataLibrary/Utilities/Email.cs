@@ -67,7 +67,7 @@ namespace DataLibrary
             string retVal = "";
             HttpContext _context = HttpContext.Current;
 
-            MailMessage NewEmail = new MailMessage("NoReply@cwlp.com", Properties.Settings.Default[emailList].ToString());
+            MailMessage NewEmail = new MailMessage("THΣMIS Application NoReply@cwlp.com", Properties.Settings.Default[emailList].ToString());
             NewEmail.IsBodyHtml = true;
             NewEmail.Body = pEmail.EmailText;
             NewEmail.Subject = pEmail.EmailSubject.ToString();

@@ -88,7 +88,13 @@ namespace WebUI
             {
                 string id = Request.QueryString["id"];
                 string cmd = Request.QueryString["v"] ?? "view";
+                
                 GetByID(id.ToString(), cmd.ToString());
+                if (Request.QueryString["f"] != null)
+                {
+                    string ctrl = Request.QueryString["f"];
+                    //Page.SetFocus(ctrl.ToString());
+                }
             }
 
             GetUploadedImages();
@@ -1806,6 +1812,25 @@ namespace WebUI
 
             rpAuditDesc.DataSource = descList;
             rpAuditDesc.DataBind();
+        }
+
+        protected void btnSendSigEmail_Click(object sender, EventArgs e)
+        {
+
+
+            Email.Instance.AddEmailAddress("SingleEmail", signatureEmailAddress.Text);
+            string href = $"apptest/Themis/Ordinances?id={hdnOrdID.Value.ToString()}&v=edit&f={sigBtnTarget.Value.ToString()}";
+            string formType = "THΣMIS";
+
+            Email newEmail = new Email();
+
+            newEmail.EmailSubject = $"{formType} Signature Requested";
+            newEmail.EmailTitle = $"{formType} Signature Requested";
+            //newEmail.EmailText = $"An {formType} has been submitted <br/><br/>Ordinance: {ordinance.OrdinanceNumber} {retVal}<br/>Date: {DateTime.Now}<br/>Department: {requestDepartment.SelectedItem.Text}<br/>Contact: {requestContact.Text}<br/>Phone: {requestPhone.Text}{requestExt.Text}";
+            newEmail.EmailText = $"<p><span style='font-size:36.0pt;font-family:\"Times New Roman\",serif;color:#2D71D5;font-weight:bold'>THΣMIS</span></p><div align=center style='text-align:center'><span><hr size=2 width='100%' align=center></span></div><p><span>You are receiving this message because your signature is required in the role of <b>{sigBtnLabel.Value.ToString()}</b> for an ordinance on THΣMIS.</span></p><p><span>Please click the button below to review and sign the document</span></p><table border='0' cellpadding='0' cellspacing='0' style='border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;'><tr><td style='font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #198754; border-radius: 5px; text-align: center;' valign='top' bgcolor='#198754' align='center'><a href='{href}' target='_blank' style='display: inline-block; color: #ffffff; background-color: #198754; border: solid 1px #198754; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 15px 25px; text-transform: capitalize; border-color: #198754; '>Sign Ordinance</a></td></tr></table><p><span>Thank you for your prompt attention to this matter.</span></p>";
+            Email.Instance.SendEmail(newEmail, "SingleEmail");
+
+            signatureEmailAddress.Text = "";
         }
     }
 }

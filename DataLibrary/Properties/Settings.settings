@@ -35,5 +35,8 @@
 &lt;/SerializableConnectionString&gt;</DesignTimeValue>
       <Value Profile="(Default)">Data Source=mcwintdb14\sqlinternal;Initial Catalog=EmployeeDirectory;Integrated Security=True</Value>
     </Setting>
+    <Setting Name="SingleEmail" Type="System.String" Scope="Application">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

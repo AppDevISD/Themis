@@ -471,3 +471,11 @@ input[type="file"]:hover::-webkit-file-upload-button {
 	--bs-tooltip-opacity: 1;
 	--bs-tooltip-color: var(--tooltip-color);
 }
+
+.bs-tooltip-right {
+	/*left: 10px !important;*/
+}
+
+.fs-7 {
+	font-size: .9rem;
+}
