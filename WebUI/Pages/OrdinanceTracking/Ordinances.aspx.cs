@@ -279,11 +279,6 @@ namespace WebUI
                 int statusVal = Factory.Instance.Update(ordStatus, "sp_UpdateOrdinance_Status", 1);
                 if (statusVal > 0)
                 {
-                    List<Ordinance> ord_list = new List<Ordinance>();
-                    ord_list = Factory.Instance.GetAllLookup<Ordinance>(0, "sp_GetOrdinanceByFilteredStatusID", "StatusID");
-                    rpOrdinanceTable.DataSource = ord_list;
-                    rpOrdinanceTable.DataBind();
-                    Session["ord_list"] = ord_list;
                     Session["SubmitStatus"] = "success";
                     Session["ToastColor"] = "text-bg-success";
                     Session["ToastMessage"] = "Entry Deleted!";
@@ -337,9 +332,37 @@ namespace WebUI
         }
         protected void rpOrdinanceTable_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
+            ordView.Visible = true;
+            ordTable.Visible = false;
             ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(backBtn);
             Session.Remove("ordRevTable");
             Session.Remove("ordExpTable");
+
+            List<TextBox> sigTextBoxes = new List<TextBox>()
+            {
+                fundsCheckBySig,
+                directorSupervisorSig,
+                cPASig,
+                obmDirectorSig,
+                mayorSig
+            };
+            List<LinkButton> emailBtns = new List<LinkButton>() 
+            {
+                fundsCheckEmailBtn,
+                directorSupervisorEmailBtn,
+                cPAEmailBtn,
+                obmDirectorEmailBtn,
+                mayorEmailBtn,
+            };
+            List<Button> signBtns = new List<Button>()
+            {
+                fundsCheckByBtn,
+                directorSupervisorBtn,
+                cPABtn,
+                obmDirectorBtn,
+                mayorBtn
+            };
+
             //HiddenField hdnID = (HiddenField)e.Item.FindControl("hdnID");
             int ordID = Convert.ToInt32(e.CommandArgument);
             Ordinance ord = Factory.Instance.GetByID<Ordinance>(ordID, "sp_GetOrdinanceByOrdinanceID", "OrdinanceID");
@@ -592,32 +615,102 @@ namespace WebUI
                         case "New":
                             statusIcon.Attributes["class"] = "fas fa-sparkles text-primary";
                             statusLabel.Attributes["class"] = "text-primary";
+                            copyOrd.Visible = false;
                             break;
                         case "Pending":
                             statusIcon.Attributes["class"] = "fas fa-hourglass-clock text-warning-light";
                             statusLabel.Attributes["class"] = "text-warning-light";
+                            copyOrd.Visible = true;
                             break;
                         case "Under Review":
                             statusIcon.Attributes["class"] = "fas fa-memo-circle-info text-info";
                             statusLabel.Attributes["class"] = "text-info";
+                            copyOrd.Visible = true;
                             break;
                         case "Being Held":
                             statusIcon.Attributes["class"] = "fas fa-triangle-exclamation text-hazard";
                             statusLabel.Attributes["class"] = "text-hazard";
+                            copyOrd.Visible = true;
                             break;
                         case "Drafted":
                             statusIcon.Attributes["class"] = "fas fa-badge-check text-success";
                             statusLabel.Attributes["class"] = "text-success";
+                            copyOrd.Visible = true;
                             break;
                         case "Rejected":
                             statusIcon.Attributes["class"] = "fas fa-ban text-danger";
                             statusLabel.Attributes["class"] = "text-danger";
+                            copyOrd.Visible = true;
                             break;
                         case "Deleted":
                             statusIcon.Attributes["class"] = "fas fa-trash-xmark text-danger";
                             statusLabel.Attributes["class"] = "text-danger";
+                            copyOrd.Visible = true;
                             break;
                     }
+
+                    foreach (LinkButton item in emailBtns)
+                    {
+                        item.Visible = false;
+                    }
+
+                    foreach (TextBox item in sigTextBoxes) if (!item.Text.IsNullOrWhiteSpace())
+                    {
+                        switch (item.ClientID)
+                        {
+                            case "fundsCheckBySig":
+                                fundsCheckByBtnDiv.Visible = false;
+                                fundsCheckByInputGroup.Visible = true;
+                                break;
+                            case "directorSupervisorSig":
+                                directorSupervisorBtnDiv.Visible = false;
+                                directorSupervisorInputGroup.Visible = true;
+                                break;
+                            case "cPASig":
+                                cPABtnDiv.Visible = false;
+                                cPAInputGroup.Visible = true;
+                                break;
+                            case "obmDirectorSig":
+                                obmDirectorBtnDiv.Visible = false;
+                                obmDirectorInputGroup.Visible = true;
+                                break;
+                            case "mayorSig":
+                                mayorBtnDiv.Visible = false;
+                                mayorInputGroup.Visible = true;
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        switch (item.ClientID)
+                        {
+                            case "fundsCheckBySig":
+                                fundsCheckByBtnDiv.Visible = true;
+                                fundsCheckByBtn.Text = "Awaiting Signature...";
+                                fundsCheckByInputGroup.Visible = false;
+                                break;
+                            case "directorSupervisorSig":
+                                directorSupervisorBtnDiv.Visible = true;
+                                directorSupervisorBtn.Text = "Awaiting Signature...";
+                                directorSupervisorInputGroup.Visible = false;
+                                break;
+                            case "cPASig":
+                                cPABtnDiv.Visible = true;
+                                cPABtn.Text = "Awaiting Signature...";
+                                cPAInputGroup.Visible = false;
+                                break;
+                            case "obmDirectorSig":
+                                obmDirectorBtnDiv.Visible = true;
+                                obmDirectorBtn.Text = "Awaiting Signature...";
+                                obmDirectorInputGroup.Visible = false;
+                                break;
+                            case "mayorSig":
+                                mayorBtnDiv.Visible = true;
+                                mayorBtn.Text = "Awaiting Signature...";
+                                mayorInputGroup.Visible = false;
+                                break;
+                        }
+                        }
                     break;
                 case "edit":
                     ordView.Attributes["readonly"] = "false";
@@ -758,6 +851,19 @@ namespace WebUI
                     }
                     scopeChangeOptions.Visible = true;
                     otherExceptionDiv.Visible = true;
+
+                    foreach (LinkButton item in emailBtns) if (!userInfo.IsAdmin || userInfo.UserView || Request.QueryString["id"] != null)
+                    {
+                        item.Visible = false;
+                    }
+                    else
+                    {
+                        item.Visible = true;
+                    }
+                    foreach (Button item in signBtns)
+                    {
+                        item.Text = "Sign";
+                    }
                     break;
                 case "download":
                     ReportViewer viewer = new ReportViewer();
@@ -816,8 +922,6 @@ namespace WebUI
 
             //ScriptManager.RegisterStartupScript(this, this.GetType(), "FadeOutOrdTable", "OrdTableFadeOut();", true);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "CurrencyFormatting", "CurrencyFormatting();", true);
-            ordView.Visible = true;
-            ordTable.Visible = false;
         }
         protected void backBtn_Click(object sender, EventArgs e)
         {            
@@ -1419,12 +1523,13 @@ namespace WebUI
             Email.Instance.AddEmailAddress(emailList, _user.Email);
             Email.Instance.AddEmailAddress(emailList, ordinance.RequestEmail);
             string formType = "Ordinance Fact Sheet";
+            string href = $"apptest/Themis/Ordinances?id={hdnOrdID.Value}&v=view";
 
             Email newEmail = new Email();
 
-            newEmail.EmailSubject = "Fact Sheet UPDATED";
-            newEmail.EmailTitle = "Fact Sheet UPDATED";
-            newEmail.EmailText = $"An {formType} has been updated <br/><br/>Ordinance: {ordinance.OrdinanceNumber} {hdnOrdID.Value}<br/>Date: {DateTime.Now}<br/>Department: {requestDepartment.SelectedItem.Text}<br/>Contact: {requestContact.Text}<br/>Phone: {requestPhone.Text} {requestExt.Text}<br/><br/>Status: {ordinance.StatusDescription}";
+            newEmail.EmailSubject = $"{formType} UPDATED";
+            newEmail.EmailTitle = $"{formType} UPDATED";
+            newEmail.EmailText = $"<p><span style='font-size:36.0pt;font-family:\"Times New Roman\",serif;color:#2D71D5;font-weight:bold'>THΣMIS</span></p><div align=center style='text-align:center'><span><hr size=2 width='100%' align=center></span></div><p><span>An <b>{formType}</b> has been UPDATED by <b>{_user.FirstName} {_user.LastName}</b>.</span></p><br /><p><span>Ordinance: {ordinance.OrdinanceNumber} {hdnOrdID.Value}</span></p><p><span>Date: {DateTime.Now}</span></p><p><span>Department: {requestDepartment.SelectedItem.Text}</span></p><p><span>Contact: {requestContact.Text}</span></p><p><span>Phone: {requestPhone.Text}x{requestExt.Text}</span></p><p><span>Status: {ordinance.StatusDescription}</span></p><br /><p><span>Please click the button below to review the document:</span></p><table border='0' cellpadding='0' cellspacing='0' style='border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;'><tr><td style='font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #0d6efd; border-radius: 5px; text-align: center;' valign='top' bgcolor='#0d6efd' align='center'><a href='{href}' target='_blank' style='display: inline-block; color: #ffffff; background-color: #0d6efd; border: solid 1px #0d6efd; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 15px 25px; text-transform: capitalize; border-color: #0d6efd; '>View Ordinance</a></td></tr></table>";
 
             List<int> submitVals = new List<int>( new int[] {
                 retVal,
@@ -1813,7 +1918,6 @@ namespace WebUI
             rpAuditDesc.DataSource = descList;
             rpAuditDesc.DataBind();
         }
-
         protected void btnSendSigEmail_Click(object sender, EventArgs e)
         {
 
@@ -1826,11 +1930,9 @@ namespace WebUI
 
             newEmail.EmailSubject = $"{formType} Signature Requested";
             newEmail.EmailTitle = $"{formType} Signature Requested";
-            //newEmail.EmailText = $"An {formType} has been submitted <br/><br/>Ordinance: {ordinance.OrdinanceNumber} {retVal}<br/>Date: {DateTime.Now}<br/>Department: {requestDepartment.SelectedItem.Text}<br/>Contact: {requestContact.Text}<br/>Phone: {requestPhone.Text}{requestExt.Text}";
             newEmail.EmailText = $"<p><span style='font-size:36.0pt;font-family:\"Times New Roman\",serif;color:#2D71D5;font-weight:bold'>THΣMIS</span></p><div align=center style='text-align:center'><span><hr size=2 width='100%' align=center></span></div><p><span>You are receiving this message because your signature is required in the role of <b>{sigBtnLabel.Value.ToString()}</b> for an ordinance on THΣMIS.</span></p><p><span>Please click the button below to review and sign the document</span></p><table border='0' cellpadding='0' cellspacing='0' style='border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;'><tr><td style='font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #198754; border-radius: 5px; text-align: center;' valign='top' bgcolor='#198754' align='center'><a href='{href}' target='_blank' style='display: inline-block; color: #ffffff; background-color: #198754; border: solid 1px #198754; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 15px 25px; text-transform: capitalize; border-color: #198754; '>Sign Ordinance</a></td></tr></table><p><span>Thank you for your prompt attention to this matter.</span></p>";
-            Email.Instance.SendEmail(newEmail, "SingleEmail");
 
-            signatureEmailAddress.Text = "";
+            Email.Instance.SendEmail(newEmail, "SingleEmail");
         }
     }
 }

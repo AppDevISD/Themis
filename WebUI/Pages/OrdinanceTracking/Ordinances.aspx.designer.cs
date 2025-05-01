@@ -762,13 +762,13 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.TextBox fundsCheckByDate;
 
         /// <summary>
-        /// LinkButton1 control.
+        /// directorSupervisorEmailBtn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton LinkButton1;
+        protected global::System.Web.UI.WebControls.LinkButton directorSupervisorEmailBtn;
 
         /// <summary>
         /// directorSupervisorBtnDiv control.
@@ -816,13 +816,13 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.TextBox directorSupervisorDate;
 
         /// <summary>
-        /// LinkButton2 control.
+        /// cPAEmailBtn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton LinkButton2;
+        protected global::System.Web.UI.WebControls.LinkButton cPAEmailBtn;
 
         /// <summary>
         /// cPABtnDiv control.
@@ -870,13 +870,13 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.TextBox cPABtnDate;
 
         /// <summary>
-        /// LinkButton3 control.
+        /// obmDirectorEmailBtn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton LinkButton3;
+        protected global::System.Web.UI.WebControls.LinkButton obmDirectorEmailBtn;
 
         /// <summary>
         /// obmDirectorBtnDiv control.
@@ -924,13 +924,13 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.TextBox obmDirectorDate;
 
         /// <summary>
-        /// LinkButton4 control.
+        /// mayorEmailBtn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton LinkButton4;
+        protected global::System.Web.UI.WebControls.LinkButton mayorEmailBtn;
 
         /// <summary>
         /// mayorBtnDiv control.

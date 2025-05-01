@@ -28,6 +28,7 @@
 				<asp:AsyncPostBackTrigger ControlID="sortContact" EventName="Click" />
 				<asp:AsyncPostBackTrigger ControlID="sortStatus" EventName="Click" />
 				<asp:AsyncPostBackTrigger ControlID="btnSendSigEmail" EventName="Click" />
+				<asp:AsyncPostBackTrigger ControlID="btnSignDoc" EventName="Click" />
 
 				<asp:PostBackTrigger ControlID="UploadImageBtn" />
 				<asp:PostBackTrigger ControlID="SaveFactSheet" />
@@ -708,7 +709,7 @@
 											<%-- DIRECTOR/SUPERVISOR --%>
 											<div class="col-md-12">
 												<div class="form-group">
-													<label for="directorSupervisorGroup">Director/Supervisor <asp:LinkButton runat="server" ID="LinkButton1" CssClass="text-primary fs-7 text-decoration-none ms-2" data-toggle="modal" data-target="#signatureEmailModal" OnClientClick="setEmailModal('directorSupervisorBtn', 'Director/Supervisor');"><span class="fas fa-envelope"></span>&nbsp;Send Request Email</asp:LinkButton></label>
+													<label for="directorSupervisorGroup">Director/Supervisor <asp:LinkButton runat="server" ID="directorSupervisorEmailBtn" CssClass="text-primary fs-7 text-decoration-none ms-2" data-toggle="modal" data-target="#signatureEmailModal" OnClientClick="setEmailModal('directorSupervisorBtn', 'Director/Supervisor');"><span class="fas fa-envelope"></span>&nbsp;Send Request Email</asp:LinkButton></label>
 													<div id="directorSupervisorGroup" class="row">
 														<div runat="server" id="directorSupervisorBtnDiv">
 															<%-- SIGN BUTTON --%>
@@ -740,7 +741,7 @@
 											<%-- CITY PURCHASING AGENT --%>
 											<div class="col-md-12">
 												<div class="form-group">
-													<label for="cPAGroup">City Purchasing Agent <asp:LinkButton runat="server" ID="LinkButton2" CssClass="text-primary fs-7 text-decoration-none ms-2" data-toggle="modal" data-target="#signatureEmailModal" OnClientClick="setEmailModal('cPABtn', 'City Purchasing Agent');"><span class="fas fa-envelope"></span>&nbsp;Send Request Email</asp:LinkButton></label>
+													<label for="cPAGroup">City Purchasing Agent <asp:LinkButton runat="server" ID="cPAEmailBtn" CssClass="text-primary fs-7 text-decoration-none ms-2" data-toggle="modal" data-target="#signatureEmailModal" OnClientClick="setEmailModal('cPABtn', 'City Purchasing Agent');"><span class="fas fa-envelope"></span>&nbsp;Send Request Email</asp:LinkButton></label>
 													<div id="cPAGroup" class="row">
 														<div runat="server" id="cPABtnDiv">
 															<%-- SIGN BUTTON --%>
@@ -772,7 +773,7 @@
 											<%-- OBM DIRECTOR --%>
 											<div class="col-md-12">
 												<div class="form-group">
-													<label for="obmDirectorGroup">OBM Director <asp:LinkButton runat="server" ID="LinkButton3" CssClass="text-primary fs-7 text-decoration-none ms-2" data-toggle="modal" data-target="#signatureEmailModal" OnClientClick="setEmailModal('obmDirectorBtn', 'OBM Director');"><span class="fas fa-envelope"></span>&nbsp;Send Request Email</asp:LinkButton></label>
+													<label for="obmDirectorGroup">OBM Director <asp:LinkButton runat="server" ID="obmDirectorEmailBtn" CssClass="text-primary fs-7 text-decoration-none ms-2" data-toggle="modal" data-target="#signatureEmailModal" OnClientClick="setEmailModal('obmDirectorBtn', 'OBM Director');"><span class="fas fa-envelope"></span>&nbsp;Send Request Email</asp:LinkButton></label>
 													<div id="obmDirectorGroup" class="row">
 														<div runat="server" id="obmDirectorBtnDiv">
 															<%-- SIGN BUTTON --%>
@@ -804,7 +805,7 @@
 											<%-- MAYOR --%>
 											<div class="col-md-12">
 												<div class="form-group">
-													<label for="mayorGroup">Mayor <asp:LinkButton runat="server" ID="LinkButton4" CssClass="text-primary fs-7 text-decoration-none ms-2" data-toggle="modal" data-target="#signatureEmailModal" OnClientClick="setEmailModal('mayorBtn', 'Mayor');"><span class="fas fa-envelope"></span>&nbsp;Send Request Email</asp:LinkButton></label>
+													<label for="mayorGroup">Mayor <asp:LinkButton runat="server" ID="mayorEmailBtn" CssClass="text-primary fs-7 text-decoration-none ms-2" data-toggle="modal" data-target="#signatureEmailModal" OnClientClick="setEmailModal('mayorBtn', 'Mayor');"><span class="fas fa-envelope"></span>&nbsp;Send Request Email</asp:LinkButton></label>
 													<div id="mayorGroup" class="row">
 														<div runat="server" id="mayorBtnDiv">
 															<%-- SIGN BUTTON --%>
@@ -956,7 +957,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-					<asp:Button ID="btnSignDoc" runat="server" Text="Sign Document" CssClass="btn btn-success" CausesValidation="false" UseSubmitBehavior="false" Visible="true" />
+					<asp:Button ID="btnSignDoc" runat="server" Text="Sign Document" CssClass="btn btn-success" CausesValidation="false" UseSubmitBehavior="false" Visible="true" data-dismiss="modal" />
 				</div>
 			</div>
 		</div>
@@ -1012,6 +1013,7 @@
 			SetTooltips();
 			DisableDDInitialOption();
 			scrollToElement();
+			HideAllTooltips();
 		});
 
 		function DisableDDInitialOption() {
@@ -1055,6 +1057,10 @@
 				}				
 			});
 			$('[data-action-tooltip="true"]').tooltip();
+		}
+
+		function HideAllTooltips() {
+			$('.tooltip.show').tooltip('hide');
 		}
 
 		function CurrencyFormatting() {
@@ -1137,7 +1143,6 @@
 			ShowSubmitToast();
 			GetToastStatus();
 		}
-
-
+		
 	</script>
 </asp:Content>

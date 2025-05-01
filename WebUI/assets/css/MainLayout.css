@@ -92,6 +92,9 @@ main {
 			text-overflow: ellipsis;
 		}
 
+		.top-row a:active {
+			color: var(--color-theme-text) !important;
+		}
 .site-logo {
 	width: 60px;
 	margin-left: 20px;

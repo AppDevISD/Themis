@@ -622,12 +622,13 @@ namespace WebUI
                 
                 Email.Instance.AddEmailAddress(emailList, _user.Email);
                 string formType = "Ordinance Fact Sheet";
+                string href = $"apptest/Themis/Ordinances?id={retVal}&v=view";
 
                 Email newEmail = new Email();
 
                 newEmail.EmailSubject = $"{formType} Submitted";
                 newEmail.EmailTitle = $"{formType} Submitted";
-                newEmail.EmailText = $"An {formType} has been submitted <br/><br/>Ordinance: {ordinance.OrdinanceNumber} {retVal}<br/>Date: {DateTime.Now}<br/>Department: {requestDepartment.SelectedItem.Text}<br/>Contact: {requestContact.Text}<br/>Phone: {requestPhone.Text}{requestExt.Text}";
+                newEmail.EmailText = $"<p><span style='font-size:36.0pt;font-family:\"Times New Roman\",serif;color:#2D71D5;font-weight:bold'>THΣMIS</span></p><div align=center style='text-align:center'><span><hr size=2 width='100%' align=center></span></div><p><span>An <b>{formType}</b> has been submitted by <b>{_user.FirstName} {_user.LastName}</b>.</span></p><br /><p><span>Ordinance: {ordinance.OrdinanceNumber} {retVal}</span></p><p><span>Date: {DateTime.Now}</span></p><p><span>Department: {requestDepartment.SelectedItem.Text}</span></p><p><span>Contact: {requestContact.Text}</span></p><p><span>Phone: {requestPhone.Text}x{requestExt.Text}</span></p><br /><p><span>Please click the button below to review the document:</span></p><table border='0' cellpadding='0' cellspacing='0' style='border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;'><tr><td style='font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #0d6efd; border-radius: 5px; text-align: center;' valign='top' bgcolor='#0d6efd' align='center'><a href='{href}' target='_blank' style='display: inline-block; color: #ffffff; background-color: #0d6efd; border: solid 1px #0d6efd; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 15px 25px; text-transform: capitalize; border-color: #0d6efd; '>View Ordinance</a></td></tr></table>";
                 switch (finishSubmit)
                 {
                     case true:
