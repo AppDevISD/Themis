@@ -16,49 +16,13 @@ namespace WebUI
     public partial class NewFactSheet : InactiveRefreshPage
     {
         private ADUser _user = new ADUser();
+        public UserInfo userInfo = new UserInfo();
         private readonly string emailList = HttpContext.Current.IsDebuggingEnabled ? "NewFactSheetEmailListTEST" : "NewFactSheetEmailList";
-        public string toastColor;
-        public string toastMessage;
-
-        public ListItemCollection fundCodes = new ListItemCollection()
-        {
-            new ListItem("", null),
-            new ListItem("100", "100"),
-            new ListItem("101", "101"),
-            new ListItem("102", "102")
-        };
-        public ListItemCollection agencyCodes = new ListItemCollection()
-        {
-            new ListItem("", null),
-            new ListItem("100", "100"),
-            new ListItem("101", "101"),
-            new ListItem("102", "102")
-        };
-        public ListItemCollection orgCodes = new ListItemCollection()
-        {
-            new ListItem("", null),
-            new ListItem("CABC", "CABC"),
-            new ListItem("BABC", "BABC"),
-            new ListItem("ABAC", "ABAC")
-        };
-        public ListItemCollection activityCodes = new ListItemCollection()
-        {
-            new ListItem("", null),
-            new ListItem("8018", "8018"),
-            new ListItem("8019", "8019"),
-            new ListItem("8020", "8020")
-        };
-        public ListItemCollection objectCodes = new ListItemCollection()
-        {
-            new ListItem("", null),
-            new ListItem("1418", "1418"),
-            new ListItem("1419", "1419"),
-            new ListItem("1420", "1420")
-        };
 
         protected void Page_Load(object sender, EventArgs e)
         {
             _user = Session["CurrentUser"] as ADUser;
+            userInfo = Session["UserInformation"] as UserInfo;
             if (!Page.IsPostBack && !Response.IsRequestBeingRedirected)
             {
                 Session.Remove("revenue");
@@ -67,8 +31,6 @@ namespace WebUI
                 GetAllDepartments();
                 GetAllPurchaseMethods();
                 SetStartupActives();
-                //NewAccountingRow("revenue");
-                //NewAccountingRow("expenditure");
             }
 
             if (!Page.IsPostBack && Request.QueryString["id"] != null)
@@ -77,9 +39,11 @@ namespace WebUI
             }
 
             GetUploadedDocs();
-            SubmitStatus();
 
+            requestDepartment.SelectedValue = userInfo.UserDepartmentID.ToString();
             requestContact.Text = $"{_user.FirstName} {_user.LastName}";
+            requestEmail.Text = _user.Email.ToLower();
+            requestPhone.Text = _user.Telephone;
             requestExt.Text = _user.IPPhone;
         }
         protected void SetStartupActives()
@@ -329,18 +293,6 @@ namespace WebUI
             {
                 case "revenue":
                     var revItem = rpRevenueTable.Items[itemIndex];
-                    //DropDownList revFundCode = (DropDownList)revItem.FindControl("revenueFundCode");
-                    //DropDownList revAgencyCode = (DropDownList)revItem.FindControl("revenueAgencyCode");
-                    //DropDownList revOrgCode = (DropDownList)revItem.FindControl("revenueOrgCode");
-                    //DropDownList revActivityCode = (DropDownList)revItem.FindControl("revenueActivityCode");
-                    //DropDownList revObjectCode = (DropDownList)revItem.FindControl("revenueObjectCode");
-                    //TextBox revAmount = (TextBox)revItem.FindControl("revenueAmount");
-                    //accountingItem.AccountingDesc = tableDesc;
-                    //accountingItem.FundCode = revFundCode.SelectedValue;
-                    //accountingItem.DepartmentCode = revAgencyCode.SelectedValue;
-                    //accountingItem.UnitCode = revOrgCode.SelectedValue;
-                    //accountingItem.ActivityCode = revActivityCode.SelectedValue;
-                    //accountingItem.ObjectCode = revObjectCode.SelectedValue;
                     TextBox revFundCode = (TextBox)revItem.FindControl("revenueFundCode");
                     TextBox revAgencyCode = (TextBox)revItem.FindControl("revenueAgencyCode");
                     TextBox revOrgCode = (TextBox)revItem.FindControl("revenueOrgCode");
@@ -369,18 +321,6 @@ namespace WebUI
                     break;
                 case "expenditure":
                     var expItem = rpExpenditureTable.Items[itemIndex];
-                    //DropDownList expFundCode = (DropDownList)expItem.FindControl("expenditureFundCode");
-                    //DropDownList expAgencyCode = (DropDownList)expItem.FindControl("expenditureAgencyCode");
-                    //DropDownList expOrgCode = (DropDownList)expItem.FindControl("expenditureOrgCode");
-                    //DropDownList expActivityCode = (DropDownList)expItem.FindControl("expenditureActivityCode");
-                    //DropDownList expObjectCode = (DropDownList)expItem.FindControl("expenditureObjectCode");
-                    //TextBox expAmount = (TextBox)expItem.FindControl("expenditureAmount");
-                    //accountingItem.AccountingDesc = tableDesc;
-                    //accountingItem.FundCode = expFundCode.SelectedValue;
-                    //accountingItem.DepartmentCode = expAgencyCode.SelectedValue;
-                    //accountingItem.UnitCode = expOrgCode.SelectedValue;
-                    //accountingItem.ActivityCode = expActivityCode.SelectedValue;
-                    //accountingItem.ObjectCode = expObjectCode.SelectedValue;
                     TextBox expFundCode = (TextBox)expItem.FindControl("expenditureFundCode");
                     TextBox expAgencyCode = (TextBox)expItem.FindControl("expenditureAgencyCode");
                     TextBox expOrgCode = (TextBox)expItem.FindControl("expenditureOrgCode");
@@ -414,12 +354,14 @@ namespace WebUI
         {
             Ordinance ordinance = new Ordinance();
 
-            ordinance.OrdinanceNumber = "TEST";
+            string xString = !requestExt.Text.Contains("x") ? "x" : string.Empty;
+
+            ordinance.OrdinanceNumber = string.Empty;
             ordinance.RequestID = 0;
             ordinance.RequestDepartment = requestDepartment.SelectedItem.Text;
             ordinance.RequestContact = requestContact.Text;
-            ordinance.RequestPhone = $"{requestPhone.Text}{requestExt.Text}";
-            ordinance.RequestEmail = _user.Email;
+            ordinance.RequestPhone = $"{requestPhone.Text}{xString}{requestExt.Text}";
+            ordinance.RequestEmail = requestEmail.Text;
             ordinance.FirstReadDate = Convert.ToDateTime(firstReadDate.Text);
             ordinance.EmergencyPassage = epYes.Checked;
             ordinance.EmergencyPassageReason = epJustification.Text ?? string.Empty;
@@ -607,7 +549,6 @@ namespace WebUI
                 OrdinanceStatus ordStatus = new OrdinanceStatus();
                 ordStatus.OrdinanceID = retVal;
                 ordStatus.StatusID = 1;
-                ordStatus.Signature = string.Empty;
                 ordStatus.LastUpdateBy = _user.Login;
                 ordStatus.LastUpdateDate = DateTime.Now;
                 ordStatus.EffectiveDate = DateTime.Now;
@@ -628,7 +569,7 @@ namespace WebUI
 
                 newEmail.EmailSubject = $"{formType} Submitted";
                 newEmail.EmailTitle = $"{formType} Submitted";
-                newEmail.EmailText = $"<p><span style='font-size:36.0pt;font-family:\"Times New Roman\",serif;color:#2D71D5;font-weight:bold'>THΣMIS</span></p><div align=center style='text-align:center'><span><hr size=2 width='100%' align=center></span></div><p><span>An <b>{formType}</b> has been submitted by <b>{_user.FirstName} {_user.LastName}</b>.</span></p><br /><p><span>Ordinance: {ordinance.OrdinanceNumber} {retVal}</span></p><p><span>Date: {DateTime.Now}</span></p><p><span>Department: {requestDepartment.SelectedItem.Text}</span></p><p><span>Contact: {requestContact.Text}</span></p><p><span>Phone: {requestPhone.Text}x{requestExt.Text}</span></p><br /><p><span>Please click the button below to review the document:</span></p><table border='0' cellpadding='0' cellspacing='0' style='border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;'><tr><td style='font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #0d6efd; border-radius: 5px; text-align: center;' valign='top' bgcolor='#0d6efd' align='center'><a href='{href}' target='_blank' style='display: inline-block; color: #ffffff; background-color: #0d6efd; border: solid 1px #0d6efd; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 15px 25px; text-transform: capitalize; border-color: #0d6efd; '>View Ordinance</a></td></tr></table>";
+                newEmail.EmailText = $"<p style='margin: 0;'><span style='font-size:36.0pt;font-family:\"Times New Roman\",serif;color:#2D71D5;font-weight:bold'>THΣMIS</span></p><div align=center style='text-align:center'><span><hr size='2' width='100%' align='center' style='margin-top: 0;'></span></div><p><span>An <b>{formType}</b> has been submitted by <b>{_user.FirstName} {_user.LastName}</b>.</span></p><br /><p style='margin: 0; line-height: 1.5;'><span>Date: {DateTime.Now}</span></p><p style='margin: 0; line-height: 1.5;'><span>Department: {requestDepartment.SelectedItem.Text}</span></p><p style='margin: 0; line-height: 1.5;'><span>Contact: {requestContact.Text}</span></p><p style='margin: 0; line-height: 1.5;'><span>Phone: {ordinance.RequestPhone}</span></p><br /><p><span>Please click the button below to review the document:</span></p><table border='0' cellpadding='0' cellspacing='0' style='border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;'><tr><td style='font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #0d6efd; border-radius: 5px; text-align: center;' valign='top' bgcolor='#0d6efd' align='center'><a href='{href}' target='_blank' style='display: inline-block; color: #ffffff; background-color: #0d6efd; border: solid 1px #0d6efd; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 15px 25px; text-transform: capitalize; border-color: #0d6efd; '>View Ordinance</a></td></tr></table>";
                 switch (finishSubmit)
                 {
                     case true:
@@ -650,22 +591,6 @@ namespace WebUI
                 Session["SubmitStatus"] = "error";
                 Session["ToastColor"] = "text-bg-danger";
                 Session["ToastMessage"] = "Something went wrong while submitting!";
-            }
-        }
-        protected void SubmitStatus()
-        {
-            if (Session["SubmitStatus"] != null || (string)Session["SubmitStatus"] == "success")
-            {
-                toastColor = (string)Session["ToastColor"];
-                toastMessage = (string)Session["ToastMessage"];
-            }
-            else
-            {
-                Session["SubmitStatus"] = "error";
-                Session["ToastColor"] = "text-bg-danger";
-                Session["ToastMessage"] = "Something went wrong while submitting!";
-                toastColor = (string)Session["ToastColor"];
-                toastMessage = (string)Session["ToastMessage"];
             }
         }
         protected void rpSupportingDocumentation_ItemCommand(object source, RepeaterCommandEventArgs e)
@@ -701,7 +626,7 @@ namespace WebUI
                 rpSupportingDocumentation.DataBind();
             }
         }
-        protected void UploadImageBtn_Click(object sender, EventArgs e)
+        protected void UploadDocBtn_Click(object sender, EventArgs e)
         {
             List<OrdinanceDocument> ordDocList = (Session["ordDocs"] != null) ? Session["ordDocs"] as List<OrdinanceDocument> : new List<OrdinanceDocument>();
 
@@ -895,6 +820,7 @@ namespace WebUI
             staffAnalysis.Text = ord.OrdinanceAnalysis;
 
             ScriptManager.RegisterStartupScript(this, this.GetType(), "CurrencyFormatting", "CurrencyFormatting();", true);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "FormatForms", "FormatForms();", true);
         }
     }
 }

@@ -20,6 +20,8 @@ namespace WebUI
         private ADUser _user = new ADUser();
         private UserInfo userInfo = new UserInfo();
         public string PageTitle;
+        public string toastColor;
+        public string toastMessage;
 
         protected void Page_Init(object sender, EventArgs e)
         {
@@ -83,6 +85,8 @@ namespace WebUI
             {
                 Session.Remove("Error");
             }
+
+            SubmitStatus();
         }
         public void GetUser()
         {
@@ -168,6 +172,23 @@ namespace WebUI
         {
             int errorCode = 500;
             throw new HttpException(errorCode, $"Error");
+        }
+
+        protected void SubmitStatus()
+        {
+            if (Session["SubmitStatus"] != null || (string)Session["SubmitStatus"] == "success")
+            {
+                toastColor = (string)Session["ToastColor"];
+                toastMessage = (string)Session["ToastMessage"];
+            }
+            else
+            {
+                Session["SubmitStatus"] = "error";
+                Session["ToastColor"] = "text-bg-danger";
+                Session["ToastMessage"] = "Something went wrong while submitting!";
+                toastColor = (string)Session["ToastColor"];
+                toastMessage = (string)Session["ToastMessage"];
+            }
         }
     }
 }

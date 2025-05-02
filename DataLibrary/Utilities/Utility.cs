@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.UI.WebControls;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
 
 namespace DataLibrary
 {
@@ -41,6 +42,19 @@ namespace DataLibrary
                     case true:
                         strLoginID = loginID;
                         adu = ISDFactory.Instance.GetUserInformationByLoginName(strLoginID);
+                        adu.Telephone = EmployeePhone(Convert.ToInt32(adu.EmployeeID)) ?? adu.Telephone;
+                        if (adu.Telephone.Length > 0 && !adu.Telephone.StartsWith("217") && !adu.Telephone.StartsWith("(217)"))
+                        {
+                            adu.Telephone = $"(217) {adu.Telephone}";
+                        }
+                        else if (adu.Telephone.StartsWith("217") || adu.Telephone.StartsWith("(217)"))
+                        {
+                            adu.Telephone = $"(217) {adu.Telephone.Replace("(", "").Replace(")", "").Substring(4)}";
+                        }
+                        if (adu.IPPhone.Length < 1)
+                        {
+                            adu.IPPhone = EmployeeExt(Convert.ToInt32(adu.EmployeeID)) ?? string.Empty;
+                        }
                         //adu.Title = EmployeeTitle(Convert.ToInt32(adu.EmployeeID));
                         break;
 
@@ -53,6 +67,19 @@ namespace DataLibrary
                         }
                         else { }
                         adu = ISDFactory.Instance.GetUserInformationByLoginName(strLoginID);
+                        adu.Telephone = EmployeePhone(Convert.ToInt32(adu.EmployeeID)) ?? adu.Telephone;
+                        if (adu.Telephone.Length > 0 && !adu.Telephone.StartsWith("217") && !adu.Telephone.StartsWith("(217)"))
+                        {
+                            adu.Telephone = $"(217) {adu.Telephone}";
+                        }
+                        else if (adu.Telephone.StartsWith("217") || adu.Telephone.StartsWith("(217)"))
+                        {
+                            adu.Telephone = $"(217) {adu.Telephone.Replace("(", "").Replace(")", "").Substring(4)}";
+                        }
+                        if (adu.IPPhone.Length < 1)
+                        {
+                            adu.IPPhone = EmployeeExt(Convert.ToInt32(adu.EmployeeID)) ?? string.Empty;
+                        }
                         //adu.Title = EmployeeTitle(Convert.ToInt32(adu.EmployeeID));
                         break;
 
@@ -61,26 +88,66 @@ namespace DataLibrary
             }
             return adu;
         }
-        //public string EmployeeTitle(int pIntID)
-        //{
-        //    string employeeTitle = string.Empty;
-        //    _cn = new SqlConnection(Properties.Settings.Default["EmployeeDirectoryDB"].ToString());
-        //    SqlCommand cmd = new SqlCommand("spGetEmployeeDetail", _cn);
-        //    cmd.CommandType = CommandType.StoredProcedure;
-        //    cmd.Parameters.AddWithValue("@pIntID", pIntID);
-        //    using (_cn)
-        //    {
-        //        _cn.Open();
-        //        SqlDataReader rs;
-        //        rs = cmd.ExecuteReader();
+        public static string EmployeeTitle(int pIntID)
+        {
+            string employeeTitle = string.Empty;
+            SqlConnection _cn = new SqlConnection(Properties.Settings.Default["EmployeeDirectoryDB"].ToString());
+            SqlCommand cmd = new SqlCommand("spGetEmployeeDetail", _cn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@pIntID", pIntID);
+            using (_cn)
+            {
+                _cn.Open();
+                SqlDataReader rs;
+                rs = cmd.ExecuteReader();
 
-        //        while (rs.Read())
-        //        {
-        //            employeeTitle = rs["Title"].ToString();
-        //        }
-        //    }
-        //    return employeeTitle;
-        //}
+                while (rs.Read())
+                {
+                    employeeTitle = rs["Title"].ToString();
+                }
+            }
+            return employeeTitle;
+        }
+        public static string EmployeePhone(int pIntID)
+        {
+            string employeePhone = string.Empty;
+            SqlConnection _cn = new SqlConnection(Properties.Settings.Default["EmployeeDirectoryDB"].ToString());
+            SqlCommand cmd = new SqlCommand("spGetEmployeeDetail", _cn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@pIntID", pIntID);
+            using (_cn)
+            {
+                _cn.Open();
+                SqlDataReader rs;
+                rs = cmd.ExecuteReader();
+
+                while (rs.Read())
+                {
+                    employeePhone = rs["Office"].ToString();
+                }
+            }
+            return employeePhone;
+        }
+        public static string EmployeeExt(int pIntID)
+        {
+            string employeeExt = string.Empty;
+            SqlConnection _cn = new SqlConnection(Properties.Settings.Default["EmployeeDirectoryDB"].ToString());
+            SqlCommand cmd = new SqlCommand("spGetEmployeeDetail", _cn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@pIntID", pIntID);
+            using (_cn)
+            {
+                _cn.Open();
+                SqlDataReader rs;
+                rs = cmd.ExecuteReader();
+
+                while (rs.Read())
+                {
+                    employeeExt = rs["OfficeExt"].ToString();
+                }
+            }
+            return employeeExt;
+        }
         public static Dictionary<string, string> DepartmentsList()
         {
             Dictionary<string, string> dictionary = new Dictionary<string, string>()
@@ -109,8 +176,10 @@ namespace DataLibrary
         {
             List<Status> statusList = new List<Status>();
             statusList = Factory.Instance.GetAll<Status>("sp_GetLkStatus");
-            Dictionary<string, string> dictionary = new Dictionary<string, string>();
-            dictionary.Add("Select Status...", "");
+            Dictionary<string, string> dictionary = new Dictionary<string, string>()
+            {
+                {"Select Status...", "" }
+            };
             foreach (Status status in statusList)
             {
                 dictionary.Add(status.StatusDescription, status.StatusID.ToString());

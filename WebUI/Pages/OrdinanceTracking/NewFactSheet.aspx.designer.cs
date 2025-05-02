@@ -24,15 +24,6 @@ namespace WebUI
         protected global::System.Web.UI.UpdatePanel formUpdatePanel;
 
         /// <summary>
-        /// userFields control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl userFields;
-
-        /// <summary>
         /// requestDepartment control.
         /// </summary>
         /// <remarks>
@@ -58,6 +49,15 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox requestContact;
+
+        /// <summary>
+        /// requestEmail control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox requestEmail;
 
         /// <summary>
         /// requestPhone control.
@@ -130,15 +130,6 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox suggestedTitle;
-
-        /// <summary>
-        /// adminFields control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl adminFields;
 
         /// <summary>
         /// vendorName control.
@@ -366,13 +357,13 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.FileUpload supportingDocumentation;
 
         /// <summary>
-        /// UploadImageBtn control.
+        /// UploadDocBtn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button UploadImageBtn;
+        protected global::System.Web.UI.WebControls.Button UploadDocBtn;
 
         /// <summary>
         /// SubmitFactSheet control.

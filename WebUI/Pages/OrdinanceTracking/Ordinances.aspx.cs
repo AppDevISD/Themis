@@ -27,8 +27,7 @@ namespace WebUI
         public UserInfo userInfo = new UserInfo();
         private readonly string emailList = HttpContext.Current.IsDebuggingEnabled ? "NewFactSheetEmailListTEST" : "NewFactSheetEmailList";
         private readonly Dictionary<string, string> fieldLabels = FieldLabels();
-        public string toastColor;
-        public string toastMessage;
+        
         public string editSymbol = "<span class='fas fa-arrow-right-long mx-1 text-warning-light fw-bold align-self-center'></span>";
         public string addSymbol = "<span class='fas fa-plus mx-1 text-success fw-bold align-self-center'></span>";
         public string removeSymbol = "<span class='fas fa-minus mx-1 text-danger fw-bold align-self-center'></span>";
@@ -93,12 +92,73 @@ namespace WebUI
                 if (Request.QueryString["f"] != null)
                 {
                     string ctrl = Request.QueryString["f"];
+                    List<HtmlGenericControl> signBtnDivs = new List<HtmlGenericControl>()
+                    {
+                        fundsCheckByBtnDiv,
+                        directorSupervisorBtnDiv,
+                        cPABtnDiv,
+                        obmDirectorBtnDiv,
+                        mayorBtnDiv
+                    };
+                    List<Button> signBtns = new List<Button>()
+                    {
+                        fundsCheckByBtn,
+                        directorSupervisorBtn,
+                        cPABtn,
+                        obmDirectorBtn,
+                        mayorBtn
+                    };
+                    foreach (HtmlGenericControl item in signBtnDivs.Where(i => !i.ClientID.Equals($"{ctrl.ToString()}Div")))
+                    {
+                        item.Attributes["readonly"] = "true";
+                    }
+                    foreach (Button item in signBtns.Where(i => !i.ClientID.Equals(ctrl.ToString())))
+                    {
+                        item.Text = "Awaiting Signature...";
+                    }
                     //Page.SetFocus(ctrl.ToString());
                 }
             }
 
-            GetUploadedImages();
-            SubmitStatus();
+            GetUploadedDocs();
+        }
+
+
+
+        // STARTUP DATA //
+        protected void GetAllDepartments()
+        {
+            Dictionary<string, string> departments = DepartmentsList();
+            foreach (var department in departments.Keys)
+            {
+                var value = departments[department];
+                ListItem newItem = new ListItem(department, value);
+                requestDepartment.Items.Add(newItem);
+                filterDepartment.Items.Add(newItem);
+            }
+        }
+        protected void GetAllStatuses()
+        {
+            Dictionary<string, string> statuses = StatusList();
+            foreach (var status in statuses.Keys)
+            {
+                var value = statuses[status];
+                ListItem newItem = new ListItem(status, value);
+                if (newItem.Text != "New" && newItem.Text != "Deleted")
+                {
+                    ddStatus.Items.Add(newItem);
+                }
+                filterStatus.Items.Add(newItem);
+            }
+        }
+        protected void GetAllPurchaseMethods()
+        {
+            purchaseMethod.Items.Insert(0, new ListItem("Select Purchase Method...", null));
+            purchaseMethod.Items.Insert(1, new ListItem("Low Bid", "Low Bid"));
+            purchaseMethod.Items.Insert(2, new ListItem("Low Bid Meeting Specs", "Low Bid Meeting Specs"));
+            purchaseMethod.Items.Insert(3, new ListItem("Low Evaluated Bid", "Low Evaluated Bid"));
+            purchaseMethod.Items.Insert(4, new ListItem("Other", "Other"));
+            purchaseMethod.Items.Insert(5, new ListItem("Exception", "Exception"));
         }
         protected void SetStartupActives()
         {
@@ -106,6 +166,11 @@ namespace WebUI
             ordView.Visible = false;
             lblNoItems.Visible = false;
             filterDepartmentDiv.Visible = !userInfo.IsAdmin || userInfo.UserView ? false : true;
+        }
+        protected void SetPagination(Repeater rpTable, int ItemsPerPage)
+        {
+            SetViewState(ViewState, ItemsPerPage);
+            GetControls(lnkFirstSearchP, lnkPreviousSearchP, lnkNextSearchP, lnkLastSearchP, rpTable, pnlPagingP, lblCurrentPageBottomSearchP);
         }
         public void GetStartupData(bool isAdmin)
         {
@@ -139,71 +204,318 @@ namespace WebUI
                 lblNoItems.Visible = true;
             }
         }
-
-
-        public void GetTestAuditData()
+        protected void GetUploadedDocs()
         {
-            List<OrdinanceAudit> testAudit = new List<OrdinanceAudit>()
+            if (Session["addOrdDocs"] != null && Session["ordDocs"] != null)
             {
-                new OrdinanceAudit
-                {
-                    AuditID = 1,
-                    OrdinanceID = 0,
-                    DateModified = Convert.ToDateTime("04/15/2025"),
-                    ModifiedBy = "Kyle Bolinger",
-                    ModificationType = "Updated",
-                    Description = $"Suggested Title: \\ \\{addSymbol} \\AN ORDINANCE AUTHORIZING THE EXTENSION OF CONTRACT# PW21-21 WITH BLH COMPUTERS, INC. FOR COLLECTION, RECYCLING, AND DISPOSAL OF ELECTRONIC WASTE, IN AN AMOUNT NOT TO EXCEED $50,000.00 FOR THE OFFICE OF PUBLIC WORKS|Vendor Name: <span class='change-bg'>VI LLC {editSymbol} LRS</span>|Method of Purchase: <span class='change-bg'>Low Bid {editSymbol} Other</span>|Other/Exception: <span class='change-bg'>{addSymbol} RPF-100</span>"
-                },
-                new OrdinanceAudit
-                {
-                    AuditID = 2,
-                    OrdinanceID = 0,
-                    DateModified = Convert.ToDateTime("04/01/2025"),
-                    ModifiedBy = "Chip McCrunch",
-                    ModificationType = "Updated",
-                    Description = $"First Read Date: <span class='change-bg'>03/25/2025 {editSymbol} 03/26/2025</span>|Requesting Contact: <span class='change-bg'>Chip McCrunch {editSymbol} Kyle Bolinger</span>|Ext: <span class='change-bg'>x5684 {editSymbol} x2811</span>|Fiscal Impact: <span class='change-bg'>$10,000.00 {editSymbol} $100,000.00</span>|Emergency Passage Justification: \\Vestibulum enim enim, vestibulum id consequat vitae, imperdiet at nisi. Duis rhoncus massa sit amet mi porta, bibendum dignissim lorem pretium. Suspendisse ultricies iaculis libero, sit amet rhoncus quam dictum sit amet. Praesent maximus vehicula tortor, bibendum auctor libero blandit ut. Quisque diam mi, finibus quis diam in, elementum finibus arcu. Donec congue rhoncus mauris. Suspendisse sit amet cursus augue. Sed aliquet arcu ac ante vehicula, a blandit ligula laoreet. Nunc vel diam auctor, aliquet nisl eget, venenatis sapien. Maecenas non leo ut felis maximus convallis eu sed nibh. Vestibulum nisl tortor, tempor quis ex ut, lobortis accumsan orci. Aenean scelerisque dictum nisi, at mattis nunc eleifend consectetur. Fusce semper metus sit amet dui mollis consectetur. Pellentesque lorem ipsum, iaculis quis lacinia et, ultricies eget nunc. \\{editSymbol} \\Vestibulum enim enim, vestibulum id consequat vitae, imperdiet at nisi. Duis rhoncus massa sit amet mi porta, bibendum dignissim lorem pretium. Suspendisse ultricies iaculis libero, sit amet rhoncus quam dictum sit amet. Praesent maximus vehicula tortor, bibendum auctor libero blandit ut. Quisque diam mi, finibus quis diam in, elementum finibus arcu. Donec congue rhoncus mauris. Suspendisse sit amet cursus augue. Sed aliquet arcu ac ante vehicula, a blandit ligula laoreet.|Code Provision: <span class='change-bg'>{removeSymbol} 56519813</span>"
-                }
+                List<OrdinanceDocument> originalOrdDocList = Session["ordDocs"] as List<OrdinanceDocument>;
+                List<OrdinanceDocument> ordDocList = Session["addOrdDocs"] as List<OrdinanceDocument>;
+                originalOrdDocList.AddRange(ordDocList);
+                rpSupportingDocumentation.DataSource = originalOrdDocList;
+                rpSupportingDocumentation.DataBind();
+            }
+        }
+        protected void GetByID(string id, string cmd)
+        {
+            CommandEventArgs eventArgs = new CommandEventArgs(cmd, id);
+            RepeaterItem rpItem = new RepeaterItem(0, ListItemType.Item);
+            RepeaterCommandEventArgs args = new RepeaterCommandEventArgs(rpItem, rpOrdinanceTable, eventArgs);
+            rpOrdinanceTable_ItemCommand(rpOrdinanceTable, args);
+        }
+
+
+
+        // CONTROL CHANGES //
+        protected void Filter_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SetPagination(rpOrdinanceTable, 10);
+            List<Ordinance> ord_list = new List<Ordinance>();
+            List<Ordinance> noFilterOrdList = new List<Ordinance>();
+
+            DropDownList dropDown = (DropDownList)sender;
+            string commandName = dropDown.Attributes["data-command"];
+            string commandArgument = dropDown.SelectedItem.ToString();
+            List<Ordinance> filteredList = new List<Ordinance>();
+            userInfo = (UserInfo)Session["UserInformation"];
+
+
+            switch (commandName)
+            {
+                case "department":
+                    if (filterDepartment.SelectedValue != "")
+                    {
+                        switch (filterStatus.SelectedValue.Equals(""))
+                        {
+                            case true:
+                                //filteredList = Factory.Instance.GetAll<Ordinance>("sp_GetOrdinanceByEffective");
+                                filteredList = Factory.Instance.GetAllLookup<Ordinance>(0, "sp_GetOrdinanceByFilteredStatusID", "StatusID");
+                                if (filteredList.Count > 0)
+                                {
+                                    foreach (Ordinance ord in filteredList)
+                                    {
+                                        OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
+                                        ord.StatusDescription = ordStatus.StatusDescription;
+                                    }
+                                }
+                                break;
+
+                            case false:
+                                if (filterStatus.SelectedValue != "7")
+                                {
+                                    filteredList = Factory.Instance.GetAllLookup<Ordinance>(Convert.ToInt32(filterStatus.SelectedValue), "sp_GetOrdinanceByStatusID", "StatusID");
+                                    if (filteredList.Count > 0)
+                                    {
+                                        foreach (Ordinance ord in filteredList)
+                                        {
+                                            OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
+                                            ord.StatusDescription = ordStatus.StatusDescription;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    filteredList = Factory.Instance.GetAll<Ordinance>("sp_GetDeletedOrdinanceByEffective");
+
+                                    if (filteredList.Count > 0)
+                                    {
+                                        foreach (Ordinance ord in filteredList)
+                                        {
+                                            OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
+                                            ord.StatusDescription = ordStatus.StatusDescription;
+                                        }
+                                    }
+                                }
+                                break;
+                        }
+                        filteredList = FilterList(filteredList, commandName, commandArgument);
+                    }
+                    else
+                    {
+                        switch (filterStatus.SelectedValue.Equals(""))
+                        {
+                            case true:
+                                //filteredList = Factory.Instance.GetAll<Ordinance>("sp_GetOrdinanceByEffective");
+                                filteredList = Factory.Instance.GetAllLookup<Ordinance>(0, "sp_GetOrdinanceByFilteredStatusID", "StatusID");
+                                if (filteredList.Count > 0)
+                                {
+                                    foreach (Ordinance ord in filteredList)
+                                    {
+                                        OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
+                                        ord.StatusDescription = ordStatus.StatusDescription;
+                                    }
+                                }
+                                BindDataRepeaterPagination("no", filteredList);
+                                break;
+
+                            case false:
+                                if (filterStatus.SelectedValue != "7")
+                                {
+                                    filteredList = Factory.Instance.GetAllLookup<Ordinance>(Convert.ToInt32(filterStatus.SelectedValue), "sp_GetOrdinanceByStatusID", "StatusID");
+                                    if (filteredList.Count > 0)
+                                    {
+                                        foreach (Ordinance ord in filteredList)
+                                        {
+                                            OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
+                                            ord.StatusDescription = ordStatus.StatusDescription;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    filteredList = Factory.Instance.GetAll<Ordinance>("sp_GetDeletedOrdinanceByEffective");
+
+                                    if (filteredList.Count > 0)
+                                    {
+                                        foreach (Ordinance ord in filteredList)
+                                        {
+                                            OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
+                                            ord.StatusDescription = ordStatus.StatusDescription;
+                                        }
+                                    }
+                                }
+                                BindDataRepeaterPagination("no", filteredList);
+                                break;
+                        }
+                    }
+                    break;
+
+                case "status":
+                    if (filterStatus.SelectedValue != "")
+                    {
+                        if (filterStatus.SelectedValue != "7")
+                        {
+                            filteredList = Factory.Instance.GetAllLookup<Ordinance>(Convert.ToInt32(dropDown.SelectedValue), "sp_GetOrdinanceByStatusID", "StatusID");
+
+                            if (filteredList.Count > 0)
+                            {
+                                foreach (Ordinance ord in filteredList)
+                                {
+                                    OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
+                                    ord.StatusDescription = ordStatus.StatusDescription;
+                                }
+                            }
+
+                            switch (filterDepartment.SelectedValue.Equals(""))
+                            {
+                                case true:
+                                    switch (userInfo.IsAdmin && !userInfo.UserView)
+                                    {
+                                        case true:
+                                            BindDataRepeaterPagination("no", filteredList);
+                                            break;
+
+                                        case false:
+                                            filteredList = FilterList(filteredList, "department", userInfo.UserDepartmentName);
+                                            break;
+                                    }
+                                    break;
+
+                                case false:
+                                    filteredList = FilterList(filteredList, "department", filterDepartment.SelectedItem.ToString());
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            filteredList = Factory.Instance.GetAll<Ordinance>("sp_GetDeletedOrdinanceByEffective");
+
+                            if (filteredList.Count > 0)
+                            {
+                                foreach (Ordinance ord in filteredList)
+                                {
+                                    OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
+                                    ord.StatusDescription = ordStatus.StatusDescription;
+                                }
+                            }
+
+                            switch (filterDepartment.SelectedValue.Equals(""))
+                            {
+                                case true:
+                                    switch (userInfo.IsAdmin && !userInfo.UserView)
+                                    {
+                                        case true:
+                                            BindDataRepeaterPagination("no", filteredList);
+                                            break;
+
+                                        case false:
+                                            filteredList = FilterList(filteredList, "department", userInfo.UserDepartmentName);
+                                            break;
+                                    }
+                                    break;
+
+                                case false:
+                                    filteredList = FilterList(filteredList, "department", filterDepartment.SelectedItem.ToString());
+                                    break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        //filteredList = Factory.Instance.GetAll<Ordinance>("sp_GetOrdinanceByEffective");
+                        filteredList = Factory.Instance.GetAllLookup<Ordinance>(0, "sp_GetOrdinanceByFilteredStatusID", "StatusID");
+                        if (filteredList.Count > 0)
+                        {
+                            foreach (Ordinance ord in filteredList)
+                            {
+                                OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
+                                ord.StatusDescription = ordStatus.StatusDescription;
+                            }
+                        }
+                        switch (filterDepartment.SelectedValue.Equals(""))
+                        {
+                            case true:
+                                switch (userInfo.IsAdmin && !userInfo.UserView)
+                                {
+                                    case true:
+                                        BindDataRepeaterPagination("no", filteredList);
+                                        break;
+
+                                    case false:
+                                        filteredList = FilterList(filteredList, "department", userInfo.UserDepartmentName);
+                                        break;
+                                }
+                                break;
+
+                            case false:
+                                filteredList = FilterList(filteredList, "department", filterDepartment.SelectedItem.ToString());
+                                break;
+                        }
+
+                    }
+                    break;
+            }
+            Dictionary<string, object> sortRet = new Dictionary<string, object>();
+
+            sortRet = SortButtonClick(filteredList, Session["curCmd"].ToString(), Session["curDir"].ToString());
+
+
+            Session["ord_list"] = sortRet["list"];
+            if (filteredList.Count > 0)
+            {
+                formTableDiv.Visible = true;
+                lblNoItems.Visible = false;
+            }
+            else
+            {
+                formTableDiv.Visible = false;
+                lblNoItems.Visible = true;
+            }
+        }
+        protected void SortBtn_Click(object sender, EventArgs e)
+        {
+            SetPagination(rpOrdinanceTable, 10);
+            List<Ordinance> ord_list = new List<Ordinance>();
+            ord_list = (List<Ordinance>)Session["ord_list"];
+            LinkButton button = (LinkButton)sender;
+            string commandName = button.Attributes["data-command"];
+            string commandArgument = Session["sortDir"].ToString();
+            string commandText = button.Attributes["data-text"];
+
+            Dictionary<string, object> sortRet = new Dictionary<string, object>();
+
+            string prvBtn = Session["sortBtn"].ToString();
+            switch (button.ID.Equals(prvBtn))
+            {
+                case true:
+                    sortRet = SortButtonClick(ord_list, commandName, commandArgument);
+                    break;
+
+                case false:
+                    sortRet = SortButtonClick(ord_list, commandName, "asc");
+                    break;
+            }
+
+
+
+            Session["sortBtn"] = button.ID;
+            Session["sortDir"] = sortRet["dir"];
+            Session["ord_list"] = sortRet["list"];
+            Session["curDir"] = sortRet["curDir"];
+            Session["curCmd"] = sortRet["curCmd"];
+
+            List<LinkButton> sortButtonsList = new List<LinkButton>()
+            {
+                sortDate,
+                sortTitle,
+                sortDepartment,
+                sortContact,
+                sortStatus
             };
-            Session["ordAudit"] = testAudit;
-
-            rpAudit.DataSource = testAudit;
-            rpAudit.DataBind();
-        }
-
-
-        protected void GetAllStatuses()
-        {
-            Dictionary<string, string> statuses = StatusList();
-            foreach (var status in statuses.Keys)
+            foreach (LinkButton item in sortButtonsList)
             {
-                var value = statuses[status];
-                ListItem newItem = new ListItem(status, value);
-                if (newItem.Text != "New" && newItem.Text != "Deleted")
-                {
-                    ddStatus.Items.Add(newItem);
-                }
-                filterStatus.Items.Add(newItem);
+                item.Text = $"<strong>{item.Attributes["data-text"]}<span runat='server' class='float-end lh-1p5'></span></strong>";
             }
+
+            button.Text = $"<strong>{commandText}<span runat='server' class='float-end lh-1p5 fas fa-arrow-{sortRet["arrow"]}'></span></strong>";
         }
-        protected void GetAllDepartments()
+        protected void paginationBtn_Click(object sender, EventArgs e)
         {
-            Dictionary<string, string> departments = DepartmentsList();
-            foreach (var department in departments.Keys)
-            {
-                var value = departments[department];
-                ListItem newItem = new ListItem(department, value);
-                requestDepartment.Items.Add(newItem);
-                filterDepartment.Items.Add(newItem);
-            }
-        }        
-        protected void GetAllPurchaseMethods()
-        {
-            purchaseMethod.Items.Insert(0, new ListItem("Select Purchase Method...", null));
-            purchaseMethod.Items.Insert(1, new ListItem("Low Bid", "Low Bid"));
-            purchaseMethod.Items.Insert(2, new ListItem("Low Bid Meeting Specs", "Low Bid Meeting Specs"));
-            purchaseMethod.Items.Insert(3, new ListItem("Low Evaluated Bid", "Low Evaluated Bid"));
-            purchaseMethod.Items.Insert(4, new ListItem("Other", "Other"));
-            purchaseMethod.Items.Insert(5, new ListItem("Exception", "Exception"));
+            SetPagination(rpOrdinanceTable, 10);
+            List<Ordinance> ord_list = new List<Ordinance>();
+            ord_list = (List<Ordinance>)Session["ord_list"];
+            LinkButton button = (LinkButton)sender;
+            string commandName = button.Attributes["data-command"];
+            PageButtonClick(ord_list, commandName);
         }
         protected void PurchaseMethodSelectedIndexChanged(object sender, EventArgs e)
         {
@@ -255,85 +567,51 @@ namespace WebUI
                     break;
             }
         }
-        protected void SetPagination(Repeater rpTable, int ItemsPerPage)
+        protected void UploadDocBtn_Click(object sender, EventArgs e)
         {
-            SetViewState(ViewState, ItemsPerPage);
-            GetControls(lnkFirstSearchP, lnkPreviousSearchP, lnkNextSearchP, lnkLastSearchP, rpTable, pnlPagingP, lblCurrentPageBottomSearchP);
-        }        
-        protected void mdlDeleteSubmit_ServerClick(object sender, EventArgs e)
-        {
-            int ordID = Convert.ToInt32(hdnOrdID.Value);
-            Ordinance ord = Factory.Instance.GetByID<Ordinance>(ordID, "sp_GetOrdinanceByOrdinanceID", "OrdinanceID");
-            OrdinanceStatus ordStatus = new OrdinanceStatus();
-            ordStatus.OrdinanceStatusID = Convert.ToInt32(hdnOrdStatusID.Value);
-            ordStatus.OrdinanceID = Convert.ToInt32(hdnOrdID.Value);
-            ordStatus.StatusID = 7;
-            ordStatus.Signature = string.Empty;
-            ordStatus.LastUpdateBy = _user.Login;
-            ordStatus.LastUpdateDate = DateTime.Now;
-            ordStatus.EffectiveDate = Convert.ToDateTime(hdnEffectiveDate.Value);
-            ordStatus.ExpirationDate = DateTime.MaxValue;
-            int retVal = Factory.Instance.Expire<Ordinance>(ord, "sp_UpdateOrdinance", 1);
-            if (retVal > 0)
+            List<OrdinanceDocument> originalOrdDocList = (Session["ordDocs"] != null) ? Session["ordDocs"] as List<OrdinanceDocument> : new List<OrdinanceDocument>();
+            List<OrdinanceDocument> ordDocList = (Session["addOrdDocs"] != null) ? Session["addOrdDocs"] as List<OrdinanceDocument> : new List<OrdinanceDocument>();
+
+            for (int i = 0; i < supportingDocumentation.PostedFiles.Count; i++)
             {
-                int statusVal = Factory.Instance.Update(ordStatus, "sp_UpdateOrdinance_Status", 1);
-                if (statusVal > 0)
+                OrdinanceDocument ordDoc = new OrdinanceDocument();
+                ordDoc.DocumentName = supportingDocumentation.PostedFiles[i].FileName;
+                Stream stream = supportingDocumentation.PostedFiles[i].InputStream;
+                using (var fileBytes = new BinaryReader(stream))
                 {
-                    Session["SubmitStatus"] = "success";
-                    Session["ToastColor"] = "text-bg-success";
-                    Session["ToastMessage"] = "Entry Deleted!";
-                    Response.Redirect("./Ordinances");
+                    ordDoc.DocumentData = fileBytes.ReadBytes((int)stream.Length);
                 }
-                else
-                {
-                    Session["SubmitStatus"] = "error";
-                    Session["ToastColor"] = "text-bg-danger";
-                    Session["ToastMessage"] = "Something went wrong while deleting!";
-                }
+                ordDoc.LastUpdateBy = _user.Login;
+                ordDoc.LastUpdateDate = DateTime.Now;
+                ordDoc.EffectiveDate = DateTime.Now;
+                ordDoc.ExpirationDate = DateTime.MaxValue;
+                ordDocList.Add(ordDoc);
             }
-            else
-            {
-                Session["SubmitStatus"] = "error";
-                Session["ToastColor"] = "text-bg-danger";
-                Session["ToastMessage"] = "Something went wrong while deleting!";
-            }
+            Session["addOrdDocs"] = ordDocList;
+            originalOrdDocList.AddRange(ordDocList);
+            rpSupportingDocumentation.DataSource = originalOrdDocList;
+            rpSupportingDocumentation.DataBind();
         }
-        protected void paginationBtn_Click(object sender, EventArgs e)
+        protected void btnSendSigEmail_Click(object sender, EventArgs e)
         {
-            SetPagination(rpOrdinanceTable, 10);
-            List<Ordinance> ord_list = new List<Ordinance>();
-            ord_list = (List<Ordinance>)Session["ord_list"];
-            LinkButton button = (LinkButton)sender;
-            string commandName = button.Attributes["data-command"];
-            PageButtonClick(ord_list, commandName);
+            Email.Instance.AddEmailAddress("SingleEmail", signatureEmailAddress.Text);
+            string href = $"apptest/Themis/Ordinances?id={hdnOrdID.Value.ToString()}&v=edit&f={sigBtnTarget.Value.ToString()}";
+            string formType = "THΣMIS";
+
+            Email newEmail = new Email();
+
+            newEmail.EmailSubject = $"{formType} Signature Requested";
+            newEmail.EmailTitle = $"{formType} Signature Requested";
+            newEmail.EmailText = $"<p style='margin: 0;'><span style='font-size:36.0pt;font-family:\"Times New Roman\",serif;color:#2D71D5;font-weight:bold'>THΣMIS</span></p><div align=center style='text-align:center'><span><hr size='2' width='100%' align='center' style='margin-top: 0;'></span></div><p><span>You are receiving this message because your signature is required in the role of <b>{sigBtnLabel.Value.ToString()}</b> for an ordinance on THΣMIS.</span></p><p><span>Please click the button below to review and sign the document</span></p><table border='0' cellpadding='0' cellspacing='0' style='border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;'><tr><td style='font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #198754; border-radius: 5px; text-align: center;' valign='top' bgcolor='#198754' align='center'><a href='{href}' target='_blank' style='display: inline-block; color: #ffffff; background-color: #198754; border: solid 1px #198754; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 15px 25px; text-transform: capitalize; border-color: #198754; '>Sign Ordinance</a></td></tr></table><br /><p><span>Thank you for your prompt attention to this matter.</span></p>";
+
+            Email.Instance.SendEmail(newEmail, "SingleEmail");
         }
-        protected void SubmitStatus()
-        {
-            if (Session["SubmitStatus"] != null || (string)Session["SubmitStatus"] == "success")
-            {
-                toastColor = (string)Session["ToastColor"];
-                toastMessage = (string)Session["ToastMessage"];
-            }
-            else
-            {
-                Session["SubmitStatus"] = "error";
-                Session["ToastColor"] = "text-bg-danger";
-                Session["ToastMessage"] = "Something went wrong while submitting!";
-                toastColor = (string)Session["ToastColor"];
-                toastMessage = (string)Session["ToastMessage"];
-            }
-        }
-        protected void GetByID(string id, string cmd)
-        {
-            CommandEventArgs eventArgs = new CommandEventArgs(cmd, id);
-            RepeaterItem rpItem = new RepeaterItem(0, ListItemType.Item);
-            RepeaterCommandEventArgs args = new RepeaterCommandEventArgs(rpItem, rpOrdinanceTable, eventArgs);
-            rpOrdinanceTable_ItemCommand(rpOrdinanceTable, args);
-        }
+
+
+
+        // REPEATER COMMANDS //        
         protected void rpOrdinanceTable_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
-            ordView.Visible = true;
-            ordTable.Visible = false;
             ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(backBtn);
             Session.Remove("ordRevTable");
             Session.Remove("ordExpTable");
@@ -363,16 +641,16 @@ namespace WebUI
                 mayorBtn
             };
 
-            //HiddenField hdnID = (HiddenField)e.Item.FindControl("hdnID");
             int ordID = Convert.ToInt32(e.CommandArgument);
             Ordinance ord = Factory.Instance.GetByID<Ordinance>(ordID, "sp_GetOrdinanceByOrdinanceID", "OrdinanceID");
             hdnOrdID.Value = ordID.ToString();
             hdnEffectiveDate.Value = ord.EffectiveDate.ToString();
 
-
+            ordinanceNumber.Text = ord.OrdinanceNumber;
             requestDepartment.SelectedValue = DepartmentsList()[ord.RequestDepartment];
             firstReadDate.Text = ord.FirstReadDate.ToString("yyyy-MM-dd");
             requestContact.Text = ord.RequestContact;
+            requestEmail.Text = ord.RequestEmail;
             requestPhone.Text = ord.RequestPhone.SubstringUpToFirst('x');
             requestExt.Text = ord.RequestPhone.Substring(14);
 
@@ -513,7 +791,6 @@ namespace WebUI
             }
 
             List<OrdinanceDocument> ordDocs = Factory.Instance.GetAllLookup<OrdinanceDocument>(ordID, "sp_GetOrdinanceDocumentsByOrdinanceID", "OrdinanceID");
-
             if (ordDocs.Count > 0)
             {
                 supportingDocumentationDiv.Visible = true;
@@ -555,7 +832,7 @@ namespace WebUI
                     newRevenueRowDiv.Visible = false;
                     newExpenditureRowDiv.Visible = false;
                     supportingDocumentation.Visible = false;
-                    UploadImageBtn.Visible = false;
+                    UploadDocBtn.Visible = false;
                     submitSection.Visible = false;
                     if (rpRevenueTable.Items.Count > 0)
                     {
@@ -616,36 +893,43 @@ namespace WebUI
                             statusIcon.Attributes["class"] = "fas fa-sparkles text-primary";
                             statusLabel.Attributes["class"] = "text-primary";
                             copyOrd.Visible = false;
+                            ordinanceNumberDiv.Visible = false;
                             break;
                         case "Pending":
                             statusIcon.Attributes["class"] = "fas fa-hourglass-clock text-warning-light";
                             statusLabel.Attributes["class"] = "text-warning-light";
                             copyOrd.Visible = true;
+                            ordinanceNumberDiv.Visible = true;
                             break;
                         case "Under Review":
                             statusIcon.Attributes["class"] = "fas fa-memo-circle-info text-info";
                             statusLabel.Attributes["class"] = "text-info";
                             copyOrd.Visible = true;
+                            ordinanceNumberDiv.Visible = true;
                             break;
                         case "Being Held":
                             statusIcon.Attributes["class"] = "fas fa-triangle-exclamation text-hazard";
                             statusLabel.Attributes["class"] = "text-hazard";
                             copyOrd.Visible = true;
+                            ordinanceNumberDiv.Visible = true;
                             break;
                         case "Drafted":
                             statusIcon.Attributes["class"] = "fas fa-badge-check text-success";
                             statusLabel.Attributes["class"] = "text-success";
                             copyOrd.Visible = true;
+                            ordinanceNumberDiv.Visible = true;
                             break;
                         case "Rejected":
                             statusIcon.Attributes["class"] = "fas fa-ban text-danger";
                             statusLabel.Attributes["class"] = "text-danger";
                             copyOrd.Visible = true;
+                            ordinanceNumberDiv.Visible = true;
                             break;
                         case "Deleted":
                             statusIcon.Attributes["class"] = "fas fa-trash-xmark text-danger";
                             statusLabel.Attributes["class"] = "text-danger";
                             copyOrd.Visible = true;
+                            ordinanceNumberDiv.Visible = true;
                             break;
                     }
 
@@ -784,7 +1068,7 @@ namespace WebUI
                     newExpenditureRowDiv.Visible = true;
                     supportingDocumentationDiv.Visible = true;
                     supportingDocumentation.Visible = true;
-                    UploadImageBtn.Visible = true;
+                    UploadDocBtn.Visible = true;
                     Session.Remove("RemoveAccs");
                     Session.Remove("RemoveOrdAccs");
                     Session.Remove("RemoveDocs");
@@ -864,6 +1148,83 @@ namespace WebUI
                     {
                         item.Text = "Sign";
                     }
+                    foreach (TextBox item in sigTextBoxes) if (!item.Text.IsNullOrWhiteSpace())
+                    {
+                        switch (item.ClientID)
+                        {
+                            case "fundsCheckBySig":
+                                fundsCheckByBtnDiv.Visible = false;
+                                fundsCheckByInputGroup.Visible = true;
+                                break;
+                            case "directorSupervisorSig":
+                                directorSupervisorBtnDiv.Visible = false;
+                                directorSupervisorInputGroup.Visible = true;
+                                break;
+                            case "cPASig":
+                                cPABtnDiv.Visible = false;
+                                cPAInputGroup.Visible = true;
+                                break;
+                            case "obmDirectorSig":
+                                obmDirectorBtnDiv.Visible = false;
+                                obmDirectorInputGroup.Visible = true;
+                                break;
+                            case "mayorSig":
+                                mayorBtnDiv.Visible = false;
+                                mayorInputGroup.Visible = true;
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        switch (item.ClientID)
+                        {
+                            case "fundsCheckBySig":
+                                fundsCheckByBtnDiv.Visible = true;
+                                fundsCheckByInputGroup.Visible = false;
+                                break;
+                            case "directorSupervisorSig":
+                                directorSupervisorBtnDiv.Visible = true;
+                                directorSupervisorInputGroup.Visible = false;
+                                break;
+                            case "cPASig":
+                                cPABtnDiv.Visible = true;
+                                cPAInputGroup.Visible = false;
+                                break;
+                            case "obmDirectorSig":
+                                obmDirectorBtnDiv.Visible = true;
+                                obmDirectorInputGroup.Visible = false;
+                                break;
+                            case "mayorSig":
+                                mayorBtnDiv.Visible = true;
+                                mayorInputGroup.Visible = false;
+                                break;
+                        }
+                    }
+
+                    switch (ord.StatusDescription)
+                    {
+                        case "New":                            
+                            ordinanceNumberDiv.Visible = false;
+                            break;
+                        case "Pending":                            
+                            ordinanceNumberDiv.Visible = true;
+                            break;
+                        case "Under Review":                            
+                            ordinanceNumberDiv.Visible = true;
+                            break;
+                        case "Being Held":                            
+                            ordinanceNumberDiv.Visible = true;
+                            break;
+                        case "Drafted":                            
+                            ordinanceNumberDiv.Visible = true;
+                            break;
+                        case "Rejected":                            
+                            ordinanceNumberDiv.Visible = true;
+                            break;
+                        case "Deleted":                            
+                            ordinanceNumberDiv.Visible = true;
+                            break;
+                    }
                     break;
                 case "download":
                     ReportViewer viewer = new ReportViewer();
@@ -922,67 +1283,9 @@ namespace WebUI
 
             //ScriptManager.RegisterStartupScript(this, this.GetType(), "FadeOutOrdTable", "OrdTableFadeOut();", true);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "CurrencyFormatting", "CurrencyFormatting();", true);
-        }
-        protected void backBtn_Click(object sender, EventArgs e)
-        {            
-            if (Request.QueryString["id"] != null)
-            {
-                Response.Redirect("./Ordinances");
-            }
-            else
-            {
-                ordTable.Visible = true;
-                //ScriptManager.RegisterStartupScript(this, this.GetType(), "FadeInOrdTable", "OrdTableFadeIn();", true);
-                ordView.Visible = false;
-            }
-        }
-        protected void NewAccountingRow(string tableDesc)
-        {
-            List<Accounting> prvList = new List<Accounting>();
-            List<Accounting> accountingList = new List<Accounting>();
-            Accounting newAccountingItem = new Accounting();
-            newAccountingItem.Amount = CurrencyToDecimal("-1");
 
-            switch (tableDesc)
-            {
-                case "ordRevTable":
-                    if (Session[tableDesc] != null)
-                    {
-                        for (int i = 0; i < rpRevenueTable.Items.Count; i++)
-                        {
-                            Accounting accountingItem = GetAccountingItem("revenue", i);
-                            prvList.Add(accountingItem);
-                        }
-                        Session[tableDesc] = prvList;
-                        accountingList = (List<Accounting>)Session[tableDesc];
-                    }
-                    accountingList.Add(newAccountingItem);
-                    Session[tableDesc] = accountingList;
-                    rpRevenueTable.DataSource = accountingList;
-                    rpRevenueTable.DataBind();
-                    break;
-                case "ordExpTable":
-                    if (Session[tableDesc] != null)
-                    {
-                        for (int i = 0; i < rpExpenditureTable.Items.Count; i++)
-                        {
-                            Accounting accountingItem = GetAccountingItem("expenditure", i);
-                            prvList.Add(accountingItem);
-                        }
-                        Session[tableDesc] = prvList;
-                        accountingList = (List<Accounting>)Session[tableDesc];
-                    }
-                    accountingList.Add(newAccountingItem);
-                    Session[tableDesc] = accountingList;
-                    rpExpenditureTable.DataSource = accountingList;
-                    rpExpenditureTable.DataBind();
-                    break;
-            }
-        }
-        protected void newAccountingRow_ServerClick(object sender, EventArgs e)
-        {
-            Button button = (Button)sender;
-            NewAccountingRow(button.CommandName);
+            ordView.Visible = true;
+            ordTable.Visible = false;
         }
         protected void rpAccountingTable_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
@@ -1036,7 +1339,7 @@ namespace WebUI
                                 accountingList = (List<Accounting>)Session[tableDesc];
                             }
 
-                            
+
                             HiddenField revHdnID = (HiddenField)e.Item.FindControl("hdnRevID");
 
                             if (Session["RemoveAccs"] != null)
@@ -1095,7 +1398,7 @@ namespace WebUI
                             }
                             Session[tableDesc] = prvList;
                             HiddenField expHdnIndex = (HiddenField)e.Item.FindControl("hdnExpIndex");
-                            
+
                             if (Session[tableDesc] != null)
                             {
                                 accountingList = (List<Accounting>)Session[tableDesc];
@@ -1130,6 +1433,130 @@ namespace WebUI
                     }
                     break;
             }
+        }
+        protected void rpSupportingDocumentation_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            HiddenField hdnDocID = (HiddenField)e.Item.FindControl("hdnDocID");
+            HiddenField hdnDocIndex = (HiddenField)e.Item.FindControl("hdnDocIndex");
+            List<OrdinanceDocument> ordDocList = Session["ordDocs"] as List<OrdinanceDocument>;
+            OrdinanceDocument ordDocItem = ordDocList[Convert.ToInt32(hdnDocIndex.Value)];
+
+            switch (e.CommandName)
+            {
+                case "download":
+                    Response.Clear();
+                    Response.ClearHeaders();
+                    Response.AddHeader("Content-Length", ordDocItem.DocumentData.Length.ToString());
+                    Response.AddHeader("Content-type", MimeMapping.GetMimeMapping(ordDocItem.DocumentName));
+                    Response.AddHeader("Content-Disposition", "attachment; filename=" + ordDocItem.DocumentName);
+                    Response.BinaryWrite(ordDocItem.DocumentData);
+                    Response.Flush();
+                    Response.End();
+                    break;
+                case "delete":
+                    List<OrdinanceDocument> removeDocs = new List<OrdinanceDocument>();
+                    if (Session["RemoveDocs"] != null)
+                    {
+                        removeDocs = Session["RemoveDocs"] as List<OrdinanceDocument>;
+                    }
+                    removeDocs.Add(ordDocItem);
+                    Session["RemoveDocs"] = removeDocs;
+                    ordDocList.Remove(ordDocItem);
+                    Session["ordDocs"] = ordDocList;
+                    rpSupportingDocumentation.DataSource = ordDocList;
+                    rpSupportingDocumentation.DataBind();
+                    break;
+            }
+        }
+        protected void rpAudit_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            HiddenField hdnAuditItem = (HiddenField)e.Item.FindControl("hdnAuditItem");
+            int auditID = Convert.ToInt32(hdnAuditItem.Value);
+            Repeater rpAuditDesc = (Repeater)e.Item.FindControl("rpAuditDesc");
+
+            List<OrdinanceAudit> ordAuditList = Session["ordAudit"] as List<OrdinanceAudit>;
+            OrdinanceAudit ordAudit = ordAuditList.First(i => i.AuditID.Equals(auditID));
+
+            string[] descArray = ordAudit.Description.Split('|');
+            List<string> descList = new List<string>();
+
+            for (int i = 0; i < descArray.Length; i++)
+            {
+                if (!descArray[i].SubstringUpToFirst(':').Contains("Emergency Passage Justification") && !descArray[i].SubstringUpToFirst(':').Contains("Staff Analysis") && !descArray[i].SubstringUpToFirst(':').Contains("Suggested Title"))
+                {
+                    descList.Add(descArray[i]);
+                }
+                else
+                {
+                    string[] longTextArr = descArray[i].Split('\\');
+                    string longText = string.Empty;
+                    switch (!longTextArr[1].IsNullOrWhiteSpace())
+                    {
+                        case true:
+                            longText = $"<p class='m-0'>{longTextArr[0]}</p> <div class='d-flex change-bg mw-100 lh-1p5'> <div class='w-50 pe-2'>{longTextArr[1]}</div> {longTextArr[2]} <div class='w-50 ps-2'>{longTextArr[3]}</div> </div>";
+                            break;
+                        case false:
+                            longText = $"<p class='m-0'>{longTextArr[0]}</p> <div class='d-flex change-bg w-50 lh-1p5'> {longTextArr[2]} <div class='w-100 ps-2'>{longTextArr[3]}</div> </div>";
+                            break;
+                    }
+                    descList.Add(longText);
+                }
+            }
+
+            rpAuditDesc.DataSource = descList;
+            rpAuditDesc.DataBind();
+        }
+
+
+
+        // ACCOUNTING TABLES //
+        protected void NewAccountingRow(string tableDesc)
+        {
+            List<Accounting> prvList = new List<Accounting>();
+            List<Accounting> accountingList = new List<Accounting>();
+            Accounting newAccountingItem = new Accounting();
+            newAccountingItem.Amount = CurrencyToDecimal("-1");
+
+            switch (tableDesc)
+            {
+                case "ordRevTable":
+                    if (Session[tableDesc] != null)
+                    {
+                        for (int i = 0; i < rpRevenueTable.Items.Count; i++)
+                        {
+                            Accounting accountingItem = GetAccountingItem("revenue", i);
+                            prvList.Add(accountingItem);
+                        }
+                        Session[tableDesc] = prvList;
+                        accountingList = (List<Accounting>)Session[tableDesc];
+                    }
+                    accountingList.Add(newAccountingItem);
+                    Session[tableDesc] = accountingList;
+                    rpRevenueTable.DataSource = accountingList;
+                    rpRevenueTable.DataBind();
+                    break;
+                case "ordExpTable":
+                    if (Session[tableDesc] != null)
+                    {
+                        for (int i = 0; i < rpExpenditureTable.Items.Count; i++)
+                        {
+                            Accounting accountingItem = GetAccountingItem("expenditure", i);
+                            prvList.Add(accountingItem);
+                        }
+                        Session[tableDesc] = prvList;
+                        accountingList = (List<Accounting>)Session[tableDesc];
+                    }
+                    accountingList.Add(newAccountingItem);
+                    Session[tableDesc] = accountingList;
+                    rpExpenditureTable.DataSource = accountingList;
+                    rpExpenditureTable.DataBind();
+                    break;
+            }
+        }
+        protected void newAccountingRow_ServerClick(object sender, EventArgs e)
+        {
+            Button button = (Button)sender;
+            NewAccountingRow(button.CommandName);
         }
         protected Accounting GetAccountingItem(string tableDesc, int itemIndex)
         {
@@ -1199,51 +1626,21 @@ namespace WebUI
             }
             return accountingItem;
         }
-        protected void rpSupportingDocumentation_ItemCommand(object source, RepeaterCommandEventArgs e)
-        {
-            HiddenField hdnDocID = (HiddenField)e.Item.FindControl("hdnDocID");
-            HiddenField hdnDocIndex = (HiddenField)e.Item.FindControl("hdnDocIndex");
-            List<OrdinanceDocument> ordDocList = Session["ordDocs"] as List<OrdinanceDocument>;
-            OrdinanceDocument ordDocItem = ordDocList[Convert.ToInt32(hdnDocIndex.Value)];
+        
 
-            switch (e.CommandName)
-            {
-                case "download":
-                    Response.Clear();
-                    Response.ClearHeaders();
-                    Response.AddHeader("Content-Length", ordDocItem.DocumentData.Length.ToString());
-                    Response.AddHeader("Content-type", MimeMapping.GetMimeMapping(ordDocItem.DocumentName));
-                    Response.AddHeader("Content-Disposition", "attachment; filename=" + ordDocItem.DocumentName);
-                    Response.BinaryWrite(ordDocItem.DocumentData);
-                    Response.Flush();
-                    Response.End();
-                    break;
-                case "delete":
-                    List<OrdinanceDocument> removeDocs = new List<OrdinanceDocument>();
-                    if (Session["RemoveDocs"] != null)
-                    {
-                        removeDocs = Session["RemoveDocs"] as List<OrdinanceDocument>;
-                    }
-                    removeDocs.Add(ordDocItem);
-                    Session["RemoveDocs"] = removeDocs;
-                    ordDocList.Remove(ordDocItem);
-                    Session["ordDocs"] = ordDocList;
-                    rpSupportingDocumentation.DataSource = ordDocList;
-                    rpSupportingDocumentation.DataBind();
-                    break;
-            }
-        }
+
+        // SUBMITS //
         protected void SaveFactSheet_Click(object sender, EventArgs e)
         {            
             Ordinance ordinance = new Ordinance();
 
             ordinance.OrdinanceID = Convert.ToInt32(hdnOrdID.Value);
-            ordinance.OrdinanceNumber = "TEST";
+            ordinance.OrdinanceNumber = ordinanceNumber.Text;
             ordinance.RequestID = 0;
             ordinance.RequestDepartment = requestDepartment.SelectedItem.Text;
             ordinance.RequestContact = requestContact.Text;
             ordinance.RequestPhone = $"{requestPhone.Text}{requestExt.Text}";
-            ordinance.RequestEmail = hdnEmail.Value;
+            ordinance.RequestEmail = requestEmail.Text.ToLower();
             ordinance.FirstReadDate = Convert.ToDateTime(firstReadDate.Text);
             ordinance.EmergencyPassage = epYes.Checked;
             ordinance.EmergencyPassageReason = epJustification.Text ?? string.Empty;
@@ -1291,7 +1688,6 @@ namespace WebUI
             {
                 ordStatus.StatusID = Convert.ToInt32(hdnStatusID.Value);
             }
-            ordStatus.Signature = string.Empty;
             ordStatus.LastUpdateBy = _user.Login;
             ordStatus.LastUpdateDate = DateTime.Now;
             ordStatus.EffectiveDate = Convert.ToDateTime(hdnEffectiveDate.Value);
@@ -1519,17 +1915,24 @@ namespace WebUI
             }
 
 
-
-            Email.Instance.AddEmailAddress(emailList, _user.Email);
-            Email.Instance.AddEmailAddress(emailList, ordinance.RequestEmail);
+            List<string> addEmailList = new List<string>()
+            {
+                _user.Email.ToLower(),
+                ordinance.RequestEmail.ToLower()
+            };
+            foreach (string item in addEmailList)
+            {
+                Email.Instance.AddEmailAddress(emailList, item);
+            }
             string formType = "Ordinance Fact Sheet";
             string href = $"apptest/Themis/Ordinances?id={hdnOrdID.Value}&v=view";
+            string ordinanceNumInfo = !ordinanceNumber.Text.IsNullOrWhiteSpace() ? $"<p style='margin: 0; line-height: 1.5;'><span>Ordinance: {ordinance.OrdinanceNumber}</span></p>" : string.Empty;
 
             Email newEmail = new Email();
 
             newEmail.EmailSubject = $"{formType} UPDATED";
             newEmail.EmailTitle = $"{formType} UPDATED";
-            newEmail.EmailText = $"<p><span style='font-size:36.0pt;font-family:\"Times New Roman\",serif;color:#2D71D5;font-weight:bold'>THΣMIS</span></p><div align=center style='text-align:center'><span><hr size=2 width='100%' align=center></span></div><p><span>An <b>{formType}</b> has been UPDATED by <b>{_user.FirstName} {_user.LastName}</b>.</span></p><br /><p><span>Ordinance: {ordinance.OrdinanceNumber} {hdnOrdID.Value}</span></p><p><span>Date: {DateTime.Now}</span></p><p><span>Department: {requestDepartment.SelectedItem.Text}</span></p><p><span>Contact: {requestContact.Text}</span></p><p><span>Phone: {requestPhone.Text}x{requestExt.Text}</span></p><p><span>Status: {ordinance.StatusDescription}</span></p><br /><p><span>Please click the button below to review the document:</span></p><table border='0' cellpadding='0' cellspacing='0' style='border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;'><tr><td style='font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #0d6efd; border-radius: 5px; text-align: center;' valign='top' bgcolor='#0d6efd' align='center'><a href='{href}' target='_blank' style='display: inline-block; color: #ffffff; background-color: #0d6efd; border: solid 1px #0d6efd; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 15px 25px; text-transform: capitalize; border-color: #0d6efd; '>View Ordinance</a></td></tr></table>";
+            newEmail.EmailText = $"<p style='margin: 0;'><span style='font-size:36.0pt;font-family:\"Times New Roman\",serif;color:#2D71D5;font-weight:bold;'>THΣMIS</span></p><div align=center style='text-align:center'><span><hr size='2' width='100%' align='center' style='margin-top: 0;'></span></div><p><span>An <b>{formType}</b> has been UPDATED by <b>{_user.FirstName} {_user.LastName}</b>.</span></p><br />{ordinanceNumInfo}<p style='margin: 0; line-height: 1.5;'><span>Date: {DateTime.Now}</span></p><p style='margin: 0; line-height: 1.5;'><span>Department: {requestDepartment.SelectedItem.Text}</span></p><p style='margin: 0; line-height: 1.5;'><span>Contact: {requestContact.Text}</span></p><p style='margin: 0; line-height: 1.5;'><span>Phone: {ordinance.RequestPhone}</span></p><p><span>Status: {ordinance.StatusDescription}</span></p><br /><p><span>Please click the button below to review the document:</span></p><table border='0' cellpadding='0' cellspacing='0' style='border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;'><tr><td style='font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #0d6efd; border-radius: 5px; text-align: center;' valign='top' bgcolor='#0d6efd' align='center'><a href='{href}' target='_blank' style='display: inline-block; color: #ffffff; background-color: #0d6efd; border: solid 1px #0d6efd; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 15px 25px; text-transform: capitalize; border-color: #0d6efd; '>View Ordinance</a></td></tr></table>";
 
             List<int> submitVals = new List<int>( new int[] {
                 retVal,
@@ -1558,381 +1961,131 @@ namespace WebUI
                 Session["ToastMessage"] = "Something went wrong while saving!";
             }
         }
-        protected void GetUploadedImages()
+        protected void mdlDeleteSubmit_ServerClick(object sender, EventArgs e)
         {
-            if (Session["addOrdDocs"] != null && Session["ordDocs"] != null)
+            int ordID = Convert.ToInt32(hdnOrdID.Value);
+            Ordinance ord = Factory.Instance.GetByID<Ordinance>(ordID, "sp_GetOrdinanceByOrdinanceID", "OrdinanceID");
+            OrdinanceStatus ordStatus = new OrdinanceStatus();
+            ordStatus.OrdinanceStatusID = Convert.ToInt32(hdnOrdStatusID.Value);
+            ordStatus.OrdinanceID = Convert.ToInt32(hdnOrdID.Value);
+            ordStatus.StatusID = 7;
+            ordStatus.LastUpdateBy = _user.Login;
+            ordStatus.LastUpdateDate = DateTime.Now;
+            ordStatus.EffectiveDate = Convert.ToDateTime(hdnEffectiveDate.Value);
+            ordStatus.ExpirationDate = DateTime.MaxValue;
+            int retVal = Factory.Instance.Expire<Ordinance>(ord, "sp_UpdateOrdinance", 1);
+            if (retVal > 0)
             {
-                List<OrdinanceDocument> originalOrdDocList = Session["ordDocs"] as List<OrdinanceDocument>;
-                List<OrdinanceDocument> ordDocList = Session["addOrdDocs"] as List<OrdinanceDocument>;
-                originalOrdDocList.AddRange(ordDocList);
-                rpSupportingDocumentation.DataSource = originalOrdDocList;
-                rpSupportingDocumentation.DataBind();
-            }
-        }
-        protected void UploadImageBtn_Click(object sender, EventArgs e)
-        {
-            List<OrdinanceDocument> originalOrdDocList = (Session["ordDocs"] != null) ? Session["ordDocs"] as List<OrdinanceDocument> : new List<OrdinanceDocument>();
-            List<OrdinanceDocument> ordDocList = (Session["addOrdDocs"] != null) ? Session["addOrdDocs"] as List<OrdinanceDocument> : new List<OrdinanceDocument>();
-
-            for (int i = 0; i < supportingDocumentation.PostedFiles.Count; i++)
-            {
-                OrdinanceDocument ordDoc = new OrdinanceDocument();
-                ordDoc.DocumentName = supportingDocumentation.PostedFiles[i].FileName;
-                Stream stream = supportingDocumentation.PostedFiles[i].InputStream;
-                using (var fileBytes = new BinaryReader(stream))
+                int statusVal = Factory.Instance.Update(ordStatus, "sp_UpdateOrdinance_Status", 1);
+                if (statusVal > 0)
                 {
-                    ordDoc.DocumentData = fileBytes.ReadBytes((int)stream.Length);
+                    Session["SubmitStatus"] = "success";
+                    Session["ToastColor"] = "text-bg-success";
+                    Session["ToastMessage"] = "Entry Deleted!";
+                    Response.Redirect("./Ordinances");
                 }
-                ordDoc.LastUpdateBy = _user.Login;
-                ordDoc.LastUpdateDate = DateTime.Now;
-                ordDoc.EffectiveDate = DateTime.Now;
-                ordDoc.ExpirationDate = DateTime.MaxValue;
-                ordDocList.Add(ordDoc);
-            }
-            Session["addOrdDocs"] = ordDocList;
-            originalOrdDocList.AddRange(ordDocList);
-            rpSupportingDocumentation.DataSource = originalOrdDocList;
-            rpSupportingDocumentation.DataBind();
-        }
-        protected void SortBtn_Click(object sender, EventArgs e)
-        {
-            SetPagination(rpOrdinanceTable, 10);
-            List<Ordinance> ord_list = new List<Ordinance>();
-            ord_list = (List<Ordinance>)Session["ord_list"];
-            LinkButton button = (LinkButton)sender;
-            string commandName = button.Attributes["data-command"];
-            string commandArgument = Session["sortDir"].ToString();
-            string commandText = button.Attributes["data-text"];
-
-            Dictionary<string, object> sortRet = new Dictionary<string, object>();
-
-            string prvBtn = Session["sortBtn"].ToString();
-            switch (button.ID.Equals(prvBtn))
-            {
-                case true:
-                    sortRet = SortButtonClick(ord_list, commandName, commandArgument);
-                    break;
-
-                case false:
-                    sortRet = SortButtonClick(ord_list, commandName, "asc");
-                    break;
-            }
-
-
-
-            Session["sortBtn"] = button.ID;
-            Session["sortDir"] = sortRet["dir"];
-            Session["ord_list"] = sortRet["list"];
-            Session["curDir"] = sortRet["curDir"];
-            Session["curCmd"] = sortRet["curCmd"];
-
-            List<LinkButton> sortButtonsList = new List<LinkButton>()
-            {
-                sortDate,
-                sortTitle,
-                sortDepartment,
-                sortContact,
-                sortStatus
-            };
-            foreach (LinkButton item in sortButtonsList)
-            {
-                item.Text = $"<strong>{item.Attributes["data-text"]}<span runat='server' class='float-end lh-1p5'></span></strong>";
-            }
-
-            button.Text = $"<strong>{commandText}<span runat='server' class='float-end lh-1p5 fas fa-arrow-{sortRet["arrow"]}'></span></strong>";
-        }
-        protected void Filter_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            SetPagination(rpOrdinanceTable, 10);
-            List<Ordinance> ord_list = new List<Ordinance>();
-            List<Ordinance> noFilterOrdList = new List<Ordinance>();
-            
-            DropDownList dropDown = (DropDownList)sender;
-            string commandName = dropDown.Attributes["data-command"];
-            string commandArgument = dropDown.SelectedItem.ToString();
-            List<Ordinance> filteredList = new List<Ordinance>();
-            userInfo = (UserInfo)Session["UserInformation"];
-
-
-            switch (commandName)
-            {
-                case "department":
-                    if (filterDepartment.SelectedValue != "")
-                    {
-                        switch (filterStatus.SelectedValue.Equals(""))
-                        {
-                            case true:
-                                //filteredList = Factory.Instance.GetAll<Ordinance>("sp_GetOrdinanceByEffective");
-                                filteredList = Factory.Instance.GetAllLookup<Ordinance>(0, "sp_GetOrdinanceByFilteredStatusID", "StatusID");
-                                if (filteredList.Count > 0)
-                                {
-                                    foreach (Ordinance ord in filteredList)
-                                    {
-                                        OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
-                                        ord.StatusDescription = ordStatus.StatusDescription;
-                                    }
-                                }
-                                break;
-
-                            case false:
-                                if (filterStatus.SelectedValue != "7")
-                                {
-                                    filteredList = Factory.Instance.GetAllLookup<Ordinance>(Convert.ToInt32(filterStatus.SelectedValue), "sp_GetOrdinanceByStatusID", "StatusID");
-                                    if (filteredList.Count > 0)
-                                    {
-                                        foreach (Ordinance ord in filteredList)
-                                        {
-                                            OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
-                                            ord.StatusDescription = ordStatus.StatusDescription;
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    filteredList = Factory.Instance.GetAll<Ordinance>("sp_GetDeletedOrdinanceByEffective");
-
-                                    if (filteredList.Count > 0)
-                                    {
-                                        foreach (Ordinance ord in filteredList)
-                                        {
-                                            OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
-                                            ord.StatusDescription = ordStatus.StatusDescription;
-                                        }
-                                    }
-                                }
-                                    break;
-                        }
-                        filteredList = FilterList(filteredList, commandName, commandArgument);
-                    }
-                    else
-                    {
-                        switch (filterStatus.SelectedValue.Equals(""))
-                        {
-                            case true:
-                                //filteredList = Factory.Instance.GetAll<Ordinance>("sp_GetOrdinanceByEffective");
-                                filteredList = Factory.Instance.GetAllLookup<Ordinance>(0, "sp_GetOrdinanceByFilteredStatusID", "StatusID");
-                                if (filteredList.Count > 0)
-                                {
-                                    foreach (Ordinance ord in filteredList)
-                                    {
-                                        OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
-                                        ord.StatusDescription = ordStatus.StatusDescription;
-                                    }
-                                }
-                                BindDataRepeaterPagination("no", filteredList);
-                                break;
-
-                            case false:
-                                if (filterStatus.SelectedValue != "7")
-                                {
-                                    filteredList = Factory.Instance.GetAllLookup<Ordinance>(Convert.ToInt32(filterStatus.SelectedValue), "sp_GetOrdinanceByStatusID", "StatusID");
-                                    if (filteredList.Count > 0)
-                                    {
-                                        foreach (Ordinance ord in filteredList)
-                                        {
-                                            OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
-                                            ord.StatusDescription = ordStatus.StatusDescription;
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    filteredList = Factory.Instance.GetAll<Ordinance>("sp_GetDeletedOrdinanceByEffective");
-
-                                    if (filteredList.Count > 0)
-                                    {
-                                        foreach (Ordinance ord in filteredList)
-                                        {
-                                            OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
-                                            ord.StatusDescription = ordStatus.StatusDescription;
-                                        }
-                                    }
-                                }
-                                BindDataRepeaterPagination("no", filteredList);
-                                break;
-                        }
-                    }                    
-                    break;
-
-                case "status":
-                    if (filterStatus.SelectedValue != "")
-                    {
-                        if (filterStatus.SelectedValue != "7")
-                        {
-                            filteredList = Factory.Instance.GetAllLookup<Ordinance>(Convert.ToInt32(dropDown.SelectedValue), "sp_GetOrdinanceByStatusID", "StatusID");
-
-                            if (filteredList.Count > 0)
-                            {
-                                foreach (Ordinance ord in filteredList)
-                                {
-                                    OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
-                                    ord.StatusDescription = ordStatus.StatusDescription;
-                                }
-                            }
-
-                            switch (filterDepartment.SelectedValue.Equals(""))
-                            {
-                                case true:
-                                    switch (userInfo.IsAdmin && !userInfo.UserView)
-                                    {
-                                        case true:
-                                            BindDataRepeaterPagination("no", filteredList);
-                                            break;
-
-                                        case false:
-                                            filteredList = FilterList(filteredList, "department", userInfo.UserDepartmentName);
-                                            break;
-                                    }
-                                    break;
-
-                                case false:
-                                    filteredList = FilterList(filteredList, "department", filterDepartment.SelectedItem.ToString());
-                                    break;
-                            }
-                        }
-                        else
-                        {
-                            filteredList = Factory.Instance.GetAll<Ordinance>("sp_GetDeletedOrdinanceByEffective");
-
-                            if (filteredList.Count > 0)
-                            {
-                                foreach (Ordinance ord in filteredList)
-                                {
-                                    OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
-                                    ord.StatusDescription = ordStatus.StatusDescription;
-                                }
-                            }
-
-                            switch (filterDepartment.SelectedValue.Equals(""))
-                            {
-                                case true:
-                                    switch (userInfo.IsAdmin && !userInfo.UserView)
-                                    {
-                                        case true:
-                                            BindDataRepeaterPagination("no", filteredList);
-                                            break;
-
-                                        case false:
-                                            filteredList = FilterList(filteredList, "department", userInfo.UserDepartmentName);
-                                            break;
-                                    }
-                                    break;
-
-                                case false:
-                                    filteredList = FilterList(filteredList, "department", filterDepartment.SelectedItem.ToString());
-                                    break;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        //filteredList = Factory.Instance.GetAll<Ordinance>("sp_GetOrdinanceByEffective");
-                        filteredList = Factory.Instance.GetAllLookup<Ordinance>(0, "sp_GetOrdinanceByFilteredStatusID", "StatusID");
-                        if (filteredList.Count > 0)
-                        {
-                            foreach (Ordinance ord in filteredList)
-                            {
-                                OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
-                                ord.StatusDescription = ordStatus.StatusDescription;
-                            }
-                        }
-                        switch (filterDepartment.SelectedValue.Equals(""))
-                        {
-                            case true:
-                                switch (userInfo.IsAdmin && !userInfo.UserView)
-                                {
-                                    case true:
-                                        BindDataRepeaterPagination("no", filteredList);
-                                        break;
-
-                                    case false:
-                                        filteredList = FilterList(filteredList, "department", userInfo.UserDepartmentName);
-                                        break;
-                                }
-                                break;
-
-                            case false:
-                                filteredList = FilterList(filteredList, "department", filterDepartment.SelectedItem.ToString());
-                                break;
-                        }
-
-                    }
-                    break;
-            }
-            Dictionary<string, object> sortRet = new Dictionary<string, object>();
-
-            sortRet = SortButtonClick(filteredList, Session["curCmd"].ToString(), Session["curDir"].ToString());
-
-
-            Session["ord_list"] = sortRet["list"];
-            if (filteredList.Count > 0)
-            {
-                formTableDiv.Visible = true;
-                lblNoItems.Visible = false;
+                else
+                {
+                    Session["SubmitStatus"] = "error";
+                    Session["ToastColor"] = "text-bg-danger";
+                    Session["ToastMessage"] = "Something went wrong while deleting!";
+                }
             }
             else
             {
-                formTableDiv.Visible = false;
-                lblNoItems.Visible = true;
+                Session["SubmitStatus"] = "error";
+                Session["ToastColor"] = "text-bg-danger";
+                Session["ToastMessage"] = "Something went wrong while deleting!";
+            }
+        }
+        protected void backBtn_Click(object sender, EventArgs e)
+        {
+            if (Request.QueryString["id"] != null)
+            {
+                Response.Redirect("./Ordinances");
+            }
+            else
+            {
+                ordTable.Visible = true;
+                //ScriptManager.RegisterStartupScript(this, this.GetType(), "FadeInOrdTable", "OrdTableFadeIn();", true);
+                ordView.Visible = false;
             }
         }
         protected void copyOrd_Click(object sender, EventArgs e)
         {
             Response.Redirect($"./NewFactSheet?id={hdnOrdID.Value}");
         }
-        protected void rpAudit_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        
+
+        public void GetTestAuditData()
         {
-            HiddenField hdnAuditItem = (HiddenField)e.Item.FindControl("hdnAuditItem");
-            int auditID = Convert.ToInt32(hdnAuditItem.Value);
-            Repeater rpAuditDesc = (Repeater)e.Item.FindControl("rpAuditDesc");
-
-            List<OrdinanceAudit> ordAuditList = Session["ordAudit"] as List<OrdinanceAudit>;
-            OrdinanceAudit ordAudit = ordAuditList.First(i => i.AuditID.Equals(auditID));
-
-            string[] descArray = ordAudit.Description.Split('|');
-            List<string> descList = new List<string>();
-
-            for (int i = 0; i < descArray.Length; i++)
+            List<OrdinanceAudit> testAudit = new List<OrdinanceAudit>()
             {
-                if (!descArray[i].SubstringUpToFirst(':').Contains("Emergency Passage Justification") && !descArray[i].SubstringUpToFirst(':').Contains("Staff Analysis") && !descArray[i].SubstringUpToFirst(':').Contains("Suggested Title"))
+                new OrdinanceAudit
                 {
-                    descList.Add(descArray[i]);
-                }
-                else
+                    AuditID = 1,
+                    OrdinanceID = 0,
+                    DateModified = Convert.ToDateTime("04/15/2025"),
+                    ModifiedBy = "Kyle Bolinger",
+                    ModificationType = "Updated",
+                    Description = $"Suggested Title: \\ \\{addSymbol} \\AN ORDINANCE AUTHORIZING THE EXTENSION OF CONTRACT# PW21-21 WITH BLH COMPUTERS, INC. FOR COLLECTION, RECYCLING, AND DISPOSAL OF ELECTRONIC WASTE, IN AN AMOUNT NOT TO EXCEED $50,000.00 FOR THE OFFICE OF PUBLIC WORKS|Vendor Name: <span class='change-bg'>VI LLC {editSymbol} LRS</span>|Method of Purchase: <span class='change-bg'>Low Bid {editSymbol} Other</span>|Other/Exception: <span class='change-bg'>{addSymbol} RPF-100</span>"
+                },
+                new OrdinanceAudit
                 {
-                    string[] longTextArr = descArray[i].Split('\\');
-                    string longText = string.Empty;
-                    switch (!longTextArr[1].IsNullOrWhiteSpace())
-                    {
-                        case true:
-                            longText = $"<p class='m-0'>{longTextArr[0]}</p> <div class='d-flex change-bg mw-100 lh-1p5'> <div class='w-50 pe-2'>{longTextArr[1]}</div> {longTextArr[2]} <div class='w-50 ps-2'>{longTextArr[3]}</div> </div>";
-                            break;
-                        case false:
-                            longText = $"<p class='m-0'>{longTextArr[0]}</p> <div class='d-flex change-bg w-50 lh-1p5'> {longTextArr[2]} <div class='w-100 ps-2'>{longTextArr[3]}</div> </div>";
-                            break;
-                    }
-                    descList.Add(longText);
+                    AuditID = 2,
+                    OrdinanceID = 0,
+                    DateModified = Convert.ToDateTime("04/01/2025"),
+                    ModifiedBy = "Chip McCrunch",
+                    ModificationType = "Updated",
+                    Description = $"First Read Date: <span class='change-bg'>03/25/2025 {editSymbol} 03/26/2025</span>|Requesting Contact: <span class='change-bg'>Chip McCrunch {editSymbol} Kyle Bolinger</span>|Ext: <span class='change-bg'>x5684 {editSymbol} x2811</span>|Fiscal Impact: <span class='change-bg'>$10,000.00 {editSymbol} $100,000.00</span>|Emergency Passage Justification: \\Vestibulum enim enim, vestibulum id consequat vitae, imperdiet at nisi. Duis rhoncus massa sit amet mi porta, bibendum dignissim lorem pretium. Suspendisse ultricies iaculis libero, sit amet rhoncus quam dictum sit amet. Praesent maximus vehicula tortor, bibendum auctor libero blandit ut. Quisque diam mi, finibus quis diam in, elementum finibus arcu. Donec congue rhoncus mauris. Suspendisse sit amet cursus augue. Sed aliquet arcu ac ante vehicula, a blandit ligula laoreet. Nunc vel diam auctor, aliquet nisl eget, venenatis sapien. Maecenas non leo ut felis maximus convallis eu sed nibh. Vestibulum nisl tortor, tempor quis ex ut, lobortis accumsan orci. Aenean scelerisque dictum nisi, at mattis nunc eleifend consectetur. Fusce semper metus sit amet dui mollis consectetur. Pellentesque lorem ipsum, iaculis quis lacinia et, ultricies eget nunc. \\{editSymbol} \\Vestibulum enim enim, vestibulum id consequat vitae, imperdiet at nisi. Duis rhoncus massa sit amet mi porta, bibendum dignissim lorem pretium. Suspendisse ultricies iaculis libero, sit amet rhoncus quam dictum sit amet. Praesent maximus vehicula tortor, bibendum auctor libero blandit ut. Quisque diam mi, finibus quis diam in, elementum finibus arcu. Donec congue rhoncus mauris. Suspendisse sit amet cursus augue. Sed aliquet arcu ac ante vehicula, a blandit ligula laoreet.|Code Provision: <span class='change-bg'>{removeSymbol} 56519813</span>"
                 }
-            }
+            };
+            Session["ordAudit"] = testAudit;
 
-            rpAuditDesc.DataSource = descList;
-            rpAuditDesc.DataBind();
+            rpAudit.DataSource = testAudit;
+            rpAudit.DataBind();
         }
-        protected void btnSendSigEmail_Click(object sender, EventArgs e)
+
+        protected void btnSignDoc_Click(object sender, EventArgs e)
         {
-
-
-            Email.Instance.AddEmailAddress("SingleEmail", signatureEmailAddress.Text);
-            string href = $"apptest/Themis/Ordinances?id={hdnOrdID.Value.ToString()}&v=edit&f={sigBtnTarget.Value.ToString()}";
-            string formType = "THΣMIS";
-
-            Email newEmail = new Email();
-
-            newEmail.EmailSubject = $"{formType} Signature Requested";
-            newEmail.EmailTitle = $"{formType} Signature Requested";
-            newEmail.EmailText = $"<p><span style='font-size:36.0pt;font-family:\"Times New Roman\",serif;color:#2D71D5;font-weight:bold'>THΣMIS</span></p><div align=center style='text-align:center'><span><hr size=2 width='100%' align=center></span></div><p><span>You are receiving this message because your signature is required in the role of <b>{sigBtnLabel.Value.ToString()}</b> for an ordinance on THΣMIS.</span></p><p><span>Please click the button below to review and sign the document</span></p><table border='0' cellpadding='0' cellspacing='0' style='border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;'><tr><td style='font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #198754; border-radius: 5px; text-align: center;' valign='top' bgcolor='#198754' align='center'><a href='{href}' target='_blank' style='display: inline-block; color: #ffffff; background-color: #198754; border: solid 1px #198754; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 15px 25px; text-transform: capitalize; border-color: #198754; '>Sign Ordinance</a></td></tr></table><p><span>Thank you for your prompt attention to this matter.</span></p>";
-
-            Email.Instance.SendEmail(newEmail, "SingleEmail");
+            switch (sigType.Value)
+            {
+                case "fundsCheckBy":
+                    fundsCheckByBtnDiv.Visible = false;
+                    fundsCheckByInputGroup.Visible = true;
+                    fundsCheckEmailBtn.Visible = false;
+                    fundsCheckBySig.Text = sigName.Text;
+                    fundsCheckByDate.Text = sigDate.Text;
+                    break;
+                case "directorSupervisor":
+                    directorSupervisorBtnDiv.Visible = false;
+                    directorSupervisorInputGroup.Visible = true;
+                    directorSupervisorEmailBtn.Visible = false;
+                    directorSupervisorSig.Text = sigName.Text;
+                    directorSupervisorDate.Text = sigDate.Text;
+                    break;
+                case "cPA":
+                    cPABtnDiv.Visible = false;
+                    cPAInputGroup.Visible = true;
+                    cPAEmailBtn.Visible = false;
+                    cPASig.Text = sigName.Text;
+                    cPADate.Text = sigDate.Text;
+                    break;
+                case "obmDirector":
+                    obmDirectorBtnDiv.Visible = false;
+                    obmDirectorInputGroup.Visible = true;
+                    obmDirectorEmailBtn.Visible = false;
+                    obmDirectorSig.Text = sigName.Text;
+                    obmDirectorDate.Text = sigDate.Text;
+                    break;
+                case "mayor":
+                    mayorBtnDiv.Visible = false;
+                    mayorInputGroup.Visible = true;
+                    mayorEmailBtn.Visible = false;
+                    mayorSig.Text = sigName.Text;
+                    mayorDate.Text = sigDate.Text;
+                    break;
+            }
         }
     }
 }

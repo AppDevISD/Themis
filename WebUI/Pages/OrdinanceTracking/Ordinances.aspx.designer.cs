@@ -321,6 +321,24 @@ namespace WebUI
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl requiredFieldDescriptor;
 
         /// <summary>
+        /// ordinanceNumberDiv control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl ordinanceNumberDiv;
+
+        /// <summary>
+        /// ordinanceNumber control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox ordinanceNumber;
+
+        /// <summary>
         /// requestDepartment control.
         /// </summary>
         /// <remarks>
@@ -346,6 +364,15 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox requestContact;
+
+        /// <summary>
+        /// requestEmail control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox requestEmail;
 
         /// <summary>
         /// requestPhone control.
@@ -690,13 +717,13 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.FileUpload supportingDocumentation;
 
         /// <summary>
-        /// UploadImageBtn control.
+        /// UploadDocBtn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button UploadImageBtn;
+        protected global::System.Web.UI.WebControls.Button UploadDocBtn;
 
         /// <summary>
         /// signatureSection control.
@@ -861,13 +888,13 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.TextBox cPASig;
 
         /// <summary>
-        /// cPABtnDate control.
+        /// cPADate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox cPABtnDate;
+        protected global::System.Web.UI.WebControls.TextBox cPADate;
 
         /// <summary>
         /// obmDirectorEmailBtn control.
@@ -1066,6 +1093,15 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnSignDoc;
+
+        /// <summary>
+        /// sigType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputHidden sigType;
 
         /// <summary>
         /// signatureEmailAddress control.

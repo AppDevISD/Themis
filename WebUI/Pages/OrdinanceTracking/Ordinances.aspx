@@ -30,7 +30,7 @@
 				<asp:AsyncPostBackTrigger ControlID="btnSendSigEmail" EventName="Click" />
 				<asp:AsyncPostBackTrigger ControlID="btnSignDoc" EventName="Click" />
 
-				<asp:PostBackTrigger ControlID="UploadImageBtn" />
+				<asp:PostBackTrigger ControlID="UploadDocBtn" />
 				<asp:PostBackTrigger ControlID="SaveFactSheet" />
 
 				<asp:AsyncPostBackTrigger ControlID="lnkInactivityRefresh" EventName="Click" />
@@ -175,7 +175,19 @@
 
 								<div class="px-2 py-4">
 									<%-- REQUIRED FIELD DESCRIPTOR --%>
-									<p runat="server" id="requiredFieldDescriptor" class="text-justify" style="color: gray;"><i class="fa-solid fa-asterisk"></i>&nbsp;= Required Field</p>
+									<div class="row">
+										<p runat="server" id="requiredFieldDescriptor" class="text-justify" style="color: gray;"><i class="fa-solid fa-asterisk"></i>&nbsp;= Required Field</p>
+									</div>
+
+									<%-- ORDINANCE NUMBER --%>
+									<div runat="server" id="ordinanceNumberDiv" class="row mt-3">
+										<div class="col-md-4">
+											<div class="form-group">
+													<label for="ordinanceNumber">Ordinance Number</label>
+													<asp:TextBox runat="server" ID="ordinanceNumber" CssClass="form-control" TextMode="SingleLine" placeholder="123-45-6789" AutoCompleteType="Disabled"></asp:TextBox>
+												</div>
+										</div>
+									</div>
 
 									<%-- FIRST SECTION --%>
 									<div class="form-section">
@@ -204,15 +216,20 @@
 										<%-- SECOND ROW --%>
 										<div class="row mb-3">
 											<%-- CONTACT --%>
-											<div class="col-md-6">
+											<div class="col-md-5">
 												<div class="form-group">
 													<label for="requestContact">Requesting Contact</label>
 													<asp:TextBox runat="server" ID="requestContact" CssClass="form-control" TextMode="SingleLine" placeholder="John Doe" AutoCompleteType="DisplayName" required="true"></asp:TextBox>
 												</div>
 											</div>
 
-											<%-- BLANK SPACE --%>
-											<div class="col-md-2"></div>
+											<%-- EMAIL --%>
+											<div class="col-md-3">
+												<div class="form-group">
+													<label for="requestEmail">Email</label>
+													<asp:TextBox runat="server" ID="requestEmail" CssClass="form-control" TextMode="Email" AutoCompleteType="Email" placeholder="john.doe@corporate.com" required="true"></asp:TextBox>
+												</div>
+											</div>
 
 											<%-- PHONE NUMBER / EXTENSION --%>
 											<div class="col-md-4">
@@ -663,7 +680,7 @@
 													</ul>
 													<div id="supportingDocumentationGroup" class="d-flex">
 														<asp:FileUpload runat="server" ID="supportingDocumentation" CssClass="form-control mt-3" AllowMultiple="true" onchange="SetUploadActive();" />
-														<asp:Button runat="server" ID="UploadImageBtn" UseSubmitBehavior="false" CssClass="btn btn-success mt-3 ms-3" Width="25%" Text="Upload" OnClick="UploadImageBtn_Click" disabled="disabled" />
+														<asp:Button runat="server" ID="UploadDocBtn" UseSubmitBehavior="false" CssClass="btn btn-success mt-3 ms-3" Width="25%" Text="Upload" OnClick="UploadDocBtn_Click" disabled="disabled" />
 													</div>
 												</div>
 											</div>
@@ -678,24 +695,24 @@
 											<div class="col-md-12">
 												<div class="form-group">
 													<label for="fundsCheckByGroup" class="mb-1">Funds Check By <asp:LinkButton runat="server" ID="fundsCheckEmailBtn" CssClass="text-primary fs-7 text-decoration-none ms-2" data-toggle="modal" data-target="#signatureEmailModal" OnClientClick="setEmailModal('fundsCheckByBtn', 'Funds Check By');"><span class="fas fa-envelope"></span>&nbsp;Send Request Email</asp:LinkButton></label>
-													<div id="fundsCheckByGroup" class="row">
-														<div runat="server" id="fundsCheckByBtnDiv">
+													<div id="fundsCheckByGroup">
+														<div runat="server" id="fundsCheckByBtnDiv" class="row readonly-color">
 															<%-- SIGN BUTTON --%>
 															<div class="col-md-6">
-																<asp:Button runat="server" ID="fundsCheckByBtn" UseSubmitBehavior="false" CssClass="btn btn-success float-start" Width="50%" Text="Sign" data-toggle="modal" data-target="#signatureModal" />
+																<asp:Button runat="server" ID="fundsCheckByBtn" UseSubmitBehavior="false" CssClass="btn btn-success float-start" Width="50%" Text="Sign" data-toggle="modal" data-target="#signatureModal" OnClientClick="setSigModal('fundsCheckBy');" />
 															</div>
 														</div>
-														<div runat="server" id="fundsCheckByInputGroup" visible="false">
+														<div runat="server" id="fundsCheckByInputGroup" class="row">
 															<div class="col-md-4">
 																<div class="input-group">
 																	<span class="input-group-text fas fa-signature"></span>
-																	<asp:TextBox runat="server" ID="fundsCheckBySig" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" required="true"></asp:TextBox>
+																	<asp:TextBox runat="server" ID="fundsCheckBySig" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" required="true" ReadOnly="true"></asp:TextBox>
 																</div>
 															</div>
 															<div class="col-md-2">
 																<div class="input-group">
 																	<span class="input-group-text fas fa-calendar-days"></span>
-																	<asp:TextBox runat="server" ID="fundsCheckByDate" CssClass="form-control" TextMode="Date"></asp:TextBox>
+																	<asp:TextBox runat="server" ID="fundsCheckByDate" CssClass="form-control" TextMode="Date" ReadOnly="true"></asp:TextBox>
 																</div>
 															</div>
 														</div>
@@ -710,24 +727,24 @@
 											<div class="col-md-12">
 												<div class="form-group">
 													<label for="directorSupervisorGroup">Director/Supervisor <asp:LinkButton runat="server" ID="directorSupervisorEmailBtn" CssClass="text-primary fs-7 text-decoration-none ms-2" data-toggle="modal" data-target="#signatureEmailModal" OnClientClick="setEmailModal('directorSupervisorBtn', 'Director/Supervisor');"><span class="fas fa-envelope"></span>&nbsp;Send Request Email</asp:LinkButton></label>
-													<div id="directorSupervisorGroup" class="row">
-														<div runat="server" id="directorSupervisorBtnDiv">
+													<div id="directorSupervisorGroup">
+														<div runat="server" id="directorSupervisorBtnDiv" class="row readonly-color">
 															<%-- SIGN BUTTON --%>
 															<div class="col-md-6">
-																<asp:Button runat="server" ID="directorSupervisorBtn" UseSubmitBehavior="false" CssClass="btn btn-success float-start" Width="50%" Text="Sign" data-toggle="modal" data-target="#signatureModal" />
+																<asp:Button runat="server" ID="directorSupervisorBtn" UseSubmitBehavior="false" CssClass="btn btn-success float-start" Width="50%" Text="Sign" data-toggle="modal" data-target="#signatureModal" OnClientClick="setSigModal('directorSupervisor');" />
 															</div>
 														</div>
-														<div runat="server" id="directorSupervisorInputGroup" visible="false">
+														<div runat="server" id="directorSupervisorInputGroup" class="row">
 															<div class="col-md-4">
 																<div class="input-group">
 																	<span class="input-group-text fas fa-signature"></span>
-																	<asp:TextBox runat="server" ID="directorSupervisorSig" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" required="true"></asp:TextBox>
+																	<asp:TextBox runat="server" ID="directorSupervisorSig" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" required="true" ReadOnly="true"></asp:TextBox>
 																</div>
 															</div>
 															<div class="col-md-2">
 																<div class="input-group">
 																	<span class="input-group-text fas fa-calendar-days"></span>
-																	<asp:TextBox runat="server" ID="directorSupervisorDate" CssClass="form-control" TextMode="Date"></asp:TextBox>
+																	<asp:TextBox runat="server" ID="directorSupervisorDate" CssClass="form-control" TextMode="Date" ReadOnly="true"></asp:TextBox>
 																</div>
 															</div>
 														</div>
@@ -742,24 +759,24 @@
 											<div class="col-md-12">
 												<div class="form-group">
 													<label for="cPAGroup">City Purchasing Agent <asp:LinkButton runat="server" ID="cPAEmailBtn" CssClass="text-primary fs-7 text-decoration-none ms-2" data-toggle="modal" data-target="#signatureEmailModal" OnClientClick="setEmailModal('cPABtn', 'City Purchasing Agent');"><span class="fas fa-envelope"></span>&nbsp;Send Request Email</asp:LinkButton></label>
-													<div id="cPAGroup" class="row">
-														<div runat="server" id="cPABtnDiv">
+													<div id="cPAGroup">
+														<div runat="server" id="cPABtnDiv" class="row readonly-color">
 															<%-- SIGN BUTTON --%>
 															<div class="col-md-6">
-																<asp:Button runat="server" ID="cPABtn" UseSubmitBehavior="false" CssClass="btn btn-success float-start" Width="50%" Text="Sign" data-toggle="modal" data-target="#signatureModal" />
+																<asp:Button runat="server" ID="cPABtn" UseSubmitBehavior="false" CssClass="btn btn-success float-start" Width="50%" Text="Sign" data-toggle="modal" data-target="#signatureModal" OnClientClick="setSigModal('cPA');" />
 															</div>
 														</div>
-														<div runat="server" id="cPAInputGroup" visible="false">
+														<div runat="server" id="cPAInputGroup" class="row">
 															<div class="col-md-4">
 																<div class="input-group">
 																	<span class="input-group-text fas fa-signature"></span>
-																	<asp:TextBox runat="server" ID="cPASig" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" required="true"></asp:TextBox>
+																	<asp:TextBox runat="server" ID="cPASig" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" required="true" ReadOnly="true"></asp:TextBox>
 																</div>
 															</div>
 															<div class="col-md-2">
 																<div class="input-group">
 																	<span class="input-group-text fas fa-calendar-days"></span>
-																	<asp:TextBox runat="server" ID="cPABtnDate" CssClass="form-control" TextMode="Date"></asp:TextBox>
+																	<asp:TextBox runat="server" ID="cPADate" CssClass="form-control" TextMode="Date" ReadOnly="true"></asp:TextBox>
 																</div>
 															</div>
 														</div>
@@ -774,24 +791,24 @@
 											<div class="col-md-12">
 												<div class="form-group">
 													<label for="obmDirectorGroup">OBM Director <asp:LinkButton runat="server" ID="obmDirectorEmailBtn" CssClass="text-primary fs-7 text-decoration-none ms-2" data-toggle="modal" data-target="#signatureEmailModal" OnClientClick="setEmailModal('obmDirectorBtn', 'OBM Director');"><span class="fas fa-envelope"></span>&nbsp;Send Request Email</asp:LinkButton></label>
-													<div id="obmDirectorGroup" class="row">
-														<div runat="server" id="obmDirectorBtnDiv">
+													<div id="obmDirectorGroup">
+														<div runat="server" id="obmDirectorBtnDiv" class="row readonly-color">
 															<%-- SIGN BUTTON --%>
 															<div class="col-md-6">
-																<asp:Button runat="server" ID="obmDirectorBtn" UseSubmitBehavior="false" CssClass="btn btn-success float-start" Width="50%" Text="Sign" data-toggle="modal" data-target="#signatureModal" />
+																<asp:Button runat="server" ID="obmDirectorBtn" UseSubmitBehavior="false" CssClass="btn btn-success float-start" Width="50%" Text="Sign" data-toggle="modal" data-target="#signatureModal" OnClientClick="setSigModal('obmDirector');" />
 															</div>
 														</div>
-														<div runat="server" id="obmDirectorInputGroup" visible="false">
+														<div runat="server" id="obmDirectorInputGroup" class="row">
 															<div class="col-md-4">
 																<div class="input-group">
 																	<span class="input-group-text fas fa-signature"></span>
-																	<asp:TextBox runat="server" ID="obmDirectorSig" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" required="true"></asp:TextBox>
+																	<asp:TextBox runat="server" ID="obmDirectorSig" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" required="true" ReadOnly="true"></asp:TextBox>
 																</div>
 															</div>
 															<div class="col-md-2">
 																<div class="input-group">
 																	<span class="input-group-text fas fa-calendar-days"></span>
-																	<asp:TextBox runat="server" ID="obmDirectorDate" CssClass="form-control" TextMode="Date"></asp:TextBox>
+																	<asp:TextBox runat="server" ID="obmDirectorDate" CssClass="form-control" TextMode="Date" ReadOnly="true"></asp:TextBox>
 																</div>
 															</div>
 														</div>
@@ -806,24 +823,24 @@
 											<div class="col-md-12">
 												<div class="form-group">
 													<label for="mayorGroup">Mayor <asp:LinkButton runat="server" ID="mayorEmailBtn" CssClass="text-primary fs-7 text-decoration-none ms-2" data-toggle="modal" data-target="#signatureEmailModal" OnClientClick="setEmailModal('mayorBtn', 'Mayor');"><span class="fas fa-envelope"></span>&nbsp;Send Request Email</asp:LinkButton></label>
-													<div id="mayorGroup" class="row">
-														<div runat="server" id="mayorBtnDiv">
+													<div id="mayorGroup">
+														<div runat="server" id="mayorBtnDiv" class="row readonly-color">
 															<%-- SIGN BUTTON --%>
 															<div class="col-md-6">
-																<asp:Button runat="server" ID="mayorBtn" UseSubmitBehavior="false" CssClass="btn btn-success float-start" Width="50%" Text="Sign" data-toggle="modal" data-target="#signatureModal" />
+																<asp:Button runat="server" ID="mayorBtn" UseSubmitBehavior="false" CssClass="btn btn-success float-start" Width="50%" Text="Sign" data-toggle="modal" data-target="#signatureModal" OnClientClick="setSigModal('mayor');" />
 															</div>
 														</div>
-														<div runat="server" id="mayorInputGroup" visible="false">
+														<div runat="server" id="mayorInputGroup" class="row">
 															<div class="col-md-4">
 																<div class="input-group">
 																	<span class="input-group-text fas fa-signature"></span>
-																	<asp:TextBox runat="server" ID="mayorSig" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" required="true"></asp:TextBox>
+																	<asp:TextBox runat="server" ID="mayorSig" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" required="true" ReadOnly="true"></asp:TextBox>
 																</div>
 															</div>
 															<div class="col-md-2">
 																<div class="input-group">
 																	<span class="input-group-text fas fa-calendar-days"></span>
-																	<asp:TextBox runat="server" ID="mayorDate" CssClass="form-control" TextMode="Date"></asp:TextBox>
+																	<asp:TextBox runat="server" ID="mayorDate" CssClass="form-control" TextMode="Date" ReadOnly="true"></asp:TextBox>
 																</div>
 															</div>
 														</div>
@@ -957,7 +974,8 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-					<asp:Button ID="btnSignDoc" runat="server" Text="Sign Document" CssClass="btn btn-success" CausesValidation="false" UseSubmitBehavior="false" Visible="true" data-dismiss="modal" />
+					<asp:Button ID="btnSignDoc" runat="server" Text="Sign Document" CssClass="btn btn-success" CausesValidation="false" UseSubmitBehavior="false" Visible="true" data-dismiss="modal" OnClick="btnSignDoc_Click" disabled="disabled" />
+					<input runat="server" id="sigType" type="hidden" name="sigType"  />
 				</div>
 			</div>
 		</div>
@@ -986,16 +1004,6 @@
 					<input runat="server" id="sigBtnTarget" type="hidden" name="sigBtnTarget"  />
 					<input runat="server" id="sigBtnLabel" type="hidden" name="sigBtnLabel"  />
 				</div>
-			</div>
-		</div>
-	</div>
-
-	<%-- TOAST MESSAGE --%>
-	<div class="toast-container position-fixed bottom-0 end-0 p-3">
-		<div id="submitToast" class='toast <%:toastColor%> border-0 fade-slide-in' role="alert" aria-live="assertive" aria-atomic="true" data-delay="10000" data-animation="true">
-			<div class="d-flex">
-				<div id="toastMessage" class="toast-body"><%:toastMessage%></div>
-				<button type="button" class="btn-close btn-close-white me-2 m-auto" data-dismiss="toast" aria-label="Close"></button>
 			</div>
 		</div>
 	</div>
@@ -1108,12 +1116,12 @@
 
 		function SetUploadActive() {
 			const supportingDocumentation = document.getElementById('<%= supportingDocumentation.ClientID %>')
-			var UploadImageBtn = document.getElementById('<%= UploadImageBtn.ClientID %>')
+			var UploadDocBtn = document.getElementById('<%= UploadDocBtn.ClientID %>')
 			if (supportingDocumentation.files.length > 0) {
-				UploadImageBtn.disabled = false;
+				UploadDocBtn.disabled = false;
 			}
 			else {
-				UploadImageBtn.disabled = true;
+				UploadDocBtn.disabled = true;
 			}
 			
 		}
@@ -1123,6 +1131,7 @@
 			const sigBtnLabel = $('#<%= sigBtnLabel.ClientID %>');
 			$(sigBtnTarget).attr("value", btnID);
 			$(sigBtnLabel).attr("value", btnLabel);
+			$('#<%= signatureEmailAddress.ClientID %>').val('');
 		}
 
 		function scrollToElement() {
@@ -1139,10 +1148,42 @@
 			$('#submitToast').addClass("text-bg-success");
 
 			$('#toastMessage').html("Email Sent!");
-			$('#<%= signatureEmailAddress.ClientID %>').val('');
 			ShowSubmitToast();
 			GetToastStatus();
 		}
-		
+
+		function setSigModal(typeOfSig) {
+			const sigType = $('#<%= sigType.ClientID %>');
+			$(sigType).attr("value", typeOfSig);
+			$('#<%= sigName.ClientID %>').val('');
+			$('#<%= sigDate.ClientID %>').val('');
+			$('#<%= btnSignDoc.ClientID %>').prop('disabled', true);
+			$('#<%= certifySig.ClientID %>').prop('checked', false);
+		}
+
+		$('#<%= sigName.ClientID %>').on('change keyup', function () {
+			if ($('#<%= certifySig.ClientID %>').prop('checked') == true && $('#<%= sigName.ClientID %>').val().length > 0 && $('#<%= sigDate.ClientID %>').val().length > 0) {
+				$('#<%= btnSignDoc.ClientID %>').prop('disabled', false);
+			}
+			else {
+				$('#<%= btnSignDoc.ClientID %>').prop('disabled', true);
+			}
+		});
+		$('#<%= sigDate.ClientID %>').on('change keyup', function () {
+			if ($('#<%= certifySig.ClientID %>').prop('checked') == true && $('#<%= sigName.ClientID %>').val().length > 0 && $('#<%= sigDate.ClientID %>').val().length > 0) {
+				$('#<%= btnSignDoc.ClientID %>').prop('disabled', false);
+			}
+			else {
+				$('#<%= btnSignDoc.ClientID %>').prop('disabled', true);
+			}
+		});
+		$('#<%= certifySig.ClientID %>').on('change', function () {
+			if ($('#<%= certifySig.ClientID %>').prop('checked') == true && $('#<%= sigName.ClientID %>').val().length > 0 && $('#<%= sigDate.ClientID %>').val().length > 0) {
+				$('#<%= btnSignDoc.ClientID %>').prop('disabled', false);
+			}
+			else {
+				$('#<%= btnSignDoc.ClientID %>').prop('disabled', true);
+			}
+		});
 	</script>
 </asp:Content>

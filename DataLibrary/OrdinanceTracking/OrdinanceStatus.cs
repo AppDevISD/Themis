@@ -12,7 +12,6 @@ namespace DataLibrary
         public int OrdinanceStatusID { get; set; }
         public int OrdinanceID { get; set; }
         public int StatusID { get; set; }
-        public string Signature { get; set; }
         public string LastUpdateBy { get; set; }
         public DateTime LastUpdateDate { get; set; }
         public DateTime EffectiveDate { get; set; }
