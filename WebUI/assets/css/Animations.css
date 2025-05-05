@@ -77,6 +77,9 @@
 	animation: fade-slide-down 0.75s ease-out forwards;
 }
 
+.emphasize:not(:hover) {
+	animation: ephasize 1s ease-in-out infinite;
+}
 
 @keyframes fade-in {
 	from {
@@ -129,5 +132,19 @@
 
 	to {
 		transform: translateY(25%);
+	}
+}
+
+@keyframes ephasize {
+	0% {
+		transform: scale(1);
+	}
+
+	50% {
+		transform: scale(1.05);
+	}
+
+	100% {
+		transform: scale(1);
 	}
 }

@@ -36,6 +36,8 @@ namespace WebUI.Reports.OrdinanceTracking {
         
         private RevExpBoolDataTable tableRevExpBool;
         
+        private Ordinance_SignatureDataTable tableOrdinance_Signature;
+        
         private global::System.Data.DataRelation relationOrdinance_Ordinance_Accounting;
         
         private global::System.Data.DataRelation relationOrdinance_Accounting_lkAccounting;
@@ -43,6 +45,8 @@ namespace WebUI.Reports.OrdinanceTracking {
         private global::System.Data.DataRelation relationOrdinance_Ordinance_Status;
         
         private global::System.Data.DataRelation relationOrdinance_Status_lkStatus;
+        
+        private global::System.Data.DataRelation relationOrdinance_Ordinance_Signature;
         
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
@@ -89,6 +93,9 @@ namespace WebUI.Reports.OrdinanceTracking {
                 }
                 if ((ds.Tables["RevExpBool"] != null)) {
                     base.Tables.Add(new RevExpBoolDataTable(ds.Tables["RevExpBool"]));
+                }
+                if ((ds.Tables["Ordinance_Signature"] != null)) {
+                    base.Tables.Add(new Ordinance_SignatureDataTable(ds.Tables["Ordinance_Signature"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -165,6 +172,16 @@ namespace WebUI.Reports.OrdinanceTracking {
         public RevExpBoolDataTable RevExpBool {
             get {
                 return this.tableRevExpBool;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        [global::System.ComponentModel.Browsable(false)]
+        [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
+        public Ordinance_SignatureDataTable Ordinance_Signature {
+            get {
+                return this.tableOrdinance_Signature;
             }
         }
         
@@ -253,6 +270,9 @@ namespace WebUI.Reports.OrdinanceTracking {
                 if ((ds.Tables["RevExpBool"] != null)) {
                     base.Tables.Add(new RevExpBoolDataTable(ds.Tables["RevExpBool"]));
                 }
+                if ((ds.Tables["Ordinance_Signature"] != null)) {
+                    base.Tables.Add(new Ordinance_SignatureDataTable(ds.Tables["Ordinance_Signature"]));
+                }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
                 this.Namespace = ds.Namespace;
@@ -322,10 +342,17 @@ namespace WebUI.Reports.OrdinanceTracking {
                     this.tableRevExpBool.InitVars();
                 }
             }
+            this.tableOrdinance_Signature = ((Ordinance_SignatureDataTable)(base.Tables["Ordinance_Signature"]));
+            if ((initTable == true)) {
+                if ((this.tableOrdinance_Signature != null)) {
+                    this.tableOrdinance_Signature.InitVars();
+                }
+            }
             this.relationOrdinance_Ordinance_Accounting = this.Relations["Ordinance_Ordinance_Accounting"];
             this.relationOrdinance_Accounting_lkAccounting = this.Relations["Ordinance_Accounting_lkAccounting"];
             this.relationOrdinance_Ordinance_Status = this.Relations["Ordinance_Ordinance_Status"];
             this.relationOrdinance_Status_lkStatus = this.Relations["Ordinance_Status_lkStatus"];
+            this.relationOrdinance_Ordinance_Signature = this.Relations["Ordinance_Ordinance_Signature"];
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -348,6 +375,8 @@ namespace WebUI.Reports.OrdinanceTracking {
             base.Tables.Add(this.tablelkStatus);
             this.tableRevExpBool = new RevExpBoolDataTable();
             base.Tables.Add(this.tableRevExpBool);
+            this.tableOrdinance_Signature = new Ordinance_SignatureDataTable();
+            base.Tables.Add(this.tableOrdinance_Signature);
             this.relationOrdinance_Ordinance_Accounting = new global::System.Data.DataRelation("Ordinance_Ordinance_Accounting", new global::System.Data.DataColumn[] {
                         this.tableOrdinance.OrdinanceIDColumn}, new global::System.Data.DataColumn[] {
                         this.tableOrdinance_Accounting.OrdinanceIDColumn}, false);
@@ -364,6 +393,10 @@ namespace WebUI.Reports.OrdinanceTracking {
                         this.tableOrdinance_Status.StatusIDColumn}, new global::System.Data.DataColumn[] {
                         this.tablelkStatus.StatusIDColumn}, false);
             this.Relations.Add(this.relationOrdinance_Status_lkStatus);
+            this.relationOrdinance_Ordinance_Signature = new global::System.Data.DataRelation("Ordinance_Ordinance_Signature", new global::System.Data.DataColumn[] {
+                        this.tableOrdinance.OrdinanceIDColumn}, new global::System.Data.DataColumn[] {
+                        this.tableOrdinance_Signature.OrdinanceIDColumn}, false);
+            this.Relations.Add(this.relationOrdinance_Ordinance_Signature);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -399,6 +432,12 @@ namespace WebUI.Reports.OrdinanceTracking {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
         private bool ShouldSerializeRevExpBool() {
+            return false;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        private bool ShouldSerializeOrdinance_Signature() {
             return false;
         }
         
@@ -474,6 +513,9 @@ namespace WebUI.Reports.OrdinanceTracking {
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
         public delegate void RevExpBoolRowChangeEventHandler(object sender, RevExpBoolRowChangeEvent e);
+        
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        public delegate void Ordinance_SignatureRowChangeEventHandler(object sender, Ordinance_SignatureRowChangeEvent e);
         
         /// <summary>
         ///Represents the strongly named DataTable class.
@@ -1994,8 +2036,6 @@ namespace WebUI.Reports.OrdinanceTracking {
             
             private global::System.Data.DataColumn columnStatusID;
             
-            private global::System.Data.DataColumn columnSignature;
-            
             private global::System.Data.DataColumn columnEffectiveDate;
             
             private global::System.Data.DataColumn columnExpirationDate;
@@ -2058,14 +2098,6 @@ namespace WebUI.Reports.OrdinanceTracking {
             public global::System.Data.DataColumn StatusIDColumn {
                 get {
                     return this.columnStatusID;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn SignatureColumn {
-                get {
-                    return this.columnSignature;
                 }
             }
             
@@ -2138,13 +2170,12 @@ namespace WebUI.Reports.OrdinanceTracking {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public Ordinance_StatusRow AddOrdinance_StatusRow(OrdinanceRow parentOrdinanceRowByOrdinance_Ordinance_Status, int StatusID, string Signature, System.DateTime EffectiveDate, System.DateTime ExpirationDate, string LastUpdateBy, System.DateTime LastUpdateDate) {
+            public Ordinance_StatusRow AddOrdinance_StatusRow(OrdinanceRow parentOrdinanceRowByOrdinance_Ordinance_Status, int StatusID, System.DateTime EffectiveDate, System.DateTime ExpirationDate, string LastUpdateBy, System.DateTime LastUpdateDate) {
                 Ordinance_StatusRow rowOrdinance_StatusRow = ((Ordinance_StatusRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         null,
                         null,
                         StatusID,
-                        Signature,
                         EffectiveDate,
                         ExpirationDate,
                         LastUpdateBy,
@@ -2177,7 +2208,6 @@ namespace WebUI.Reports.OrdinanceTracking {
                 this.columnOrdinanceStatusID = base.Columns["OrdinanceStatusID"];
                 this.columnOrdinanceID = base.Columns["OrdinanceID"];
                 this.columnStatusID = base.Columns["StatusID"];
-                this.columnSignature = base.Columns["Signature"];
                 this.columnEffectiveDate = base.Columns["EffectiveDate"];
                 this.columnExpirationDate = base.Columns["ExpirationDate"];
                 this.columnLastUpdateBy = base.Columns["LastUpdateBy"];
@@ -2193,8 +2223,6 @@ namespace WebUI.Reports.OrdinanceTracking {
                 base.Columns.Add(this.columnOrdinanceID);
                 this.columnStatusID = new global::System.Data.DataColumn("StatusID", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnStatusID);
-                this.columnSignature = new global::System.Data.DataColumn("Signature", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnSignature);
                 this.columnEffectiveDate = new global::System.Data.DataColumn("EffectiveDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnEffectiveDate);
                 this.columnExpirationDate = new global::System.Data.DataColumn("ExpirationDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
@@ -2210,7 +2238,6 @@ namespace WebUI.Reports.OrdinanceTracking {
                 this.columnOrdinanceStatusID.ReadOnly = true;
                 this.columnOrdinanceID.AllowDBNull = false;
                 this.columnStatusID.AllowDBNull = false;
-                this.columnSignature.MaxLength = 50;
                 this.columnLastUpdateBy.MaxLength = 50;
             }
             
@@ -2884,6 +2911,364 @@ namespace WebUI.Reports.OrdinanceTracking {
                 global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
                 attribute2.Name = "tableTypeName";
                 attribute2.FixedValue = "RevExpBoolDataTable";
+                type.Attributes.Add(attribute2);
+                type.Particle = sequence;
+                global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
+                if (xs.Contains(dsSchema.TargetNamespace)) {
+                    global::System.IO.MemoryStream s1 = new global::System.IO.MemoryStream();
+                    global::System.IO.MemoryStream s2 = new global::System.IO.MemoryStream();
+                    try {
+                        global::System.Xml.Schema.XmlSchema schema = null;
+                        dsSchema.Write(s1);
+                        for (global::System.Collections.IEnumerator schemas = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator(); schemas.MoveNext(); ) {
+                            schema = ((global::System.Xml.Schema.XmlSchema)(schemas.Current));
+                            s2.SetLength(0);
+                            schema.Write(s2);
+                            if ((s1.Length == s2.Length)) {
+                                s1.Position = 0;
+                                s2.Position = 0;
+                                for (; ((s1.Position != s1.Length) 
+                                            && (s1.ReadByte() == s2.ReadByte())); ) {
+                                    ;
+                                }
+                                if ((s1.Position == s1.Length)) {
+                                    return type;
+                                }
+                            }
+                        }
+                    }
+                    finally {
+                        if ((s1 != null)) {
+                            s1.Close();
+                        }
+                        if ((s2 != null)) {
+                            s2.Close();
+                        }
+                    }
+                }
+                xs.Add(dsSchema);
+                return type;
+            }
+        }
+        
+        /// <summary>
+        ///Represents the strongly named DataTable class.
+        ///</summary>
+        [global::System.Serializable()]
+        [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
+        public partial class Ordinance_SignatureDataTable : global::System.Data.TypedTableBase<Ordinance_SignatureRow> {
+            
+            private global::System.Data.DataColumn columnSignatureID;
+            
+            private global::System.Data.DataColumn columnOrdinanceID;
+            
+            private global::System.Data.DataColumn columnSignatureType;
+            
+            private global::System.Data.DataColumn columnSignature;
+            
+            private global::System.Data.DataColumn columnSignatureCertified;
+            
+            private global::System.Data.DataColumn columnLastUpdateBy;
+            
+            private global::System.Data.DataColumn columnLastUpdateDate;
+            
+            private global::System.Data.DataColumn columnDateSigned;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public Ordinance_SignatureDataTable() {
+                this.TableName = "Ordinance_Signature";
+                this.BeginInit();
+                this.InitClass();
+                this.EndInit();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            internal Ordinance_SignatureDataTable(global::System.Data.DataTable table) {
+                this.TableName = table.TableName;
+                if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
+                    this.CaseSensitive = table.CaseSensitive;
+                }
+                if ((table.Locale.ToString() != table.DataSet.Locale.ToString())) {
+                    this.Locale = table.Locale;
+                }
+                if ((table.Namespace != table.DataSet.Namespace)) {
+                    this.Namespace = table.Namespace;
+                }
+                this.Prefix = table.Prefix;
+                this.MinimumCapacity = table.MinimumCapacity;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected Ordinance_SignatureDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+                    base(info, context) {
+                this.InitVars();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn SignatureIDColumn {
+                get {
+                    return this.columnSignatureID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn OrdinanceIDColumn {
+                get {
+                    return this.columnOrdinanceID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn SignatureTypeColumn {
+                get {
+                    return this.columnSignatureType;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn SignatureColumn {
+                get {
+                    return this.columnSignature;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn SignatureCertifiedColumn {
+                get {
+                    return this.columnSignatureCertified;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn LastUpdateByColumn {
+                get {
+                    return this.columnLastUpdateBy;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn LastUpdateDateColumn {
+                get {
+                    return this.columnLastUpdateDate;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn DateSignedColumn {
+                get {
+                    return this.columnDateSigned;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            [global::System.ComponentModel.Browsable(false)]
+            public int Count {
+                get {
+                    return this.Rows.Count;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public Ordinance_SignatureRow this[int index] {
+                get {
+                    return ((Ordinance_SignatureRow)(this.Rows[index]));
+                }
+            }
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public event Ordinance_SignatureRowChangeEventHandler Ordinance_SignatureRowChanging;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public event Ordinance_SignatureRowChangeEventHandler Ordinance_SignatureRowChanged;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public event Ordinance_SignatureRowChangeEventHandler Ordinance_SignatureRowDeleting;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public event Ordinance_SignatureRowChangeEventHandler Ordinance_SignatureRowDeleted;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void AddOrdinance_SignatureRow(Ordinance_SignatureRow row) {
+                this.Rows.Add(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public Ordinance_SignatureRow AddOrdinance_SignatureRow(OrdinanceRow parentOrdinanceRowByOrdinance_Ordinance_Signature, string SignatureType, string Signature, bool SignatureCertified, string LastUpdateBy, System.DateTime LastUpdateDate, System.DateTime DateSigned) {
+                Ordinance_SignatureRow rowOrdinance_SignatureRow = ((Ordinance_SignatureRow)(this.NewRow()));
+                object[] columnValuesArray = new object[] {
+                        null,
+                        null,
+                        SignatureType,
+                        Signature,
+                        SignatureCertified,
+                        LastUpdateBy,
+                        LastUpdateDate,
+                        DateSigned};
+                if ((parentOrdinanceRowByOrdinance_Ordinance_Signature != null)) {
+                    columnValuesArray[1] = parentOrdinanceRowByOrdinance_Ordinance_Signature[0];
+                }
+                rowOrdinance_SignatureRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowOrdinance_SignatureRow);
+                return rowOrdinance_SignatureRow;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public override global::System.Data.DataTable Clone() {
+                Ordinance_SignatureDataTable cln = ((Ordinance_SignatureDataTable)(base.Clone()));
+                cln.InitVars();
+                return cln;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override global::System.Data.DataTable CreateInstance() {
+                return new Ordinance_SignatureDataTable();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            internal void InitVars() {
+                this.columnSignatureID = base.Columns["SignatureID"];
+                this.columnOrdinanceID = base.Columns["OrdinanceID"];
+                this.columnSignatureType = base.Columns["SignatureType"];
+                this.columnSignature = base.Columns["Signature"];
+                this.columnSignatureCertified = base.Columns["SignatureCertified"];
+                this.columnLastUpdateBy = base.Columns["LastUpdateBy"];
+                this.columnLastUpdateDate = base.Columns["LastUpdateDate"];
+                this.columnDateSigned = base.Columns["DateSigned"];
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            private void InitClass() {
+                this.columnSignatureID = new global::System.Data.DataColumn("SignatureID", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnSignatureID);
+                this.columnOrdinanceID = new global::System.Data.DataColumn("OrdinanceID", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOrdinanceID);
+                this.columnSignatureType = new global::System.Data.DataColumn("SignatureType", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnSignatureType);
+                this.columnSignature = new global::System.Data.DataColumn("Signature", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnSignature);
+                this.columnSignatureCertified = new global::System.Data.DataColumn("SignatureCertified", typeof(bool), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnSignatureCertified);
+                this.columnLastUpdateBy = new global::System.Data.DataColumn("LastUpdateBy", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnLastUpdateBy);
+                this.columnLastUpdateDate = new global::System.Data.DataColumn("LastUpdateDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnLastUpdateDate);
+                this.columnDateSigned = new global::System.Data.DataColumn("DateSigned", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDateSigned);
+                this.columnSignatureID.AutoIncrement = true;
+                this.columnSignatureID.AutoIncrementSeed = -1;
+                this.columnSignatureID.AutoIncrementStep = -1;
+                this.columnSignatureID.AllowDBNull = false;
+                this.columnSignatureID.ReadOnly = true;
+                this.columnOrdinanceID.AllowDBNull = false;
+                this.columnSignatureType.AllowDBNull = false;
+                this.columnSignatureType.MaxLength = 50;
+                this.columnSignature.MaxLength = 2147483647;
+                this.columnLastUpdateBy.MaxLength = 50;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public Ordinance_SignatureRow NewOrdinance_SignatureRow() {
+                return ((Ordinance_SignatureRow)(this.NewRow()));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
+                return new Ordinance_SignatureRow(builder);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override global::System.Type GetRowType() {
+                return typeof(Ordinance_SignatureRow);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanged(e);
+                if ((this.Ordinance_SignatureRowChanged != null)) {
+                    this.Ordinance_SignatureRowChanged(this, new Ordinance_SignatureRowChangeEvent(((Ordinance_SignatureRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanging(e);
+                if ((this.Ordinance_SignatureRowChanging != null)) {
+                    this.Ordinance_SignatureRowChanging(this, new Ordinance_SignatureRowChangeEvent(((Ordinance_SignatureRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleted(e);
+                if ((this.Ordinance_SignatureRowDeleted != null)) {
+                    this.Ordinance_SignatureRowDeleted(this, new Ordinance_SignatureRowChangeEvent(((Ordinance_SignatureRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleting(e);
+                if ((this.Ordinance_SignatureRowDeleting != null)) {
+                    this.Ordinance_SignatureRowDeleting(this, new Ordinance_SignatureRowChangeEvent(((Ordinance_SignatureRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void RemoveOrdinance_SignatureRow(Ordinance_SignatureRow row) {
+                this.Rows.Remove(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
+                global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
+                global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
+                OrdinanceData ds = new OrdinanceData();
+                global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
+                any1.Namespace = "http://www.w3.org/2001/XMLSchema";
+                any1.MinOccurs = new decimal(0);
+                any1.MaxOccurs = decimal.MaxValue;
+                any1.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any1);
+                global::System.Xml.Schema.XmlSchemaAny any2 = new global::System.Xml.Schema.XmlSchemaAny();
+                any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
+                any2.MinOccurs = new decimal(1);
+                any2.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any2);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute1 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute1.Name = "namespace";
+                attribute1.FixedValue = ds.Namespace;
+                type.Attributes.Add(attribute1);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute2.Name = "tableTypeName";
+                attribute2.FixedValue = "Ordinance_SignatureDataTable";
                 type.Attributes.Add(attribute2);
                 type.Particle = sequence;
                 global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
@@ -3866,6 +4251,17 @@ namespace WebUI.Reports.OrdinanceTracking {
                     return ((Ordinance_StatusRow[])(base.GetChildRows(this.Table.ChildRelations["Ordinance_Ordinance_Status"])));
                 }
             }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public Ordinance_SignatureRow[] GetOrdinance_SignatureRows() {
+                if ((this.Table.ChildRelations["Ordinance_Ordinance_Signature"] == null)) {
+                    return new Ordinance_SignatureRow[0];
+                }
+                else {
+                    return ((Ordinance_SignatureRow[])(base.GetChildRows(this.Table.ChildRelations["Ordinance_Ordinance_Signature"])));
+                }
+            }
         }
         
         /// <summary>
@@ -4444,22 +4840,6 @@ namespace WebUI.Reports.OrdinanceTracking {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string Signature {
-                get {
-                    try {
-                        return ((string)(this[this.tableOrdinance_Status.SignatureColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'Signature\' in table \'Ordinance_Status\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableOrdinance_Status.SignatureColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public System.DateTime EffectiveDate {
                 get {
                     try {
@@ -4531,18 +4911,6 @@ namespace WebUI.Reports.OrdinanceTracking {
                 set {
                     this.SetParentRow(value, this.Table.ParentRelations["Ordinance_Ordinance_Status"]);
                 }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public bool IsSignatureNull() {
-                return this.IsNull(this.tableOrdinance_Status.SignatureColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void SetSignatureNull() {
-                this[this.tableOrdinance_Status.SignatureColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -4854,6 +5222,206 @@ namespace WebUI.Reports.OrdinanceTracking {
         }
         
         /// <summary>
+        ///Represents strongly named DataRow class.
+        ///</summary>
+        public partial class Ordinance_SignatureRow : global::System.Data.DataRow {
+            
+            private Ordinance_SignatureDataTable tableOrdinance_Signature;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            internal Ordinance_SignatureRow(global::System.Data.DataRowBuilder rb) : 
+                    base(rb) {
+                this.tableOrdinance_Signature = ((Ordinance_SignatureDataTable)(this.Table));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public int SignatureID {
+                get {
+                    return ((int)(this[this.tableOrdinance_Signature.SignatureIDColumn]));
+                }
+                set {
+                    this[this.tableOrdinance_Signature.SignatureIDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public int OrdinanceID {
+                get {
+                    return ((int)(this[this.tableOrdinance_Signature.OrdinanceIDColumn]));
+                }
+                set {
+                    this[this.tableOrdinance_Signature.OrdinanceIDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string SignatureType {
+                get {
+                    return ((string)(this[this.tableOrdinance_Signature.SignatureTypeColumn]));
+                }
+                set {
+                    this[this.tableOrdinance_Signature.SignatureTypeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string Signature {
+                get {
+                    try {
+                        return ((string)(this[this.tableOrdinance_Signature.SignatureColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Signature\' in table \'Ordinance_Signature\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOrdinance_Signature.SignatureColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool SignatureCertified {
+                get {
+                    try {
+                        return ((bool)(this[this.tableOrdinance_Signature.SignatureCertifiedColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'SignatureCertified\' in table \'Ordinance_Signature\' is DBNul" +
+                                "l.", e);
+                    }
+                }
+                set {
+                    this[this.tableOrdinance_Signature.SignatureCertifiedColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string LastUpdateBy {
+                get {
+                    try {
+                        return ((string)(this[this.tableOrdinance_Signature.LastUpdateByColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'LastUpdateBy\' in table \'Ordinance_Signature\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOrdinance_Signature.LastUpdateByColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public System.DateTime LastUpdateDate {
+                get {
+                    try {
+                        return ((global::System.DateTime)(this[this.tableOrdinance_Signature.LastUpdateDateColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'LastUpdateDate\' in table \'Ordinance_Signature\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOrdinance_Signature.LastUpdateDateColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public System.DateTime DateSigned {
+                get {
+                    try {
+                        return ((global::System.DateTime)(this[this.tableOrdinance_Signature.DateSignedColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DateSigned\' in table \'Ordinance_Signature\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOrdinance_Signature.DateSignedColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public OrdinanceRow OrdinanceRow {
+                get {
+                    return ((OrdinanceRow)(this.GetParentRow(this.Table.ParentRelations["Ordinance_Ordinance_Signature"])));
+                }
+                set {
+                    this.SetParentRow(value, this.Table.ParentRelations["Ordinance_Ordinance_Signature"]);
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsSignatureNull() {
+                return this.IsNull(this.tableOrdinance_Signature.SignatureColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetSignatureNull() {
+                this[this.tableOrdinance_Signature.SignatureColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsSignatureCertifiedNull() {
+                return this.IsNull(this.tableOrdinance_Signature.SignatureCertifiedColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetSignatureCertifiedNull() {
+                this[this.tableOrdinance_Signature.SignatureCertifiedColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsLastUpdateByNull() {
+                return this.IsNull(this.tableOrdinance_Signature.LastUpdateByColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetLastUpdateByNull() {
+                this[this.tableOrdinance_Signature.LastUpdateByColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsLastUpdateDateNull() {
+                return this.IsNull(this.tableOrdinance_Signature.LastUpdateDateColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetLastUpdateDateNull() {
+                this[this.tableOrdinance_Signature.LastUpdateDateColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsDateSignedNull() {
+                return this.IsNull(this.tableOrdinance_Signature.DateSignedColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetDateSignedNull() {
+                this[this.tableOrdinance_Signature.DateSignedColumn] = global::System.Convert.DBNull;
+            }
+        }
+        
+        /// <summary>
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
@@ -5043,6 +5611,40 @@ namespace WebUI.Reports.OrdinanceTracking {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public RevExpBoolRow Row {
+                get {
+                    return this.eventRow;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataRowAction Action {
+                get {
+                    return this.eventAction;
+                }
+            }
+        }
+        
+        /// <summary>
+        ///Row event argument class
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        public class Ordinance_SignatureRowChangeEvent : global::System.EventArgs {
+            
+            private Ordinance_SignatureRow eventRow;
+            
+            private global::System.Data.DataRowAction eventAction;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public Ordinance_SignatureRowChangeEvent(Ordinance_SignatureRow row, global::System.Data.DataRowAction action) {
+                this.eventRow = row;
+                this.eventAction = action;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public Ordinance_SignatureRow Row {
                 get {
                     return this.eventRow;
                 }

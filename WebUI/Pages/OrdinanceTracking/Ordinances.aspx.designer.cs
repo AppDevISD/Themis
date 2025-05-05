@@ -69,6 +69,15 @@ namespace WebUI
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl formTableDiv;
 
         /// <summary>
+        /// sortID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton sortID;
+
+        /// <summary>
         /// sortDate control.
         /// </summary>
         /// <remarks>
@@ -229,6 +238,15 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl ordinanceTabs;
+
+        /// <summary>
+        /// lblOrdID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblOrdID;
 
         /// <summary>
         /// backBtn control.
@@ -789,6 +807,15 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.TextBox fundsCheckByDate;
 
         /// <summary>
+        /// fundsCheckByCertified control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label fundsCheckByCertified;
+
+        /// <summary>
         /// directorSupervisorEmailBtn control.
         /// </summary>
         /// <remarks>
@@ -841,6 +868,15 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox directorSupervisorDate;
+
+        /// <summary>
+        /// directorSupervisorCertified control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label directorSupervisorCertified;
 
         /// <summary>
         /// cPAEmailBtn control.
@@ -897,6 +933,15 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.TextBox cPADate;
 
         /// <summary>
+        /// cPACertified control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label cPACertified;
+
+        /// <summary>
         /// obmDirectorEmailBtn control.
         /// </summary>
         /// <remarks>
@@ -951,6 +996,15 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.TextBox obmDirectorDate;
 
         /// <summary>
+        /// obmDirectorCertified control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label obmDirectorCertified;
+
+        /// <summary>
         /// mayorEmailBtn control.
         /// </summary>
         /// <remarks>
@@ -1003,6 +1057,15 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox mayorDate;
+
+        /// <summary>
+        /// mayorCertified control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label mayorCertified;
 
         /// <summary>
         /// submitSection control.

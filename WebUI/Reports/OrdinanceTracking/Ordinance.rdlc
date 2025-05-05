@@ -4034,500 +4034,463 @@
           </Line>
           <Rectangle Name="SignaturesGroup">
             <ReportItems>
-              <Textbox Name="Textbox4">
-                <CanGrow>true</CanGrow>
-                <KeepTogether>true</KeepTogether>
-                <Paragraphs>
-                  <Paragraph>
-                    <TextRuns>
-                      <TextRun>
-                        <Value>Director/Supervisor:</Value>
-                        <Style>
-                          <FontSize>12pt</FontSize>
-                          <FontWeight>Bold</FontWeight>
-                        </Style>
-                      </TextRun>
-                    </TextRuns>
-                    <Style />
-                  </Paragraph>
-                </Paragraphs>
-                <rd:DefaultName>Textbox3</rd:DefaultName>
-                <Top>0.8in</Top>
-                <Height>0.25in</Height>
-                <Width>5.5in</Width>
-                <Style>
-                  <Border>
-                    <Style>None</Style>
-                  </Border>
-                  <PaddingLeft>2pt</PaddingLeft>
-                  <PaddingRight>2pt</PaddingRight>
-                  <PaddingTop>2pt</PaddingTop>
-                  <PaddingBottom>2pt</PaddingBottom>
-                </Style>
-              </Textbox>
-              <Rectangle Name="Rectangle3">
-                <ReportItems>
-                  <Textbox Name="Textbox5">
-                    <CanGrow>true</CanGrow>
-                    <KeepTogether>true</KeepTogether>
-                    <Paragraphs>
-                      <Paragraph>
-                        <TextRuns>
-                          <TextRun>
-                            <Value>Signature</Value>
-                            <Style />
-                          </TextRun>
-                        </TextRuns>
-                        <Style />
-                      </Paragraph>
-                    </Paragraphs>
-                    <rd:DefaultName>Textbox1</rd:DefaultName>
-                    <Height>0.25in</Height>
-                    <Width>0.725in</Width>
-                    <Style>
-                      <Border>
-                        <Style>None</Style>
-                      </Border>
-                      <PaddingLeft>2pt</PaddingLeft>
-                      <PaddingRight>2pt</PaddingRight>
-                      <PaddingTop>2pt</PaddingTop>
-                      <PaddingBottom>2pt</PaddingBottom>
-                    </Style>
-                  </Textbox>
-                  <Line Name="Line3">
-                    <Height>0in</Height>
-                    <Width>2.255in</Width>
-                    <ZIndex>1</ZIndex>
-                    <Style>
-                      <Border>
-                        <Style>Solid</Style>
-                      </Border>
-                    </Style>
-                  </Line>
-                  <Textbox Name="Textbox6">
-                    <CanGrow>true</CanGrow>
-                    <KeepTogether>true</KeepTogether>
-                    <Paragraphs>
-                      <Paragraph>
-                        <TextRuns>
-                          <TextRun>
-                            <Value>Date</Value>
-                            <Style />
-                          </TextRun>
-                        </TextRuns>
-                        <Style />
-                      </Paragraph>
-                    </Paragraphs>
-                    <rd:DefaultName>Textbox1</rd:DefaultName>
-                    <Left>2.38in</Left>
-                    <Height>0.25in</Height>
-                    <Width>0.36565in</Width>
-                    <ZIndex>2</ZIndex>
-                    <Style>
-                      <Border>
-                        <Style>None</Style>
-                      </Border>
-                      <PaddingLeft>2pt</PaddingLeft>
-                      <PaddingRight>2pt</PaddingRight>
-                      <PaddingTop>2pt</PaddingTop>
-                      <PaddingBottom>2pt</PaddingBottom>
-                    </Style>
-                  </Textbox>
-                  <Line Name="Line4">
-                    <Left>2.38in</Left>
-                    <Height>0in</Height>
-                    <Width>0.87395in</Width>
-                    <ZIndex>3</ZIndex>
-                    <Style>
-                      <Border>
-                        <Style>Solid</Style>
-                      </Border>
-                    </Style>
-                  </Line>
-                </ReportItems>
-                <KeepTogether>true</KeepTogether>
-                <Top>1.05in</Top>
-                <Left>1.62549in</Left>
-                <Height>0.25in</Height>
-                <Width>3.54096in</Width>
-                <ZIndex>1</ZIndex>
-                <Style>
-                  <Border>
-                    <Style>None</Style>
-                  </Border>
-                </Style>
-              </Rectangle>
-              <Textbox Name="Textbox7">
-                <CanGrow>true</CanGrow>
-                <KeepTogether>true</KeepTogether>
-                <Paragraphs>
-                  <Paragraph>
-                    <TextRuns>
-                      <TextRun>
-                        <Value>City Purchasing Agent:</Value>
-                        <Style>
-                          <FontSize>12pt</FontSize>
-                          <FontWeight>Bold</FontWeight>
-                        </Style>
-                      </TextRun>
-                    </TextRuns>
-                    <Style />
-                  </Paragraph>
-                </Paragraphs>
-                <rd:DefaultName>Textbox3</rd:DefaultName>
-                <Top>1.6in</Top>
-                <Height>0.25in</Height>
-                <Width>5.5in</Width>
-                <ZIndex>2</ZIndex>
-                <Style>
-                  <Border>
-                    <Style>None</Style>
-                  </Border>
-                  <PaddingLeft>2pt</PaddingLeft>
-                  <PaddingRight>2pt</PaddingRight>
-                  <PaddingTop>2pt</PaddingTop>
-                  <PaddingBottom>2pt</PaddingBottom>
-                </Style>
-              </Textbox>
-              <Rectangle Name="Rectangle4">
-                <ReportItems>
-                  <Textbox Name="Textbox8">
-                    <CanGrow>true</CanGrow>
-                    <KeepTogether>true</KeepTogether>
-                    <Paragraphs>
-                      <Paragraph>
-                        <TextRuns>
-                          <TextRun>
-                            <Value>Signature</Value>
-                            <Style />
-                          </TextRun>
-                        </TextRuns>
-                        <Style />
-                      </Paragraph>
-                    </Paragraphs>
-                    <rd:DefaultName>Textbox1</rd:DefaultName>
-                    <Height>0.25in</Height>
-                    <Width>0.725in</Width>
-                    <Style>
-                      <Border>
-                        <Style>None</Style>
-                      </Border>
-                      <PaddingLeft>2pt</PaddingLeft>
-                      <PaddingRight>2pt</PaddingRight>
-                      <PaddingTop>2pt</PaddingTop>
-                      <PaddingBottom>2pt</PaddingBottom>
-                    </Style>
-                  </Textbox>
-                  <Line Name="Line5">
-                    <Height>0in</Height>
-                    <Width>2.255in</Width>
-                    <ZIndex>1</ZIndex>
-                    <Style>
-                      <Border>
-                        <Style>Solid</Style>
-                      </Border>
-                    </Style>
-                  </Line>
-                  <Textbox Name="Textbox9">
-                    <CanGrow>true</CanGrow>
-                    <KeepTogether>true</KeepTogether>
-                    <Paragraphs>
-                      <Paragraph>
-                        <TextRuns>
-                          <TextRun>
-                            <Value>Date</Value>
-                            <Style />
-                          </TextRun>
-                        </TextRuns>
-                        <Style />
-                      </Paragraph>
-                    </Paragraphs>
-                    <rd:DefaultName>Textbox1</rd:DefaultName>
-                    <Left>2.38in</Left>
-                    <Height>0.25in</Height>
-                    <Width>0.36565in</Width>
-                    <ZIndex>2</ZIndex>
-                    <Style>
-                      <Border>
-                        <Style>None</Style>
-                      </Border>
-                      <PaddingLeft>2pt</PaddingLeft>
-                      <PaddingRight>2pt</PaddingRight>
-                      <PaddingTop>2pt</PaddingTop>
-                      <PaddingBottom>2pt</PaddingBottom>
-                    </Style>
-                  </Textbox>
-                  <Line Name="Line6">
-                    <Left>2.38in</Left>
-                    <Height>0in</Height>
-                    <Width>0.87395in</Width>
-                    <ZIndex>3</ZIndex>
-                    <Style>
-                      <Border>
-                        <Style>Solid</Style>
-                      </Border>
-                    </Style>
-                  </Line>
-                </ReportItems>
-                <KeepTogether>true</KeepTogether>
-                <Top>1.85in</Top>
-                <Left>1.84596in</Left>
-                <Height>0.25in</Height>
-                <Width>3.54096in</Width>
-                <ZIndex>3</ZIndex>
-                <Style>
-                  <Border>
-                    <Style>None</Style>
-                  </Border>
-                </Style>
-              </Rectangle>
-              <Textbox Name="Textbox10">
-                <CanGrow>true</CanGrow>
-                <KeepTogether>true</KeepTogether>
-                <Paragraphs>
-                  <Paragraph>
-                    <TextRuns>
-                      <TextRun>
-                        <Value>Sign Off:</Value>
-                        <Style>
-                          <FontSize>12pt</FontSize>
-                          <FontWeight>Bold</FontWeight>
-                        </Style>
-                      </TextRun>
-                    </TextRuns>
-                    <Style />
-                  </Paragraph>
-                </Paragraphs>
-                <rd:DefaultName>Textbox3</rd:DefaultName>
-                <Top>2.4in</Top>
-                <Height>0.25in</Height>
-                <Width>5.5in</Width>
-                <ZIndex>4</ZIndex>
-                <Style>
-                  <Border>
-                    <Style>None</Style>
-                  </Border>
-                  <PaddingLeft>2pt</PaddingLeft>
-                  <PaddingRight>2pt</PaddingRight>
-                  <PaddingTop>2pt</PaddingTop>
-                  <PaddingBottom>2pt</PaddingBottom>
-                </Style>
-              </Textbox>
-              <Rectangle Name="Rectangle5">
-                <ReportItems>
-                  <Textbox Name="Textbox11">
-                    <CanGrow>true</CanGrow>
-                    <KeepTogether>true</KeepTogether>
-                    <Paragraphs>
-                      <Paragraph>
-                        <TextRuns>
-                          <TextRun>
-                            <Value>Mayor's Signature</Value>
-                            <Style />
-                          </TextRun>
-                        </TextRuns>
-                        <Style />
-                      </Paragraph>
-                    </Paragraphs>
-                    <rd:DefaultName>Textbox1</rd:DefaultName>
-                    <Height>0.25in</Height>
-                    <Width>1.74846in</Width>
-                    <Style>
-                      <Border>
-                        <Style>None</Style>
-                      </Border>
-                      <PaddingLeft>2pt</PaddingLeft>
-                      <PaddingRight>2pt</PaddingRight>
-                      <PaddingTop>2pt</PaddingTop>
-                      <PaddingBottom>2pt</PaddingBottom>
-                    </Style>
-                  </Textbox>
-                  <Line Name="Line7">
-                    <Height>0in</Height>
-                    <Width>2.255in</Width>
-                    <ZIndex>1</ZIndex>
-                    <Style>
-                      <Border>
-                        <Style>Solid</Style>
-                      </Border>
-                    </Style>
-                  </Line>
-                  <Textbox Name="Textbox12">
-                    <CanGrow>true</CanGrow>
-                    <KeepTogether>true</KeepTogether>
-                    <Paragraphs>
-                      <Paragraph>
-                        <TextRuns>
-                          <TextRun>
-                            <Value>OBM Director's Signature</Value>
-                            <Style />
-                          </TextRun>
-                        </TextRuns>
-                        <Style />
-                      </Paragraph>
-                    </Paragraphs>
-                    <rd:DefaultName>Textbox1</rd:DefaultName>
-                    <Left>2.38in</Left>
-                    <Height>0.25in</Height>
-                    <Width>2.2175in</Width>
-                    <ZIndex>2</ZIndex>
-                    <Style>
-                      <Border>
-                        <Style>None</Style>
-                      </Border>
-                      <PaddingLeft>2pt</PaddingLeft>
-                      <PaddingRight>2pt</PaddingRight>
-                      <PaddingTop>2pt</PaddingTop>
-                      <PaddingBottom>2pt</PaddingBottom>
-                    </Style>
-                  </Textbox>
-                  <Line Name="Line8">
-                    <Left>2.38in</Left>
-                    <Height>0in</Height>
-                    <Width>2.255in</Width>
-                    <ZIndex>3</ZIndex>
-                    <Style>
-                      <Border>
-                        <Style>Solid</Style>
-                      </Border>
-                    </Style>
-                  </Line>
-                </ReportItems>
-                <KeepTogether>true</KeepTogether>
-                <Top>2.65in</Top>
-                <Left>0.715in</Left>
-                <Height>0.25in</Height>
-                <Width>5.11974in</Width>
-                <ZIndex>5</ZIndex>
-                <Style>
-                  <Border>
-                    <Style>None</Style>
-                  </Border>
-                </Style>
-              </Rectangle>
-              <Rectangle Name="Rectangle2">
-                <ReportItems>
-                  <Textbox Name="Textbox1">
-                    <CanGrow>true</CanGrow>
-                    <KeepTogether>true</KeepTogether>
-                    <Paragraphs>
-                      <Paragraph>
-                        <TextRuns>
-                          <TextRun>
-                            <Value>Signature</Value>
-                            <Style />
-                          </TextRun>
-                        </TextRuns>
-                        <Style />
-                      </Paragraph>
-                    </Paragraphs>
-                    <rd:DefaultName>Textbox1</rd:DefaultName>
-                    <Height>0.25in</Height>
-                    <Width>0.725in</Width>
-                    <Style>
-                      <Border>
-                        <Style>None</Style>
-                      </Border>
-                      <PaddingLeft>2pt</PaddingLeft>
-                      <PaddingRight>2pt</PaddingRight>
-                      <PaddingTop>2pt</PaddingTop>
-                      <PaddingBottom>2pt</PaddingBottom>
-                    </Style>
-                  </Textbox>
-                  <Line Name="Line1">
-                    <Height>0in</Height>
-                    <Width>2.255in</Width>
-                    <ZIndex>1</ZIndex>
-                    <Style>
-                      <Border>
-                        <Style>Solid</Style>
-                      </Border>
-                    </Style>
-                  </Line>
-                  <Textbox Name="Textbox2">
-                    <CanGrow>true</CanGrow>
-                    <KeepTogether>true</KeepTogether>
-                    <Paragraphs>
-                      <Paragraph>
-                        <TextRuns>
-                          <TextRun>
-                            <Value>Date</Value>
-                            <Style />
-                          </TextRun>
-                        </TextRuns>
-                        <Style />
-                      </Paragraph>
-                    </Paragraphs>
-                    <rd:DefaultName>Textbox1</rd:DefaultName>
-                    <Left>2.38in</Left>
-                    <Height>0.25in</Height>
-                    <Width>0.36565in</Width>
-                    <ZIndex>2</ZIndex>
-                    <Style>
-                      <Border>
-                        <Style>None</Style>
-                      </Border>
-                      <PaddingLeft>2pt</PaddingLeft>
-                      <PaddingRight>2pt</PaddingRight>
-                      <PaddingTop>2pt</PaddingTop>
-                      <PaddingBottom>2pt</PaddingBottom>
-                    </Style>
-                  </Textbox>
-                  <Line Name="Line2">
-                    <Left>2.38in</Left>
-                    <Height>0in</Height>
-                    <Width>0.87395in</Width>
-                    <ZIndex>3</ZIndex>
-                    <Style>
-                      <Border>
-                        <Style>Solid</Style>
-                      </Border>
-                    </Style>
-                  </Line>
-                </ReportItems>
-                <KeepTogether>true</KeepTogether>
-                <Top>0.25in</Top>
-                <Left>1.37in</Left>
-                <Height>0.25in</Height>
-                <Width>3.54096in</Width>
-                <ZIndex>6</ZIndex>
+              <Tablix Name="Tablix1">
+                <TablixBody>
+                  <TablixColumns>
+                    <TablixColumn>
+                      <Width>2in</Width>
+                    </TablixColumn>
+                    <TablixColumn>
+                      <Width>2.25in</Width>
+                    </TablixColumn>
+                    <TablixColumn>
+                      <Width>0.08in</Width>
+                    </TablixColumn>
+                    <TablixColumn>
+                      <Width>1.04in</Width>
+                    </TablixColumn>
+                  </TablixColumns>
+                  <TablixRows>
+                    <TablixRow>
+                      <Height>0.25in</Height>
+                      <TablixCells>
+                        <TablixCell>
+                          <CellContents>
+                            <Textbox Name="PreviousOrdinanceNumbersLabel3">
+                              <KeepTogether>true</KeepTogether>
+                              <Paragraphs>
+                                <Paragraph>
+                                  <TextRuns>
+                                    <TextRun>
+                                      <Label>SigType</Label>
+                                      <Value>=Switch(
+	Fields!SignatureType.Value = "fundsCheckBy", "Funds Check By",
+	Fields!SignatureType.Value = "directorSupervisor", "Director/Supervisor",
+	Fields!SignatureType.Value = "cPA", "City Purchasing Agent",
+	Fields!SignatureType.Value = "obmDirector", "OBM Director",
+	Fields!SignatureType.Value = "mayor", "Mayor"
+)</Value>
+                                      <Style>
+                                        <FontSize>12pt</FontSize>
+                                        <FontWeight>Bold</FontWeight>
+                                      </Style>
+                                    </TextRun>
+                                    <TextRun>
+                                      <Value>: </Value>
+                                      <Style>
+                                        <FontSize>12pt</FontSize>
+                                        <FontWeight>Bold</FontWeight>
+                                      </Style>
+                                    </TextRun>
+                                  </TextRuns>
+                                  <Style>
+                                    <TextAlign>Right</TextAlign>
+                                  </Style>
+                                </Paragraph>
+                              </Paragraphs>
+                              <Style>
+                                <Border>
+                                  <Style>None</Style>
+                                </Border>
+                                <PaddingLeft>2pt</PaddingLeft>
+                                <PaddingRight>2pt</PaddingRight>
+                                <PaddingTop>2pt</PaddingTop>
+                                <PaddingBottom>2pt</PaddingBottom>
+                              </Style>
+                            </Textbox>
+                          </CellContents>
+                        </TablixCell>
+                        <TablixCell>
+                          <CellContents>
+                            <Textbox Name="Signature">
+                              <CanGrow>true</CanGrow>
+                              <KeepTogether>true</KeepTogether>
+                              <Paragraphs>
+                                <Paragraph>
+                                  <TextRuns>
+                                    <TextRun>
+                                      <Value>=Fields!Signature.Value</Value>
+                                      <Style />
+                                    </TextRun>
+                                    <TextRun>
+                                      <Label>E-Signed</Label>
+                                      <Value>=IIf(Fields!Signature.Value &lt;&gt; "", " (E-Signed)", "")</Value>
+                                      <Style>
+                                        <FontSize>8pt</FontSize>
+                                        <Color>Gray</Color>
+                                      </Style>
+                                    </TextRun>
+                                  </TextRuns>
+                                  <Style />
+                                </Paragraph>
+                              </Paragraphs>
+                              <rd:DefaultName>Signature</rd:DefaultName>
+                              <Style>
+                                <Border>
+                                  <Style>None</Style>
+                                </Border>
+                                <PaddingLeft>2pt</PaddingLeft>
+                                <PaddingRight>2pt</PaddingRight>
+                                <PaddingTop>2pt</PaddingTop>
+                                <PaddingBottom>2pt</PaddingBottom>
+                              </Style>
+                            </Textbox>
+                          </CellContents>
+                        </TablixCell>
+                        <TablixCell>
+                          <CellContents>
+                            <Textbox Name="Textbox20">
+                              <CanGrow>true</CanGrow>
+                              <KeepTogether>true</KeepTogether>
+                              <Paragraphs>
+                                <Paragraph>
+                                  <TextRuns>
+                                    <TextRun>
+                                      <Value />
+                                      <Style />
+                                    </TextRun>
+                                  </TextRuns>
+                                  <Style />
+                                </Paragraph>
+                              </Paragraphs>
+                              <rd:DefaultName>Textbox20</rd:DefaultName>
+                              <Style>
+                                <Border>
+                                  <Style>None</Style>
+                                </Border>
+                                <PaddingLeft>2pt</PaddingLeft>
+                                <PaddingRight>2pt</PaddingRight>
+                                <PaddingTop>2pt</PaddingTop>
+                                <PaddingBottom>2pt</PaddingBottom>
+                              </Style>
+                            </Textbox>
+                          </CellContents>
+                        </TablixCell>
+                        <TablixCell>
+                          <CellContents>
+                            <Textbox Name="DateSigned">
+                              <CanGrow>true</CanGrow>
+                              <KeepTogether>true</KeepTogether>
+                              <Paragraphs>
+                                <Paragraph>
+                                  <TextRuns>
+                                    <TextRun>
+                                      <Label>DateSigned</Label>
+                                      <Value>=IIf(CDate(Fields!DateSigned.Value) &gt; CDate("1/1/0001"), CDate(Fields!DateSigned.Value), "")</Value>
+                                      <Style>
+                                        <Format>MM/dd/yyyy</Format>
+                                      </Style>
+                                    </TextRun>
+                                  </TextRuns>
+                                  <Style>
+                                    <TextAlign>Left</TextAlign>
+                                  </Style>
+                                </Paragraph>
+                              </Paragraphs>
+                              <rd:DefaultName>DateSigned</rd:DefaultName>
+                              <Style>
+                                <Border>
+                                  <Style>None</Style>
+                                </Border>
+                                <PaddingLeft>2pt</PaddingLeft>
+                                <PaddingRight>2pt</PaddingRight>
+                                <PaddingTop>2pt</PaddingTop>
+                                <PaddingBottom>2pt</PaddingBottom>
+                              </Style>
+                            </Textbox>
+                          </CellContents>
+                        </TablixCell>
+                      </TablixCells>
+                    </TablixRow>
+                    <TablixRow>
+                      <Height>0.25in</Height>
+                      <TablixCells>
+                        <TablixCell>
+                          <CellContents>
+                            <Textbox Name="Textbox17">
+                              <CanGrow>true</CanGrow>
+                              <KeepTogether>true</KeepTogether>
+                              <Paragraphs>
+                                <Paragraph>
+                                  <TextRuns>
+                                    <TextRun>
+                                      <Value />
+                                      <Style>
+                                        <FontSize>12pt</FontSize>
+                                        <FontWeight>Bold</FontWeight>
+                                      </Style>
+                                    </TextRun>
+                                  </TextRuns>
+                                  <Style>
+                                    <TextAlign>Right</TextAlign>
+                                  </Style>
+                                </Paragraph>
+                              </Paragraphs>
+                              <rd:DefaultName>Textbox17</rd:DefaultName>
+                              <Style>
+                                <Border>
+                                  <Style>None</Style>
+                                </Border>
+                                <PaddingLeft>2pt</PaddingLeft>
+                                <PaddingRight>2pt</PaddingRight>
+                                <PaddingTop>2pt</PaddingTop>
+                                <PaddingBottom>2pt</PaddingBottom>
+                              </Style>
+                            </Textbox>
+                          </CellContents>
+                        </TablixCell>
+                        <TablixCell>
+                          <CellContents>
+                            <Textbox Name="Textbox18">
+                              <CanGrow>true</CanGrow>
+                              <KeepTogether>true</KeepTogether>
+                              <Paragraphs>
+                                <Paragraph>
+                                  <TextRuns>
+                                    <TextRun>
+                                      <Value>Signature</Value>
+                                      <Style />
+                                    </TextRun>
+                                  </TextRuns>
+                                  <Style />
+                                </Paragraph>
+                              </Paragraphs>
+                              <rd:DefaultName>Textbox18</rd:DefaultName>
+                              <Style>
+                                <Border>
+                                  <Style>None</Style>
+                                </Border>
+                                <TopBorder>
+                                  <Style>Solid</Style>
+                                </TopBorder>
+                                <PaddingLeft>2pt</PaddingLeft>
+                                <PaddingRight>2pt</PaddingRight>
+                                <PaddingTop>2pt</PaddingTop>
+                                <PaddingBottom>2pt</PaddingBottom>
+                              </Style>
+                            </Textbox>
+                          </CellContents>
+                        </TablixCell>
+                        <TablixCell>
+                          <CellContents>
+                            <Textbox Name="Textbox21">
+                              <CanGrow>true</CanGrow>
+                              <KeepTogether>true</KeepTogether>
+                              <Paragraphs>
+                                <Paragraph>
+                                  <TextRuns>
+                                    <TextRun>
+                                      <Value />
+                                      <Style />
+                                    </TextRun>
+                                  </TextRuns>
+                                  <Style />
+                                </Paragraph>
+                              </Paragraphs>
+                              <rd:DefaultName>Textbox21</rd:DefaultName>
+                              <Style>
+                                <Border>
+                                  <Style>None</Style>
+                                </Border>
+                                <PaddingLeft>2pt</PaddingLeft>
+                                <PaddingRight>2pt</PaddingRight>
+                                <PaddingTop>2pt</PaddingTop>
+                                <PaddingBottom>2pt</PaddingBottom>
+                              </Style>
+                            </Textbox>
+                          </CellContents>
+                        </TablixCell>
+                        <TablixCell>
+                          <CellContents>
+                            <Textbox Name="Textbox19">
+                              <CanGrow>true</CanGrow>
+                              <KeepTogether>true</KeepTogether>
+                              <Paragraphs>
+                                <Paragraph>
+                                  <TextRuns>
+                                    <TextRun>
+                                      <Value>Date</Value>
+                                      <Style />
+                                    </TextRun>
+                                  </TextRuns>
+                                  <Style />
+                                </Paragraph>
+                              </Paragraphs>
+                              <rd:DefaultName>Textbox19</rd:DefaultName>
+                              <Style>
+                                <Border>
+                                  <Style>None</Style>
+                                </Border>
+                                <TopBorder>
+                                  <Style>Solid</Style>
+                                </TopBorder>
+                                <PaddingLeft>2pt</PaddingLeft>
+                                <PaddingRight>2pt</PaddingRight>
+                                <PaddingTop>2pt</PaddingTop>
+                                <PaddingBottom>2pt</PaddingBottom>
+                              </Style>
+                            </Textbox>
+                          </CellContents>
+                        </TablixCell>
+                      </TablixCells>
+                    </TablixRow>
+                    <TablixRow>
+                      <Height>0.25in</Height>
+                      <TablixCells>
+                        <TablixCell>
+                          <CellContents>
+                            <Textbox Name="Textbox176">
+                              <CanGrow>true</CanGrow>
+                              <KeepTogether>true</KeepTogether>
+                              <Paragraphs>
+                                <Paragraph>
+                                  <TextRuns>
+                                    <TextRun>
+                                      <Value />
+                                      <Style>
+                                        <FontSize>12pt</FontSize>
+                                        <FontWeight>Bold</FontWeight>
+                                      </Style>
+                                    </TextRun>
+                                  </TextRuns>
+                                  <Style>
+                                    <TextAlign>Right</TextAlign>
+                                  </Style>
+                                </Paragraph>
+                              </Paragraphs>
+                              <rd:DefaultName>Textbox176</rd:DefaultName>
+                              <Style>
+                                <Border>
+                                  <Style>None</Style>
+                                </Border>
+                                <PaddingLeft>2pt</PaddingLeft>
+                                <PaddingRight>2pt</PaddingRight>
+                                <PaddingTop>2pt</PaddingTop>
+                                <PaddingBottom>2pt</PaddingBottom>
+                              </Style>
+                            </Textbox>
+                          </CellContents>
+                        </TablixCell>
+                        <TablixCell>
+                          <CellContents>
+                            <Textbox Name="Textbox177">
+                              <CanGrow>true</CanGrow>
+                              <KeepTogether>true</KeepTogether>
+                              <Paragraphs>
+                                <Paragraph>
+                                  <TextRuns>
+                                    <TextRun>
+                                      <Value />
+                                      <Style />
+                                    </TextRun>
+                                  </TextRuns>
+                                  <Style />
+                                </Paragraph>
+                              </Paragraphs>
+                              <rd:DefaultName>Textbox177</rd:DefaultName>
+                              <Style>
+                                <Border>
+                                  <Style>None</Style>
+                                </Border>
+                                <PaddingLeft>2pt</PaddingLeft>
+                                <PaddingRight>2pt</PaddingRight>
+                                <PaddingTop>2pt</PaddingTop>
+                                <PaddingBottom>2pt</PaddingBottom>
+                              </Style>
+                            </Textbox>
+                          </CellContents>
+                        </TablixCell>
+                        <TablixCell>
+                          <CellContents>
+                            <Textbox Name="Textbox178">
+                              <CanGrow>true</CanGrow>
+                              <KeepTogether>true</KeepTogether>
+                              <Paragraphs>
+                                <Paragraph>
+                                  <TextRuns>
+                                    <TextRun>
+                                      <Value />
+                                      <Style />
+                                    </TextRun>
+                                  </TextRuns>
+                                  <Style />
+                                </Paragraph>
+                              </Paragraphs>
+                              <rd:DefaultName>Textbox178</rd:DefaultName>
+                              <Style>
+                                <Border>
+                                  <Style>None</Style>
+                                </Border>
+                                <PaddingLeft>2pt</PaddingLeft>
+                                <PaddingRight>2pt</PaddingRight>
+                                <PaddingTop>2pt</PaddingTop>
+                                <PaddingBottom>2pt</PaddingBottom>
+                              </Style>
+                            </Textbox>
+                          </CellContents>
+                        </TablixCell>
+                        <TablixCell>
+                          <CellContents>
+                            <Textbox Name="Textbox179">
+                              <CanGrow>true</CanGrow>
+                              <KeepTogether>true</KeepTogether>
+                              <Paragraphs>
+                                <Paragraph>
+                                  <TextRuns>
+                                    <TextRun>
+                                      <Value />
+                                      <Style />
+                                    </TextRun>
+                                  </TextRuns>
+                                  <Style />
+                                </Paragraph>
+                              </Paragraphs>
+                              <rd:DefaultName>Textbox179</rd:DefaultName>
+                              <Style>
+                                <Border>
+                                  <Style>None</Style>
+                                </Border>
+                                <PaddingLeft>2pt</PaddingLeft>
+                                <PaddingRight>2pt</PaddingRight>
+                                <PaddingTop>2pt</PaddingTop>
+                                <PaddingBottom>2pt</PaddingBottom>
+                              </Style>
+                            </Textbox>
+                          </CellContents>
+                        </TablixCell>
+                      </TablixCells>
+                    </TablixRow>
+                  </TablixRows>
+                </TablixBody>
+                <TablixColumnHierarchy>
+                  <TablixMembers>
+                    <TablixMember />
+                    <TablixMember />
+                    <TablixMember />
+                    <TablixMember />
+                  </TablixMembers>
+                </TablixColumnHierarchy>
+                <TablixRowHierarchy>
+                  <TablixMembers>
+                    <TablixMember>
+                      <Group Name="Details20" />
+                      <TablixMembers>
+                        <TablixMember />
+                        <TablixMember />
+                        <TablixMember />
+                      </TablixMembers>
+                    </TablixMember>
+                  </TablixMembers>
+                </TablixRowHierarchy>
+                <DataSetName>dsSignatures</DataSetName>
+                <Height>0.75in</Height>
+                <Width>5.37in</Width>
                 <Style>
                   <Border>
                     <Style>None</Style>
                   </Border>
                 </Style>
-              </Rectangle>
-              <Textbox Name="Textbox3">
-                <CanGrow>true</CanGrow>
-                <KeepTogether>true</KeepTogether>
-                <Paragraphs>
-                  <Paragraph>
-                    <TextRuns>
-                      <TextRun>
-                        <Value>Funds Check by:</Value>
-                        <Style>
-                          <FontSize>12pt</FontSize>
-                          <FontWeight>Bold</FontWeight>
-                        </Style>
-                      </TextRun>
-                    </TextRuns>
-                    <Style />
-                  </Paragraph>
-                </Paragraphs>
-                <rd:DefaultName>Textbox3</rd:DefaultName>
-                <Height>0.25in</Height>
-                <Width>5.5in</Width>
-                <ZIndex>7</ZIndex>
-                <Style>
-                  <Border>
-                    <Style>None</Style>
-                  </Border>
-                  <PaddingLeft>2pt</PaddingLeft>
-                  <PaddingRight>2pt</PaddingRight>
-                  <PaddingTop>2pt</PaddingTop>
-                  <PaddingBottom>2pt</PaddingBottom>
-                </Style>
-              </Textbox>
+              </Tablix>
             </ReportItems>
             <KeepTogether>true</KeepTogether>
             <Top>13.5in</Top>
@@ -5028,6 +4991,54 @@
         <rd:DataSetName>OrdinanceData</rd:DataSetName>
         <rd:SchemaPath>C:\Users\kbolinger\Documents\Repos\Themis\WebUI\Reports\OrdinanceTracking\OrdinanceData.xsd</rd:SchemaPath>
         <rd:TableName>RevExpBool</rd:TableName>
+        <rd:TableAdapterFillMethod />
+        <rd:TableAdapterGetDataMethod />
+        <rd:TableAdapterName />
+      </rd:DataSetInfo>
+    </DataSet>
+    <DataSet Name="dsSignatures">
+      <Query>
+        <DataSourceName>OrdinanceData</DataSourceName>
+        <CommandText>/* Local Query */</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="SignatureID">
+          <DataField>SignatureID</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="OrdinanceID">
+          <DataField>OrdinanceID</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="SignatureType">
+          <DataField>SignatureType</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Signature">
+          <DataField>Signature</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="SignatureCertified">
+          <DataField>SignatureCertified</DataField>
+          <rd:TypeName>System.Boolean</rd:TypeName>
+        </Field>
+        <Field Name="LastUpdateBy">
+          <DataField>LastUpdateBy</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="LastUpdateDate">
+          <DataField>LastUpdateDate</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+        <Field Name="DateSigned">
+          <DataField>DateSigned</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
+      </Fields>
+      <rd:DataSetInfo>
+        <rd:DataSetName>OrdinanceData</rd:DataSetName>
+        <rd:SchemaPath>C:\Users\kbolinger\Documents\Repos\Themis\WebUI\Reports\OrdinanceTracking\OrdinanceData.xsd</rd:SchemaPath>
+        <rd:TableName>Ordinance_Signature</rd:TableName>
         <rd:TableAdapterFillMethod />
         <rd:TableAdapterGetDataMethod />
         <rd:TableAdapterName />

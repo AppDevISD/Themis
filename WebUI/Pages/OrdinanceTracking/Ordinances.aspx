@@ -63,9 +63,10 @@
 							<table id="FormTable" class="table table-bordered table-striped table-hover text-center" style="padding: 0px; margin: 0px">
 								<thead>
 									<tr>
+										<th style="width: 4%; text-align: center"><asp:LinkButton runat="server" ID="sortID" data-command="OrdinanceID" data-text="ID" OnClick="SortBtn_Click" class="btn btn-sort"><strong>ID<span runat="server" class='float-end lh-1p5'></span></strong></asp:LinkButton></th>
 										<th style="width: 6%; text-align: center"><asp:LinkButton runat="server" ID="sortDate" data-command="EffectiveDate" data-text="Date" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Date<span runat="server" class='float-end lh-1p5 fas fa-arrow-down'></span></strong></asp:LinkButton></th>
-										<th style="width: 38%; text-align: center"><asp:LinkButton runat="server" ID="sortTitle" data-command="OrdinanceTitle" data-text="Title" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Title<span class="float-end lh-1p5"></span></strong></asp:LinkButton></th>
-										<th style="width: 25%; text-align: center"><asp:LinkButton runat="server" ID="sortDepartment" data-command="RequestDepartment" data-text="Department" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Department<span class="float-end lh-1p5"></span></strong></asp:LinkButton></th>
+										<th style="width: 39%; text-align: center"><asp:LinkButton runat="server" ID="sortTitle" data-command="OrdinanceTitle" data-text="Title" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Title<span class="float-end lh-1p5"></span></strong></asp:LinkButton></th>
+										<th style="width: 20%; text-align: center"><asp:LinkButton runat="server" ID="sortDepartment" data-command="RequestDepartment" data-text="Department" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Department<span class="float-end lh-1p5"></span></strong></asp:LinkButton></th>
 										<th style="width: 15%; text-align: center"><asp:LinkButton runat="server" ID="sortContact" data-command="RequestContact" data-text="Contact" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Contact<span class="float-end lh-1p5"></span></strong></asp:LinkButton></th>
 										<th style="width: 10%; text-align: center"><asp:LinkButton runat="server" ID="sortStatus" data-command="StatusDescription" data-text="Status" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Status<span class="float-end lh-1p5"></span></strong></asp:LinkButton></th>
 										<th style="width: 6%; text-align: center"><strong>Action</strong></th>
@@ -77,6 +78,9 @@
 										<tr>
 											<td class="align-middle">
 												<asp:HiddenField runat="server" ID="hdnID" Value='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' />
+												<asp:Label ID="ordID" Text='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' runat="server" />
+											</td>
+											<td class="align-middle">
 												<asp:Label ID="ordTableDate" Text='<%# DataBinder.Eval(Container.DataItem, "EffectiveDate", "{0:MM/dd/yyyy}") %>' runat="server" />
 											</td>
 											<td class="align-middle text-start mw-0 text-truncate" data-overflow-tooltip="true" data-tooltip="tooltip" data-placement="right" title='<%# DataBinder.Eval(Container.DataItem, "OrdinanceTitle") %>'>
@@ -153,6 +157,7 @@
 								<div class="row h-100 align-items-center">
 									<h1><span class="fas fa-book-section"></span>&nbsp;Ordinance</h1>
 								</div>
+								<asp:Label runat="server" ID="lblOrdID" CssClass="text-primary-emphasis ordID">ID:</asp:Label>
 								<asp:LinkButton runat="server" ID="backBtn" CssClass="btn bg-danger backBtn" OnClick="backBtn_Click"><span class="fas fa-xmark text-light"></span></asp:LinkButton>
 								<asp:LinkButton runat="server" ID="copyOrd" CssClass="btn btn-primary copyBtn" OnClick="copyOrd_Click"><span class="fas fa-copy"></span>&nbsp;Copy</asp:LinkButton>
 
@@ -715,6 +720,9 @@
 																	<asp:TextBox runat="server" ID="fundsCheckByDate" CssClass="form-control" TextMode="Date" ReadOnly="true"></asp:TextBox>
 																</div>
 															</div>
+															<div class="col-md-6 d-flex align-items-center">
+																<asp:Label runat="server" ID="fundsCheckByCertified" CssClass="text-success m-0"><span class="fas fa-check"></span>&nbsp;Signature Certified!</asp:Label>
+															</div>
 														</div>
 													</div>
 												</div>
@@ -746,6 +754,9 @@
 																	<span class="input-group-text fas fa-calendar-days"></span>
 																	<asp:TextBox runat="server" ID="directorSupervisorDate" CssClass="form-control" TextMode="Date" ReadOnly="true"></asp:TextBox>
 																</div>
+															</div>
+															<div class="col-md-6 d-flex align-items-center">
+																<asp:Label runat="server" ID="directorSupervisorCertified" CssClass="text-success m-0"><span class="fas fa-check"></span>&nbsp;Signature Certified!</asp:Label>
 															</div>
 														</div>
 													</div>
@@ -779,6 +790,9 @@
 																	<asp:TextBox runat="server" ID="cPADate" CssClass="form-control" TextMode="Date" ReadOnly="true"></asp:TextBox>
 																</div>
 															</div>
+															<div class="col-md-6 d-flex align-items-center">
+																<asp:Label runat="server" ID="cPACertified" CssClass="text-success m-0"><span class="fas fa-check"></span>&nbsp;Signature Certified!</asp:Label>
+															</div>
 														</div>
 													</div>
 												</div>
@@ -811,6 +825,9 @@
 																	<asp:TextBox runat="server" ID="obmDirectorDate" CssClass="form-control" TextMode="Date" ReadOnly="true"></asp:TextBox>
 																</div>
 															</div>
+															<div class="col-md-6 d-flex align-items-center">
+																<asp:Label runat="server" ID="obmDirectorCertified" CssClass="text-success m-0"><span class="fas fa-check"></span>&nbsp;Signature Certified!</asp:Label>
+															</div>
 														</div>
 													</div>
 												</div>
@@ -842,6 +859,9 @@
 																	<span class="input-group-text fas fa-calendar-days"></span>
 																	<asp:TextBox runat="server" ID="mayorDate" CssClass="form-control" TextMode="Date" ReadOnly="true"></asp:TextBox>
 																</div>
+															</div>
+															<div class="col-md-6 d-flex align-items-center">
+																<asp:Label runat="server" ID="mayorCertified" CssClass="text-success m-0"><span class="fas fa-check"></span>&nbsp;Signature Certified!</asp:Label>
 															</div>
 														</div>
 													</div>
@@ -1159,6 +1179,10 @@
 			$('#<%= sigDate.ClientID %>').val('');
 			$('#<%= btnSignDoc.ClientID %>').prop('disabled', true);
 			$('#<%= certifySig.ClientID %>').prop('checked', false);
+		}
+
+		function testMultiple() {
+			console.log("Working");
 		}
 
 		$('#<%= sigName.ClientID %>').on('change keyup', function () {

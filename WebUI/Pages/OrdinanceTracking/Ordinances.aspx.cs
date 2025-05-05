@@ -495,6 +495,7 @@ namespace WebUI
 
             List<LinkButton> sortButtonsList = new List<LinkButton>()
             {
+                sortID,
                 sortDate,
                 sortTitle,
                 sortDepartment,
@@ -613,8 +614,11 @@ namespace WebUI
         protected void rpOrdinanceTable_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
             ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(backBtn);
+
+            Session.Remove("OriginalOrdinance");
             Session.Remove("ordRevTable");
             Session.Remove("ordExpTable");
+            Session.Remove("insertSigList");            
 
             List<TextBox> sigTextBoxes = new List<TextBox>()
             {
@@ -646,6 +650,7 @@ namespace WebUI
             hdnOrdID.Value = ordID.ToString();
             hdnEffectiveDate.Value = ord.EffectiveDate.ToString();
 
+            lblOrdID.Text = $"ID: {ordID.ToString()}";
             ordinanceNumber.Text = ord.OrdinanceNumber;
             requestDepartment.SelectedValue = DepartmentsList()[ord.RequestDepartment];
             firstReadDate.Text = ord.FirstReadDate.ToString("yyyy-MM-dd");
@@ -813,6 +818,10 @@ namespace WebUI
             }
 
             staffAnalysis.Text = ord.OrdinanceAnalysis;
+
+            List<OrdinanceSignature> ordSigs = Factory.Instance.GetAllLookup<OrdinanceSignature>(ordID, "sp_GetOrdinanceSignatureByOrdinanceID", "OrdinanceID");
+            
+            
 
             OrdinanceStatus ordStatus = new OrdinanceStatus();
 
@@ -994,7 +1003,7 @@ namespace WebUI
                                 mayorInputGroup.Visible = false;
                                 break;
                         }
-                        }
+                    }
                     break;
                 case "edit":
                     ordView.Attributes["readonly"] = "false";
@@ -1176,28 +1185,77 @@ namespace WebUI
                     }
                     else
                     {
-                        switch (item.ClientID)
+                        if (!userInfo.IsAdmin || userInfo.UserView || Request.QueryString["f"] != null)
                         {
-                            case "fundsCheckBySig":
-                                fundsCheckByBtnDiv.Visible = true;
-                                fundsCheckByInputGroup.Visible = false;
-                                break;
-                            case "directorSupervisorSig":
-                                directorSupervisorBtnDiv.Visible = true;
-                                directorSupervisorInputGroup.Visible = false;
-                                break;
-                            case "cPASig":
-                                cPABtnDiv.Visible = true;
-                                cPAInputGroup.Visible = false;
-                                break;
-                            case "obmDirectorSig":
-                                obmDirectorBtnDiv.Visible = true;
-                                obmDirectorInputGroup.Visible = false;
-                                break;
-                            case "mayorSig":
-                                mayorBtnDiv.Visible = true;
-                                mayorInputGroup.Visible = false;
-                                break;
+                            switch (item.ClientID)
+                            {
+                                case "fundsCheckBySig":
+                                    fundsCheckByBtnDiv.Visible = true;
+                                    fundsCheckByBtn.Text = "Awaiting Signature...";
+                                    fundsCheckByBtnDiv.Attributes["readonly"] = "true";
+                                    fundsCheckByInputGroup.Visible = false;
+                                    break;
+                                case "directorSupervisorSig":
+                                    directorSupervisorBtnDiv.Visible = true;
+                                    directorSupervisorBtn.Text = "Awaiting Signature...";
+                                    directorSupervisorBtnDiv.Attributes["readonly"] = "true";
+                                    directorSupervisorInputGroup.Visible = false;
+                                    break;
+                                case "cPASig":
+                                    cPABtnDiv.Visible = true;
+                                    cPABtn.Text = "Awaiting Signature...";
+                                    cPABtnDiv.Attributes["readonly"] = "true";
+                                    cPAInputGroup.Visible = false;
+                                    break;
+                                case "obmDirectorSig":
+                                    obmDirectorBtnDiv.Visible = true;
+                                    obmDirectorBtn.Text = "Awaiting Signature...";
+                                    obmDirectorBtnDiv.Attributes["readonly"] = "true";
+                                    obmDirectorInputGroup.Visible = false;
+                                    break;
+                                case "mayorSig":
+                                    mayorBtnDiv.Visible = true;
+                                    mayorBtn.Text = "Awaiting Signature...";
+                                    mayorBtnDiv.Attributes["readonly"] = "true";
+                                    mayorInputGroup.Visible = false;
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            switch (item.ClientID)
+                            {
+                                case "fundsCheckBySig":
+                                    fundsCheckByBtnDiv.Visible = true;
+                                    fundsCheckByBtn.Text = "Sign";
+                                    fundsCheckByBtnDiv.Attributes.Remove("readonly");
+                                    fundsCheckByInputGroup.Visible = false;
+                                    break;
+                                case "directorSupervisorSig":
+                                    directorSupervisorBtnDiv.Visible = true;
+                                    directorSupervisorBtn.Text = "Sign";
+                                    directorSupervisorBtnDiv.Attributes.Remove("readonly");
+                                    directorSupervisorInputGroup.Visible = false;
+                                    break;
+                                case "cPASig":
+                                    cPABtnDiv.Visible = true;
+                                    cPABtn.Text = "Sign";
+                                    cPABtnDiv.Attributes.Remove("readonly");
+                                    cPAInputGroup.Visible = false;
+                                    break;
+                                case "obmDirectorSig":
+                                    obmDirectorBtnDiv.Visible = true;
+                                    obmDirectorBtn.Text = "Sign";
+                                    obmDirectorBtnDiv.Attributes.Remove("readonly");
+                                    obmDirectorInputGroup.Visible = false;
+                                    break;
+                                case "mayorSig":
+                                    mayorBtnDiv.Visible = true;
+                                    mayorBtn.Text = "Sign";
+                                    mayorBtnDiv.Attributes.Remove("readonly");
+                                    mayorInputGroup.Visible = false;
+                                    break;
+                            }
                         }
                     }
 
@@ -1225,6 +1283,8 @@ namespace WebUI
                             ordinanceNumberDiv.Visible = true;
                             break;
                     }
+
+                    Session["OriginalOrdinance"] = ord;
                     break;
                 case "download":
                     ReportViewer viewer = new ReportViewer();
@@ -1243,6 +1303,54 @@ namespace WebUI
                         hideTables = false;
                     }
                     RevExpBool HideTables = new RevExpBool() { HideTables = hideTables};
+                    List<string> sigTypeList = new List<string>()
+            {
+                "fundsCheckBy",
+                "directorSupervisor",
+                "cPA",
+                "obmDirector",
+                "mayor",
+            };
+                    foreach (string item in sigTypeList)
+                    {
+                        if (!ordSigs.Any(i => i.SignatureType.Equals(item)))
+                        {
+                            OrdinanceSignature blankSig = new OrdinanceSignature()
+                            {
+                                SignatureID = -1,
+                                SortOrder = 0,
+                                OrdinanceID = Convert.ToInt32(ordID),
+                                SignatureType = item,
+                                Signature = string.Empty,
+                                DateSigned = DateTime.MinValue,
+                                SignatureCertified = false,
+                                LastUpdateBy = string.Empty,
+                                LastUpdateDate = DateTime.Now
+                            };
+                            ordSigs.Add(blankSig);
+                        }
+                    }
+                    foreach (OrdinanceSignature item in ordSigs)
+                    {
+                        switch (item.SignatureType)
+                        {
+                            case "fundsCheckBy":
+                                item.SortOrder = 0;
+                                break;
+                            case "directorSupervisor":
+                                item.SortOrder = 1;
+                                break;
+                            case "cPA":
+                                item.SortOrder = 2;
+                                break;
+                            case "obmDirector":
+                                item.SortOrder = 3;
+                                break;
+                            case "mayor":
+                                item.SortOrder = 4;
+                                break;
+                        }
+                    }
 
                     IEnumerable<Ordinance> ordData = new[] { ord };
                     IEnumerable<RevExpBool> revExpBoolData = new[] { HideTables };
@@ -1251,12 +1359,14 @@ namespace WebUI
                     ReportDataSource ordinanceRevAccountingData = new ReportDataSource() { Name = "dsRevAccounting", Value = revItems,  };
                     ReportDataSource ordinanceExpAccountingData = new ReportDataSource() { Name = "dsExpAccounting", Value = expItems };
                     ReportDataSource ordinanceStatusData = new ReportDataSource() { Name = "dsOrdinanceStatus" };
+                    ReportDataSource ordinanceSignaturesData = new ReportDataSource() { Name = "dsSignatures", Value = ordSigs.OrderBy(i => i.SortOrder) };
 
                     viewer.LocalReport.DataSources.Add(ordinanceData);
                     viewer.LocalReport.DataSources.Add(revExpTableBoolData);
                     viewer.LocalReport.DataSources.Add(ordinanceRevAccountingData);
                     viewer.LocalReport.DataSources.Add(ordinanceExpAccountingData);
                     viewer.LocalReport.DataSources.Add(ordinanceStatusData);
+                    viewer.LocalReport.DataSources.Add(ordinanceSignaturesData);
 
                     viewer.LocalReport.Refresh();
 
@@ -1279,6 +1389,49 @@ namespace WebUI
                     Response.BinaryWrite(bytes); // create the file                    
                     Context.ApplicationInstance.CompleteRequest();
                     break;
+            }
+
+            
+            foreach (OrdinanceSignature item in ordSigs)
+            {
+                switch (item.SignatureType)
+                {
+                    case "fundsCheckBy":
+                        fundsCheckByBtnDiv.Visible = false;
+                        fundsCheckByInputGroup.Visible = true;
+                        fundsCheckEmailBtn.Visible = false;
+                        fundsCheckBySig.Text = item.Signature;
+                        fundsCheckByDate.Text = item.DateSigned.ToString("yyyy-MM-dd");
+                        break;
+                    case "directorSupervisor":
+                        directorSupervisorBtnDiv.Visible = false;
+                        directorSupervisorInputGroup.Visible = true;
+                        directorSupervisorEmailBtn.Visible = false;
+                        directorSupervisorSig.Text = item.Signature;
+                        directorSupervisorDate.Text = item.DateSigned.ToString("yyyy-MM-dd");
+                        break;
+                    case "cPA":
+                        cPABtnDiv.Visible = false;
+                        cPAInputGroup.Visible = true;
+                        cPAEmailBtn.Visible = false;
+                        cPASig.Text = item.Signature;
+                        cPADate.Text = item.DateSigned.ToString("yyyy-MM-dd");
+                        break;
+                    case "obmDirector":
+                        obmDirectorBtnDiv.Visible = false;
+                        obmDirectorInputGroup.Visible = true;
+                        obmDirectorEmailBtn.Visible = false;
+                        obmDirectorSig.Text = item.Signature;
+                        obmDirectorDate.Text = item.DateSigned.ToString("yyyy-MM-dd");
+                        break;
+                    case "mayor":
+                        mayorBtnDiv.Visible = false;
+                        mayorInputGroup.Visible = true;
+                        mayorEmailBtn.Visible = false;
+                        mayorSig.Text = item.Signature;
+                        mayorDate.Text = item.DateSigned.ToString("yyyy-MM-dd");
+                        break;
+                }
             }
 
             //ScriptManager.RegisterStartupScript(this, this.GetType(), "FadeOutOrdTable", "OrdTableFadeOut();", true);
@@ -1444,11 +1597,12 @@ namespace WebUI
             switch (e.CommandName)
             {
                 case "download":
+                    string delivery = HttpContext.Current.IsDebuggingEnabled ? "inline" : "attachment";
                     Response.Clear();
                     Response.ClearHeaders();
                     Response.AddHeader("Content-Length", ordDocItem.DocumentData.Length.ToString());
                     Response.AddHeader("Content-type", MimeMapping.GetMimeMapping(ordDocItem.DocumentName));
-                    Response.AddHeader("Content-Disposition", "attachment; filename=" + ordDocItem.DocumentName);
+                    Response.AddHeader("Content-Disposition", $"{delivery}; filename=" + ordDocItem.DocumentName);
                     Response.BinaryWrite(ordDocItem.DocumentData);
                     Response.Flush();
                     Response.End();
@@ -1695,8 +1849,6 @@ namespace WebUI
             ordinance.StatusDescription = ddStatus.SelectedItem.ToString();
             int statusVal = Factory.Instance.Update(ordStatus, "sp_UpdateOrdinance_Status", 1);
 
-
-
             int addDocsVal = new int();
             int addUploadedDocsVal = new int();
             List<OrdinanceDocument> ordDocs = Session["addOrdDocs"] as List<OrdinanceDocument>;
@@ -1746,8 +1898,6 @@ namespace WebUI
                 addDocsVal = 1;
             }
 
-            
-
             int removeDocVal = new int();
             List<OrdinanceDocument> removeDocs = new List<OrdinanceDocument>();
             if (Session["RemoveDocs"] != null)
@@ -1769,13 +1919,6 @@ namespace WebUI
             {
                 removeDocVal = 1;
             }
-
-
-
-
-
-
-
 
             int removeAccsVal = new int();
             int removeOrdAccsVal = new int();
@@ -1827,7 +1970,6 @@ namespace WebUI
             {
                 removeOrdAccsVal = 1;
             }
-
 
             int updateRevAccsVal = new int();
             int updateExpAccsVal = new int();
@@ -1914,6 +2056,19 @@ namespace WebUI
                 }
             }
 
+            int insertSignatureVal = new int();
+            if (Session["insertSigList"] != null)
+            {
+                List<OrdinanceSignature> insertSigList = (List<OrdinanceSignature>)Session["insertSigList"];
+                foreach (OrdinanceSignature item in insertSigList)
+                {
+                    insertSignatureVal = Factory.Instance.Insert(item, "sp_InsertOrdinance_Signature", 2);
+                }
+            }
+            else
+            {
+                insertSignatureVal = 1;
+            }
 
             List<string> addEmailList = new List<string>()
             {
@@ -1932,7 +2087,7 @@ namespace WebUI
 
             newEmail.EmailSubject = $"{formType} UPDATED";
             newEmail.EmailTitle = $"{formType} UPDATED";
-            newEmail.EmailText = $"<p style='margin: 0;'><span style='font-size:36.0pt;font-family:\"Times New Roman\",serif;color:#2D71D5;font-weight:bold;'>THΣMIS</span></p><div align=center style='text-align:center'><span><hr size='2' width='100%' align='center' style='margin-top: 0;'></span></div><p><span>An <b>{formType}</b> has been UPDATED by <b>{_user.FirstName} {_user.LastName}</b>.</span></p><br />{ordinanceNumInfo}<p style='margin: 0; line-height: 1.5;'><span>Date: {DateTime.Now}</span></p><p style='margin: 0; line-height: 1.5;'><span>Department: {requestDepartment.SelectedItem.Text}</span></p><p style='margin: 0; line-height: 1.5;'><span>Contact: {requestContact.Text}</span></p><p style='margin: 0; line-height: 1.5;'><span>Phone: {ordinance.RequestPhone}</span></p><p><span>Status: {ordinance.StatusDescription}</span></p><br /><p><span>Please click the button below to review the document:</span></p><table border='0' cellpadding='0' cellspacing='0' style='border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;'><tr><td style='font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #0d6efd; border-radius: 5px; text-align: center;' valign='top' bgcolor='#0d6efd' align='center'><a href='{href}' target='_blank' style='display: inline-block; color: #ffffff; background-color: #0d6efd; border: solid 1px #0d6efd; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 15px 25px; text-transform: capitalize; border-color: #0d6efd; '>View Ordinance</a></td></tr></table>";
+            newEmail.EmailText = $"<p style='margin: 0;'><span style='font-size:36.0pt;font-family:\"Times New Roman\",serif;color:#2D71D5;font-weight:bold;'>THΣMIS</span></p><div align=center style='text-align:center'><span><hr size='2' width='100%' align='center' style='margin-top: 0;'></span></div><p><span>An <b>{formType}</b> has been UPDATED by <b>{_user.FirstName} {_user.LastName}</b>.</span></p><br /><p style='margin: 0; line-height: 1.5;'><span>ID: {ordinance.OrdinanceID}</span></p>{ordinanceNumInfo}<p style='margin: 0; line-height: 1.5;'><span>Date: {DateTime.Now}</span></p><p style='margin: 0; line-height: 1.5;'><span>Department: {requestDepartment.SelectedItem.Text}</span></p><p style='margin: 0; line-height: 1.5;'><span>Contact: {requestContact.Text}</span></p><p style='margin: 0; line-height: 1.5;'><span>Phone: {ordinance.RequestPhone}</span></p><p><span>Status: {ordinance.StatusDescription}</span></p><br /><p><span>Please click the button below to review the document:</span></p><table border='0' cellpadding='0' cellspacing='0' style='border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;'><tr><td style='font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #0d6efd; border-radius: 5px; text-align: center;' valign='top' bgcolor='#0d6efd' align='center'><a href='{href}' target='_blank' style='display: inline-block; color: #ffffff; background-color: #0d6efd; border: solid 1px #0d6efd; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 15px 25px; text-transform: capitalize; border-color: #0d6efd; '>View Ordinance</a></td></tr></table>";
 
             List<int> submitVals = new List<int>( new int[] {
                 retVal,
@@ -1943,11 +2098,40 @@ namespace WebUI
                 removeAccsVal,
                 removeOrdAccsVal,
                 updateRevAccsVal,
-                updateExpAccsVal
+                updateExpAccsVal,
+                insertSignatureVal
             });
 
             if (submitVals.All(i => i > 0))
             {
+                if(Session["OriginalOrdinance"] != null)
+                {
+                    Ordinance oldOrd = Session["OriginalOrdinance"] as Ordinance;
+                    PropertyInfo[] properties = typeof(Ordinance).GetProperties();
+                    List<string> baseData = new List<string>()
+                    {
+                        "LastUpdateBy",
+                        "LastUpdateDate",
+                        "EffectiveDate",
+                        "ExpirationDate",
+                    };
+                    foreach (PropertyInfo property in properties.Where(i => !i.GetValue(ordinance).Equals(i.GetValue(oldOrd)) && !baseData.Any(b => b.Contains(i.Name))))
+                    {
+                        if (property.GetValue(oldOrd) == null || property.GetValue(oldOrd).ToString() == string.Empty)
+                        {
+                            Debug.WriteLine($"{property.Name}: + {property.GetValue(ordinance)}");
+                        }
+                        else if (property.GetValue(ordinance) == null || property.GetValue(ordinance).ToString() == string.Empty)
+                        {
+                            Debug.WriteLine($"{property.Name}: - {property.GetValue(oldOrd)}");
+                        }
+                        else
+                        {
+                            Debug.WriteLine($"{property.Name}: {property.GetValue(oldOrd)} -> {property.GetValue(ordinance)}");
+                        }
+                            
+                    }
+                }
                 Session["SubmitStatus"] = "success";
                 Session["ToastColor"] = "text-bg-success";
                 Session["ToastMessage"] = "Form Saved!";
@@ -2007,7 +2191,19 @@ namespace WebUI
             else
             {
                 ordTable.Visible = true;
-                //ScriptManager.RegisterStartupScript(this, this.GetType(), "FadeInOrdTable", "OrdTableFadeIn();", true);
+                List<TextBox> sigTextBoxes = new List<TextBox>()
+                {
+                    fundsCheckBySig,
+                    directorSupervisorSig,
+                    cPASig,
+                    obmDirectorSig,
+                    mayorSig
+                };
+                foreach (TextBox item in sigTextBoxes)
+                {
+                    item.Text = string.Empty;
+                }
+                SaveFactSheet.CssClass = SaveFactSheet.CssClass.Replace(" emphasize", string.Empty);
                 ordView.Visible = false;
             }
         }
@@ -2086,6 +2282,20 @@ namespace WebUI
                     mayorDate.Text = sigDate.Text;
                     break;
             }
+
+            OrdinanceSignature signature = new OrdinanceSignature();
+            signature.OrdinanceID = Convert.ToInt32(hdnOrdID.Value);
+            signature.SignatureType = sigType.Value;
+            signature.Signature = sigName.Text;
+            signature.DateSigned = Convert.ToDateTime(sigDate.Text);
+            signature.SignatureCertified = certifySig.Checked;
+            signature.LastUpdateBy = _user.Login;
+            signature.LastUpdateDate = DateTime.Now;
+
+            List<OrdinanceSignature> insertSigList = (List<OrdinanceSignature>)Session["insertSigList"] ?? new List<OrdinanceSignature>();
+            insertSigList.Add(signature);
+            Session["insertSigList"] = insertSigList;
+            SaveFactSheet.CssClass += " emphasize";
         }
     }
 }

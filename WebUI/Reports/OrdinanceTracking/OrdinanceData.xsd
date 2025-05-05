@@ -2,13 +2,14 @@
 <xs:schema id="OrdinanceData" targetNamespace="http://tempuri.org/OrdinanceData.xsd" xmlns:mstns="http://tempuri.org/OrdinanceData.xsd" xmlns="http://tempuri.org/OrdinanceData.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
   <xs:annotation>
     <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
-      <DataSource DefaultConnectionIndex="4" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="5" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
         <Connections>
-          <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="THEMISConnectionString3" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="THEMISConnectionString3 (Web.config)" ParameterPrefix="@" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.THEMISConnectionString3.ConnectionString" Provider="System.Data.SqlClient" />
-          <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="THEMISConnectionString5" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="THEMISConnectionString5 (Web.config)" ParameterPrefix="@" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.THEMISConnectionString5.ConnectionString" Provider="System.Data.SqlClient" />
-          <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="THEMISConnectionString6" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="THEMISConnectionString6 (Web.config)" ParameterPrefix="@" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.THEMISConnectionString6.ConnectionString" Provider="System.Data.SqlClient" />
-          <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="THEMISConnectionString7" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="THEMISConnectionString7 (Web.config)" ParameterPrefix="@" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.THEMISConnectionString7.ConnectionString" Provider="System.Data.SqlClient" />
-          <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="THEMISConnectionString8" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="THEMISConnectionString8 (Web.config)" ParameterPrefix="@" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.THEMISConnectionString8.ConnectionString" Provider="System.Data.SqlClient" />
+          <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="THEMISConnectionString3" IsAppSettingsProperty="true" Modifier="Assembly" Name="THEMISConnectionString3 (Web.config)" ParameterPrefix="@" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.THEMISConnectionString3.ConnectionString" Provider="System.Data.SqlClient" />
+          <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="THEMISConnectionString5" IsAppSettingsProperty="true" Modifier="Assembly" Name="THEMISConnectionString5 (Web.config)" ParameterPrefix="@" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.THEMISConnectionString5.ConnectionString" Provider="System.Data.SqlClient" />
+          <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="THEMISConnectionString6" IsAppSettingsProperty="true" Modifier="Assembly" Name="THEMISConnectionString6 (Web.config)" ParameterPrefix="@" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.THEMISConnectionString6.ConnectionString" Provider="System.Data.SqlClient" />
+          <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="THEMISConnectionString7" IsAppSettingsProperty="true" Modifier="Assembly" Name="THEMISConnectionString7 (Web.config)" ParameterPrefix="@" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.THEMISConnectionString7.ConnectionString" Provider="System.Data.SqlClient" />
+          <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="THEMISConnectionString8" IsAppSettingsProperty="true" Modifier="Assembly" Name="THEMISConnectionString8 (Web.config)" ParameterPrefix="@" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.THEMISConnectionString8.ConnectionString" Provider="System.Data.SqlClient" />
+          <Connection AppSettingsObjectName="Web.config" AppSettingsPropertyName="THEMISConnectionString1" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="THEMISConnectionString1 (Web.config)" ParameterPrefix="@" PropertyReference="AppConfig.System.Configuration.ConfigurationManager.0.ConnectionStrings.THEMISConnectionString1.ConnectionString" Provider="System.Data.SqlClient" />
         </Connections>
         <Tables />
         <Sources />
@@ -256,13 +257,6 @@
               <xs:element name="OrdinanceStatusID" msdata:ReadOnly="true" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="-1" msdata:AutoIncrementStep="-1" msprop:Generator_ColumnPropNameInTable="OrdinanceStatusIDColumn" msprop:Generator_ColumnPropNameInRow="OrdinanceStatusID" msprop:Generator_UserColumnName="OrdinanceStatusID" msprop:Generator_ColumnVarNameInTable="columnOrdinanceStatusID" type="xs:int" />
               <xs:element name="OrdinanceID" msprop:Generator_ColumnPropNameInTable="OrdinanceIDColumn" msprop:Generator_ColumnPropNameInRow="OrdinanceID" msprop:Generator_UserColumnName="OrdinanceID" msprop:Generator_ColumnVarNameInTable="columnOrdinanceID" type="xs:int" />
               <xs:element name="StatusID" msprop:Generator_ColumnPropNameInTable="StatusIDColumn" msprop:Generator_ColumnPropNameInRow="StatusID" msprop:Generator_UserColumnName="StatusID" msprop:Generator_ColumnVarNameInTable="columnStatusID" type="xs:int" />
-              <xs:element name="Signature" msprop:Generator_ColumnPropNameInTable="SignatureColumn" msprop:Generator_ColumnPropNameInRow="Signature" msprop:Generator_UserColumnName="Signature" msprop:Generator_ColumnVarNameInTable="columnSignature" minOccurs="0">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="50" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
               <xs:element name="EffectiveDate" msprop:Generator_ColumnPropNameInTable="EffectiveDateColumn" msprop:Generator_ColumnPropNameInRow="EffectiveDate" msprop:Generator_UserColumnName="EffectiveDate" msprop:Generator_ColumnVarNameInTable="columnEffectiveDate" type="xs:dateTime" minOccurs="0" />
               <xs:element name="ExpirationDate" msprop:Generator_ColumnPropNameInTable="ExpirationDateColumn" msprop:Generator_ColumnPropNameInRow="ExpirationDate" msprop:Generator_UserColumnName="ExpirationDate" msprop:Generator_ColumnVarNameInTable="columnExpirationDate" type="xs:dateTime" minOccurs="0" />
               <xs:element name="LastUpdateBy" msprop:Generator_ColumnPropNameInTable="LastUpdateByColumn" msprop:Generator_ColumnPropNameInRow="LastUpdateBy" msprop:Generator_UserColumnName="LastUpdateBy" msprop:Generator_ColumnVarNameInTable="columnLastUpdateBy" minOccurs="0">
@@ -301,10 +295,42 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="RevExpBool" msprop:Generator_RowClassName="RevExpBoolRow" msprop:Generator_RowEvHandlerName="RevExpBoolRowChangeEventHandler" msprop:Generator_RowDeletedName="RevExpBoolRowDeleted" msprop:Generator_RowDeletingName="RevExpBoolRowDeleting" msprop:Generator_RowEvArgName="RevExpBoolRowChangeEvent" msprop:Generator_TablePropName="RevExpBool" msprop:Generator_RowChangedName="RevExpBoolRowChanged" msprop:Generator_UserTableName="RevExpBool" msprop:Generator_RowChangingName="RevExpBoolRowChanging" msprop:Generator_TableClassName="RevExpBoolDataTable" msprop:Generator_TableVarName="tableRevExpBool">
+        <xs:element name="RevExpBool" msprop:Generator_RowEvHandlerName="RevExpBoolRowChangeEventHandler" msprop:Generator_RowDeletedName="RevExpBoolRowDeleted" msprop:Generator_RowDeletingName="RevExpBoolRowDeleting" msprop:Generator_RowEvArgName="RevExpBoolRowChangeEvent" msprop:Generator_TablePropName="RevExpBool" msprop:Generator_RowChangedName="RevExpBoolRowChanged" msprop:Generator_UserTableName="RevExpBool" msprop:Generator_RowChangingName="RevExpBoolRowChanging" msprop:Generator_RowClassName="RevExpBoolRow" msprop:Generator_TableClassName="RevExpBoolDataTable" msprop:Generator_TableVarName="tableRevExpBool">
           <xs:complexType>
             <xs:sequence>
-              <xs:element name="HideTables" msprop:Generator_UserColumnName="HideTables" msprop:Generator_ColumnPropNameInTable="HideTablesColumn" msprop:Generator_ColumnPropNameInRow="HideTables" msprop:Generator_ColumnVarNameInTable="columnHideTables" type="xs:boolean" default="true" minOccurs="0" />
+              <xs:element name="HideTables" msprop:Generator_ColumnPropNameInTable="HideTablesColumn" msprop:Generator_ColumnPropNameInRow="HideTables" msprop:Generator_UserColumnName="HideTables" msprop:Generator_ColumnVarNameInTable="columnHideTables" type="xs:boolean" default="true" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Ordinance_Signature" msprop:Generator_RowEvHandlerName="Ordinance_SignatureRowChangeEventHandler" msprop:Generator_RowDeletedName="Ordinance_SignatureRowDeleted" msprop:Generator_RowDeletingName="Ordinance_SignatureRowDeleting" msprop:Generator_RowEvArgName="Ordinance_SignatureRowChangeEvent" msprop:Generator_TablePropName="Ordinance_Signature" msprop:Generator_RowChangedName="Ordinance_SignatureRowChanged" msprop:Generator_RowChangingName="Ordinance_SignatureRowChanging" msprop:Generator_TableClassName="Ordinance_SignatureDataTable" msprop:Generator_RowClassName="Ordinance_SignatureRow" msprop:Generator_TableVarName="tableOrdinance_Signature" msprop:Generator_UserTableName="Ordinance_Signature">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="SignatureID" msdata:ReadOnly="true" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="-1" msdata:AutoIncrementStep="-1" msprop:Generator_ColumnPropNameInRow="SignatureID" msprop:Generator_ColumnPropNameInTable="SignatureIDColumn" msprop:Generator_ColumnVarNameInTable="columnSignatureID" msprop:Generator_UserColumnName="SignatureID" type="xs:int" />
+              <xs:element name="OrdinanceID" msprop:Generator_ColumnPropNameInRow="OrdinanceID" msprop:Generator_ColumnPropNameInTable="OrdinanceIDColumn" msprop:Generator_ColumnVarNameInTable="columnOrdinanceID" msprop:Generator_UserColumnName="OrdinanceID" type="xs:int" />
+              <xs:element name="SignatureType" msprop:Generator_ColumnPropNameInRow="SignatureType" msprop:Generator_ColumnPropNameInTable="SignatureTypeColumn" msprop:Generator_ColumnVarNameInTable="columnSignatureType" msprop:Generator_UserColumnName="SignatureType">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="Signature" msprop:Generator_ColumnPropNameInRow="Signature" msprop:Generator_ColumnPropNameInTable="SignatureColumn" msprop:Generator_ColumnVarNameInTable="columnSignature" msprop:Generator_UserColumnName="Signature" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="2147483647" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="SignatureCertified" msprop:Generator_ColumnPropNameInRow="SignatureCertified" msprop:Generator_ColumnPropNameInTable="SignatureCertifiedColumn" msprop:Generator_ColumnVarNameInTable="columnSignatureCertified" msprop:Generator_UserColumnName="SignatureCertified" type="xs:boolean" minOccurs="0" />
+              <xs:element name="LastUpdateBy" msprop:Generator_ColumnPropNameInRow="LastUpdateBy" msprop:Generator_ColumnPropNameInTable="LastUpdateByColumn" msprop:Generator_ColumnVarNameInTable="columnLastUpdateBy" msprop:Generator_UserColumnName="LastUpdateBy" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="LastUpdateDate" msprop:Generator_ColumnPropNameInRow="LastUpdateDate" msprop:Generator_ColumnPropNameInTable="LastUpdateDateColumn" msprop:Generator_ColumnVarNameInTable="columnLastUpdateDate" msprop:Generator_UserColumnName="LastUpdateDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="DateSigned" msprop:Generator_ColumnPropNameInRow="DateSigned" msprop:Generator_ColumnPropNameInTable="DateSignedColumn" msprop:Generator_ColumnVarNameInTable="columnDateSigned" msprop:Generator_UserColumnName="DateSigned" type="xs:dateTime" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
@@ -313,10 +339,11 @@
   </xs:element>
   <xs:annotation>
     <xs:appinfo>
-      <msdata:Relationship name="Ordinance_Ordinance_Accounting" msdata:parent="Ordinance" msdata:child="Ordinance_Accounting" msdata:parentkey="OrdinanceID" msdata:childkey="OrdinanceID" msprop:Generator_UserParentTable="Ordinance" msprop:Generator_UserChildTable="Ordinance_Accounting" msprop:Generator_RelationVarName="relationOrdinance_Ordinance_Accounting" msprop:Generator_ChildPropName="GetOrdinance_AccountingRows" msprop:Generator_ParentPropName="OrdinanceRow" msprop:Generator_UserRelationName="Ordinance_Ordinance_Accounting" />
-      <msdata:Relationship name="Ordinance_Accounting_lkAccounting" msdata:parent="Ordinance_Accounting" msdata:child="lkAccounting" msdata:parentkey="AccountingID" msdata:childkey="AccountingID" msprop:Generator_UserParentTable="Ordinance_Accounting" msprop:Generator_UserChildTable="lkAccounting" msprop:Generator_RelationVarName="relationOrdinance_Accounting_lkAccounting" msprop:Generator_ChildPropName="GetlkAccountingRows" msprop:Generator_ParentPropName="Ordinance_AccountingRow" msprop:Generator_UserRelationName="Ordinance_Accounting_lkAccounting" />
-      <msdata:Relationship name="Ordinance_Ordinance_Status" msdata:parent="Ordinance" msdata:child="Ordinance_Status" msdata:parentkey="OrdinanceID" msdata:childkey="OrdinanceID" msprop:Generator_UserParentTable="Ordinance" msprop:Generator_UserChildTable="Ordinance_Status" msprop:Generator_RelationVarName="relationOrdinance_Ordinance_Status" msprop:Generator_ChildPropName="GetOrdinance_StatusRows" msprop:Generator_ParentPropName="OrdinanceRow" msprop:Generator_UserRelationName="Ordinance_Ordinance_Status" />
-      <msdata:Relationship name="Ordinance_Status_lkStatus" msdata:parent="Ordinance_Status" msdata:child="lkStatus" msdata:parentkey="StatusID" msdata:childkey="StatusID" msprop:Generator_UserParentTable="Ordinance_Status" msprop:Generator_UserChildTable="lkStatus" msprop:Generator_RelationVarName="relationOrdinance_Status_lkStatus" msprop:Generator_ChildPropName="GetlkStatusRows" msprop:Generator_ParentPropName="Ordinance_StatusRow" msprop:Generator_UserRelationName="Ordinance_Status_lkStatus" />
+      <msdata:Relationship name="Ordinance_Ordinance_Accounting" msdata:parent="Ordinance" msdata:child="Ordinance_Accounting" msdata:parentkey="OrdinanceID" msdata:childkey="OrdinanceID" msprop:Generator_UserParentTable="Ordinance" msprop:Generator_UserChildTable="Ordinance_Accounting" msprop:Generator_RelationVarName="relationOrdinance_Ordinance_Accounting" msprop:Generator_ChildPropName="GetOrdinance_AccountingRows" msprop:Generator_UserRelationName="Ordinance_Ordinance_Accounting" msprop:Generator_ParentPropName="OrdinanceRow" />
+      <msdata:Relationship name="Ordinance_Accounting_lkAccounting" msdata:parent="Ordinance_Accounting" msdata:child="lkAccounting" msdata:parentkey="AccountingID" msdata:childkey="AccountingID" msprop:Generator_UserParentTable="Ordinance_Accounting" msprop:Generator_UserChildTable="lkAccounting" msprop:Generator_RelationVarName="relationOrdinance_Accounting_lkAccounting" msprop:Generator_ChildPropName="GetlkAccountingRows" msprop:Generator_UserRelationName="Ordinance_Accounting_lkAccounting" msprop:Generator_ParentPropName="Ordinance_AccountingRow" />
+      <msdata:Relationship name="Ordinance_Ordinance_Status" msdata:parent="Ordinance" msdata:child="Ordinance_Status" msdata:parentkey="OrdinanceID" msdata:childkey="OrdinanceID" msprop:Generator_UserParentTable="Ordinance" msprop:Generator_UserChildTable="Ordinance_Status" msprop:Generator_RelationVarName="relationOrdinance_Ordinance_Status" msprop:Generator_ChildPropName="GetOrdinance_StatusRows" msprop:Generator_UserRelationName="Ordinance_Ordinance_Status" msprop:Generator_ParentPropName="OrdinanceRow" />
+      <msdata:Relationship name="Ordinance_Status_lkStatus" msdata:parent="Ordinance_Status" msdata:child="lkStatus" msdata:parentkey="StatusID" msdata:childkey="StatusID" msprop:Generator_UserParentTable="Ordinance_Status" msprop:Generator_UserChildTable="lkStatus" msprop:Generator_RelationVarName="relationOrdinance_Status_lkStatus" msprop:Generator_ChildPropName="GetlkStatusRows" msprop:Generator_UserRelationName="Ordinance_Status_lkStatus" msprop:Generator_ParentPropName="Ordinance_StatusRow" />
+      <msdata:Relationship name="Ordinance_Ordinance_Signature" msdata:parent="Ordinance" msdata:child="Ordinance_Signature" msdata:parentkey="OrdinanceID" msdata:childkey="OrdinanceID" msprop:Generator_UserParentTable="Ordinance" msprop:Generator_UserChildTable="Ordinance_Signature" msprop:Generator_RelationVarName="relationOrdinance_Ordinance_Signature" msprop:Generator_ChildPropName="GetOrdinance_SignatureRows" msprop:Generator_ParentPropName="OrdinanceRow" msprop:Generator_UserRelationName="Ordinance_Ordinance_Signature" />
     </xs:appinfo>
   </xs:annotation>
 </xs:schema>
