@@ -17,8 +17,7 @@ namespace WebUI
     {
         private ADUser _user = new ADUser();
         public UserInfo userInfo = new UserInfo();
-        //private readonly string emailList = HttpContext.Current.IsDebuggingEnabled ? "NewFactSheetEmailListTEST" : "NewFactSheetEmailList";
-        private readonly string emailList = "NewFactSheetEmailListTEST";
+        private readonly string emailList = HttpContext.Current.IsDebuggingEnabled ? "NewFactSheetEmailListTEST" : "NewFactSheetEmailList";
 
         protected void Page_Load(object sender, EventArgs e)
         {

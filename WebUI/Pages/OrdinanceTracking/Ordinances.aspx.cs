@@ -25,8 +25,7 @@ namespace WebUI
     {
         private ADUser _user = new ADUser();
         public UserInfo userInfo = new UserInfo();
-        //private readonly string emailList = HttpContext.Current.IsDebuggingEnabled ? "NewFactSheetEmailListTEST" : "NewFactSheetEmailList";
-        private readonly string emailList = "NewFactSheetEmailListTEST";
+        private readonly string emailList = HttpContext.Current.IsDebuggingEnabled ? "NewFactSheetEmailListTEST" : "NewFactSheetEmailList";
         private readonly Dictionary<string, string> fieldLabels = FieldLabels();
         
         public string editSymbol = "<span class='fas fa-arrow-right-long mx-1 text-warning-light fw-bold align-self-center'></span>";
