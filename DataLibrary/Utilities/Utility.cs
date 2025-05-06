@@ -190,33 +190,85 @@ namespace DataLibrary
         {
             Dictionary<string, string> dictionary = new Dictionary<string, string>()
             {
-                { "requestDepartment", "Requesting Department" },
-                { "firstReadDate", "First Read Date" },
-                { "requestContact", "Requesting Contact" },
-                { "requestPhone", "Phone Number" },
-                { "requestExt", "Ext" },
-                { "epCheck", "Emergency Passage" },
-                { "epJustification", "Emergency Passage Justification" },
-                { "fiscalImpact", "Fiscal Impact" },
-                { "suggestedTitle", "Suggested Title" },
-                { "vendorName", "Vendor Name" },
-                { "vendorNumber", "Vendor Number" },
-                { "contractStartDate", "Start Date" },
-                { "contractEndDate", "End Date" },
-                { "dateTerm", "Date Term" },
-                { "contractAmount", "Contract Amount" },
-                { "scCheck", "Change In Scope" },
-                { "changeOrderNumber", "Change Order Number" },
-                { "additionalAmount", "Additional Amount" },
-                { "purchaseMethod", "Purchase Method" },
-                { "otherException", "Other/Exception" },
-                { "prevOrdinanceNums", "Previous Ordinance Numbers" },
-                { "codeProvision", "Code Provision" },
-                { "paApprovalRequiredCheck", "Purchasing Agent Approval Required" },
-                { "paApprovalAttachedCheck", "Purchasing Agent Approval Attached" },
-                { "staffAnalysis", "Staff Analysis" }
+                { "RequestDepartment", "Requesting Department" },
+                { "FirstReadDate", "First Read Date" },
+                { "RequestContact", "Requesting Contact" },
+                { "RequestPhone", "Phone Number" },
+                { "RequestEmail", "Email" },
+                { "RequestExt", "Ext" },
+                { "EmergencyPassage", "Emergency Passage" },
+                { "EmergencyPassageReason", "Emergency Passage Justification" },
+                { "OrdinanceFiscalImpact", "Fiscal Impact" },
+                { "OrdinanceTitle", "Suggested Title" },
+                { "ContractVendorName", "Vendor Name" },
+                { "ContractVendorNumber", "Vendor Number" },
+                { "ContractStartDate", "Start Date" },
+                { "ContractEndDate", "End Date" },
+                { "ContractTerm", "Date Term" },
+                { "ContractAmount", "Contract Amount" },
+                { "ScopeChange", "Change In Scope" },
+                { "ChangeOrderNumber", "Change Order Number" },
+                { "AdditionalAmount", "Additional Amount" },
+                { "ContractMethod", "Purchase Method" },
+                { "OtherException", "Other/Exception" },
+                { "PreviousOrdinanceNumbers", "Previous Ordinance Numbers" },
+                { "CodeProvision", "Code Provision" },
+                { "PAApprovalRequired", "Purchasing Agent Approval Required" },
+                { "PAApprovalIncluded", "Purchasing Agent Approval Attached" },
+                { "OrdinanceAnalysis", "Staff Analysis" }
             };
             return dictionary;
+        }
+        public static List<string> Skips(string key)
+        {
+            Dictionary<string, List<string>> dictionary = new Dictionary<string, List<string>>()
+            {
+                {"ordInsert", new List<string>() 
+                    { 
+                        "OrdinanceID",
+                        "StatusDescription"
+                    } 
+                },
+                {"accountingInsert", new List<string>()
+                    {
+                        "AccountingID",
+                    }
+                },
+                {"ordAccountingInsert", new List<string>()
+                    {
+                        "OrdinanceAccountingID",
+                    }
+                },
+                {"ordDocumentInsert", new List<string>()
+                    {
+                        "DocumentID",
+                    }
+                },
+                {"ordStatusInsert", new List<string>()
+                    {
+                        "OrdinanceStatusID",
+                        "StatusDescription"
+                    }
+                },
+                {"ordSignatureInsert", new List<string>()
+                    {
+                        "SignatureID",
+                        "SortOrder"
+                    }
+                },
+                {"ordUpdate", new List<string>()
+                    {
+                        "StatusDescription"
+                    }
+                },
+                {"ordStatusUpdate", new List<string>()
+                    {
+                        "StatusDescription"
+                    }
+                }
+            };
+
+            return dictionary[key];
         }
         public static decimal CurrencyToDecimal(string currency)
         {

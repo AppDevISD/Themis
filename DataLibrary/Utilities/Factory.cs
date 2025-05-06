@@ -224,15 +224,25 @@ namespace DataLibrary
 
 
         // INSERTS //
-        public int Insert<T>(T item, string sp, int skips = 1)
+        public int Insert<T>(T item, string sp, [Optional]List<string> skipStrings)
         {
             SqlConnection cn = new SqlConnection(Properties.Settings.Default["ThemisDB"].ToString());
             
             PropertyInfo[] classType = typeof(T).GetProperties();
             SqlCommand cmd = new SqlCommand(sp, cn);
-            foreach (var property in classType.Skip(skips))
+            if (skipStrings != null)
             {
-                cmd.Parameters.AddWithValue($"@p{property.Name}", property.GetValue(item));
+                foreach (var property in classType.Where(i => !skipStrings.Any(x => i.Name.Contains(x))))
+                {
+                    cmd.Parameters.AddWithValue($"@p{property.Name}", property.GetValue(item));
+                }
+            }
+            else
+            {
+                foreach (var property in classType)
+                {
+                    cmd.Parameters.AddWithValue($"@p{property.Name}", property.GetValue(item));
+                }
             }
             SqlParameter outputParam = new SqlParameter("@nID", SqlDbType.Int);
             outputParam.Direction = ParameterDirection.ReturnValue;
@@ -260,15 +270,25 @@ namespace DataLibrary
 
             return retVal;
         }
-        public int Update<T>(T item, string sp, int skips = 0)
+        public int Update<T>(T item, string sp, [Optional]List<string> skipStrings)
         {
             SqlConnection cn = new SqlConnection(Properties.Settings.Default["ThemisDB"].ToString());
 
             PropertyInfo[] classType = typeof(T).GetProperties();
             SqlCommand cmd = new SqlCommand(sp, cn);
-            foreach (var property in classType.Skip(skips))
+            if (skipStrings != null)
             {
-                cmd.Parameters.AddWithValue($"@p{property.Name}", property.GetValue(item));
+                foreach (var property in classType.Where(i => !skipStrings.Any(x => i.Name.Contains(x))))
+                {
+                    cmd.Parameters.AddWithValue($"@p{property.Name}", property.GetValue(item));
+                }
+            }
+            else
+            {
+                foreach (var property in classType)
+                {
+                    cmd.Parameters.AddWithValue($"@p{property.Name}", property.GetValue(item));
+                }
             }
             cmd.CommandType = CommandType.StoredProcedure;
 
@@ -316,14 +336,24 @@ namespace DataLibrary
             }
             return ret;
         }
-        public int Expire<T>(T item, string sp, int skips = 0) {
+        public int Expire<T>(T item, string sp, [Optional] List<string> skipStrings) {
             SqlConnection cn = new SqlConnection(Properties.Settings.Default["ThemisDB"].ToString());
 
             PropertyInfo[] classType = typeof(T).GetProperties();
             SqlCommand cmd = new SqlCommand(sp, cn);
-            foreach (var property in classType.Skip(skips))
+            if (skipStrings != null)
             {
-                cmd.Parameters.AddWithValue($"@p{property.Name}", property.GetValue(item));
+                foreach (var property in classType.Where(i => !skipStrings.Any(x => i.Name.Contains(x))))
+                {
+                    cmd.Parameters.AddWithValue($"@p{property.Name}", property.GetValue(item));
+                }
+            }
+            else
+            {
+                foreach (var property in classType)
+                {
+                    cmd.Parameters.AddWithValue($"@p{property.Name}", property.GetValue(item));
+                }
             }
             cmd.Parameters["@pExpirationDate"].Value = DateTime.Now;
             cmd.CommandType = CommandType.StoredProcedure;

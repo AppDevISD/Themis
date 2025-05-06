@@ -534,8 +534,6 @@ namespace WebUI.Reports.OrdinanceTracking {
             
             private global::System.Data.DataColumn columnOrdinanceFiscalImpact;
             
-            private global::System.Data.DataColumn columnRequestID;
-            
             private global::System.Data.DataColumn columnRequestDepartment;
             
             private global::System.Data.DataColumn columnRequestContact;
@@ -543,8 +541,6 @@ namespace WebUI.Reports.OrdinanceTracking {
             private global::System.Data.DataColumn columnRequestPhone;
             
             private global::System.Data.DataColumn columnRequestEmail;
-            
-            private global::System.Data.DataColumn columnContractVendorID;
             
             private global::System.Data.DataColumn columnContractVendorName;
             
@@ -665,14 +661,6 @@ namespace WebUI.Reports.OrdinanceTracking {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn RequestIDColumn {
-                get {
-                    return this.columnRequestID;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public global::System.Data.DataColumn RequestDepartmentColumn {
                 get {
                     return this.columnRequestDepartment;
@@ -700,14 +688,6 @@ namespace WebUI.Reports.OrdinanceTracking {
             public global::System.Data.DataColumn RequestEmailColumn {
                 get {
                     return this.columnRequestEmail;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn ContractVendorIDColumn {
-                get {
-                    return this.columnContractVendorID;
                 }
             }
             
@@ -929,12 +909,10 @@ namespace WebUI.Reports.OrdinanceTracking {
                         string OrdinanceTitle, 
                         string OrdinanceAnalysis, 
                         decimal OrdinanceFiscalImpact, 
-                        int RequestID, 
                         string RequestDepartment, 
                         string RequestContact, 
                         string RequestPhone, 
                         string RequestEmail, 
-                        int ContractVendorID, 
                         string ContractVendorName, 
                         string ContractVendorNumber, 
                         string ContractStartDate, 
@@ -964,12 +942,10 @@ namespace WebUI.Reports.OrdinanceTracking {
                         OrdinanceTitle,
                         OrdinanceAnalysis,
                         OrdinanceFiscalImpact,
-                        RequestID,
                         RequestDepartment,
                         RequestContact,
                         RequestPhone,
                         RequestEmail,
-                        ContractVendorID,
                         ContractVendorName,
                         ContractVendorNumber,
                         ContractStartDate,
@@ -1019,12 +995,10 @@ namespace WebUI.Reports.OrdinanceTracking {
                 this.columnOrdinanceTitle = base.Columns["OrdinanceTitle"];
                 this.columnOrdinanceAnalysis = base.Columns["OrdinanceAnalysis"];
                 this.columnOrdinanceFiscalImpact = base.Columns["OrdinanceFiscalImpact"];
-                this.columnRequestID = base.Columns["RequestID"];
                 this.columnRequestDepartment = base.Columns["RequestDepartment"];
                 this.columnRequestContact = base.Columns["RequestContact"];
                 this.columnRequestPhone = base.Columns["RequestPhone"];
                 this.columnRequestEmail = base.Columns["RequestEmail"];
-                this.columnContractVendorID = base.Columns["ContractVendorID"];
                 this.columnContractVendorName = base.Columns["ContractVendorName"];
                 this.columnContractVendorNumber = base.Columns["ContractVendorNumber"];
                 this.columnContractStartDate = base.Columns["ContractStartDate"];
@@ -1062,8 +1036,6 @@ namespace WebUI.Reports.OrdinanceTracking {
                 base.Columns.Add(this.columnOrdinanceAnalysis);
                 this.columnOrdinanceFiscalImpact = new global::System.Data.DataColumn("OrdinanceFiscalImpact", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnOrdinanceFiscalImpact);
-                this.columnRequestID = new global::System.Data.DataColumn("RequestID", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnRequestID);
                 this.columnRequestDepartment = new global::System.Data.DataColumn("RequestDepartment", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnRequestDepartment);
                 this.columnRequestContact = new global::System.Data.DataColumn("RequestContact", typeof(string), null, global::System.Data.MappingType.Element);
@@ -1072,8 +1044,6 @@ namespace WebUI.Reports.OrdinanceTracking {
                 base.Columns.Add(this.columnRequestPhone);
                 this.columnRequestEmail = new global::System.Data.DataColumn("RequestEmail", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnRequestEmail);
-                this.columnContractVendorID = new global::System.Data.DataColumn("ContractVendorID", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnContractVendorID);
                 this.columnContractVendorName = new global::System.Data.DataColumn("ContractVendorName", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnContractVendorName);
                 this.columnContractVendorNumber = new global::System.Data.DataColumn("ContractVendorNumber", typeof(string), null, global::System.Data.MappingType.Element);
@@ -3400,22 +3370,6 @@ namespace WebUI.Reports.OrdinanceTracking {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public int RequestID {
-                get {
-                    try {
-                        return ((int)(this[this.tableOrdinance.RequestIDColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'RequestID\' in table \'Ordinance\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableOrdinance.RequestIDColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public string RequestDepartment {
                 get {
                     try {
@@ -3475,22 +3429,6 @@ namespace WebUI.Reports.OrdinanceTracking {
                 }
                 set {
                     this[this.tableOrdinance.RequestEmailColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public int ContractVendorID {
-                get {
-                    try {
-                        return ((int)(this[this.tableOrdinance.ContractVendorIDColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'ContractVendorID\' in table \'Ordinance\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableOrdinance.ContractVendorIDColumn] = value;
                 }
             }
             
@@ -3896,18 +3834,6 @@ namespace WebUI.Reports.OrdinanceTracking {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public bool IsRequestIDNull() {
-                return this.IsNull(this.tableOrdinance.RequestIDColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void SetRequestIDNull() {
-                this[this.tableOrdinance.RequestIDColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsRequestDepartmentNull() {
                 return this.IsNull(this.tableOrdinance.RequestDepartmentColumn);
             }
@@ -3952,18 +3878,6 @@ namespace WebUI.Reports.OrdinanceTracking {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public void SetRequestEmailNull() {
                 this[this.tableOrdinance.RequestEmailColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public bool IsContractVendorIDNull() {
-                return this.IsNull(this.tableOrdinance.ContractVendorIDColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void SetContractVendorIDNull() {
-                this[this.tableOrdinance.ContractVendorIDColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

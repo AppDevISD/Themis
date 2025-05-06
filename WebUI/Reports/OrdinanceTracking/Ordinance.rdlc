@@ -4494,7 +4494,7 @@
             </ReportItems>
             <KeepTogether>true</KeepTogether>
             <Top>13.5in</Top>
-            <Height>2.9in</Height>
+            <Height>0.75in</Height>
             <Width>7.5in</Width>
             <ZIndex>26</ZIndex>
             <Style>
@@ -4610,9 +4610,9 @@
           </Tablix>
         </ReportItems>
         <KeepTogether>true</KeepTogether>
-        <Top>0.25in</Top>
+        <Top>0.5in</Top>
         <Left>0.5in</Left>
-        <Height>16.4in</Height>
+        <Height>14.25in</Height>
         <Width>7.5in</Width>
         <Style>
           <Border>
@@ -4620,8 +4620,57 @@
           </Border>
         </Style>
       </Rectangle>
+      <Rectangle Name="TitleGroup">
+        <ReportItems>
+          <Textbox Name="DocumentTitle">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>ORDINANCE FACT SHEET</Value>
+                    <Style>
+                      <FontSize>20pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                      <Color>LightGrey</Color>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Center</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <Left>1.875in</Left>
+            <Height>0.35in</Height>
+            <Width>3.75in</Width>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <BackgroundColor>DimGray</BackgroundColor>
+              <VerticalAlign>Middle</VerticalAlign>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+        </ReportItems>
+        <KeepTogether>true</KeepTogether>
+        <Left>0.5in</Left>
+        <Height>0.35in</Height>
+        <Width>7.5in</Width>
+        <ZIndex>1</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+        </Style>
+      </Rectangle>
     </ReportItems>
-    <Height>16.65in</Height>
+    <Height>14.75in</Height>
     <Style />
   </Body>
   <Width>8.5in</Width>
@@ -4629,38 +4678,84 @@
     <PageHeader>
       <Height>0.35in</Height>
       <PrintOnFirstPage>true</PrintOnFirstPage>
+      <PrintOnLastPage>true</PrintOnLastPage>
       <ReportItems>
         <Rectangle Name="HeaderGroup">
           <ReportItems>
-            <Textbox Name="DocumentTitle">
+            <Textbox Name="OrdinanceIDBody">
               <CanGrow>true</CanGrow>
               <KeepTogether>true</KeepTogether>
               <Paragraphs>
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>ORDINANCE FACT SHEET</Value>
+                      <Value>ID: </Value>
                       <Style>
-                        <FontSize>20pt</FontSize>
-                        <FontWeight>Bold</FontWeight>
-                        <Color>LightGrey</Color>
+                        <FontSize>9pt</FontSize>
+                        <Color>Gray</Color>
+                      </Style>
+                    </TextRun>
+                    <TextRun>
+                      <Label>OrdinanceID</Label>
+                      <Value>=Sum(Fields!OrdinanceID.Value, "dsOrdinance")</Value>
+                      <Style>
+                        <FontSize>9pt</FontSize>
+                        <Color>Gray</Color>
                       </Style>
                     </TextRun>
                   </TextRuns>
                   <Style>
-                    <TextAlign>Center</TextAlign>
+                    <TextAlign>Left</TextAlign>
                   </Style>
                 </Paragraph>
               </Paragraphs>
-              <Left>1.875in</Left>
               <Height>0.35in</Height>
-              <Width>3.75in</Width>
+              <Width>3in</Width>
               <Style>
                 <Border>
                   <Style>None</Style>
                 </Border>
-                <BackgroundColor>DimGray</BackgroundColor>
-                <VerticalAlign>Middle</VerticalAlign>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+            <Textbox Name="OrdinanceNumberBody">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>Ordinance: </Value>
+                      <Style>
+                        <FontSize>9pt</FontSize>
+                        <Color>Gray</Color>
+                      </Style>
+                    </TextRun>
+                    <TextRun>
+                      <Label>OrdinanceNumber</Label>
+                      <Value>=IIf(First(Fields!OrdinanceNumber.Value, "dsOrdinance") &lt;&gt; "", First(Fields!OrdinanceNumber.Value, "dsOrdinance"), "N/A")</Value>
+                      <Style>
+                        <FontSize>9pt</FontSize>
+                        <Color>Gray</Color>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Right</TextAlign>
+                  </Style>
+                </Paragraph>
+              </Paragraphs>
+              <Left>4.5in</Left>
+              <Height>0.35in</Height>
+              <Width>3in</Width>
+              <ZIndex>1</ZIndex>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
                 <PaddingLeft>2pt</PaddingLeft>
                 <PaddingRight>2pt</PaddingRight>
                 <PaddingTop>2pt</PaddingTop>
@@ -4685,7 +4780,7 @@
         </Border>
       </Style>
     </PageHeader>
-    <TopMargin>0.5in</TopMargin>
+    <TopMargin>0.15in</TopMargin>
     <BottomMargin>0.25in</BottomMargin>
     <Style />
   </Page>
@@ -4726,10 +4821,6 @@
           <DataField>OrdinanceFiscalImpact</DataField>
           <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
-        <Field Name="RequestID">
-          <DataField>RequestID</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
-        </Field>
         <Field Name="RequestDepartment">
           <DataField>RequestDepartment</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -4745,10 +4836,6 @@
         <Field Name="RequestEmail">
           <DataField>RequestEmail</DataField>
           <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="ContractVendorID">
-          <DataField>ContractVendorID</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
         <Field Name="ContractVendorName">
           <DataField>ContractVendorName</DataField>

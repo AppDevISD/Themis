@@ -17,7 +17,8 @@ namespace WebUI
     {
         private ADUser _user = new ADUser();
         public UserInfo userInfo = new UserInfo();
-        private readonly string emailList = HttpContext.Current.IsDebuggingEnabled ? "NewFactSheetEmailListTEST" : "NewFactSheetEmailList";
+        //private readonly string emailList = HttpContext.Current.IsDebuggingEnabled ? "NewFactSheetEmailListTEST" : "NewFactSheetEmailList";
+        private readonly string emailList = "NewFactSheetEmailListTEST";
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -357,7 +358,6 @@ namespace WebUI
             string xString = !requestExt.Text.Contains("x") ? "x" : string.Empty;
 
             ordinance.OrdinanceNumber = string.Empty;
-            ordinance.RequestID = 0;
             ordinance.RequestDepartment = requestDepartment.SelectedItem.Text;
             ordinance.RequestContact = requestContact.Text;
             ordinance.RequestPhone = $"{requestPhone.Text}{xString}{requestExt.Text}";
@@ -367,7 +367,6 @@ namespace WebUI
             ordinance.EmergencyPassageReason = epJustification.Text ?? string.Empty;
             ordinance.OrdinanceFiscalImpact = CurrencyToDecimal(fiscalImpact.Text);
             ordinance.OrdinanceTitle = suggestedTitle.Text;
-            ordinance.ContractVendorID = 0;
             ordinance.ContractVendorName = vendorName.Text;
             ordinance.ContractVendorNumber = vendorNumber.Text;
             ordinance.ContractStartDate = contractStartDate.Text;
@@ -397,7 +396,7 @@ namespace WebUI
             ordinance.EffectiveDate = DateTime.Now;
             ordinance.ExpirationDate = DateTime.MaxValue;
 
-            int retVal = Factory.Instance.Insert(ordinance, "sp_InsertOrdinance", 2);
+            int retVal = Factory.Instance.Insert(ordinance, "sp_InsertOrdinance", Skips("ordInsert"));
             //int retVal = 1;
             if (retVal > 0)
             {
@@ -430,7 +429,7 @@ namespace WebUI
                             for (int i = 0; i < rpRevenueTable.Items.Count; i++)
                             {
                                 Accounting accountingItem = GetAccountingItem("revenue", i);
-                                int ret = Factory.Instance.Insert(accountingItem, "sp_InsertlkAccounting");
+                                int ret = Factory.Instance.Insert(accountingItem, "sp_InsertlkAccounting", Skips("accountingInsert"));
                                 //int ret = 1;
                                 if (ret > 0)
                                 {
@@ -441,7 +440,7 @@ namespace WebUI
                                     oaItem.LastUpdateDate = DateTime.Now;
                                     oaItem.EffectiveDate = DateTime.Now;
                                     oaItem.ExpirationDate = DateTime.MaxValue;
-                                    int finalRet = Factory.Instance.Insert(oaItem, "sp_InsertOrdinance_Accounting");
+                                    int finalRet = Factory.Instance.Insert(oaItem, "sp_InsertOrdinance_Accounting", Skips("ordAccountingInsert"));
                                     //int finalRet = 1;
                                     if (finalRet > 0)
                                     {
@@ -464,7 +463,7 @@ namespace WebUI
                             for (int i = 0; i < rpExpenditureTable.Items.Count; i++)
                             {
                                 Accounting accountingItem = GetAccountingItem("expenditure", i);
-                                int ret = Factory.Instance.Insert(accountingItem, "sp_InsertlkAccounting");
+                                int ret = Factory.Instance.Insert(accountingItem, "sp_InsertlkAccounting", Skips("accountingInsert"));
                                 //int ret = 1;
                                 if (ret > 0)
                                 {
@@ -475,7 +474,7 @@ namespace WebUI
                                     oaItem.LastUpdateDate = DateTime.Now;
                                     oaItem.EffectiveDate = DateTime.Now;
                                     oaItem.ExpirationDate = DateTime.MaxValue;
-                                    int finalRet = Factory.Instance.Insert(oaItem, "sp_InsertOrdinance_Accounting");
+                                    int finalRet = Factory.Instance.Insert(oaItem, "sp_InsertOrdinance_Accounting", Skips("ordAccountingInsert"));
                                     //int finalRet = 1;
                                     if (finalRet > 0)
                                     {
@@ -506,7 +505,7 @@ namespace WebUI
                         foreach (OrdinanceDocument ordDoc in ordDocs)
                         {                            
                             ordDoc.OrdinanceID = retVal;
-                            int ret = Factory.Instance.Insert(ordDoc, "sp_InsertOrdinance_Document");
+                            int ret = Factory.Instance.Insert(ordDoc, "sp_InsertOrdinance_Document", Skips("ordDocumentInsert"));
                             //int ret = 1;
                             if (ret < 1)
                             {
@@ -535,7 +534,7 @@ namespace WebUI
                             ordDoc.LastUpdateDate = DateTime.Now;
                             ordDoc.EffectiveDate = DateTime.Now;
                             ordDoc.ExpirationDate = DateTime.MaxValue;
-                            int ret = Factory.Instance.Insert(ordDoc, "sp_InsertOrdinance_Document");
+                            int ret = Factory.Instance.Insert(ordDoc, "sp_InsertOrdinance_Document", Skips("ordDocumentInsert"));
                             //int ret = 1;
                             if (ret < 1)
                             {
@@ -553,7 +552,7 @@ namespace WebUI
                 ordStatus.LastUpdateDate = DateTime.Now;
                 ordStatus.EffectiveDate = DateTime.Now;
                 ordStatus.ExpirationDate = DateTime.MaxValue;
-                int statusRet = Factory.Instance.Insert(ordStatus, "sp_InsertOrdinance_Status", 2);
+                int statusRet = Factory.Instance.Insert(ordStatus, "sp_InsertOrdinance_Status", Skips("ordStatusInsert"));
 
                 if (statusRet < 1)
                 {
@@ -577,7 +576,7 @@ namespace WebUI
                         Session["ToastColor"] = "text-bg-success";
                         Session["ToastMessage"] = "Form Submitted!";
                         Email.Instance.SendEmail(newEmail, emailList);
-                        Response.Redirect("./NewFactSheet");
+                        Response.Redirect("./NewFactSheet", false);
                         break;
                     case false:
                         Session["SubmitStatus"] = "error";

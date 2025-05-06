@@ -21,6 +21,7 @@
 				<asp:AsyncPostBackTrigger ControlID="scNo" EventName="CheckedChanged" />
 
 				<asp:AsyncPostBackTrigger ControlID="purchaseMethod" EventName="SelectedIndexChanged" />
+				<asp:AsyncPostBackTrigger ControlID="ddStatus" EventName="SelectedIndexChanged" />
 
 				<asp:AsyncPostBackTrigger ControlID="sortDate" EventName="Click" />
 				<asp:AsyncPostBackTrigger ControlID="sortTitle" EventName="Click" />
@@ -164,7 +165,7 @@
 								<div class="statusDropDown text-start">
 									<div runat="server" id="ddStatusDiv" class="form-group text-start w-75 me-auto">
 										<label for="ddStatus">Status</label>
-										<asp:DropDownList ID="ddStatus" runat="server" AutoPostBack="false" CssClass="form-select" required="true" ValidateRequestMode="Enabled" ></asp:DropDownList>
+										<asp:DropDownList ID="ddStatus" runat="server" AutoPostBack="true" CssClass="form-select" required="true" ValidateRequestMode="Enabled" OnSelectedIndexChanged="ddStatus_SelectedIndexChanged"></asp:DropDownList>
 										<asp:HiddenField runat="server" ID="hdnOrdStatusID" />
 										<asp:HiddenField runat="server" ID="hdnStatusID" />
 									</div>
