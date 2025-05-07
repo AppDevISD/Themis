@@ -26,7 +26,6 @@ namespace WebUI
         private ADUser _user = new ADUser();
         public UserInfo userInfo = new UserInfo();
         private readonly string emailList = HttpContext.Current.IsDebuggingEnabled ? "NewFactSheetEmailListTEST" : "NewFactSheetEmailList";
-        private readonly Dictionary<string, string> fieldLabels = FieldLabels();
         
         public string editSymbol = "<span class='fas fa-arrow-right-long mx-1 text-warning-light fw-bold align-self-center'></span>";
         public string addSymbol = "<span class='fas fa-plus mx-1 text-success fw-bold align-self-center'></span>";
@@ -54,8 +53,6 @@ namespace WebUI
                 SetStartupActives();
                 SetPagination(rpOrdinanceTable, 10);
                 GetStartupData(userInfo.IsAdmin);
-
-                GetTestAuditData();
             }            
             if (Page.IsPostBack && Page.Request.Params.Get("__EVENTTARGET").Contains("adminSwitch"))
             {
@@ -518,6 +515,10 @@ namespace WebUI
             string commandName = button.Attributes["data-command"];
             PageButtonClick(ord_list, commandName);
         }
+        protected void ddStatus_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            signatureSection.Visible = true;
+        }
         protected void PurchaseMethodSelectedIndexChanged(object sender, EventArgs e)
         {
             switch (purchaseMethod.SelectedItem.Value)
@@ -607,6 +608,61 @@ namespace WebUI
 
             Email.Instance.SendEmail(newEmail, "SingleEmail");
         }
+        protected void btnSignDoc_Click(object sender, EventArgs e)
+        {
+            switch (sigType.Value)
+            {
+                case "fundsCheckBy":
+                    fundsCheckByBtnDiv.Visible = false;
+                    fundsCheckByInputGroup.Visible = true;
+                    fundsCheckEmailBtn.Visible = false;
+                    fundsCheckBySig.Text = sigName.Text;
+                    fundsCheckByDate.Text = sigDate.Text;
+                    break;
+                case "directorSupervisor":
+                    directorSupervisorBtnDiv.Visible = false;
+                    directorSupervisorInputGroup.Visible = true;
+                    directorSupervisorEmailBtn.Visible = false;
+                    directorSupervisorSig.Text = sigName.Text;
+                    directorSupervisorDate.Text = sigDate.Text;
+                    break;
+                case "cPA":
+                    cPABtnDiv.Visible = false;
+                    cPAInputGroup.Visible = true;
+                    cPAEmailBtn.Visible = false;
+                    cPASig.Text = sigName.Text;
+                    cPADate.Text = sigDate.Text;
+                    break;
+                case "obmDirector":
+                    obmDirectorBtnDiv.Visible = false;
+                    obmDirectorInputGroup.Visible = true;
+                    obmDirectorEmailBtn.Visible = false;
+                    obmDirectorSig.Text = sigName.Text;
+                    obmDirectorDate.Text = sigDate.Text;
+                    break;
+                case "mayor":
+                    mayorBtnDiv.Visible = false;
+                    mayorInputGroup.Visible = true;
+                    mayorEmailBtn.Visible = false;
+                    mayorSig.Text = sigName.Text;
+                    mayorDate.Text = sigDate.Text;
+                    break;
+            }
+
+            OrdinanceSignature signature = new OrdinanceSignature();
+            signature.OrdinanceID = Convert.ToInt32(hdnOrdID.Value);
+            signature.SignatureType = sigType.Value;
+            signature.Signature = sigName.Text;
+            signature.DateSigned = Convert.ToDateTime(sigDate.Text);
+            signature.SignatureCertified = certifySig.Checked;
+            signature.LastUpdateBy = _user.Login;
+            signature.LastUpdateDate = DateTime.Now;
+
+            List<OrdinanceSignature> insertSigList = (List<OrdinanceSignature>)Session["insertSigList"] ?? new List<OrdinanceSignature>();
+            insertSigList.Add(signature);
+            Session["insertSigList"] = insertSigList;
+            SaveFactSheet.CssClass += " emphasize";
+        }
 
 
 
@@ -616,6 +672,9 @@ namespace WebUI
             ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(backBtn);
 
             Session.Remove("OriginalOrdinance");
+            Session.Remove("OriginalStatus");
+
+
             Session.Remove("ordRevTable");
             Session.Remove("ordExpTable");
             Session.Remove("insertSigList");            
@@ -824,6 +883,30 @@ namespace WebUI
 
             OrdinanceStatus ordStatus = new OrdinanceStatus();
 
+
+
+
+
+            List<OrdinanceAudit> ordAudits = Factory.Instance.GetAllLookup<OrdinanceAudit>(ordID, "sp_GetOrdinanceAuditByOrdinanceID", "OrdinanceID");
+            if (ordAudits.Count > 0)
+            {
+                Session["ordAudit"] = ordAudits;
+
+                rpAudit.DataSource = ordAudits;
+                rpAudit.DataBind();
+            }
+            else
+            {
+                Session.Remove("ordAudit");
+                rpAudit.DataSource = null;
+                rpAudit.DataBind();
+            }
+
+
+
+
+
+
             switch (e.CommandName)
             {
                 case "view":
@@ -941,62 +1024,62 @@ namespace WebUI
                     }
 
                     foreach (TextBox item in sigTextBoxes) if (!item.Text.IsNullOrWhiteSpace())
-                    {
-                        switch (item.ClientID)
                         {
-                            case "fundsCheckBySig":
-                                fundsCheckByBtnDiv.Visible = false;
-                                fundsCheckByInputGroup.Visible = true;
-                                break;
-                            case "directorSupervisorSig":
-                                directorSupervisorBtnDiv.Visible = false;
-                                directorSupervisorInputGroup.Visible = true;
-                                break;
-                            case "cPASig":
-                                cPABtnDiv.Visible = false;
-                                cPAInputGroup.Visible = true;
-                                break;
-                            case "obmDirectorSig":
-                                obmDirectorBtnDiv.Visible = false;
-                                obmDirectorInputGroup.Visible = true;
-                                break;
-                            case "mayorSig":
-                                mayorBtnDiv.Visible = false;
-                                mayorInputGroup.Visible = true;
-                                break;
+                            switch (item.ClientID)
+                            {
+                                case "fundsCheckBySig":
+                                    fundsCheckByBtnDiv.Visible = false;
+                                    fundsCheckByInputGroup.Visible = true;
+                                    break;
+                                case "directorSupervisorSig":
+                                    directorSupervisorBtnDiv.Visible = false;
+                                    directorSupervisorInputGroup.Visible = true;
+                                    break;
+                                case "cPASig":
+                                    cPABtnDiv.Visible = false;
+                                    cPAInputGroup.Visible = true;
+                                    break;
+                                case "obmDirectorSig":
+                                    obmDirectorBtnDiv.Visible = false;
+                                    obmDirectorInputGroup.Visible = true;
+                                    break;
+                                case "mayorSig":
+                                    mayorBtnDiv.Visible = false;
+                                    mayorInputGroup.Visible = true;
+                                    break;
+                            }
                         }
-                    }
-                    else
-                    {
-                        switch (item.ClientID)
+                        else
                         {
-                            case "fundsCheckBySig":
-                                fundsCheckByBtnDiv.Visible = true;
-                                fundsCheckByBtn.Text = "Awaiting Signature...";
-                                fundsCheckByInputGroup.Visible = false;
-                                break;
-                            case "directorSupervisorSig":
-                                directorSupervisorBtnDiv.Visible = true;
-                                directorSupervisorBtn.Text = "Awaiting Signature...";
-                                directorSupervisorInputGroup.Visible = false;
-                                break;
-                            case "cPASig":
-                                cPABtnDiv.Visible = true;
-                                cPABtn.Text = "Awaiting Signature...";
-                                cPAInputGroup.Visible = false;
-                                break;
-                            case "obmDirectorSig":
-                                obmDirectorBtnDiv.Visible = true;
-                                obmDirectorBtn.Text = "Awaiting Signature...";
-                                obmDirectorInputGroup.Visible = false;
-                                break;
-                            case "mayorSig":
-                                mayorBtnDiv.Visible = true;
-                                mayorBtn.Text = "Awaiting Signature...";
-                                mayorInputGroup.Visible = false;
-                                break;
+                            switch (item.ClientID)
+                            {
+                                case "fundsCheckBySig":
+                                    fundsCheckByBtnDiv.Visible = true;
+                                    fundsCheckByBtn.Text = "Awaiting Signature...";
+                                    fundsCheckByInputGroup.Visible = false;
+                                    break;
+                                case "directorSupervisorSig":
+                                    directorSupervisorBtnDiv.Visible = true;
+                                    directorSupervisorBtn.Text = "Awaiting Signature...";
+                                    directorSupervisorInputGroup.Visible = false;
+                                    break;
+                                case "cPASig":
+                                    cPABtnDiv.Visible = true;
+                                    cPABtn.Text = "Awaiting Signature...";
+                                    cPAInputGroup.Visible = false;
+                                    break;
+                                case "obmDirectorSig":
+                                    obmDirectorBtnDiv.Visible = true;
+                                    obmDirectorBtn.Text = "Awaiting Signature...";
+                                    obmDirectorInputGroup.Visible = false;
+                                    break;
+                                case "mayorSig":
+                                    mayorBtnDiv.Visible = true;
+                                    mayorBtn.Text = "Awaiting Signature...";
+                                    mayorInputGroup.Visible = false;
+                                    break;
+                            }
                         }
-                    }
                     break;
                 case "edit":
                     ordView.Attributes["readonly"] = "false";
@@ -1139,106 +1222,107 @@ namespace WebUI
                     otherExceptionDiv.Visible = true;
 
                     foreach (LinkButton item in emailBtns) if (!userInfo.IsAdmin || userInfo.UserView || Request.QueryString["id"] != null)
-                    {
-                        item.Visible = false;
-                    }
-                    else
-                    {
-                        item.Visible = true;
-                    }
+                        {
+                            item.Visible = false;
+                        }
+                        else
+                        {
+                            item.Visible = true;
+                        }
                     foreach (Button item in signBtns)
                     {
                         item.Text = "Sign";
                     }
                     foreach (TextBox item in sigTextBoxes) if (!item.Text.IsNullOrWhiteSpace())
-                    {
-                        switch (item.ClientID)
                         {
-                            case "fundsCheckBySig":
-                                fundsCheckByBtnDiv.Visible = false;
-                                fundsCheckByInputGroup.Visible = true;
-                                break;
-                            case "directorSupervisorSig":
-                                directorSupervisorBtnDiv.Visible = false;
-                                directorSupervisorInputGroup.Visible = true;
-                                break;
-                            case "cPASig":
-                                cPABtnDiv.Visible = false;
-                                cPAInputGroup.Visible = true;
-                                break;
-                            case "obmDirectorSig":
-                                obmDirectorBtnDiv.Visible = false;
-                                obmDirectorInputGroup.Visible = true;
-                                break;
-                            case "mayorSig":
-                                mayorBtnDiv.Visible = false;
-                                mayorInputGroup.Visible = true;
-                                break;
-                        }                            
-                    }
-                    else
-                    {
-                        switch (item.ClientID)
+                            switch (item.ClientID)
+                            {
+                                case "fundsCheckBySig":
+                                    fundsCheckByBtnDiv.Visible = false;
+                                    fundsCheckByInputGroup.Visible = true;
+                                    break;
+                                case "directorSupervisorSig":
+                                    directorSupervisorBtnDiv.Visible = false;
+                                    directorSupervisorInputGroup.Visible = true;
+                                    break;
+                                case "cPASig":
+                                    cPABtnDiv.Visible = false;
+                                    cPAInputGroup.Visible = true;
+                                    break;
+                                case "obmDirectorSig":
+                                    obmDirectorBtnDiv.Visible = false;
+                                    obmDirectorInputGroup.Visible = true;
+                                    break;
+                                case "mayorSig":
+                                    mayorBtnDiv.Visible = false;
+                                    mayorInputGroup.Visible = true;
+                                    break;
+                            }
+                        }
+                        else
                         {
-                            case "fundsCheckBySig":
-                                fundsCheckByBtnDiv.Visible = true;
-                                fundsCheckByBtn.Text = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null) ? "Sign" : "Awaiting Signature...";
-                                fundsCheckByBtnDiv.Attributes["readonly"] = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null) ? "false" : "true";
-                                fundsCheckByInputGroup.Visible = false;
-                                break;
-                            case "directorSupervisorSig":
-                                directorSupervisorBtnDiv.Visible = true;
-                                directorSupervisorBtn.Text = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null) ? "Sign" : "Awaiting Signature...";
+                            switch (item.ClientID)
+                            {
+                                case "fundsCheckBySig":
+                                    fundsCheckByBtnDiv.Visible = true;
+                                    fundsCheckByBtn.Text = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null) ? "Sign" : "Awaiting Signature...";
+                                    fundsCheckByBtnDiv.Attributes["readonly"] = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null) ? "false" : "true";
+                                    fundsCheckByInputGroup.Visible = false;
+                                    break;
+                                case "directorSupervisorSig":
+                                    directorSupervisorBtnDiv.Visible = true;
+                                    directorSupervisorBtn.Text = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null) ? "Sign" : "Awaiting Signature...";
                                     directorSupervisorBtnDiv.Attributes["readonly"] = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null) ? "false" : "true";
                                     directorSupervisorInputGroup.Visible = false;
-                                break;
-                            case "cPASig":
-                                cPABtnDiv.Visible = true;
-                                cPABtn.Text = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null) ? "Sign" : "Awaiting Signature...";
-                                cPABtnDiv.Attributes["readonly"] = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null) ? "false" : "true";
-                                cPAInputGroup.Visible = false;
-                                break;
-                            case "obmDirectorSig":
-                                obmDirectorBtnDiv.Visible = true;
-                                obmDirectorBtn.Text = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null) ? "Sign" : "Awaiting Signature...";
-                                obmDirectorBtnDiv.Attributes["readonly"] = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null) ? "false" : "true";
-                                obmDirectorInputGroup.Visible = false;
-                                break;
-                            case "mayorSig":
-                                mayorBtnDiv.Visible = true;
-                                mayorBtn.Text = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null) ? "Sign" : "Awaiting Signature...";
-                                mayorBtnDiv.Attributes["readonly"] = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null) ? "false" : "true";
-                                mayorInputGroup.Visible = false;
-                                break;
+                                    break;
+                                case "cPASig":
+                                    cPABtnDiv.Visible = true;
+                                    cPABtn.Text = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null) ? "Sign" : "Awaiting Signature...";
+                                    cPABtnDiv.Attributes["readonly"] = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null) ? "false" : "true";
+                                    cPAInputGroup.Visible = false;
+                                    break;
+                                case "obmDirectorSig":
+                                    obmDirectorBtnDiv.Visible = true;
+                                    obmDirectorBtn.Text = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null) ? "Sign" : "Awaiting Signature...";
+                                    obmDirectorBtnDiv.Attributes["readonly"] = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null) ? "false" : "true";
+                                    obmDirectorInputGroup.Visible = false;
+                                    break;
+                                case "mayorSig":
+                                    mayorBtnDiv.Visible = true;
+                                    mayorBtn.Text = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null) ? "Sign" : "Awaiting Signature...";
+                                    mayorBtnDiv.Attributes["readonly"] = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null) ? "false" : "true";
+                                    mayorInputGroup.Visible = false;
+                                    break;
+                            }
                         }
-                    }
 
                     switch (ord.StatusDescription)
                     {
-                        case "New":                            
+                        case "New":
                             ordinanceNumberDiv.Visible = false;
                             break;
-                        case "Pending":                            
+                        case "Pending":
                             ordinanceNumberDiv.Visible = true;
                             break;
-                        case "Under Review":                            
+                        case "Under Review":
                             ordinanceNumberDiv.Visible = true;
                             break;
-                        case "Being Held":                            
+                        case "Being Held":
                             ordinanceNumberDiv.Visible = true;
                             break;
-                        case "Drafted":                            
+                        case "Drafted":
                             ordinanceNumberDiv.Visible = true;
                             break;
-                        case "Rejected":                            
+                        case "Rejected":
                             ordinanceNumberDiv.Visible = true;
                             break;
-                        case "Deleted":                            
+                        case "Deleted":
                             ordinanceNumberDiv.Visible = true;
                             break;
                     }
 
                     Session["OriginalOrdinance"] = ord;
+                    Session["OriginalStatus"] = ordStatus;
                     break;
                 case "download":
                     ReportViewer viewer = new ReportViewer();
@@ -1256,15 +1340,15 @@ namespace WebUI
                     {
                         hideTables = false;
                     }
-                    RevExpBool HideTables = new RevExpBool() { HideTables = hideTables};
+                    RevExpBool HideTables = new RevExpBool() { HideTables = hideTables };
                     List<string> sigTypeList = new List<string>()
-            {
-                "fundsCheckBy",
-                "directorSupervisor",
-                "cPA",
-                "obmDirector",
-                "mayor",
-            };
+        {
+            "fundsCheckBy",
+            "directorSupervisor",
+            "cPA",
+            "obmDirector",
+            "mayor",
+        };
                     foreach (string item in sigTypeList)
                     {
                         if (!ordSigs.Any(i => i.SignatureType.Equals(item)))
@@ -1310,7 +1394,7 @@ namespace WebUI
                     IEnumerable<RevExpBool> revExpBoolData = new[] { HideTables };
                     ReportDataSource ordinanceData = new ReportDataSource() { Name = "dsOrdinance", Value = ordData };
                     ReportDataSource revExpTableBoolData = new ReportDataSource() { Name = "dsRevExpBool", Value = revExpBoolData };
-                    ReportDataSource ordinanceRevAccountingData = new ReportDataSource() { Name = "dsRevAccounting", Value = revItems,  };
+                    ReportDataSource ordinanceRevAccountingData = new ReportDataSource() { Name = "dsRevAccounting", Value = revItems, };
                     ReportDataSource ordinanceExpAccountingData = new ReportDataSource() { Name = "dsExpAccounting", Value = expItems };
                     ReportDataSource ordinanceStatusData = new ReportDataSource() { Name = "dsOrdinanceStatus" };
                     ReportDataSource ordinanceSignaturesData = new ReportDataSource() { Name = "dsSignatures", Value = ordSigs.OrderBy(i => i.SortOrder) };
@@ -1580,37 +1664,78 @@ namespace WebUI
             int auditID = Convert.ToInt32(hdnAuditItem.Value);
             Repeater rpAuditDesc = (Repeater)e.Item.FindControl("rpAuditDesc");
 
-            List<OrdinanceAudit> ordAuditList = Session["ordAudit"] as List<OrdinanceAudit>;
-            OrdinanceAudit ordAudit = ordAuditList.First(i => i.AuditID.Equals(auditID));
-
-            string[] descArray = ordAudit.Description.Split('|');
-            List<string> descList = new List<string>();
-
-            for (int i = 0; i < descArray.Length; i++)
+            List<OrdinanceAudit> ordAudits = Session["ordAudit"] as List<OrdinanceAudit>;
+            List<Audit> audits = Factory.Instance.GetAllLookup<Audit>(auditID, "sp_GetAuditDescriptionByID", "OrdinanceAuditID");
+            if (audits.Count > 0)
             {
-                if (!descArray[i].SubstringUpToFirst(':').Contains("Emergency Passage Justification") && !descArray[i].SubstringUpToFirst(':').Contains("Staff Analysis") && !descArray[i].SubstringUpToFirst(':').Contains("Suggested Title"))
+                List<string> descList = new List<string>();
+                foreach (Audit item in audits)
                 {
-                    descList.Add(descArray[i]);
-                }
-                else
-                {
-                    string[] longTextArr = descArray[i].Split('\\');
-                    string longText = string.Empty;
-                    switch (!longTextArr[1].IsNullOrWhiteSpace())
+                    List<string> longTexts = new List<string>()
                     {
-                        case true:
-                            longText = $"<p class='m-0'>{longTextArr[0]}</p> <div class='d-flex change-bg mw-100 lh-1p5'> <div class='w-50 pe-2'>{longTextArr[1]}</div> {longTextArr[2]} <div class='w-50 ps-2'>{longTextArr[3]}</div> </div>";
+                        "EmergencyPassageReason",
+                        "OrdinanceTitle",
+                        "OrdinanceAnalysis"
+                    };
+                    string label = FieldLabels(item.Label);
+                    string oldValue = item.OldValue;
+                    string symbol = AuditSymbol(item.Type);
+                    string newValue = item.NewValue;
+                    string itemString = string.Empty;
+
+                    if (oldValue == "-1.00" || oldValue == "-1")
+                    {
+                    }
+                    if (newValue == "-1.00" || newValue == "-1")
+                    {
+                        newValue = null;
+                    }
+                    switch (item.Type)
+                    {
+                        case "add":
+                            switch (!longTexts.Any(i => i.Equals(item.Label)))
+                            {
+                                case true:
+                                    itemString = $"{label}: <span class='change-bg'>{symbol} <span data-type='{item.DataType}'>{newValue}</span> </span>";
+                                    break;
+                                case false:
+                                    itemString = $"<p class='m-0'>{label}:</p> <div class='d-flex change-bg w-50 lh-1p5'> {symbol} <div class='w-100 ps-2'>{newValue}</div> </div>";
+                                    break;
+                            }
                             break;
-                        case false:
-                            longText = $"<p class='m-0'>{longTextArr[0]}</p> <div class='d-flex change-bg w-50 lh-1p5'> {longTextArr[2]} <div class='w-100 ps-2'>{longTextArr[3]}</div> </div>";
+                        case "update":
+                            switch (!longTexts.Any(i => i.Equals(item.Label)))
+                            {
+                                case true:
+                                    itemString = $"{label}: <span class='change-bg'><span data-type='{item.DataType}'>{oldValue}</span> {symbol} <span data-type='{item.DataType}'>{newValue}</span></span>";
+                                    break;
+                                case false:
+                                    itemString = $"<p class='m-0'>{label}:</p> <div class='d-flex change-bg mw-100 lh-1p5'> <div class='w-50 pe-2'>{oldValue}</div> {symbol} <div class='w-50 ps-2'>{newValue}</div> </div>";
+                                    break;
+                            }
+                            break;
+                        case "remove":
+                            switch (!longTexts.Any(i => i.Equals(item.Label)))
+                            {
+                                case true:
+                                    itemString = $"{label}: <span class='change-bg'>{symbol} <span data-type='{item.DataType}'>{oldValue}</span></span>";
+                                    break;
+                                case false:
+                                    itemString = $"<p class='m-0'>{label}:</p> <div class='d-flex change-bg w-50 lh-1p5'> {symbol} <div class='w-100 ps-2'>{oldValue}</div> </div>";
+                                    break;
+                            }
                             break;
                     }
-                    descList.Add(longText);
+                    descList.Add(itemString);
                 }
+                rpAuditDesc.DataSource = descList;
+                rpAuditDesc.DataBind();
             }
-
-            rpAuditDesc.DataSource = descList;
-            rpAuditDesc.DataBind();
+            else
+            {
+                rpAuditDesc.DataSource = null;
+                rpAuditDesc.DataBind();
+            }
         }
 
 
@@ -1796,6 +1921,7 @@ namespace WebUI
             ordStatus.LastUpdateDate = DateTime.Now;
             ordStatus.EffectiveDate = Convert.ToDateTime(hdnEffectiveDate.Value);
             ordStatus.ExpirationDate = DateTime.MaxValue;
+            ordStatus.StatusDescription = ddStatus.SelectedItem.ToString();
             ordinance.StatusDescription = ddStatus.SelectedItem.ToString();
             int statusVal = Factory.Instance.Update(ordStatus, "sp_UpdateOrdinance_Status", Skips("ordStatusUpdate"));
 
@@ -2039,7 +2165,141 @@ namespace WebUI
             newEmail.EmailTitle = $"{formType} UPDATED";
             newEmail.EmailText = $"<p style='margin: 0;'><span style='font-size:36.0pt;font-family:\"Times New Roman\",serif;color:#2D71D5;font-weight:bold;'>THΣMIS</span></p><div align=center style='text-align:center'><span><hr size='2' width='100%' align='center' style='margin-top: 0;'></span></div><p><span>An <b>{formType}</b> has been UPDATED by <b>{_user.FirstName} {_user.LastName}</b>.</span></p><br /><p style='margin: 0; line-height: 1.5;'><span>ID: {ordinance.OrdinanceID}</span></p>{ordinanceNumInfo}<p style='margin: 0; line-height: 1.5;'><span>Date: {DateTime.Now}</span></p><p style='margin: 0; line-height: 1.5;'><span>Department: {requestDepartment.SelectedItem.Text}</span></p><p style='margin: 0; line-height: 1.5;'><span>Contact: {requestContact.Text}</span></p><p style='margin: 0; line-height: 1.5;'><span>Phone: {ordinance.RequestPhone}</span></p><p><span>Status: {ordinance.StatusDescription}</span></p><br /><p><span>Please click the button below to review the document:</span></p><table border='0' cellpadding='0' cellspacing='0' style='border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;'><tr><td style='font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #0d6efd; border-radius: 5px; text-align: center;' valign='top' bgcolor='#0d6efd' align='center'><a href='{href}' target='_blank' style='display: inline-block; color: #ffffff; background-color: #0d6efd; border: solid 1px #0d6efd; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 15px 25px; text-transform: capitalize; border-color: #0d6efd; '>View Ordinance</a></td></tr></table>";
 
-            List<int> submitVals = new List<int>( new int[] {
+
+
+            int ordAuditVal = -1;
+            int auditVal = new int();
+            OrdinanceAudit ordAudit = new OrdinanceAudit()
+            {
+                OrdinanceID = Convert.ToInt32(hdnOrdID.Value),
+                UpdateType = "Updated",
+                LastUpdateBy = $"{_user.FirstName} {_user.LastName}",
+                LastUpdateDate = DateTime.Now,
+            };
+            List<string> baseData = new List<string>()
+            {
+                "StatusID",
+                "LastUpdateBy",
+                "LastUpdateDate",
+                "EffectiveDate",
+                "ExpirationDate",
+            };
+            List<Audit> auditList = new List<Audit>();
+
+            if (Session["OriginalStatus"] != null)
+            {
+                OrdinanceStatus oldOrdStatus = Session["OriginalStatus"] as OrdinanceStatus;
+                PropertyInfo[] properties = typeof(OrdinanceStatus).GetProperties();
+                if (properties.Any(i => !i.GetValue(ordStatus).Equals(i.GetValue(oldOrdStatus)) && !baseData.Any(b => b.Contains(i.Name))))
+                {
+                    if (ordAuditVal < 0)
+                    {
+                        ordAuditVal = Factory.Instance.Insert(ordAudit, "sp_InsertOrdinance_Audit", Skips("ordAuditInsert"));
+                    }
+                    if (ordAuditVal > 0)
+                    {
+                        foreach (PropertyInfo property in properties.Where(i => !i.GetValue(ordStatus).Equals(i.GetValue(oldOrdStatus)) && !baseData.Any(b => b.Contains(i.Name))))
+                        {
+                            Audit audit = new Audit()
+                            {
+                                OrdinanceAuditID = ordAuditVal,
+                                Label = property.Name,
+                                DataType = property.GetValue(ordStatus).GetType().Name
+                            };
+                            audit.Type = "update";
+                            audit.OldValue = property.GetValue(oldOrdStatus).ToString();
+                            audit.NewValue = property.GetValue(ordStatus).ToString();
+
+                            auditList.Add(audit);
+                        }
+                    }
+                }
+                else
+                {
+                    auditVal = 1;
+                }
+            }
+            if (Session["OriginalOrdinance"] != null)
+            {
+                Ordinance oldOrd = Session["OriginalOrdinance"] as Ordinance;
+                PropertyInfo[] properties = typeof(Ordinance).GetProperties();
+                baseData.Add("StatusDescription");
+                if (properties.Any(i => !i.GetValue(ordinance).Equals(i.GetValue(oldOrd)) && !baseData.Any(b => b.Contains(i.Name))))
+                {
+                    if (ordAuditVal < 0)
+                    {
+                        ordAuditVal = Factory.Instance.Insert(ordAudit, "sp_InsertOrdinance_Audit", Skips("ordAuditInsert"));
+                    }
+                    if (ordAuditVal > 0)
+                    {
+                        foreach (PropertyInfo property in properties.Where(i => !i.GetValue(ordinance).Equals(i.GetValue(oldOrd)) && !baseData.Any(b => b.Contains(i.Name))))
+                        {
+                            Audit audit = new Audit()
+                            {
+                                OrdinanceAuditID = ordAuditVal,
+                                Label = property.Name,
+                                DataType = property.GetValue(ordinance).GetType().Name
+                            };
+                            // ADD //
+                            if (property.GetValue(oldOrd) == null || property.GetValue(oldOrd).ToString() == string.Empty || property.GetValue(oldOrd).ToString() == "-1" || property.GetValue(oldOrd).ToString() == "-1.00")
+                            {
+                                audit.Type = "add";
+                                audit.OldValue = string.Empty;
+                                audit.NewValue = property.GetValue(ordinance).ToString();
+                                if (audit.DataType.Equals("DateTime") || audit.Label.Equals("ContractStartDate") || audit.Label.Equals("ContractEndDate"))
+                                {
+                                    audit.NewValue = Convert.ToDateTime(property.GetValue(ordinance).ToString()).ToString("MM/dd/yyyy");
+                                }
+                            }
+                            // REMOVE //
+                            else if (property.GetValue(ordinance) == null || property.GetValue(ordinance).ToString() == string.Empty || property.GetValue(ordinance).ToString() == "-1" || property.GetValue(ordinance).ToString() == "-1.00")
+                            {
+                                audit.Type = "remove";
+                                audit.OldValue = property.GetValue(oldOrd).ToString();
+                                audit.NewValue = string.Empty;
+                                if (audit.DataType.Equals("DateTime") || audit.Label.Equals("ContractStartDate") || audit.Label.Equals("ContractEndDate"))
+                                {
+                                    audit.OldValue = Convert.ToDateTime(property.GetValue(oldOrd).ToString()).ToString("MM/dd/yyyy");
+                                }
+                            }
+                            // UPDATE //
+                            else
+                            {
+                                audit.Type = "update";
+                                audit.OldValue = property.GetValue(oldOrd).ToString();
+                                audit.NewValue = property.GetValue(ordinance).ToString();
+                                if (audit.DataType.Equals("DateTime") || audit.Label.Equals("ContractStartDate") || audit.Label.Equals("ContractEndDate"))
+                                {
+                                    audit.OldValue = Convert.ToDateTime(property.GetValue(oldOrd).ToString()).ToString("MM/dd/yyyy");
+                                    audit.NewValue = Convert.ToDateTime(property.GetValue(ordinance).ToString()).ToString("MM/dd/yyyy");
+                                }
+                            }
+
+                            auditList.Add(audit);
+                        }
+                    }
+                }
+                baseData.Remove("StatusDescription");
+            }
+
+            if (auditList.Count > 0)
+            {
+                foreach (Audit item in auditList)
+                {
+                    auditVal = Factory.Instance.Insert(item, "sp_InsertAuditDescription", Skips("auditInsert"));
+                }
+            }
+            else
+            {
+                auditVal = 1;
+            }
+
+
+
+
+
+            List<int> submitVals = new List<int>(new int[] 
+            {
                 retVal,
                 statusVal,
                 removeDocVal,
@@ -2049,39 +2309,12 @@ namespace WebUI
                 removeOrdAccsVal,
                 updateRevAccsVal,
                 updateExpAccsVal,
-                insertSignatureVal
+                insertSignatureVal,
+                auditVal
             });
 
             if (submitVals.All(i => i > 0))
             {
-                if(Session["OriginalOrdinance"] != null)
-                {
-                    Ordinance oldOrd = Session["OriginalOrdinance"] as Ordinance;
-                    PropertyInfo[] properties = typeof(Ordinance).GetProperties();
-                    List<string> baseData = new List<string>()
-                    {
-                        "LastUpdateBy",
-                        "LastUpdateDate",
-                        "EffectiveDate",
-                        "ExpirationDate",
-                    };
-                    foreach (PropertyInfo property in properties.Where(i => !i.GetValue(ordinance).Equals(i.GetValue(oldOrd)) && !baseData.Any(b => b.Contains(i.Name))))
-                    {
-                        if (property.GetValue(oldOrd) == null || property.GetValue(oldOrd).ToString() == string.Empty)
-                        {
-                            Debug.WriteLine($"{property.Name}: + {property.GetValue(ordinance)}");
-                        }
-                        else if (property.GetValue(ordinance) == null || property.GetValue(ordinance).ToString() == string.Empty)
-                        {
-                            Debug.WriteLine($"{property.Name}: - {property.GetValue(oldOrd)}");
-                        }
-                        else
-                        {
-                            Debug.WriteLine($"{property.Name}: {property.GetValue(oldOrd)} -> {property.GetValue(ordinance)}");
-                        }
-                            
-                    }
-                }
                 Session["SubmitStatus"] = "success";
                 Session["ToastColor"] = "text-bg-success";
                 Session["ToastMessage"] = "Form Saved!";
@@ -2161,96 +2394,6 @@ namespace WebUI
         {
             Response.Redirect($"./NewFactSheet?id={hdnOrdID.Value}");
         }
-        
 
-        public void GetTestAuditData()
-        {
-            List<OrdinanceAudit> testAudit = new List<OrdinanceAudit>()
-            {
-                new OrdinanceAudit
-                {
-                    AuditID = 1,
-                    OrdinanceID = 0,
-                    DateModified = Convert.ToDateTime("04/15/2025"),
-                    ModifiedBy = "Kyle Bolinger",
-                    ModificationType = "Updated",
-                    Description = $"Suggested Title: \\ \\{addSymbol} \\AN ORDINANCE AUTHORIZING THE EXTENSION OF CONTRACT# PW21-21 WITH BLH COMPUTERS, INC. FOR COLLECTION, RECYCLING, AND DISPOSAL OF ELECTRONIC WASTE, IN AN AMOUNT NOT TO EXCEED $50,000.00 FOR THE OFFICE OF PUBLIC WORKS|Vendor Name: <span class='change-bg'>VI LLC {editSymbol} LRS</span>|Method of Purchase: <span class='change-bg'>Low Bid {editSymbol} Other</span>|Other/Exception: <span class='change-bg'>{addSymbol} RPF-100</span>"
-                },
-                new OrdinanceAudit
-                {
-                    AuditID = 2,
-                    OrdinanceID = 0,
-                    DateModified = Convert.ToDateTime("04/01/2025"),
-                    ModifiedBy = "Chip McCrunch",
-                    ModificationType = "Updated",
-                    Description = $"First Read Date: <span class='change-bg'>03/25/2025 {editSymbol} 03/26/2025</span>|Requesting Contact: <span class='change-bg'>Chip McCrunch {editSymbol} Kyle Bolinger</span>|Ext: <span class='change-bg'>x5684 {editSymbol} x2811</span>|Fiscal Impact: <span class='change-bg'>$10,000.00 {editSymbol} $100,000.00</span>|Emergency Passage Justification: \\Vestibulum enim enim, vestibulum id consequat vitae, imperdiet at nisi. Duis rhoncus massa sit amet mi porta, bibendum dignissim lorem pretium. Suspendisse ultricies iaculis libero, sit amet rhoncus quam dictum sit amet. Praesent maximus vehicula tortor, bibendum auctor libero blandit ut. Quisque diam mi, finibus quis diam in, elementum finibus arcu. Donec congue rhoncus mauris. Suspendisse sit amet cursus augue. Sed aliquet arcu ac ante vehicula, a blandit ligula laoreet. Nunc vel diam auctor, aliquet nisl eget, venenatis sapien. Maecenas non leo ut felis maximus convallis eu sed nibh. Vestibulum nisl tortor, tempor quis ex ut, lobortis accumsan orci. Aenean scelerisque dictum nisi, at mattis nunc eleifend consectetur. Fusce semper metus sit amet dui mollis consectetur. Pellentesque lorem ipsum, iaculis quis lacinia et, ultricies eget nunc. \\{editSymbol} \\Vestibulum enim enim, vestibulum id consequat vitae, imperdiet at nisi. Duis rhoncus massa sit amet mi porta, bibendum dignissim lorem pretium. Suspendisse ultricies iaculis libero, sit amet rhoncus quam dictum sit amet. Praesent maximus vehicula tortor, bibendum auctor libero blandit ut. Quisque diam mi, finibus quis diam in, elementum finibus arcu. Donec congue rhoncus mauris. Suspendisse sit amet cursus augue. Sed aliquet arcu ac ante vehicula, a blandit ligula laoreet.|Code Provision: <span class='change-bg'>{removeSymbol} 56519813</span>"
-                }
-            };
-            Session["ordAudit"] = testAudit;
-
-            rpAudit.DataSource = testAudit;
-            rpAudit.DataBind();
-        }
-
-        protected void btnSignDoc_Click(object sender, EventArgs e)
-        {
-            switch (sigType.Value)
-            {
-                case "fundsCheckBy":
-                    fundsCheckByBtnDiv.Visible = false;
-                    fundsCheckByInputGroup.Visible = true;
-                    fundsCheckEmailBtn.Visible = false;
-                    fundsCheckBySig.Text = sigName.Text;
-                    fundsCheckByDate.Text = sigDate.Text;
-                    break;
-                case "directorSupervisor":
-                    directorSupervisorBtnDiv.Visible = false;
-                    directorSupervisorInputGroup.Visible = true;
-                    directorSupervisorEmailBtn.Visible = false;
-                    directorSupervisorSig.Text = sigName.Text;
-                    directorSupervisorDate.Text = sigDate.Text;
-                    break;
-                case "cPA":
-                    cPABtnDiv.Visible = false;
-                    cPAInputGroup.Visible = true;
-                    cPAEmailBtn.Visible = false;
-                    cPASig.Text = sigName.Text;
-                    cPADate.Text = sigDate.Text;
-                    break;
-                case "obmDirector":
-                    obmDirectorBtnDiv.Visible = false;
-                    obmDirectorInputGroup.Visible = true;
-                    obmDirectorEmailBtn.Visible = false;
-                    obmDirectorSig.Text = sigName.Text;
-                    obmDirectorDate.Text = sigDate.Text;
-                    break;
-                case "mayor":
-                    mayorBtnDiv.Visible = false;
-                    mayorInputGroup.Visible = true;
-                    mayorEmailBtn.Visible = false;
-                    mayorSig.Text = sigName.Text;
-                    mayorDate.Text = sigDate.Text;
-                    break;
-            }
-
-            OrdinanceSignature signature = new OrdinanceSignature();
-            signature.OrdinanceID = Convert.ToInt32(hdnOrdID.Value);
-            signature.SignatureType = sigType.Value;
-            signature.Signature = sigName.Text;
-            signature.DateSigned = Convert.ToDateTime(sigDate.Text);
-            signature.SignatureCertified = certifySig.Checked;
-            signature.LastUpdateBy = _user.Login;
-            signature.LastUpdateDate = DateTime.Now;
-
-            List<OrdinanceSignature> insertSigList = (List<OrdinanceSignature>)Session["insertSigList"] ?? new List<OrdinanceSignature>();
-            insertSigList.Add(signature);
-            Session["insertSigList"] = insertSigList;
-            SaveFactSheet.CssClass += " emphasize";
-        }
-
-        protected void ddStatus_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            signatureSection.Visible = true;
-        }
     }
 }

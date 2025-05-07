@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="OrdinanceTracking\Accounting.cs" />
     <Compile Include="OrdinanceTracking\AccountingCode.cs" />
+    <Compile Include="OrdinanceTracking\Audit.cs" />
     <Compile Include="OrdinanceTracking\OrdinanceAudit.cs" />
     <Compile Include="OrdinanceTracking\OrdinanceSignature.cs" />
     <Compile Include="OrdinanceTracking\RevExpBool.cs" />

@@ -186,10 +186,11 @@ namespace DataLibrary
             }
             return dictionary;
         }
-        public static Dictionary<string, string> FieldLabels()
+        public static string FieldLabels(string key)
         {
             Dictionary<string, string> dictionary = new Dictionary<string, string>()
             {
+                { "StatusDescription", "Status" },
                 { "RequestDepartment", "Requesting Department" },
                 { "FirstReadDate", "First Read Date" },
                 { "RequestContact", "Requesting Contact" },
@@ -217,7 +218,26 @@ namespace DataLibrary
                 { "PAApprovalIncluded", "Purchasing Agent Approval Attached" },
                 { "OrdinanceAnalysis", "Staff Analysis" }
             };
-            return dictionary;
+            return dictionary[key];
+        }
+        public static string AuditSymbol(string key)
+        {
+            Dictionary<string, string> dictionary = new Dictionary<string, string>()
+            {
+                { 
+                    "update",
+                    "<span class='fas fa-arrow-right-long mx-1 text-warning-light fw-bold align-self-center'></span>"
+                },
+                { 
+                    "add",
+                    "<span class='fas fa-plus mx-1 text-success fw-bold align-self-center'></span>"
+                },
+                {
+                    "remove",
+                    "<span class='fas fa-minus mx-1 text-danger fw-bold align-self-center'></span>"
+                },
+            };
+            return dictionary[key];
         }
         public static List<string> Skips(string key)
         {
@@ -254,6 +274,16 @@ namespace DataLibrary
                     {
                         "SignatureID",
                         "SortOrder"
+                    }
+                },
+                {"ordAuditInsert", new List<string>()
+                    {
+                        "OrdinanceAuditID"
+                    }
+                },
+                {"auditInsert", new List<string>()
+                    {
+                        "AuditID"
                     }
                 },
                 {"ordUpdate", new List<string>()

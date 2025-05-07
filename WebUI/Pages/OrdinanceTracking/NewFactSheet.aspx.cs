@@ -1,4 +1,5 @@
 ﻿using DataLibrary;
+using DataLibrary.OrdinanceTracking;
 using ISD.ActiveDirectory;
 using Microsoft.Ajax.Utilities;
 using System;
@@ -558,7 +559,20 @@ namespace WebUI
                     finishSubmit = false;
                 }
 
-                
+                OrdinanceAudit ordAudit = new OrdinanceAudit()
+                {
+                    OrdinanceID = Convert.ToInt32(retVal),
+                    UpdateType = "Created",
+                    LastUpdateBy = $"{_user.FirstName} {_user.LastName}",
+                    LastUpdateDate = DateTime.Now,
+                };
+                int ordAuditRet = Factory.Instance.Insert(ordAudit, "sp_InsertOrdinance_Audit", Skips("ordAuditInsert"));
+                if (ordAuditRet < 1)
+                {
+                    finishSubmit = false;
+                }
+
+
                 Email.Instance.AddEmailAddress(emailList, _user.Email);
                 string formType = "Ordinance Fact Sheet";
                 string href = $"apptest/Themis/Ordinances?id={retVal}&v=view";

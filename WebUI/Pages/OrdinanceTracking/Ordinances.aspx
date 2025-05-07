@@ -148,7 +148,7 @@
 					<asp:HiddenField runat="server" ID="hdnEmail" />
 					<div runat="server" id="ordinanceTabs" class="nav nav-tabs" role="tablist">
 						<button id="factSheetTab" class="nav-link ordTabs active" data-toggle="tab" data-target="#factSheetPane" type="button" role="tab">Fact Sheet</button>
-						<button id="auditTab" class="nav-link ordTabs" data-toggle="tab" data-target="#auditPane" type="button" role="tab">History</button>
+						<button id="auditTab" class="nav-link ordTabs" data-toggle="tab" data-target="#auditPane" type="button" role="tab" onclick="FormatAudit();">History</button>
 					</div>
 
 					<div id="ordinanceTabsContent" class="tab-content p-0 border-0">
@@ -911,13 +911,13 @@
 										<tbody>
 											<asp:Repeater runat="server" ID="rpAudit" OnItemDataBound="rpAudit_ItemDataBound">
 												<ItemTemplate>
-													<tr id='auditRow<%# DataBinder.Eval(Container.DataItem, "AuditID") %>'>
-														<asp:HiddenField runat="server" ID="hdnAuditItem" Value='<%# DataBinder.Eval(Container.DataItem, "AuditID") %>' />
+													<tr id='auditRow<%# DataBinder.Eval(Container.DataItem, "OrdinanceAuditID") %>'>
+														<asp:HiddenField runat="server" ID="hdnAuditItem" Value='<%# DataBinder.Eval(Container.DataItem, "OrdinanceAuditID") %>' />
 														<td class="align-middle text-start mw-0">
-															<a href="javascript:void(0);" class="btn-accordion audit-link" data-toggle="collapse" data-target='#auditItem<%# DataBinder.Eval(Container.DataItem, "AuditID") %>'>
-																<p class="m-0"><%# DataBinder.Eval(Container.DataItem, "DateModified", "{0:MM/dd/yyyy}") %> &mdash; <%# DataBinder.Eval(Container.DataItem, "ModifiedBy") %> &mdash; <%# DataBinder.Eval(Container.DataItem, "ModificationType") %><span runat="server" class='float-end lh-1p5 fas fa-chevron-down'></span></p>
+															<a href="javascript:void(0);" class="btn-accordion audit-link" data-toggle="collapse" data-target='<%# DataBinder.Eval(Container.DataItem, "UpdateType").Equals("Updated") ?  $"#auditItem{DataBinder.Eval(Container.DataItem, "OrdinanceAuditID")}" : string.Empty%>'>
+																<p class="m-0"><%# DataBinder.Eval(Container.DataItem, "LastUpdateDate", "{0:MM/dd/yyyy}") %> &mdash; <%# DataBinder.Eval(Container.DataItem, "LastUpdateBy") %> &mdash; <%# DataBinder.Eval(Container.DataItem, "UpdateType") %><span runat="server" class='<%# DataBinder.Eval(Container.DataItem, "UpdateType").Equals("Updated") ? "float-end lh-1p5 fas fa-chevron-down" : string.Empty %>'></span></p>
 															</a>
-															<div id='auditItem<%# DataBinder.Eval(Container.DataItem, "AuditID") %>' class="collapse border-top mt-2 pt-3" data-parent='#auditRow<%# DataBinder.Eval(Container.DataItem, "AuditID") %>'>
+															<div id='auditItem<%# DataBinder.Eval(Container.DataItem, "OrdinanceAuditID") %>' class="collapse border-top mt-2 pt-3" data-parent='#auditRow<%# DataBinder.Eval(Container.DataItem, "OrdinanceAuditID") %>'>
 																<p class="m-0">Changes:</p>
 																<ul class="auditList">
 																	<asp:Repeater runat="server" ID="rpAuditDesc">
@@ -1184,6 +1184,12 @@
 
 		function testMultiple() {
 			console.log("Working");
+		}
+
+		function FormatAudit() {
+			$("[data-type='Decimal']").each(function () {
+				formatCurrencyDecimal($(this), "blur");
+			});
 		}
 
 		$('#<%= sigName.ClientID %>').on('change keyup', function () {

@@ -232,7 +232,7 @@ namespace DataLibrary
             SqlCommand cmd = new SqlCommand(sp, cn);
             if (skipStrings != null)
             {
-                foreach (var property in classType.Where(i => !skipStrings.Any(x => i.Name.Contains(x))))
+                foreach (var property in classType.Where(i => !skipStrings.Any(x => i.Name.Equals(x))))
                 {
                     cmd.Parameters.AddWithValue($"@p{property.Name}", property.GetValue(item));
                 }
