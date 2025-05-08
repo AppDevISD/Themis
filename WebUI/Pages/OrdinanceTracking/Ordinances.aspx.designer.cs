@@ -240,6 +240,33 @@ namespace WebUI
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl ordinanceTabs;
 
         /// <summary>
+        /// factSheetTab control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton factSheetTab;
+
+        /// <summary>
+        /// auditTab control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton auditTab;
+
+        /// <summary>
+        /// factSheetPane control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl factSheetPane;
+
+        /// <summary>
         /// lblOrdID control.
         /// </summary>
         /// <remarks>
@@ -1095,6 +1122,15 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.Button DeleteFactSheet;
 
         /// <summary>
+        /// auditPane control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl auditPane;
+
+        /// <summary>
         /// rpAudit control.
         /// </summary>
         /// <remarks>
@@ -1102,6 +1138,60 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater rpAudit;
+
+        /// <summary>
+        /// pnlAuditPagingP control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlAuditPagingP;
+
+        /// <summary>
+        /// lnkAuditFirstSearchP control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lnkAuditFirstSearchP;
+
+        /// <summary>
+        /// lnkAuditPreviousSearchP control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lnkAuditPreviousSearchP;
+
+        /// <summary>
+        /// lblAuditCurrentPageBottomSearchP control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblAuditCurrentPageBottomSearchP;
+
+        /// <summary>
+        /// lnkAuditNextSearchP control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lnkAuditNextSearchP;
+
+        /// <summary>
+        /// lnkAuditLastSearchP control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lnkAuditLastSearchP;
 
         /// <summary>
         /// deleteLabel control.

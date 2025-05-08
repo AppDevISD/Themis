@@ -58,6 +58,10 @@ namespace DataLibrary
         {
             get
             {
+                //if (Instance.ViewState["PgNumP"] != null)
+                //{
+                //    Debug.WriteLine($"Page Num: {Instance.ViewState["PgNumP"]}");
+                //}
                 if (Instance.ViewState["PgNumP"] != null)
                     return Convert.ToInt32(Instance.ViewState["PgNumP"]);
                 else return 1;
@@ -72,6 +76,10 @@ namespace DataLibrary
         {
             get
             {
+                //if (Instance.ViewState["PageCountP"] != null)
+                //{
+                //    Debug.WriteLine($"Page Count: {Instance.ViewState["PageCountP"]}");
+                //}
                 if (Instance.ViewState["PageCountP"] != null)
                     return Convert.ToInt32(Instance.ViewState["PageCountP"]);
                 else return 0;

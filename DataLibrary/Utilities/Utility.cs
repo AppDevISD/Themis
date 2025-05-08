@@ -216,7 +216,13 @@ namespace DataLibrary
                 { "CodeProvision", "Code Provision" },
                 { "PAApprovalRequired", "Purchasing Agent Approval Required" },
                 { "PAApprovalIncluded", "Purchasing Agent Approval Attached" },
-                { "OrdinanceAnalysis", "Staff Analysis" }
+                { "OrdinanceAnalysis", "Staff Analysis" },
+
+                { "fundsCheckBy", "Funds Check By" },
+                { "directorSupervisor", "Director/Supervisor" },
+                { "cPA", "City Purchasing Agent" },
+                { "obmDirector", "OBM Director" },
+                { "mayor", "Mayor" },
             };
             return dictionary[key];
         }

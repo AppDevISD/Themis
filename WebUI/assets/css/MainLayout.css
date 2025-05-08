@@ -470,26 +470,58 @@ option:not([selected]):not(:disabled) {
 	border: var(--bs-border-width) solid var(--custom-theme-border-color);
 }
 
+
+
+.custom-tab-div .tab-pane .form-header {
+	border-top-left-radius: 15px;
+	border-top-right-radius: 15px;
+}
+.custom-tab-div:has(> .nav-tabs) .tab-pane .form-header {
+	border-top-left-radius: 0 !important;
+}
+
 .tab-pane .card {
 	min-height: 75vh;
 	max-width: 100%;
 	border: none;
 	border-radius: 15px;
-	border-top-left-radius: 0;
 }
 
 	.tab-pane .card .card-header {
-		border-top: var(--bs-border-width) solid var(--custom-theme-border-color);
-		border-left: var(--bs-border-width) solid var(--custom-theme-border-color);
-		border-right: var(--bs-border-width) solid var(--custom-theme-border-color);
-		border-top-left-radius: 0;
+		border: var(--bs-border-width) solid var(--custom-theme-border-color);
+		border-bottom: none;
 		border-top-right-radius: 15px;
+		border-top-left-radius: 0;
 	}
 
 	.tab-pane .card .card-body {
 		border: var(--bs-border-width) solid var(--custom-theme-border-color);
 		border-top: none;
 		border-bottom-left-radius: 15px;
+		border-bottom-right-radius: 15px;
+	}
+
+.tab-pane:has(> .card .card-footer .panel) .card {
+	border-radius: 0;
+	border: var(--bs-border-width) solid var(--custom-theme-border-color);
+	border-top: none;
+}
+
+	.tab-pane:has(> .card .card-footer .panel) .card .card-body {
+		border-bottom: none !important;
+		border-radius: 0 !important;
+	}
+
+
+.tab-pane .card .card-footer {
+	border: none;
+	border-bottom-left-radius: 15px;
+	border-bottom-right-radius: 15px;
+}
+.tab-pane .card .card-footer td:first-child {
+	border-bottom-left-radius: 15px;
+}
+	.tab-pane .card .card-footer td:last-child {
 		border-bottom-right-radius: 15px;
 	}
 

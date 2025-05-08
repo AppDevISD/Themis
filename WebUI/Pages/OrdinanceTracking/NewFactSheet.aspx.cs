@@ -562,7 +562,7 @@ namespace WebUI
                 OrdinanceAudit ordAudit = new OrdinanceAudit()
                 {
                     OrdinanceID = Convert.ToInt32(retVal),
-                    UpdateType = "Created",
+                    UpdateType = "CREATED",
                     LastUpdateBy = $"{_user.FirstName} {_user.LastName}",
                     LastUpdateDate = DateTime.Now,
                 };

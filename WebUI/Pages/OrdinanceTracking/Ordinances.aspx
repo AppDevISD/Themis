@@ -15,6 +15,11 @@
 				<asp:AsyncPostBackTrigger ControlID="lnkNextSearchP" EventName="Click" />
 				<asp:AsyncPostBackTrigger ControlID="lnkLastSearchP" EventName="Click" />
 
+				<asp:AsyncPostBackTrigger ControlID="lnkAuditFirstSearchP" EventName="Click" />
+				<asp:AsyncPostBackTrigger ControlID="lnkAuditPreviousSearchP" EventName="Click" />
+				<asp:AsyncPostBackTrigger ControlID="lnkAuditNextSearchP" EventName="Click" />
+				<asp:AsyncPostBackTrigger ControlID="lnkAuditLastSearchP" EventName="Click" />
+
 				<asp:AsyncPostBackTrigger ControlID="epYes" EventName="CheckedChanged" />
 				<asp:AsyncPostBackTrigger ControlID="epNo" EventName="CheckedChanged" />
 				<asp:AsyncPostBackTrigger ControlID="scYes" EventName="CheckedChanged" />
@@ -120,10 +125,10 @@
 							<table class="table m-0" runat="server">
 								<tr>
 									<td class="text-left">
-										<asp:LinkButton ID="lnkFirstSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="first" style="width: 150px;" causesvalidation="false"><i class="fas fa-angles-left"></i>&nbsp;First</asp:LinkButton>
+										<asp:LinkButton ID="lnkFirstSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="first" data-list="ordTable" style="width: 150px;" causesvalidation="false"><i class="fas fa-angles-left"></i>&nbsp;First</asp:LinkButton>
 									</td>
 									<td class="text-center">
-										<asp:LinkButton ID="lnkPreviousSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="previous" style="width: 150px;" causesvalidation="false"><i class="fas fa-angle-left"></i>&nbsp;Previous</asp:LinkButton>
+										<asp:LinkButton ID="lnkPreviousSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="previous" data-list="ordTable" style="width: 150px;" causesvalidation="false"><i class="fas fa-angle-left"></i>&nbsp;Previous</asp:LinkButton>
 									</td>
 									<td class="text-center">
 										<div style="margin-top: 5px">
@@ -131,10 +136,10 @@
 										</div>
 									</td>
 									<td class="text-center">
-										<asp:LinkButton ID="lnkNextSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="next" style="width: 150px;" causesvalidation="false">Next&nbsp;<i class="fas fa-angle-right"></i></asp:LinkButton>
+										<asp:LinkButton ID="lnkNextSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="next" data-list="ordTable" style="width: 150px;" causesvalidation="false">Next&nbsp;<i class="fas fa-angle-right"></i></asp:LinkButton>
 									</td>
 									<td class="text-end">
-										<asp:LinkButton ID="lnkLastSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="last" style="width: 150px;" causesvalidation="false">Last&nbsp;<i class="fas fa-angles-right"></i></asp:LinkButton>
+										<asp:LinkButton ID="lnkLastSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="last" data-list="ordTable" style="width: 150px;" causesvalidation="false">Last&nbsp;<i class="fas fa-angles-right"></i></asp:LinkButton>
 									</td>
 								</tr>
 							</table>
@@ -147,12 +152,12 @@
 					<asp:HiddenField runat="server" ID="hdnEffectiveDate" />
 					<asp:HiddenField runat="server" ID="hdnEmail" />
 					<div runat="server" id="ordinanceTabs" class="nav nav-tabs" role="tablist">
-						<button id="factSheetTab" class="nav-link ordTabs active" data-toggle="tab" data-target="#factSheetPane" type="button" role="tab">Fact Sheet</button>
-						<button id="auditTab" class="nav-link ordTabs" data-toggle="tab" data-target="#auditPane" type="button" role="tab" onclick="FormatAudit();">History</button>
+						<button runat="server" id="factSheetTab" class="nav-link ordTabs active" data-toggle="tab" data-target="#factSheetPane" type="button" role="tab">Fact Sheet</button>
+						<button runat="server" id="auditTab" class="nav-link ordTabs" data-toggle="tab" data-target="#auditPane" type="button" role="tab" onclick="FormatAudit();">History</button>
 					</div>
 
 					<div id="ordinanceTabsContent" class="tab-content p-0 border-0">
-						<div id="factSheetPane" class="tab-pane fade show active" role="tabpanel">
+						<div runat="server" id="factSheetPane" class="tab-pane fade active show" role="tabpanel">
 							<%-- FORM HEADER --%>
 							<section class="container form-header bg-body text-center position-relative tab-border-header">
 								<div class="row h-100 align-items-center">
@@ -888,7 +893,7 @@
 								</div>
 							</div>
 						</div>
-						<div id="auditPane" class="tab-pane fade" role="tabpanel">
+						<div runat="server" id="auditPane" class="tab-pane fade" role="tabpanel">
 							<div class="card b-0">
 								<div class="card-header bg-body">
 									<h3><i class="fas fa-clock-rotate-left"></i>&nbsp;History</h3>
@@ -901,7 +906,7 @@
 												<th style="width: 100%; text-align: left">
 													<strong>Date &mdash; Modified By &mdash; Modification Type</strong>
 													<div class="float-end">
-														<strong class="mx-2"><span class="fas fa-plus text-success"></span> Addition</strong>
+														<strong class="mx-2"><span class="fas fa-plus text-success"></span> Added</strong>
 														<strong class="mx-2"><span class="fas fa-arrow-right-long text-warning-light"></span> Modified</strong>
 														<strong class="mx-2"><span class="fas fa-minus text-danger"></span> Removed</strong>
 													</div>
@@ -914,8 +919,8 @@
 													<tr id='auditRow<%# DataBinder.Eval(Container.DataItem, "OrdinanceAuditID") %>'>
 														<asp:HiddenField runat="server" ID="hdnAuditItem" Value='<%# DataBinder.Eval(Container.DataItem, "OrdinanceAuditID") %>' />
 														<td class="align-middle text-start mw-0">
-															<a href="javascript:void(0);" class="btn-accordion audit-link" data-toggle="collapse" data-target='<%# DataBinder.Eval(Container.DataItem, "UpdateType").Equals("Updated") ?  $"#auditItem{DataBinder.Eval(Container.DataItem, "OrdinanceAuditID")}" : string.Empty%>'>
-																<p class="m-0"><%# DataBinder.Eval(Container.DataItem, "LastUpdateDate", "{0:MM/dd/yyyy}") %> &mdash; <%# DataBinder.Eval(Container.DataItem, "LastUpdateBy") %> &mdash; <%# DataBinder.Eval(Container.DataItem, "UpdateType") %><span runat="server" class='<%# DataBinder.Eval(Container.DataItem, "UpdateType").Equals("Updated") ? "float-end lh-1p5 fas fa-chevron-down" : string.Empty %>'></span></p>
+															<a href="javascript:void(0);" class="btn-accordion audit-link" data-toggle="collapse" data-target='<%# DataBinder.Eval(Container.DataItem, "UpdateType").Equals("UPDATED") ?  $"#auditItem{DataBinder.Eval(Container.DataItem, "OrdinanceAuditID")}" : string.Empty%>'>
+																<p class="m-0"><%# DataBinder.Eval(Container.DataItem, "LastUpdateDate", "{0:MM/dd/yyyy}") %> &mdash; <%# DataBinder.Eval(Container.DataItem, "LastUpdateBy") %> &mdash; <%# DataBinder.Eval(Container.DataItem, "UpdateType") %><span runat="server" class='<%# DataBinder.Eval(Container.DataItem, "UpdateType").Equals("UPDATED") ? "float-end lh-1p5 fas fa-chevron-down" : string.Empty %>'></span></p>
 															</a>
 															<div id='auditItem<%# DataBinder.Eval(Container.DataItem, "OrdinanceAuditID") %>' class="collapse border-top mt-2 pt-3" data-parent='#auditRow<%# DataBinder.Eval(Container.DataItem, "OrdinanceAuditID") %>'>
 																<p class="m-0">Changes:</p>
@@ -933,6 +938,31 @@
 											</asp:Repeater>
 										</tbody>
 									</table>
+								</div>
+								<div class="card-footer p-0">
+									<asp:Panel ID="pnlAuditPagingP" CssClass="panel m-0" runat="server" Visible="false">
+										<table class="table m-0" runat="server">
+											<tr>
+												<td class="text-left">
+													<asp:LinkButton ID="lnkAuditFirstSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="first" data-list="auditTable" style="width: 150px;" causesvalidation="false"><i class="fas fa-angles-left"></i>&nbsp;First</asp:LinkButton>
+												</td>
+												<td class="text-center">
+													<asp:LinkButton ID="lnkAuditPreviousSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="previous" data-list="auditTable" style="width: 150px;" causesvalidation="false"><i class="fas fa-angle-left"></i>&nbsp;Previous</asp:LinkButton>
+												</td>
+												<td class="text-center">
+													<div style="margin-top: 5px">
+														<asp:Label Style="font-weight: bold; font-size: 18px" ID="lblAuditCurrentPageBottomSearchP" runat="server"></asp:Label>
+													</div>
+												</td>
+												<td class="text-center">
+													<asp:LinkButton ID="lnkAuditNextSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="next" data-list="auditTable" style="width: 150px;" causesvalidation="false">Next&nbsp;<i class="fas fa-angle-right"></i></asp:LinkButton>
+												</td>
+												<td class="text-end">
+													<asp:LinkButton ID="lnkAuditLastSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="last" data-list="auditTable" style="width: 150px;" causesvalidation="false">Last&nbsp;<i class="fas fa-angles-right"></i></asp:LinkButton>
+												</td>
+											</tr>
+										</table>
+									</asp:Panel>
 								</div>
 							</div>
 						</div>
@@ -983,11 +1013,13 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-md-10">
+						<div class="col-md-12">
 							<div class="form-group">
 								<div class="form-check form-check-inline">
-									<label for="certifySig" class="ps-2">By clicking this checkbox and the "Sign Document" button, I agree that this will serve as the electronic representation of my signature for the electronic document.</label>
-									<asp:CheckBox runat="server" ID="certifySig" CssClass="form-check-input" style="transform: scale(1.5);"/>
+									<label for="certifySig" class="ps-3">
+										By checking this box and clicking the "Sign Document" button, I affirm that I am the individual named above, or that I am authorized to sign on behalf of that individual. I understand that this action constitutes the electronic equivalent of the signature of the named individual for the purposes of this document. I certify that, to the best of my knowledge, the information provided is accurate, and I understand that any false representation may result in disciplinary action.
+									</label>
+									<asp:CheckBox runat="server" ID="certifySig" CssClass="form-check-input" style="transform: scale(1.5); margin-left: -1em;"/>
 								</div>
 							</div>
 						</div>

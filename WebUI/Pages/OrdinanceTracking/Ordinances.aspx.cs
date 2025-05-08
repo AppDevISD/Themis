@@ -26,10 +26,6 @@ namespace WebUI
         private ADUser _user = new ADUser();
         public UserInfo userInfo = new UserInfo();
         private readonly string emailList = HttpContext.Current.IsDebuggingEnabled ? "NewFactSheetEmailListTEST" : "NewFactSheetEmailList";
-        
-        public string editSymbol = "<span class='fas fa-arrow-right-long mx-1 text-warning-light fw-bold align-self-center'></span>";
-        public string addSymbol = "<span class='fas fa-plus mx-1 text-success fw-bold align-self-center'></span>";
-        public string removeSymbol = "<span class='fas fa-minus mx-1 text-danger fw-bold align-self-center'></span>";
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -51,7 +47,15 @@ namespace WebUI
                 GetAllStatuses();
                 GetAllPurchaseMethods();
                 SetStartupActives();
-                SetPagination(rpOrdinanceTable, 10);
+                Dictionary<string, LinkButton> pageBtns = new Dictionary<string, LinkButton>()
+                {
+                    { "firstBtn", lnkFirstSearchP },
+                    { "previousBtn", lnkPreviousSearchP },
+                    { "nextBtn", lnkNextSearchP },
+                    { "lastBtn", lnkLastSearchP },
+                };
+                SetPagination(rpOrdinanceTable, pageBtns, pnlPagingP, lblCurrentPageBottomSearchP, 10);
+                Session["ViewState"] = ViewState;
                 GetStartupData(userInfo.IsAdmin);
             }            
             if (Page.IsPostBack && Page.Request.Params.Get("__EVENTTARGET").Contains("adminSwitch"))
@@ -66,7 +70,15 @@ namespace WebUI
                 Session["curCmd"] = "EffectiveDate";
                 Session["curDir"] = "desc";
                 SetStartupActives();
-                SetPagination(rpOrdinanceTable, 10);
+                Dictionary<string, LinkButton> pageBtns = new Dictionary<string, LinkButton>()
+                {
+                    { "firstBtn", lnkFirstSearchP },
+                    { "previousBtn", lnkPreviousSearchP },
+                    { "nextBtn", lnkNextSearchP },
+                    { "lastBtn", lnkLastSearchP },
+                };
+                SetPagination(rpOrdinanceTable, pageBtns, pnlPagingP, lblCurrentPageBottomSearchP, 10);
+                Session["ViewState"] = ViewState;
                 filterStatus.SelectedIndex = 0;
                 filterDepartment.SelectedIndex = 0;
                 GetStartupData(userInfo.IsAdmin);
@@ -164,10 +176,19 @@ namespace WebUI
             lblNoItems.Visible = false;
             filterDepartmentDiv.Visible = !userInfo.IsAdmin || userInfo.UserView ? false : true;
         }
-        protected void SetPagination(Repeater rpTable, int ItemsPerPage)
+        protected void SetPagination(Repeater rpTable, Dictionary<string, LinkButton> pageBtns, Panel pnlPaging, Label lblPage, int ItemsPerPage, bool GetViewState = false)
+        {
+            if (GetViewState)
+            {
+                ViewState["PgNumP"] = Convert.ToInt32(Session["ViewStatePage"]);
+            }
+            SetViewState(ViewState, ItemsPerPage);
+            GetControls(pageBtns["firstBtn"], pageBtns["previousBtn"], pageBtns["nextBtn"], pageBtns["lastBtn"], rpTable, pnlPaging, lblPage);
+        }
+        protected void SetPaginationAudit(Repeater rpTable, int ItemsPerPage)
         {
             SetViewState(ViewState, ItemsPerPage);
-            GetControls(lnkFirstSearchP, lnkPreviousSearchP, lnkNextSearchP, lnkLastSearchP, rpTable, pnlPagingP, lblCurrentPageBottomSearchP);
+            GetControls(lnkAuditFirstSearchP, lnkAuditPreviousSearchP, lnkAuditNextSearchP, lnkAuditLastSearchP, rpTable, pnlAuditPagingP, lblAuditCurrentPageBottomSearchP);
         }
         public void GetStartupData(bool isAdmin)
         {
@@ -225,7 +246,14 @@ namespace WebUI
         // CONTROL CHANGES //
         protected void Filter_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SetPagination(rpOrdinanceTable, 10);
+            Dictionary<string, LinkButton> pageBtns = new Dictionary<string, LinkButton>()
+                {
+                    { "firstBtn", lnkFirstSearchP },
+                    { "previousBtn", lnkPreviousSearchP },
+                    { "nextBtn", lnkNextSearchP },
+                    { "lastBtn", lnkLastSearchP },
+                };
+            SetPagination(rpOrdinanceTable, pageBtns, pnlPagingP, lblCurrentPageBottomSearchP, 10);
             List<Ordinance> ord_list = new List<Ordinance>();
             List<Ordinance> noFilterOrdList = new List<Ordinance>();
 
@@ -457,10 +485,18 @@ namespace WebUI
                 formTableDiv.Visible = false;
                 lblNoItems.Visible = true;
             }
+            Session["ViewState"] = ViewState;
         }
         protected void SortBtn_Click(object sender, EventArgs e)
         {
-            SetPagination(rpOrdinanceTable, 10);
+            Dictionary<string, LinkButton> pageBtns = new Dictionary<string, LinkButton>()
+                {
+                    { "firstBtn", lnkFirstSearchP },
+                    { "previousBtn", lnkPreviousSearchP },
+                    { "nextBtn", lnkNextSearchP },
+                    { "lastBtn", lnkLastSearchP },
+                };
+            SetPagination(rpOrdinanceTable, pageBtns, pnlPagingP, lblCurrentPageBottomSearchP, 10);
             List<Ordinance> ord_list = new List<Ordinance>();
             ord_list = (List<Ordinance>)Session["ord_list"];
             LinkButton button = (LinkButton)sender;
@@ -505,15 +541,50 @@ namespace WebUI
             }
 
             button.Text = $"<strong>{commandText}<span runat='server' class='float-end lh-1p5 fas fa-arrow-{sortRet["arrow"]}'></span></strong>";
+            Session["ViewState"] = ViewState;
         }
         protected void paginationBtn_Click(object sender, EventArgs e)
         {
-            SetPagination(rpOrdinanceTable, 10);
-            List<Ordinance> ord_list = new List<Ordinance>();
-            ord_list = (List<Ordinance>)Session["ord_list"];
             LinkButton button = (LinkButton)sender;
             string commandName = button.Attributes["data-command"];
-            PageButtonClick(ord_list, commandName);
+            string listType = button.Attributes["data-list"];
+            Dictionary<string, LinkButton> pageBtns;
+            switch (listType)
+            {
+                case "ordTable":
+                    pageBtns = new Dictionary<string, LinkButton>()
+                    {
+                        { "firstBtn", lnkFirstSearchP },
+                        { "previousBtn", lnkPreviousSearchP },
+                        { "nextBtn", lnkNextSearchP },
+                        { "lastBtn", lnkLastSearchP },
+                    };
+                    SetPagination(rpOrdinanceTable, pageBtns, pnlPagingP, lblCurrentPageBottomSearchP, 10, false);
+                    List<Ordinance> ord_list = new List<Ordinance>();
+                    ord_list = (List<Ordinance>)Session["ord_list"];
+                    PageButtonClick(ord_list, commandName);
+                    Session["ViewState"] = ViewState;
+                    break;
+                case "auditTable":
+                    pageBtns = new Dictionary<string, LinkButton>()
+                    {
+                        { "firstBtn", lnkAuditFirstSearchP },
+                        { "previousBtn", lnkAuditPreviousSearchP },
+                        { "nextBtn", lnkAuditNextSearchP },
+                        { "lastBtn", lnkAuditLastSearchP },
+                    };
+                    SetPagination(rpAudit, pageBtns, pnlAuditPagingP, lblAuditCurrentPageBottomSearchP, 12);
+                    List<OrdinanceAudit> audit_list = new List<OrdinanceAudit>();
+                    audit_list = (List<OrdinanceAudit>)Session["ordAudit"];
+                    PageButtonClick(audit_list, commandName);
+                    factSheetTab.Attributes["class"] = "nav-link ordTabs";
+                    factSheetTab.Attributes["aria=selected"] = "false";
+                    auditTab.Attributes["class"] += " active";
+                    auditTab.Attributes["aria=selected"] = "true";
+                    factSheetPane.Attributes["class"] = "tab-pane fade";
+                    auditPane.Attributes["class"] += " active show";
+                    break;
+            }
         }
         protected void ddStatus_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -883,17 +954,22 @@ namespace WebUI
 
             OrdinanceStatus ordStatus = new OrdinanceStatus();
 
-
-
-
-
+            Session["ViewStatePage"] = ViewState["PgNumP"];
             List<OrdinanceAudit> ordAudits = Factory.Instance.GetAllLookup<OrdinanceAudit>(ordID, "sp_GetOrdinanceAuditByOrdinanceID", "OrdinanceID");
+            Dictionary<string, LinkButton> pageBtns = new Dictionary<string, LinkButton>()
+            {
+                { "firstBtn", lnkAuditFirstSearchP },
+                { "previousBtn", lnkAuditPreviousSearchP },
+                { "nextBtn", lnkAuditNextSearchP },
+                { "lastBtn", lnkAuditLastSearchP },
+            };
+            SetPagination(rpAudit, pageBtns, pnlAuditPagingP, lblAuditCurrentPageBottomSearchP, 12);
             if (ordAudits.Count > 0)
             {
                 Session["ordAudit"] = ordAudits;
-
-                rpAudit.DataSource = ordAudits;
-                rpAudit.DataBind();
+                BindDataRepeaterPagination("yes", ordAudits);
+                //rpAudit.DataSource = ordAudits;
+                //rpAudit.DataBind();
             }
             else
             {
@@ -1049,7 +1125,7 @@ namespace WebUI
                                     break;
                             }
                         }
-                        else
+                    else
                         {
                             switch (item.ClientID)
                             {
@@ -1710,7 +1786,7 @@ namespace WebUI
                                     itemString = $"{label}: <span class='change-bg'><span data-type='{item.DataType}'>{oldValue}</span> {symbol} <span data-type='{item.DataType}'>{newValue}</span></span>";
                                     break;
                                 case false:
-                                    itemString = $"<p class='m-0'>{label}:</p> <div class='d-flex change-bg mw-100 lh-1p5'> <div class='w-50 pe-2'>{oldValue}</div> {symbol} <div class='w-50 ps-2'>{newValue}</div> </div>";
+                                    itemString = $"<p class='m-0'>{label}:</p> <div class='d-flex change-bg mw-100 lh-1p5'> <div class='w-50 pe-2 text-center'>{oldValue}</div> {symbol} <div class='w-50 ps-2 text-center'>{newValue}</div> </div>";
                                     break;
                             }
                             break;
@@ -2133,17 +2209,31 @@ namespace WebUI
             }
 
             int insertSignatureVal = new int();
+            int sigAuditVal = new int();
             if (Session["insertSigList"] != null)
             {
                 List<OrdinanceSignature> insertSigList = (List<OrdinanceSignature>)Session["insertSigList"];
                 foreach (OrdinanceSignature item in insertSigList)
                 {
                     insertSignatureVal = Factory.Instance.Insert(item, "sp_InsertOrdinance_Signature", Skips("ordSignatureInsert"));
+
+                    if (insertSignatureVal > 0)
+                    {
+                        OrdinanceAudit sigAudit = new OrdinanceAudit()
+                        {
+                            OrdinanceID = Convert.ToInt32(hdnOrdID.Value),
+                            UpdateType = $"SIGNED '{item.Signature}' for {FieldLabels(item.SignatureType)}",
+                            LastUpdateBy = $"{_user.FirstName} {_user.LastName}",
+                            LastUpdateDate = DateTime.Now,
+                        };
+                        sigAuditVal = Factory.Instance.Insert(sigAudit, "sp_InsertOrdinance_Audit", Skips("ordAuditInsert"));
+                    }
                 }
             }
             else
             {
                 insertSignatureVal = 1;
+                sigAuditVal = 1;
             }
 
             List<string> addEmailList = new List<string>()
@@ -2172,7 +2262,7 @@ namespace WebUI
             OrdinanceAudit ordAudit = new OrdinanceAudit()
             {
                 OrdinanceID = Convert.ToInt32(hdnOrdID.Value),
-                UpdateType = "Updated",
+                UpdateType = "UPDATED",
                 LastUpdateBy = $"{_user.FirstName} {_user.LastName}",
                 LastUpdateDate = DateTime.Now,
             };
@@ -2274,7 +2364,22 @@ namespace WebUI
                                     audit.NewValue = Convert.ToDateTime(property.GetValue(ordinance).ToString()).ToString("MM/dd/yyyy");
                                 }
                             }
-
+                            if (audit.OldValue == "False")
+                            {
+                                audit.OldValue = "No";
+                            }
+                            if (audit.OldValue == "True")
+                            {
+                                audit.OldValue = "Yes";
+                            }
+                            if (audit.NewValue == "True")
+                            {
+                                audit.NewValue = "Yes";
+                            }
+                            if (audit.NewValue == "False")
+                            {
+                                audit.NewValue = "No";
+                            }
                             auditList.Add(audit);
                         }
                     }
@@ -2310,6 +2415,7 @@ namespace WebUI
                 updateRevAccsVal,
                 updateExpAccsVal,
                 insertSignatureVal,
+                sigAuditVal,
                 auditVal
             });
 
@@ -2388,6 +2494,24 @@ namespace WebUI
                 }
                 SaveFactSheet.CssClass = SaveFactSheet.CssClass.Replace(" emphasize", string.Empty);
                 ordView.Visible = false;
+
+                Dictionary<string, LinkButton> pageBtns = new Dictionary<string, LinkButton>()
+                {
+                    { "firstBtn", lnkFirstSearchP },
+                    { "previousBtn", lnkPreviousSearchP },
+                    { "nextBtn", lnkNextSearchP },
+                    { "lastBtn", lnkLastSearchP },
+                };
+                SetPagination(rpOrdinanceTable, pageBtns, pnlPagingP, lblCurrentPageBottomSearchP, 10, true);
+                List<Ordinance> ord_list = new List<Ordinance>();
+                ord_list = (List<Ordinance>)Session["ord_list"];
+                BindDataRepeaterPagination("no", ord_list);
+                auditTab.Attributes["class"] = "nav-link ordTabs";
+                auditTab.Attributes["aria=selected"] = "false";
+                factSheetTab.Attributes["class"] += " active";
+                factSheetTab.Attributes["aria=selected"] = "true";
+                auditPane.Attributes["class"] = "tab-pane fade";
+                factSheetPane.Attributes["class"] += " active show";
             }
         }
         protected void copyOrd_Click(object sender, EventArgs e)
