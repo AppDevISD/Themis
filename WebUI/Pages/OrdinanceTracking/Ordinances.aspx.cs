@@ -26,6 +26,14 @@ namespace WebUI
         private ADUser _user = new ADUser();
         public UserInfo userInfo = new UserInfo();
         private readonly string emailList = HttpContext.Current.IsDebuggingEnabled ? "NewFactSheetEmailListTEST" : "NewFactSheetEmailList";
+        public bool adminUnlockedOrd = false;
+        public readonly List<string> lockedStatus = new List<string>()
+        {
+            "Under Review",
+            "Being Held",
+            "Drafted",
+            "Deleted"
+        };
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -175,6 +183,7 @@ namespace WebUI
             ordView.Visible = false;
             lblNoItems.Visible = false;
             filterDepartmentDiv.Visible = !userInfo.IsAdmin || userInfo.UserView ? false : true;
+            adminUnlockedOrd = userInfo.IsAdmin && !userInfo.UserView;
         }
         protected void SetPagination(Repeater rpTable, Dictionary<string, LinkButton> pageBtns, Panel pnlPaging, Label lblPage, int ItemsPerPage, bool GetViewState = false)
         {

@@ -100,7 +100,6 @@ namespace WebUI
             {
                 adminSwitch.Checked = userInfo.UserView;
             }
-
             
             Session["UserInformation"] = userInfo;
             string userName = _user.Login.ToUpper();
