@@ -26,7 +26,7 @@ namespace WebUI
         private ADUser _user = new ADUser();
         public UserInfo userInfo = new UserInfo();
         private readonly string emailList = HttpContext.Current.IsDebuggingEnabled ? "NewFactSheetEmailListTEST" : "NewFactSheetEmailList";
-        public bool adminUnlockedOrd = false;
+        
         public readonly List<string> lockedStatus = new List<string>()
         {
             "Under Review",
@@ -133,7 +133,6 @@ namespace WebUI
                     {
                         item.Text = "Awaiting Signature...";
                     }
-                    //Page.SetFocus(ctrl.ToString());
                 }
             }
 
@@ -183,7 +182,6 @@ namespace WebUI
             ordView.Visible = false;
             lblNoItems.Visible = false;
             filterDepartmentDiv.Visible = !userInfo.IsAdmin || userInfo.UserView ? false : true;
-            adminUnlockedOrd = userInfo.IsAdmin && !userInfo.UserView;
         }
         protected void SetPagination(Repeater rpTable, Dictionary<string, LinkButton> pageBtns, Panel pnlPaging, Label lblPage, int ItemsPerPage, bool GetViewState = false)
         {
@@ -582,7 +580,7 @@ namespace WebUI
                         { "nextBtn", lnkAuditNextSearchP },
                         { "lastBtn", lnkAuditLastSearchP },
                     };
-                    SetPagination(rpAudit, pageBtns, pnlAuditPagingP, lblAuditCurrentPageBottomSearchP, 12);
+                    SetPagination(rpAudit, pageBtns, pnlAuditPagingP, lblAuditCurrentPageBottomSearchP, 11);
                     List<OrdinanceAudit> audit_list = new List<OrdinanceAudit>();
                     audit_list = (List<OrdinanceAudit>)Session["ordAudit"];
                     PageButtonClick(audit_list, commandName);
@@ -598,6 +596,10 @@ namespace WebUI
         protected void ddStatus_SelectedIndexChanged(object sender, EventArgs e)
         {
             signatureSection.Visible = true;
+            if (ddStatus.SelectedItem.Text.Equals("Rejected"))
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "OpenRejectionModal", "OpenRejectionModal();", true);
+            }
         }
         protected void PurchaseMethodSelectedIndexChanged(object sender, EventArgs e)
         {
@@ -972,7 +974,7 @@ namespace WebUI
                 { "nextBtn", lnkAuditNextSearchP },
                 { "lastBtn", lnkAuditLastSearchP },
             };
-            SetPagination(rpAudit, pageBtns, pnlAuditPagingP, lblAuditCurrentPageBottomSearchP, 12);
+            SetPagination(rpAudit, pageBtns, pnlAuditPagingP, lblAuditCurrentPageBottomSearchP, 11);
             if (ordAudits.Count > 0)
             {
                 Session["ordAudit"] = ordAudits;
@@ -1174,13 +1176,10 @@ namespace WebUI
                     ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
                     ord.StatusDescription = ordStatus.StatusDescription;
                     bool adminUser = (userInfo.IsAdmin || !userInfo.UserView) ? true : false;
+                    hdnStatusID.Value = ordStatus.StatusID.ToString();
                     if (ordStatus.StatusDescription != "New" && adminUser)
                     {
                         ddStatus.SelectedValue = ordStatus.StatusID.ToString();
-                    }
-                    else if (ordStatus.StatusDescription == "New" && adminUser)
-                    {
-                        hdnStatusID.Value = ordStatus.StatusID.ToString();
                     }
                     else
                     {
@@ -1810,6 +1809,9 @@ namespace WebUI
                                     break;
                             }
                             break;
+                        case "rejected":
+                            itemString = $"<div class='change-bg lh-1p5'> {newValue} </div>";
+                            break;
                     }
                     descList.Add(itemString);
                 }
@@ -1947,7 +1949,16 @@ namespace WebUI
 
         // SUBMITS //
         protected void SaveFactSheet_Click(object sender, EventArgs e)
-        {            
+        {
+            bool rejected;
+            try
+            {
+                rejected = Convert.ToBoolean(sender);
+            }
+            catch (Exception)
+            {
+                rejected = false;
+            }
             Ordinance ordinance = new Ordinance();
 
             ordinance.OrdinanceID = Convert.ToInt32(hdnOrdID.Value);
@@ -2273,7 +2284,7 @@ namespace WebUI
                 OrdinanceID = Convert.ToInt32(hdnOrdID.Value),
                 UpdateType = "UPDATED",
                 LastUpdateBy = $"{_user.FirstName} {_user.LastName}",
-                LastUpdateDate = DateTime.Now,
+                LastUpdateDate = rejected ? DateTime.Now.AddSeconds(-2) : DateTime.Now,
             };
             List<string> baseData = new List<string>()
             {
@@ -2289,7 +2300,7 @@ namespace WebUI
             {
                 OrdinanceStatus oldOrdStatus = Session["OriginalStatus"] as OrdinanceStatus;
                 PropertyInfo[] properties = typeof(OrdinanceStatus).GetProperties();
-                if (properties.Any(i => !i.GetValue(ordStatus).Equals(i.GetValue(oldOrdStatus)) && !baseData.Any(b => b.Contains(i.Name))))
+                if (properties.Any(i => !i.GetValue(ordStatus).Equals(i.GetValue(oldOrdStatus)) && !baseData.Any(b => b.Contains(i.Name))) && !rejected)
                 {
                     if (ordAuditVal < 0)
                     {
@@ -2432,8 +2443,16 @@ namespace WebUI
             {
                 Session["SubmitStatus"] = "success";
                 Session["ToastColor"] = "text-bg-success";
-                Session["ToastMessage"] = "Form Saved!";
-                Email.Instance.SendEmail(newEmail, emailList);
+                switch (rejected)
+                {
+                    case true:
+                        Session["ToastMessage"] = "Rejection Sent!";
+                        break;
+                    case false:
+                        Session["ToastMessage"] = "Form Saved!";
+                        Email.Instance.SendEmail(newEmail, emailList);
+                        break;
+                }
                 Response.Redirect("./Ordinances");
             }
             else
@@ -2528,5 +2547,86 @@ namespace WebUI
             Response.Redirect($"./NewFactSheet?id={hdnOrdID.Value}");
         }
 
+        protected void sendRejection_Click(object sender, EventArgs e)
+        {
+            List<string> addEmailList = new List<string>()
+            {
+                _user.Email.ToLower(),
+                requestEmail.Text.ToLower()
+            };
+            foreach (string item in addEmailList)
+            {
+                Email.Instance.AddEmailAddress(emailList, item);
+            }
+            string formType = "Ordinance Fact Sheet";
+            string href = $"apptest/Themis/Ordinances?id={hdnOrdID.Value}&v=edit";
+            string ordinanceNumInfo = !ordinanceNumber.Text.IsNullOrWhiteSpace() ? $"<p style='margin: 0; line-height: 1.5;'><span>Ordinance: {ordinanceNumber.Text}</span></p>" : string.Empty;
+            string reason = rejectionReason.Text;
+
+            Email newEmail = new Email();
+
+            newEmail.EmailSubject = $"{formType} REJECTED";
+            newEmail.EmailTitle = $"{formType} REJECTED";
+            newEmail.EmailText = $"<p style='margin: 0;'><span style='font-size:36.0pt;font-family:\"Times New Roman\",serif;color:#2D71D5;font-weight:bold;'>THΣMIS</span></p><div align=center style='text-align:center'><span><hr size='2' width='100%' align='center' style='margin-top: 0;'></span></div><p><span>An <b>{formType}</b> has been REJECTED by <b>{_user.FirstName} {_user.LastName}</b>.</span></p><br /><p style='margin: 0; line-height: 1.5;'><span>ID: {hdnOrdID.Value}</span></p>{ordinanceNumInfo}<p style='margin: 0; line-height: 1.5;'><span>Date: {DateTime.Now}</span></p><p><span>Status: Rejected</span></p><br /><p style='margin: 0; line-height: 1.5;'><span>Rejection Reason:</span></p><p style='margin: 0; line-height: 1.5;'><span>{rejectionReason.Text}</span></p><p><span>Please click the button below to review the document and make changes if necessary:</span></p><table border='0' cellpadding='0' cellspacing='0' style='border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;'><tr><td style='font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #0d6efd; border-radius: 5px; text-align: center;' valign='top' bgcolor='#0d6efd' align='center'><a href='{href}' target='_blank' style='display: inline-block; color: #ffffff; background-color: #0d6efd; border: solid 1px #0d6efd; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 15px 25px; text-transform: capitalize; border-color: #0d6efd; '>View Ordinance</a></td></tr></table><br /><p><span>If you believe this is a mistake or have any questions please contact the rejector at <a href='mailto:{_user.Email.ToLower()}'>{_user.Email.ToLower()}</a></span></p>";
+
+            Email.Instance.SendEmail(newEmail, emailList);
+
+            int rejectedOrdAuditVal = new int();
+            int rejectedAuditVal = new int();
+            OrdinanceAudit rejectedAudit = new OrdinanceAudit()
+            {
+                OrdinanceID = Convert.ToInt32(hdnOrdID.Value),
+                UpdateType = "REJECTED",
+                LastUpdateBy = $"{_user.FirstName} {_user.LastName}",
+                LastUpdateDate = DateTime.Now,
+            };
+            rejectedOrdAuditVal = Factory.Instance.Insert(rejectedAudit, "sp_InsertOrdinance_Audit", Skips("ordAuditInsert"));
+            if (rejectedOrdAuditVal > 0)
+            {
+                Audit audit = new Audit()
+                {
+                    OrdinanceAuditID = rejectedOrdAuditVal,
+                    Label = "RejectionReason",
+                    DataType = "String",
+                    Type = "rejected",
+                    OldValue = string.Empty,
+                    NewValue = reason
+                };
+               rejectedAuditVal = Factory.Instance.Insert(audit, "sp_InsertAuditDescription", Skips("auditInsert"));
+            }
+            if (rejectedAuditVal > 0)
+            {
+                SaveFactSheet_Click(true, e);
+            }
+        }
+        protected void cancelRejection_Click(object sender, EventArgs e)
+        {
+            ddStatus.SelectedValue = hdnStatusID.Value;
+        }
+
+        public bool adminUnlockedOrd(string status)
+        {
+            bool unlock = false;
+            if (userInfo.IsAdmin && !userInfo.UserView)
+            {
+                if (status.Equals("Deleted"))
+                {
+                    unlock = false;
+                }
+                else
+                {
+                    unlock = true;
+                }
+            }
+            else if (lockedStatus.Any(i => i.Equals(status)))
+            {
+                unlock = false;
+            }
+            else
+            {
+                unlock = true;
+            }
+            return unlock;
+        }
     }
 }

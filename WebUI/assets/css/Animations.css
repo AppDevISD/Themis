@@ -78,7 +78,7 @@
 }
 
 .emphasize:not(:hover) {
-	animation: ephasize 1s ease-in-out infinite;
+	animation: emphasize 1s ease-in-out infinite;
 }
 
 @keyframes fade-in {
@@ -135,7 +135,7 @@
 	}
 }
 
-@keyframes ephasize {
+@keyframes emphasize {
 	0% {
 		transform: scale(1);
 	}

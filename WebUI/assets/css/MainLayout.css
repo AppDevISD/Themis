@@ -36,8 +36,9 @@
 }
 
 html {
+	width: 100vw;
 	height: 100vh;
-	overflow: auto;
+	overflow: hidden auto;
 	scroll-behavior: auto !important;
 }
 
@@ -470,12 +471,11 @@ option:not([selected]):not(:disabled) {
 	border: var(--bs-border-width) solid var(--custom-theme-border-color);
 }
 
-
-
 .custom-tab-div .tab-pane .form-header {
 	border-top-left-radius: 15px;
 	border-top-right-radius: 15px;
 }
+
 .custom-tab-div:has(> .nav-tabs) .tab-pane .form-header {
 	border-top-left-radius: 0 !important;
 }
@@ -489,7 +489,7 @@ option:not([selected]):not(:disabled) {
 
 	.tab-pane .card .card-header {
 		border: var(--bs-border-width) solid var(--custom-theme-border-color);
-		border-bottom: none;
+		border-bottom: var(--bs-card-border-width) solid var(--bs-card-border-color);
 		border-top-right-radius: 15px;
 		border-top-left-radius: 0;
 	}
@@ -502,8 +502,6 @@ option:not([selected]):not(:disabled) {
 	}
 
 .tab-pane:has(> .card .card-footer .panel) .card {
-	border-radius: 0;
-	border: var(--bs-border-width) solid var(--custom-theme-border-color);
 	border-top: none;
 }
 
@@ -512,6 +510,10 @@ option:not([selected]):not(:disabled) {
 		border-radius: 0 !important;
 	}
 
+	.tab-pane:has(> .card .card-footer .panel) .card .card-footer {
+		border: var(--bs-border-width) solid var(--custom-theme-border-color);
+		border-top: var(--bs-card-border-width) solid var(--bs-card-border-color);
+	}
 
 .tab-pane .card .card-footer {
 	border: none;
@@ -533,9 +535,35 @@ option:not([selected]):not(:disabled) {
 		margin: 0;
 	}
 
-.card-footer .panel, .card-footer .table {
-border-bottom: transparent;
+.card-body {
+	border-radius: var(--bs-border-radius);
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
 }
+
+.card:has(> .card-footer .panel) .card-body {
+	border-radius: 0;
+}
+
+.card-footer .panel, .card-footer .table {
+	border-bottom: transparent;
+}
+
+.card-footer {
+	border: none;
+}
+
+	.card-footer:has(> .panel) {
+		border-top: var(--bs-card-border-width) solid var(--bs-card-border-color)
+	}
+
+	.card-footer td:first-child {
+		border-bottom-left-radius: 15px;
+	}
+
+	.card-footer td:last-child {
+		border-bottom-right-radius: 15px;
+	}
 
 .nav-tabs {
 	border-bottom: none;
@@ -646,7 +674,11 @@ border-bottom: transparent;
 	text-decoration: none;
 	background: 0 0;
 	border: 0;
-	transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out;
+	transition: color .15s ease-in-out, background-color .15s ease-in-out, border .15s ease-in-out;
+}
+
+.audit-content {
+	transition: all .3s;
 }
 
 

@@ -35,6 +35,8 @@
 				<asp:AsyncPostBackTrigger ControlID="sortStatus" EventName="Click" />
 				<asp:AsyncPostBackTrigger ControlID="btnSendSigEmail" EventName="Click" />
 				<asp:AsyncPostBackTrigger ControlID="btnSignDoc" EventName="Click" />
+				<asp:AsyncPostBackTrigger ControlID="btnCancelRejection" EventName="Click" />
+				<asp:PostBackTrigger ControlID="btnSendRejection" />
 
 				<asp:PostBackTrigger ControlID="UploadDocBtn" />
 				<asp:PostBackTrigger ControlID="SaveFactSheet" />
@@ -102,7 +104,7 @@
 												<asp:Label ID="ordTableStatus" Text='<%# DataBinder.Eval(Container.DataItem, "StatusDescription") %>' runat="server" />
 											</td>
 											<td class="align-middle d-flex justify-content-around">
-												<asp:LinkButton runat="server" ID="editOrd" CommandName="edit" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' CssClass="ordActionBtn" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="Edit" Visible='<%# !lockedStatus.Any(i => i.Equals(DataBinder.Eval(Container.DataItem, "StatusDescription"))) || adminUnlockedOrd %>'><i class="fas fa-pen-to-square text-warning-light"></i></asp:LinkButton>
+												<asp:LinkButton runat="server" ID="editOrd" CommandName="edit" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' CssClass="ordActionBtn" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="Edit" Visible='<%# adminUnlockedOrd(DataBinder.Eval(Container.DataItem, "StatusDescription").ToString()) %>'><i class="fas fa-pen-to-square text-warning-light"></i></asp:LinkButton>
 												<asp:LinkButton runat="server" ID="viewOrd" CommandName="view" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' CssClass="ordActionBtn" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="View"><i class="fas fa-magnifying-glass text-info"></i></asp:LinkButton>
 												<asp:LinkButton runat="server" ID="downloadOrd" CommandName="download" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' CssClass="ordActionBtn" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="Download"><i class="fas fa-download text-primary"></i></asp:LinkButton>
 											</td>
@@ -898,7 +900,6 @@
 								<div class="card-header bg-body">
 									<h3><i class="fas fa-clock-rotate-left"></i>&nbsp;History</h3>
 								</div>
-
 								<div class="card-body bg-body-tertiary">
 									<table id="historyTable" class="table table-bordered table-standard table-hover text-center" style="padding: 0px; margin: 0px">
 										<thead>
@@ -916,14 +917,18 @@
 										<tbody>
 											<asp:Repeater runat="server" ID="rpAudit" OnItemDataBound="rpAudit_ItemDataBound">
 												<ItemTemplate>
-													<tr id='auditRow<%# DataBinder.Eval(Container.DataItem, "OrdinanceAuditID") %>'>
+													<tr id='auditRow<%# DataBinder.Eval(Container.DataItem, "OrdinanceAuditID") %>' class="accordion">
 														<asp:HiddenField runat="server" ID="hdnAuditItem" Value='<%# DataBinder.Eval(Container.DataItem, "OrdinanceAuditID") %>' />
 														<td class="align-middle text-start mw-0">
-															<a href="javascript:void(0);" class="btn-accordion audit-link" data-toggle="collapse" data-target='<%# DataBinder.Eval(Container.DataItem, "UpdateType").Equals("UPDATED") ?  $"#auditItem{DataBinder.Eval(Container.DataItem, "OrdinanceAuditID")}" : string.Empty%>'>
-																<p class="m-0"><%# DataBinder.Eval(Container.DataItem, "LastUpdateDate", "{0:MM/dd/yyyy}") %> &mdash; <%# DataBinder.Eval(Container.DataItem, "LastUpdateBy") %> &mdash; <%# DataBinder.Eval(Container.DataItem, "UpdateType") %><span runat="server" class='<%# DataBinder.Eval(Container.DataItem, "UpdateType").Equals("UPDATED") ? "float-end lh-1p5 fas fa-chevron-down" : string.Empty %>'></span></p>
+															<a href="javascript:void(0);" class="btn-accordion audit-link" data-toggle="collapse" data-target='<%# DataBinder.Eval(Container.DataItem, "UpdateType").Equals("UPDATED") || DataBinder.Eval(Container.DataItem, "UpdateType").Equals("REJECTED") ?  $"#auditItem{DataBinder.Eval(Container.DataItem, "OrdinanceAuditID")}" : string.Empty %>'>
+																<p class="m-0"><%# DataBinder.Eval(Container.DataItem, "LastUpdateDate", "{0:MM/dd/yyyy}") %> &mdash; <%# DataBinder.Eval(Container.DataItem, "LastUpdateBy") %> &mdash; <%# DataBinder.Eval(Container.DataItem, "UpdateType") %>
+																	<span runat="server" class='<%# DataBinder.Eval(Container.DataItem, "UpdateType").Equals("UPDATED") || DataBinder.Eval(Container.DataItem, "UpdateType").Equals("REJECTED") ? "float-end lh-1p5 fas fa-chevron-down" : string.Empty %>'>
+																	</span>
+																</p>
 															</a>
-															<div id='auditItem<%# DataBinder.Eval(Container.DataItem, "OrdinanceAuditID") %>' class="collapse border-top mt-2 pt-3" data-parent='#auditRow<%# DataBinder.Eval(Container.DataItem, "OrdinanceAuditID") %>'>
-																<p class="m-0">Changes:</p>
+															<div id='auditItem<%# DataBinder.Eval(Container.DataItem, "OrdinanceAuditID") %>' class="collapse audit-content" data-parent='#auditRow<%# DataBinder.Eval(Container.DataItem, "OrdinanceAuditID") %>'>
+																<br />
+																<p class="m-0"><%# DataBinder.Eval(Container.DataItem, "UpdateType").Equals("REJECTED") ? "Rejection Reason:" : "Changes:" %></p>
 																<ul class="auditList">
 																	<asp:Repeater runat="server" ID="rpAuditDesc">
 																		<ItemTemplate>
@@ -1056,6 +1061,31 @@
 					<asp:Button ID="btnSendSigEmail" runat="server" Text="Send" CssClass="btn btn-success" CausesValidation="false" UseSubmitBehavior="false" Visible="true" OnClick="btnSendSigEmail_Click" data-dismiss="modal" OnClientClick="ShowEmailToast();" />
 					<input runat="server" id="sigBtnTarget" type="hidden" name="sigBtnTarget"  />
 					<input runat="server" id="sigBtnLabel" type="hidden" name="sigBtnLabel"  />
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- REJECTION MODAL -->
+	<div class="modal fade" id="rejectionModal" tabindex="-1" role="dialog" aria-labelledby="rejectionModalLabel">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="rejectionModalLabel">Rejection</h4>
+				</div>
+				<div class="modal-body bg-body-tertiary">
+					<div class="row mb-2">
+						<div class="col-md-12">
+							<div class="form-group">
+								<label for="rejectionReason">Rejection Details/Changes Needed:</label>
+								<asp:TextBox runat="server" ID="rejectionReason" CssClass="form-control" TextMode="MultiLine" Rows="8" AutoCompleteType="Disabled"></asp:TextBox>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<asp:Button ID="btnCancelRejection" runat="server" Text="Cancel" CssClass="btn btn-secondary" CausesValidation="false" UseSubmitBehavior="false" Visible="true" data-dismiss="modal" OnClick="cancelRejection_Click" />
+					<asp:Button ID="btnSendRejection" runat="server" Text="Send Rejection" CssClass="btn btn-primary" CausesValidation="false" UseSubmitBehavior="false" Visible="true" OnClick="sendRejection_Click" OnClientClick="ShowSubmitToast();" />
 				</div>
 			</div>
 		</div>
@@ -1222,6 +1252,10 @@
 			$("[data-type='Decimal']").each(function () {
 				formatCurrencyDecimal($(this), "blur");
 			});
+		}
+
+		function OpenRejectionModal() {
+			$('#rejectionModal').modal('show');
 		}
 
 		$('#<%= sigName.ClientID %>').on('change keyup', function () {

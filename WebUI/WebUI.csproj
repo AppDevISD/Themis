@@ -130,6 +130,7 @@
     <Content Include="assets\js\Ordinances.js" />
     <Content Include="assets\js\Site.js" />
     <Content Include="GenericError.aspx" />
+    <Content Include="AccessDenied.aspx" />
     <Content Include="Scripts\Helpers\CSharp\FileUploadSaving.asmx" />
     <Content Include="Pages\OrdinanceTracking\NewFactSheet.aspx" />
     <Content Include="Pages\OrdinanceTracking\Ordinances.aspx" />
@@ -191,6 +192,13 @@
     </Compile>
     <Compile Include="GenericError.aspx.designer.cs">
       <DependentUpon>GenericError.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AccessDenied.aspx.cs">
+      <DependentUpon>AccessDenied.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AccessDenied.aspx.designer.cs">
+      <DependentUpon>AccessDenied.aspx</DependentUpon>
     </Compile>
     <Compile Include="Reports\OrdinanceTracking\OrdinanceData.Designer.cs">
       <AutoGen>True</AutoGen>

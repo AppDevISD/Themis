@@ -223,6 +223,8 @@ namespace DataLibrary
                 { "cPA", "City Purchasing Agent" },
                 { "obmDirector", "OBM Director" },
                 { "mayor", "Mayor" },
+
+                { "RejectionReason", "Rejection Reason" }
             };
             return dictionary[key];
         }
@@ -242,6 +244,7 @@ namespace DataLibrary
                     "remove",
                     "<span class='fas fa-minus mx-1 text-danger fw-bold align-self-center'></span>"
                 },
+                { "rejected", "" }
             };
             return dictionary[key];
         }
