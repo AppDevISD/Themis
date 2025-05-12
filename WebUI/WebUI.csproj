@@ -154,7 +154,6 @@
     <Content Include="assets\css\Animations.css" />
     <Content Include="assets\js\Charts.js" />
     <Content Include="Global.asax" />
-    <None Include="assets\images\icons\favicon\manifest.json" />
     <Content Include="Scripts\Helpers\JS\InactiveTimer.js" />
     <Content Include="Scripts\Helpers\JS\RequiredFieldsAndActivePage.js" />
     <Content Include="Scripts\Helpers\JS\Settings.js" />
@@ -274,6 +273,7 @@
     <Content Include="assets\Themes\bootstrap-scss\_forms.scss" />
     <Content Include="assets\Themes\bootstrap-scss\mixins\_transition.scss" />
     <Content Include="assets\Themes\bootstrap-scss\mixins\_border-radius.scss" />
+    <Content Include="assets\images\icons\favicon\manifest.json" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>
@@ -313,6 +313,10 @@
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>assets\images\icons\favicon\favicon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />

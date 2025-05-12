@@ -23,7 +23,8 @@ namespace WebUI
                 Session["Error"] = httpException;
                 StackFrame frame = trace.GetFrame(0);
                 int httpCode = httpException?.GetHttpCode() ?? 500;
-                Response.Redirect($"./GenericError?err={httpCode}");
+
+                Response.Redirect(httpCode != 403 ? $"./GenericError?err={httpCode}" : $"./AccessDenied?err={httpCode}");
             }
             catch (Exception ex)
             {

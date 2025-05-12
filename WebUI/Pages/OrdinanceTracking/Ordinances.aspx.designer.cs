@@ -672,6 +672,15 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.RadioButton paApprovalAttachedNo;
 
         /// <summary>
+        /// revTableHTML control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl revTableHTML;
+
+        /// <summary>
         /// rpRevenueTable control.
         /// </summary>
         /// <remarks>
@@ -1192,6 +1201,15 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton lnkAuditLastSearchP;
+
+        /// <summary>
+        /// hdnTable control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnTable;
 
         /// <summary>
         /// deleteLabel control.

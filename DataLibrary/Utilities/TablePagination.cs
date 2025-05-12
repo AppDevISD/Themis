@@ -195,8 +195,8 @@ namespace DataLibrary
                 pDSSearch.CurrentPageIndex = SearchPgNumP - 1;
                 Instance.FirstBtn.Enabled = !pDSSearch.IsFirstPage;
                 Instance.LastBtn.Enabled = !pDSSearch.IsLastPage;
-                Instance.NextBtn.Enabled = !pDSSearch.IsLastPage;
-                Instance.PreviousBtn.Enabled = !pDSSearch.IsFirstPage;
+                Instance.NextBtn.Enabled = SearchPgNumP < pDSSearch.PageCount;
+                Instance.PreviousBtn.Enabled = SearchPgNumP > 1;
                 Instance.TableRepeater.DataSource = pDSSearch;
                 Instance.TableRepeater.DataBind();
             }

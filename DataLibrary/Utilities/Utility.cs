@@ -217,6 +217,7 @@ namespace DataLibrary
                 { "PAApprovalRequired", "Purchasing Agent Approval Required" },
                 { "PAApprovalIncluded", "Purchasing Agent Approval Attached" },
                 { "OrdinanceAnalysis", "Staff Analysis" },
+                { "SupportingDocumentation", "Supporting Documentation" },
 
                 { "fundsCheckBy", "Funds Check By" },
                 { "directorSupervisor", "Director/Supervisor" },

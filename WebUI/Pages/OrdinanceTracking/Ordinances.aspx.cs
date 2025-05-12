@@ -234,8 +234,8 @@ namespace WebUI
             if (Session["addOrdDocs"] != null && Session["ordDocs"] != null)
             {
                 List<OrdinanceDocument> originalOrdDocList = Session["ordDocs"] as List<OrdinanceDocument>;
-                List<OrdinanceDocument> ordDocList = Session["addOrdDocs"] as List<OrdinanceDocument>;
-                originalOrdDocList.AddRange(ordDocList);
+                //List<OrdinanceDocument> ordDocList = Session["addOrdDocs"] as List<OrdinanceDocument>;
+                //originalOrdDocList.AddRange(ordDocList);
                 rpSupportingDocumentation.DataSource = originalOrdDocList;
                 rpSupportingDocumentation.DataBind();
             }
@@ -673,6 +673,7 @@ namespace WebUI
             }
             Session["addOrdDocs"] = ordDocList;
             originalOrdDocList.AddRange(ordDocList);
+            Session["ordDocs"] = originalOrdDocList;
             rpSupportingDocumentation.DataSource = originalOrdDocList;
             rpSupportingDocumentation.DataBind();
         }
@@ -1747,6 +1748,9 @@ namespace WebUI
             HiddenField hdnAuditItem = (HiddenField)e.Item.FindControl("hdnAuditItem");
             int auditID = Convert.ToInt32(hdnAuditItem.Value);
             Repeater rpAuditDesc = (Repeater)e.Item.FindControl("rpAuditDesc");
+            //HtmlTable test = (HtmlTable)e.Item.FindControl("revAuditTable");
+            //Table newTable = new Table();
+            //Debug.WriteLine(test);
 
             List<OrdinanceAudit> ordAudits = Session["ordAudit"] as List<OrdinanceAudit>;
             List<Audit> audits = Factory.Instance.GetAllLookup<Audit>(auditID, "sp_GetAuditDescriptionByID", "OrdinanceAuditID");
@@ -1774,6 +1778,14 @@ namespace WebUI
                     {
                         newValue = null;
                     }
+                    //switch (item.AccountingType != null || item.AccountingType != string.Empty)
+                    //{
+                    //    case true:
+                    //        newTable.Rows.Add(new TableRow());
+                    //        break;
+                    //    case false:
+                    //        break;
+                    //}
                     switch (item.Type)
                     {
                         case "add":
@@ -2024,14 +2036,18 @@ namespace WebUI
             int addDocsVal = new int();
             int addUploadedDocsVal = new int();
             List<OrdinanceDocument> ordDocs = Session["addOrdDocs"] as List<OrdinanceDocument>;
+            List<string> addDocNames = new List<string>();
             if (Session["addOrdDocs"] != null)
             {
                 foreach (OrdinanceDocument ordDoc in ordDocs)
                 {
                     ordDoc.OrdinanceID = Convert.ToInt32(hdnOrdID.Value);
                     addUploadedDocsVal = Factory.Instance.Insert(ordDoc, "sp_InsertOrdinance_Document", Skips("ordDocumentInsert"));
-                    //int ret = 1;
-                    if (addUploadedDocsVal < 1)
+                    if (addUploadedDocsVal > 0)
+                    {
+                        addDocNames.Add(ordDoc.DocumentName);
+                    }
+                    else if (addUploadedDocsVal < 1)
                     {
                         break;
                     }
@@ -2058,8 +2074,11 @@ namespace WebUI
                     ordDoc.EffectiveDate = DateTime.Now;
                     ordDoc.ExpirationDate = DateTime.MaxValue;
                     addDocsVal = Factory.Instance.Insert(ordDoc, "sp_InsertOrdinance_Document", Skips("ordDocumentInsert"));
-                    //int ret = 1;
-                    if (addDocsVal < 1)
+                    if (addDocsVal > 0)
+                    {
+                        addDocNames.Add(ordDoc.DocumentName);
+                    }
+                    else if (addDocsVal < 1)
                     {
                         break;
                     }
@@ -2072,6 +2091,7 @@ namespace WebUI
 
             int removeDocVal = new int();
             List<OrdinanceDocument> removeDocs = new List<OrdinanceDocument>();
+            List<string> removeDocNames = new List<string>();
             if (Session["RemoveDocs"] != null)
             {
                 removeDocs = Session["RemoveDocs"] as List<OrdinanceDocument>;
@@ -2081,7 +2101,11 @@ namespace WebUI
                 foreach (OrdinanceDocument item in removeDocs)
                 {
                     removeDocVal = Factory.Instance.Expire(item, "sp_UpdateOrdinance_Document");
-                    if (removeDocVal < 1)
+                    if (removeDocVal > 0)
+                    {
+                        removeDocNames.Add(item.DocumentName);
+                    }
+                    else if (removeDocVal < 1)
                     {
                         break;
                     }
@@ -2314,7 +2338,9 @@ namespace WebUI
                             {
                                 OrdinanceAuditID = ordAuditVal,
                                 Label = property.Name,
-                                DataType = property.GetValue(ordStatus).GetType().Name
+                                DataType = property.GetValue(ordStatus).GetType().Name,
+                                AccountingType = string.Empty,
+                                AccountingRow = 0
                             };
                             audit.Type = "update";
                             audit.OldValue = property.GetValue(oldOrdStatus).ToString();
@@ -2405,6 +2431,52 @@ namespace WebUI
                     }
                 }
                 baseData.Remove("StatusDescription");
+            }
+            if (addDocNames.Count > 0)
+            {
+                if (ordAuditVal < 0)
+                {
+                    ordAuditVal = Factory.Instance.Insert(ordAudit, "sp_InsertOrdinance_Audit", Skips("ordAuditInsert"));
+                }
+                if (ordAuditVal > 0)
+                {
+                    foreach (string item in addDocNames)
+                    {
+                        Audit audit = new Audit()
+                        {
+                            OrdinanceAuditID = ordAuditVal,
+                            Label = "SupportingDocumentation",
+                            DataType = "String",
+                            Type = "add",
+                            OldValue = string.Empty,
+                            NewValue = item
+                        };
+                        auditList.Add(audit);
+                    }
+                }
+            }
+            if (removeDocNames.Count > 0)
+            {
+                if (ordAuditVal < 0)
+                {
+                    ordAuditVal = Factory.Instance.Insert(ordAudit, "sp_InsertOrdinance_Audit", Skips("ordAuditInsert"));
+                }
+                if (ordAuditVal > 0)
+                {
+                    foreach (string item in removeDocNames)
+                    {
+                        Audit audit = new Audit()
+                        {
+                            OrdinanceAuditID = ordAuditVal,
+                            Label = "SupportingDocumentation",
+                            DataType = "String",
+                            Type = "remove",
+                            OldValue = item,
+                            NewValue = string.Empty
+                        };
+                        auditList.Add(audit);
+                    }
+                }
             }
 
             if (auditList.Count > 0)

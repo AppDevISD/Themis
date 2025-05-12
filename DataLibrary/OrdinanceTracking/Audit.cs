@@ -15,5 +15,7 @@ namespace DataLibrary.OrdinanceTracking
         public string OldValue { get; set; }
         public string NewValue { get; set; }
         public string DataType { get; set; }
+        public string AccountingType { get; set; }
+        public int AccountingRow { get; set; }
     }
 }

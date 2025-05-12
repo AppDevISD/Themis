@@ -105,7 +105,7 @@
 											</td>
 											<td class="align-middle d-flex justify-content-around">
 												<asp:LinkButton runat="server" ID="editOrd" CommandName="edit" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' CssClass="ordActionBtn" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="Edit" Visible='<%# adminUnlockedOrd(DataBinder.Eval(Container.DataItem, "StatusDescription").ToString()) %>'><i class="fas fa-pen-to-square text-warning-light"></i></asp:LinkButton>
-												<asp:LinkButton runat="server" ID="viewOrd" CommandName="view" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' CssClass="ordActionBtn" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="View"><i class="fas fa-magnifying-glass text-info"></i></asp:LinkButton>
+												<asp:LinkButton runat="server" ID="viewOrd" CommandName="view" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' CssClass="ordActionBtn" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="View" OnClientClick="SetHiddenTable();"><i class="fas fa-magnifying-glass text-info"></i></asp:LinkButton>
 												<asp:LinkButton runat="server" ID="downloadOrd" CommandName="download" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' CssClass="ordActionBtn" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="Download"><i class="fas fa-download text-primary"></i></asp:LinkButton>
 											</td>
 										</tr>
@@ -522,7 +522,7 @@
 										<%-- FIRST ROW --%>
 										<div class="row mb-3">
 											<%-- REVENUE --%>
-											<div class="col-md-6hf form-table">
+											<div runat="server" id="revTableHTML" class="col-md-6hf form-table">
 												<label for="revenueTable">Revenue</label>
 												<%-- REVENUE TABLE --%>
 												<table id="revenueTable" class="table table-bordered table-striped table-hover text-center" style="padding: 0px; margin: 0px">
@@ -884,7 +884,7 @@
 										<div class="row mt-3 mb-3 text-center">
 											<%-- SAVE BUTTON --%>
 											<div class="col-md-6">
-												<asp:Button runat="server" ID="SaveFactSheet" UseSubmitBehavior="true" CssClass="btn btn-primary float-end" Width="50%" Text="Save" OnClick="SaveFactSheet_Click" OnClientClick="ShowSubmitToast();" />
+												<asp:Button runat="server" ID="SaveFactSheet" UseSubmitBehavior="true" CssClass="btn btn-primary float-end" Width="50%" Text="Save" OnClick="SaveFactSheet_Click" OnClientClick="saveFactSheet();" />
 											</div>
 											<%-- DELETE BUTTON --%>
 											<div class="col-md-6">
@@ -932,9 +932,31 @@
 																<ul class="auditList">
 																	<asp:Repeater runat="server" ID="rpAuditDesc">
 																		<ItemTemplate>
-																			<li><%# Container.DataItem %></li>
+																			<li>
+																				<%# Container.DataItem %>
+																			</li>
 																		</ItemTemplate>
 																	</asp:Repeater>
+																	<%--<li>
+																		<p class="m-0">Revenue</p>
+																		<table runat="server" id="revAuditTable" class="table table-bordered table-striped table-hover text-center w-75" style="padding: 0px; margin: 0px">
+																			<thead>
+																				<tr>
+																					<th style="width: 13%; text-align: center">Fund</th>
+																					<th style="width: 15%; text-align: center">Agency</th>
+																					<th style="width: 15%; text-align: center">Org</th>
+																					<th style="width: 16%; text-align: center">Activity</th>
+																					<th style="width: 15%; text-align: center">Object</th>
+																					<th style="width: 18%; text-align: center">Amount</th>
+																				</tr>
+																			</thead>
+																		</table>
+																	</li>--%>
+																	<%--<asp:Repeater runat="server" ID="rpAuditAcctDesc">
+																		<ItemTemplate>
+
+																		</ItemTemplate>
+																	</asp:Repeater>--%>
 																</ul>
 															</div>
 														</td>
@@ -949,7 +971,7 @@
 										<table class="table m-0" runat="server">
 											<tr>
 												<td class="text-left">
-													<asp:LinkButton ID="lnkAuditFirstSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="first" data-list="auditTable" style="width: 150px;" causesvalidation="false"><i class="fas fa-angles-left"></i>&nbsp;First</asp:LinkButton>
+													<asp:LinkButton ID="lnkAuditFirstSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="first" data-list="auditTable" style="width: 150px;" causesvalidation="false" Enabled="false"><i class="fas fa-angles-left"></i>&nbsp;First</asp:LinkButton>
 												</td>
 												<td class="text-center">
 													<asp:LinkButton ID="lnkAuditPreviousSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="previous" data-list="auditTable" style="width: 150px;" causesvalidation="false"><i class="fas fa-angle-left"></i>&nbsp;Previous</asp:LinkButton>
@@ -973,6 +995,7 @@
 						</div>
 					</div>
 				</div>
+				<asp:HiddenField runat="server" ID="hdnTable" />
 			</ContentTemplate>
 		</asp:UpdatePanel>		
 	</section>
@@ -1105,6 +1128,7 @@
 			DisableDDInitialOption();
 			scrollToElement();
 			HideAllTooltips();
+			SetHiddenTable();
 		});
 
 		function DisableDDInitialOption() {
@@ -1256,6 +1280,16 @@
 
 		function OpenRejectionModal() {
 			$('#rejectionModal').modal('show');
+		}
+
+		function saveFactSheet() {
+			$('#<%= SaveFactSheet.ClientID %>').prop('readonly', true);
+			ShowSubmitToast();
+		}
+
+		function SetHiddenTable() {
+			console.log($('table#revenueTable').html());
+			$('#<%= hdnTable.ClientID %>').val($('#revenueTable').html());
 		}
 
 		$('#<%= sigName.ClientID %>').on('change keyup', function () {
