@@ -105,7 +105,7 @@
 											</td>
 											<td class="align-middle d-flex justify-content-around">
 												<asp:LinkButton runat="server" ID="editOrd" CommandName="edit" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' CssClass="ordActionBtn" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="Edit" Visible='<%# adminUnlockedOrd(DataBinder.Eval(Container.DataItem, "StatusDescription").ToString()) %>'><i class="fas fa-pen-to-square text-warning-light"></i></asp:LinkButton>
-												<asp:LinkButton runat="server" ID="viewOrd" CommandName="view" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' CssClass="ordActionBtn" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="View" OnClientClick="SetHiddenTable();"><i class="fas fa-magnifying-glass text-info"></i></asp:LinkButton>
+												<asp:LinkButton runat="server" ID="viewOrd" CommandName="view" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' CssClass="ordActionBtn" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="View"><i class="fas fa-magnifying-glass text-info"></i></asp:LinkButton>
 												<asp:LinkButton runat="server" ID="downloadOrd" CommandName="download" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' CssClass="ordActionBtn" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="Download"><i class="fas fa-download text-primary"></i></asp:LinkButton>
 											</td>
 										</tr>
@@ -920,15 +920,17 @@
 													<tr id='auditRow<%# DataBinder.Eval(Container.DataItem, "OrdinanceAuditID") %>' class="accordion">
 														<asp:HiddenField runat="server" ID="hdnAuditItem" Value='<%# DataBinder.Eval(Container.DataItem, "OrdinanceAuditID") %>' />
 														<td class="align-middle text-start mw-0">
-															<a href="javascript:void(0);" class="btn-accordion audit-link" data-toggle="collapse" data-target='<%# DataBinder.Eval(Container.DataItem, "UpdateType").Equals("UPDATED") || DataBinder.Eval(Container.DataItem, "UpdateType").Equals("REJECTED") ?  $"#auditItem{DataBinder.Eval(Container.DataItem, "OrdinanceAuditID")}" : string.Empty %>'>
-																<p class="m-0"><%# DataBinder.Eval(Container.DataItem, "LastUpdateDate", "{0:MM/dd/yyyy}") %> &mdash; <%# DataBinder.Eval(Container.DataItem, "LastUpdateBy") %> &mdash; <%# DataBinder.Eval(Container.DataItem, "UpdateType") %>
+															<a href="javascript:void(0);" class="btn-accordion audit-link" data-toggle="collapse" data-target='<%# DataBinder.Eval(Container.DataItem, "UpdateType").Equals("UPDATED") || DataBinder.Eval(Container.DataItem, "UpdateType").Equals("REJECTED") ?  $"#auditItem{DataBinder.Eval(Container.DataItem, "OrdinanceAuditID")}" : string.Empty %>'><p class="m-0"><%# DataBinder.Eval(Container.DataItem, "LastUpdateDate", "{0:MM/dd/yyyy}") %> &mdash; <%# DataBinder.Eval(Container.DataItem, "LastUpdateBy") %> &mdash; <%# DataBinder.Eval(Container.DataItem, "UpdateType") %>
 																	<span runat="server" class='<%# DataBinder.Eval(Container.DataItem, "UpdateType").Equals("UPDATED") || DataBinder.Eval(Container.DataItem, "UpdateType").Equals("REJECTED") ? "float-end lh-1p5 fas fa-chevron-down" : string.Empty %>'>
 																	</span>
-																</p>
-															</a>
+																</p></a>
+
+
 															<div id='auditItem<%# DataBinder.Eval(Container.DataItem, "OrdinanceAuditID") %>' class="collapse audit-content" data-parent='#auditRow<%# DataBinder.Eval(Container.DataItem, "OrdinanceAuditID") %>'>
 																<br />
 																<p class="m-0"><%# DataBinder.Eval(Container.DataItem, "UpdateType").Equals("REJECTED") ? "Rejection Reason:" : "Changes:" %></p>
+
+
 																<ul class="auditList">
 																	<asp:Repeater runat="server" ID="rpAuditDesc">
 																		<ItemTemplate>
@@ -1128,7 +1130,6 @@
 			DisableDDInitialOption();
 			scrollToElement();
 			HideAllTooltips();
-			SetHiddenTable();
 		});
 
 		function DisableDDInitialOption() {
@@ -1283,13 +1284,12 @@
 		}
 
 		function saveFactSheet() {
-			$('#<%= SaveFactSheet.ClientID %>').prop('readonly', true);
-			ShowSubmitToast();
-		}
-
-		function SetHiddenTable() {
-			console.log($('table#revenueTable').html());
-			$('#<%= hdnTable.ClientID %>').val($('#revenueTable').html());
+			var form = document.getElementById('formMain');
+			var invalidList = form.querySelectorAll(':invalid');
+			if (invalidList.length < 1) {
+				$('#<%= SaveFactSheet.ClientID %>').prop('readonly', true);
+				ShowSubmitToast();
+			}
 		}
 
 		$('#<%= sigName.ClientID %>').on('change keyup', function () {

@@ -527,7 +527,7 @@
 						<div class="row mt-3 mb-3 text-center">
 							<%-- SUBMIT BUTTON --%>
 							<div class="col-md-12">
-								<asp:Button runat="server" ID="SubmitFactSheet" UseSubmitBehavior="true" CssClass="btn btn-primary" Width="25%" Text="Submit" OnClick="SubmitForm_Click" OnClientClick="ShowSubmitToast();" />
+								<asp:Button runat="server" ID="SubmitFactSheet" UseSubmitBehavior="true" CssClass="btn btn-primary" Width="25%" Text="Submit" OnClick="SubmitForm_Click" OnClientClick="submitFactSheet();" />
 							</div>
 						</div>
 					</div>
@@ -588,6 +588,15 @@
 			$("[data-type='currency']").each(function () {
 				formatCurrency($(this), "blur");
 			});
+		}
+
+		function submitFactSheet() {
+			var form = document.getElementById('formMain');
+			var invalidList = form.querySelectorAll(':invalid');
+			if (invalidList.length < 1) {
+				$('#<%= SubmitFactSheet.ClientID %>').prop('readonly', true);
+				ShowSubmitToast();
+			}
 		}
 	</script>
 </asp:Content>

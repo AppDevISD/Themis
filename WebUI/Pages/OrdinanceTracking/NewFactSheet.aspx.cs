@@ -32,6 +32,12 @@ namespace WebUI
                 GetAllDepartments();
                 GetAllPurchaseMethods();
                 SetStartupActives();
+
+                requestDepartment.SelectedValue = userInfo.UserDepartmentID.ToString();
+                requestContact.Text = $"{_user.FirstName} {_user.LastName}";
+                requestEmail.Text = _user.Email.ToLower();
+                requestPhone.Text = _user.Telephone;
+                requestExt.Text = _user.IPPhone;
             }
 
             if (!Page.IsPostBack && Request.QueryString["id"] != null)
@@ -40,12 +46,6 @@ namespace WebUI
             }
 
             GetUploadedDocs();
-
-            requestDepartment.SelectedValue = userInfo.UserDepartmentID.ToString();
-            requestContact.Text = $"{_user.FirstName} {_user.LastName}";
-            requestEmail.Text = _user.Email.ToLower();
-            requestPhone.Text = _user.Telephone;
-            requestExt.Text = _user.IPPhone;
         }
         protected void SetStartupActives()
         {

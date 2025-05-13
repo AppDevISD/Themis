@@ -58,10 +58,6 @@ namespace DataLibrary
         {
             get
             {
-                //if (Instance.ViewState["PgNumP"] != null)
-                //{
-                //    Debug.WriteLine($"Page Num: {Instance.ViewState["PgNumP"]}");
-                //}
                 if (Instance.ViewState["PgNumP"] != null)
                     return Convert.ToInt32(Instance.ViewState["PgNumP"]);
                 else return 1;
@@ -76,10 +72,6 @@ namespace DataLibrary
         {
             get
             {
-                //if (Instance.ViewState["PageCountP"] != null)
-                //{
-                //    Debug.WriteLine($"Page Count: {Instance.ViewState["PageCountP"]}");
-                //}
                 if (Instance.ViewState["PageCountP"] != null)
                     return Convert.ToInt32(Instance.ViewState["PageCountP"]);
                 else return 0;
@@ -140,6 +132,30 @@ namespace DataLibrary
             return ret;
         }
 
+        public static Dictionary<string, object> GetCurrentSort<T>(List<T> DataList, string command, string argument)
+        {
+            Dictionary<string, object> ret = new Dictionary<string, object>();
+
+            PropertyInfo property = typeof(T).GetProperty(command);
+            switch (argument)
+            {
+                case "asc":
+                    DataList = (from n in DataList
+                                orderby property.GetValue(n, null) ascending
+                                select n).ToList();
+                    break;
+                case "desc":
+                    DataList = (from n in DataList
+                                orderby property.GetValue(n, null) descending
+                                select n).ToList();
+                    break;
+            }
+
+            BindDataRepeaterPagination("no", DataList);
+            ret.Add("list", DataList);
+            return ret;
+        }
+
         public static List<Ordinance> FilterList(List<Ordinance> DataList, string command, string argument)
         {
             string ret = string.Empty;
@@ -180,13 +196,13 @@ namespace DataLibrary
             Instance.PageLabel.Text = SearchPgNumP.ToString() + " of " + SearchPageCountP.ToString();
             if (_list.Count <= 0)
             {
-                Instance.TablePanel.Visible = false; //false
+                Instance.TablePanel.Visible = false;
             }
             else
             {
                 if (pDSSearch.PageCount == 1)
                 {
-                    Instance.TablePanel.Visible = false; //false
+                    Instance.TablePanel.Visible = false;
                 }
                 else
                 {

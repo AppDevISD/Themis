@@ -478,7 +478,7 @@ namespace WebUI
             }
             Dictionary<string, object> sortRet = new Dictionary<string, object>();
 
-            sortRet = SortButtonClick(filteredList, Session["curCmd"].ToString(), Session["curDir"].ToString());
+            sortRet = GetCurrentSort(filteredList, Session["curCmd"].ToString(), Session["sortDir"].ToString());
 
 
             Session["ord_list"] = sortRet["list"];
@@ -756,6 +756,8 @@ namespace WebUI
 
             Session.Remove("OriginalOrdinance");
             Session.Remove("OriginalStatus");
+            Session.Remove("OriginalRevTable");
+            Session.Remove("OriginalExpTable");
 
 
             Session.Remove("ordRevTable");
@@ -906,6 +908,7 @@ namespace WebUI
                 if (revItems.Count > 0)
                 {
                     Session["ordRevTable"] = revItems;
+                    Session["OriginalRevTable"] = revItems;
                     rpRevenueTable.DataSource = revItems.OrderBy(i => i.AccountingID);
                     rpRevenueTable.DataBind();
                 }
@@ -918,6 +921,7 @@ namespace WebUI
                 if (expItems.Count > 0)
                 {
                     Session["ordExpTable"] = expItems;
+                    Session["OriginalExpTable"] = expItems;
                     rpExpenditureTable.DataSource = expItems.OrderBy(i => i.AccountingID);
                     rpExpenditureTable.DataBind();
                 }
@@ -2338,9 +2342,7 @@ namespace WebUI
                             {
                                 OrdinanceAuditID = ordAuditVal,
                                 Label = property.Name,
-                                DataType = property.GetValue(ordStatus).GetType().Name,
-                                AccountingType = string.Empty,
-                                AccountingRow = 0
+                                DataType = property.GetValue(ordStatus).GetType().Name
                             };
                             audit.Type = "update";
                             audit.OldValue = property.GetValue(oldOrdStatus).ToString();
@@ -2492,9 +2494,6 @@ namespace WebUI
             }
 
 
-
-
-
             List<int> submitVals = new List<int>(new int[] 
             {
                 retVal,
@@ -2547,15 +2546,55 @@ namespace WebUI
             ordStatus.EffectiveDate = Convert.ToDateTime(hdnEffectiveDate.Value);
             ordStatus.ExpirationDate = DateTime.MaxValue;
             int retVal = Factory.Instance.Expire<Ordinance>(ord, "sp_UpdateOrdinance", Skips("ordUpdate"));
+
+            List<string> addEmailList = new List<string>()
+            {
+                _user.Email.ToLower(),
+                ord.RequestEmail.ToLower()
+            };
+            foreach (string item in addEmailList)
+            {
+                Email.Instance.AddEmailAddress(emailList, item);
+            }
+            string formType = "Ordinance Fact Sheet";
+            string href = $"apptest/Themis/Ordinances?id={hdnOrdID.Value}&v=view";
+            string ordinanceNumInfo = !ordinanceNumber.Text.IsNullOrWhiteSpace() ? $"<p style='margin: 0; line-height: 1.5;'><span>Ordinance: {ord.OrdinanceNumber}</span></p>" : string.Empty;
+
+            Email newEmail = new Email();
+
+            newEmail.EmailSubject = $"{formType} DELETED";
+            newEmail.EmailTitle = $"{formType} DELETED";
+            newEmail.EmailText = $"<p style='margin: 0;'><span style='font-size:36.0pt;font-family:\"Times New Roman\",serif;color:#2D71D5;font-weight:bold;'>THΣMIS</span></p><div align=center style='text-align:center'><span><hr size='2' width='100%' align='center' style='margin-top: 0;'></span></div><p><span>An <b>{formType}</b> has been DELETED by <b>{_user.FirstName} {_user.LastName}</b>.</span></p><br /><p style='margin: 0; line-height: 1.5;'><span>ID: {ord.OrdinanceID}</span></p>{ordinanceNumInfo}<p style='margin: 0; line-height: 1.5;'><span>Date: {DateTime.Now}</span></p><p style='margin: 0; line-height: 1.5;'><span>Department: {requestDepartment.SelectedItem.Text}</span></p><p style='margin: 0; line-height: 1.5;'><span>Contact: {requestContact.Text}</span></p><p style='margin: 0; line-height: 1.5;'><span>Phone: {ord.RequestPhone}</span></p><p><span>Status: Deleted</span></p><br /><p><span>Please click the button below to view the deleted document:</span></p><table border='0' cellpadding='0' cellspacing='0' style='border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;'><tr><td style='font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #0d6efd; border-radius: 5px; text-align: center;' valign='top' bgcolor='#0d6efd' align='center'><a href='{href}' target='_blank' style='display: inline-block; color: #ffffff; background-color: #0d6efd; border: solid 1px #0d6efd; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 15px 25px; text-transform: capitalize; border-color: #0d6efd; '>View Ordinance</a></td></tr></table>";
+
             if (retVal > 0)
             {
                 int statusVal = Factory.Instance.Update(ordStatus, "sp_UpdateOrdinance_Status", Skips("ordStatusUpdate"));
+                
                 if (statusVal > 0)
                 {
-                    Session["SubmitStatus"] = "success";
-                    Session["ToastColor"] = "text-bg-success";
-                    Session["ToastMessage"] = "Entry Deleted!";
-                    Response.Redirect("./Ordinances");
+                    OrdinanceAudit deleteAudit = new OrdinanceAudit()
+                    {
+                        OrdinanceID = Convert.ToInt32(hdnOrdID.Value),
+                        UpdateType = $"DELETED",
+                        LastUpdateBy = $"{_user.FirstName} {_user.LastName}",
+                        LastUpdateDate = DateTime.Now,
+                    };
+                    int deleteAuditVal = Factory.Instance.Insert(deleteAudit, "sp_InsertOrdinance_Audit", Skips("ordAuditInsert"));
+                    if (deleteAuditVal > 0)
+                    {
+
+                        Session["SubmitStatus"] = "success";
+                        Session["ToastColor"] = "text-bg-success";
+                        Session["ToastMessage"] = "Entry Deleted!";
+                        Email.Instance.SendEmail(newEmail, emailList);
+                        Response.Redirect("./Ordinances");
+                    }
+                    else
+                    {
+                        Session["SubmitStatus"] = "error";
+                        Session["ToastColor"] = "text-bg-danger";
+                        Session["ToastMessage"] = "Something went wrong while deleting!";
+                    }
                 }
                 else
                 {
