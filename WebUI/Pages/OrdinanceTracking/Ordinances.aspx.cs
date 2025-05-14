@@ -18,6 +18,7 @@ using Microsoft.Reporting.WebForms;
 using System.Data;
 using DataLibrary.OrdinanceTracking;
 using System.Reflection;
+using System.Text;
 
 namespace WebUI
 {
@@ -984,8 +985,6 @@ namespace WebUI
             {
                 Session["ordAudit"] = ordAudits;
                 BindDataRepeaterPagination("yes", ordAudits);
-                //rpAudit.DataSource = ordAudits;
-                //rpAudit.DataBind();
             }
             else
             {
@@ -993,11 +992,6 @@ namespace WebUI
                 rpAudit.DataSource = null;
                 rpAudit.DataBind();
             }
-
-
-
-
-
 
             switch (e.CommandName)
             {
@@ -1506,13 +1500,14 @@ namespace WebUI
                     byte[] bytes = viewer.LocalReport.Render("PDF", null, out mimeType, out encoding, out extension, out streamIds, out warnings);
 
                     string delivery = HttpContext.Current.IsDebuggingEnabled ? "inline" : "attachment";
+                    string fileName = ord.OrdinanceNumber.IsNullOrWhiteSpace() ? $"Ordinance_{ord.OrdinanceID}" : ord.OrdinanceNumber;
 
                     Response.Clear();
                     Response.ClearContent();
                     Response.ClearHeaders();
                     Response.Buffer = true;
                     Response.ContentType = "application/pdf";
-                    Response.AddHeader("content-disposition", $"{delivery}; filename=Ordinance_{ord.OrdinanceID}.pdf");
+                    Response.AddHeader("content-disposition", $"{delivery}; filename={fileName}.pdf");
                     Response.BinaryWrite(bytes); // create the file                    
                     Context.ApplicationInstance.CompleteRequest();
                     break;
@@ -1752,9 +1747,8 @@ namespace WebUI
             HiddenField hdnAuditItem = (HiddenField)e.Item.FindControl("hdnAuditItem");
             int auditID = Convert.ToInt32(hdnAuditItem.Value);
             Repeater rpAuditDesc = (Repeater)e.Item.FindControl("rpAuditDesc");
-            //HtmlTable test = (HtmlTable)e.Item.FindControl("revAuditTable");
-            //Table newTable = new Table();
-            //Debug.WriteLine(test);
+
+            
 
             List<OrdinanceAudit> ordAudits = Session["ordAudit"] as List<OrdinanceAudit>;
             List<Audit> audits = Factory.Instance.GetAllLookup<Audit>(auditID, "sp_GetAuditDescriptionByID", "OrdinanceAuditID");
@@ -1775,6 +1769,29 @@ namespace WebUI
                     string newValue = item.NewValue;
                     string itemString = string.Empty;
 
+                    StringBuilder sb = new StringBuilder();
+
+                    string headerBegin = "<thead><tr class='h-50'>";
+                    string fundHeader = "<th style='width: 13%; text-align: center;'>Fund</th>";
+                    string agencyHeader = "<th style='width: 15%; text-align: center;'>Agency</th>";
+                    string orgHeader = "<th style='width: 15%; text-align: center;'>Org</th>";
+                    string activityHeader = "<th style='width: 16%; text-align: center;'>Activity</th>";
+                    string objectHeader = "<th style='width: 15%; text-align: center;'>Object</th>";
+                    string amountHeader = "<th style='width: 18%; text-align: center;'>Amount</th>";
+                    string headerEnd = "</tr></thead>";
+                    List<string> HeaderCells = new List<string>()
+                    {
+                        headerBegin,
+                        fundHeader,
+                        agencyHeader,
+                        orgHeader,
+                        activityHeader,
+                        objectHeader,
+                        amountHeader,
+                        headerEnd
+                    };
+
+
                     if (oldValue == "-1.00" || oldValue == "-1")
                     {
                     }
@@ -1782,14 +1799,6 @@ namespace WebUI
                     {
                         newValue = null;
                     }
-                    //switch (item.AccountingType != null || item.AccountingType != string.Empty)
-                    //{
-                    //    case true:
-                    //        newTable.Rows.Add(new TableRow());
-                    //        break;
-                    //    case false:
-                    //        break;
-                    //}
                     switch (item.Type)
                     {
                         case "add":
@@ -1799,7 +1808,7 @@ namespace WebUI
                                     itemString = $"{label}: <span class='change-bg'>{symbol} <span data-type='{item.DataType}'>{newValue}</span> </span>";
                                     break;
                                 case false:
-                                    itemString = $"<p class='m-0'>{label}:</p> <div class='d-flex change-bg w-50 lh-1p5'> {symbol} <div class='w-100 ps-2'>{newValue}</div> </div>";
+                                    itemString = $"<p class='m-0'>{label}:</p> <div class='d-flex change-bg w-100 lh-1p5'> {symbol} <div class='w-100 ps-2'>{newValue}</div> </div>";
                                     break;
                             }
                             break;
@@ -1821,12 +1830,38 @@ namespace WebUI
                                     itemString = $"{label}: <span class='change-bg'>{symbol} <span data-type='{item.DataType}'>{oldValue}</span></span>";
                                     break;
                                 case false:
-                                    itemString = $"<p class='m-0'>{label}:</p> <div class='d-flex change-bg w-50 lh-1p5'> {symbol} <div class='w-100 ps-2'>{oldValue}</div> </div>";
+                                    itemString = $"<p class='m-0'>{label}:</p> <div class='d-flex change-bg w-100 lh-1p5'> {symbol} <div class='w-100 ps-2'>{oldValue}</div> </div>";
                                     break;
                             }
                             break;
                         case "rejected":
                             itemString = $"<div class='change-bg lh-1p5'> {newValue} </div>";
+                            break;
+                        case "revenue": case "expenditure":
+                            sb.Append("<table class='table table-bordered table-hover table-standard text-center w-75' style='padding: 0px; margin: 0px'>");
+                            foreach (string header in HeaderCells)
+                            {
+                                sb.Append(header);
+                            }
+                            sb.Append("<tbody>");
+
+                            List<AccountingAudit> acctAudits = Factory.Instance.GetAllLookup<AccountingAudit>(item.AuditID, "sp_GetAccountingAuditDescriptionByID", "AuditID");
+                            foreach (AccountingAudit acctAudit in acctAudits)
+                            {
+
+                                sb.Append("<tr>");
+                                sb.Append($"<td style='vertical-align: middle; padding: 0 !important;'>{acctAudit.FundCode}</td>");
+                                sb.Append($"<td style='vertical-align: middle; padding: 0 !important;'>{acctAudit.DepartmentCode}</td>");
+                                sb.Append($"<td style='vertical-align: middle; padding: 0 !important;'>{acctAudit.UnitCode}</td>");
+                                sb.Append($"<td style='vertical-align: middle; padding: 0 !important;'>{acctAudit.ActivityCode}</td>");
+                                sb.Append($"<td style='vertical-align: middle; padding: 0 !important;'>{acctAudit.ObjectCode}</td>");
+                                sb.Append($"<td style='vertical-align: middle; padding: 0 !important;'>{acctAudit.Amount}</td>");
+                                sb.Append("</tr>");
+                            }
+                            sb.Append("</tbody></table>");
+                            
+                            
+                            itemString = $"<p class='m-0'>{label}:</p> {sb}";
                             break;
                     }
                     descList.Add(itemString);
@@ -1975,6 +2010,14 @@ namespace WebUI
             {
                 rejected = false;
             }
+            List<string> baseData = new List<string>()
+            {
+                "StatusID",
+                "LastUpdateBy",
+                "LastUpdateDate",
+                "EffectiveDate",
+                "ExpirationDate",
+            };
             Ordinance ordinance = new Ordinance();
 
             ordinance.OrdinanceID = Convert.ToInt32(hdnOrdID.Value);
@@ -2120,6 +2163,8 @@ namespace WebUI
                 removeDocVal = 1;
             }
 
+            List<AccountingAudit> accAuditList = new List<AccountingAudit>();
+
             int removeAccsVal = new int();
             int removeOrdAccsVal = new int();
             List<Accounting> removeAccs = new List<Accounting>();
@@ -2140,7 +2185,21 @@ namespace WebUI
                     item.LastUpdateDate = DateTime.Now;
                     item.EffectiveDate = DateTime.Now;
                     removeAccsVal = Factory.Instance.Expire(item, "sp_UpdatelkAccounting");
-
+                    if (removeAccsVal > 0)
+                    {
+                        AccountingAudit accAudit = new AccountingAudit()
+                        {
+                            AccountingDesc = item.AccountingDesc,
+                            AccountingID = item.AccountingID,
+                            FundCode = $"<span>{AuditSymbol("remove")} <span data-type='String'>{item.FundCode}</span></span>",
+                            DepartmentCode = $"<span>{AuditSymbol("remove")} <span data-type='String'>{item.DepartmentCode}</span></span>",
+                            UnitCode = $"<span>{AuditSymbol("remove")} <span data-type='String'>{item.UnitCode}</span></span>",
+                            ActivityCode = $"<span>{AuditSymbol("remove")} <span data-type='String'>{item.ActivityCode}</span></span>",
+                            ObjectCode = $"<span>{AuditSymbol("remove")} <span data-type='String'>{item.ObjectCode}</span></span>",
+                            Amount = $"<span>{AuditSymbol("remove")} <span data-type='Decimal'>{item.Amount}</span></span>",
+                        };
+                        accAuditList.Add(accAudit);
+                    }
                     if (removeAccsVal < 1)
                     {
                         break;
@@ -2183,6 +2242,87 @@ namespace WebUI
                         if (accountingItem.AccountingID > 0)
                         {
                             updateRevAccsVal = Factory.Instance.Update(accountingItem, "sp_UpdatelkAccounting");
+                            List<Accounting> originalRevList = Session["OriginalRevTable"] as List<Accounting>;
+                            Accounting originalRevItem = originalRevList.First(r => r.AccountingID.Equals(accountingItem.AccountingID));
+                            PropertyInfo[] properties = typeof(Accounting).GetProperties();
+                            if (accAuditList.Count > 0 || (properties.Any(p => !p.GetValue(accountingItem).Equals(p.GetValue(originalRevItem)) && !baseData.Any(b => b.Contains(p.Name)))))
+                            {
+                                AccountingAudit accAudit = new AccountingAudit()
+                                {
+                                    AccountingDesc = accountingItem.AccountingDesc,
+                                    AccountingID = accountingItem.AccountingID,
+                                };
+                                foreach (PropertyInfo property in properties.Where(p => !baseData.Any(b => b.Contains(p.Name))))
+                                {
+                                    if (!property.GetValue(originalRevItem).Equals(property.GetValue(accountingItem)))
+                                    {
+                                        switch (property.Name)
+                                        {
+                                            case "FundCode":
+                                                accAudit.FundCode = $"<span><span data-type='String'>{originalRevItem.FundCode}</span> {AuditSymbol("update")} <span data-type='String'>{accountingItem.FundCode}</span></span>";
+                                                break;
+                                            case "DepartmentCode":
+                                                accAudit.DepartmentCode = $"<span><span data-type='String'>{originalRevItem.DepartmentCode}</span> {AuditSymbol("update")} <span data-type='String'>{accountingItem.DepartmentCode}</span></span>";
+                                                break;
+                                            case "UnitCode":
+                                                accAudit.UnitCode = $"<span><span data-type='String'>{originalRevItem.UnitCode}</span> {AuditSymbol("update")} <span data-type='String'>{accountingItem.UnitCode}</span></span>";
+                                                break;
+                                            case "ActivityCode":
+                                                accAudit.ActivityCode = $"<span><span data-type='String'>{originalRevItem.ActivityCode}</span> {AuditSymbol("update")} <span data-type='String'>{accountingItem.ActivityCode}</span></span>";
+                                                break;
+                                            case "ObjectCode":
+                                                accAudit.ObjectCode = $"<span><span data-type='String'>{originalRevItem.ObjectCode}</span> {AuditSymbol("update")} <span data-type='String'>{accountingItem.ObjectCode}</span></span>";
+                                                break;
+                                            case "Amount":
+                                                if (originalRevItem.Amount.ToString().Equals("-1.00") || originalRevItem.Amount.ToString().Equals("-1"))
+                                                {
+                                                    accAudit.Amount = $"<span>{AuditSymbol("add")} <span data-type='Decimal'>{accountingItem.Amount}</span></span>";
+                                                }
+                                                else if (accountingItem.Amount.ToString().Equals("-1.00") || accountingItem.Amount.ToString().Equals("-1"))
+                                                {
+                                                    accAudit.Amount = $"<span>{AuditSymbol("remove")} <span data-type='Decimal'>{originalRevItem.Amount}</span></span>";
+                                                }
+                                                else
+                                                {
+                                                    accAudit.Amount = $"<span><span data-type='Decimal'>{originalRevItem.Amount}</span> {AuditSymbol("update")} <span data-type='Decimal'>{accountingItem.Amount}</span></span>";
+                                                }
+                                                    break;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        switch (property.Name)
+                                        {
+                                            case "FundCode":
+                                                accAudit.FundCode = $"<span data-type='String'>{accountingItem.FundCode}</span>";
+                                                break;
+                                            case "DepartmentCode":
+                                                accAudit.DepartmentCode = $"<span data-type='String'>{accountingItem.DepartmentCode}</span>";
+                                                break;
+                                            case "UnitCode":
+                                                accAudit.UnitCode = $"<span data-type='String'>{accountingItem.UnitCode}</span>";
+                                                break;
+                                            case "ActivityCode":
+                                                accAudit.ActivityCode = $"<span data-type='String'>{accountingItem.ActivityCode}</span>";
+                                                break;
+                                            case "ObjectCode":
+                                                accAudit.ObjectCode = $"<span data-type='String'>{accountingItem.ObjectCode}</span>";
+                                                break;
+                                            case "Amount":
+                                                if (accountingItem.Amount.ToString().Equals("-1.00") || accountingItem.Amount.ToString().Equals("-1"))
+                                                {
+                                                    accAudit.Amount = $"<span data-type='String'>N/A</span>";
+                                                }
+                                                else
+                                                {
+                                                    accAudit.Amount = $"<span data-type='Decimal'>{accountingItem.Amount}</span>";
+                                                }
+                                                break;
+                                        }
+                                    }
+                                }
+                                accAuditList.Add(accAudit);
+                            }
                         }
                         else
                         {
@@ -2197,6 +2337,22 @@ namespace WebUI
                                 oaItem.EffectiveDate = DateTime.Now;
                                 oaItem.ExpirationDate = DateTime.MaxValue;
                                 updateRevAccsVal = Factory.Instance.Insert(oaItem, "sp_InsertOrdinance_Accounting", Skips("ordAccountingInsert"));
+
+                                if (updateRevAccsVal > 0)
+                                {
+                                    AccountingAudit accAudit = new AccountingAudit()
+                                    {
+                                        AccountingDesc = accountingItem.AccountingDesc,
+                                        AccountingID = ret,
+                                        FundCode = $"<span>{AuditSymbol("add")} <span data-type='String'>{accountingItem.FundCode}</span></span>",
+                                        DepartmentCode = $"<span>{AuditSymbol("add")} <span data-type='String'>{accountingItem.DepartmentCode}</span></span>",
+                                        UnitCode = $"<span>{AuditSymbol("add")} <span data-type='String'>{accountingItem.UnitCode}</span></span>",
+                                        ActivityCode = $"<span>{AuditSymbol("add")} <span data-type='String'>{accountingItem.ActivityCode}</span></span>",
+                                        ObjectCode = $"<span>{AuditSymbol("add")} <span data-type='String'>{accountingItem.ObjectCode}</span></span>",
+                                        Amount = $"<span>{AuditSymbol("add")} <span data-type='Decimal'>{accountingItem.Amount}</span></span>",
+                                    };
+                                    accAuditList.Add(accAudit);
+                                }
                             }
                             else
                             {
@@ -2223,6 +2379,87 @@ namespace WebUI
                         if (accountingItem.AccountingID > 0)
                         {
                             updateExpAccsVal = Factory.Instance.Update(accountingItem, "sp_UpdatelkAccounting");
+                            List<Accounting> originalExpList = Session["OriginalExpTable"] as List<Accounting>;
+                            Accounting originalExpItem = originalExpList.First(r => r.AccountingID.Equals(accountingItem.AccountingID));
+                            PropertyInfo[] properties = typeof(Accounting).GetProperties();
+                            if (accAuditList.Count > 0 || (properties.Any(p => !p.GetValue(accountingItem).Equals(p.GetValue(originalExpItem)) && !baseData.Any(b => b.Contains(p.Name)))))
+                            {
+                                AccountingAudit accAudit = new AccountingAudit()
+                                {
+                                    AccountingDesc = accountingItem.AccountingDesc,
+                                    AccountingID = accountingItem.AccountingID,
+                                };
+                                foreach (PropertyInfo property in properties.Where(p => !baseData.Any(b => b.Contains(p.Name))))
+                                {
+                                    if (!property.GetValue(originalExpItem).Equals(property.GetValue(accountingItem)))
+                                    {
+                                        switch (property.Name)
+                                        {
+                                            case "FundCode":
+                                                accAudit.FundCode = $"<span><span data-type='String'>{originalExpItem.FundCode}</span> {AuditSymbol("update")} <span data-type='String'>{accountingItem.FundCode}</span></span>";
+                                                break;
+                                            case "DepartmentCode":
+                                                accAudit.DepartmentCode = $"<span><span data-type='String'>{originalExpItem.DepartmentCode}</span> {AuditSymbol("update")} <span data-type='String'>{accountingItem.DepartmentCode}</span></span>";
+                                                break;
+                                            case "UnitCode":
+                                                accAudit.UnitCode = $"<span><span data-type='String'>{originalExpItem.UnitCode}</span> {AuditSymbol("update")} <span data-type='String'>{accountingItem.UnitCode}</span></span>";
+                                                break;
+                                            case "ActivityCode":
+                                                accAudit.ActivityCode = $"<span><span data-type='String'>{originalExpItem.ActivityCode}</span> {AuditSymbol("update")} <span data-type='String'>{accountingItem.ActivityCode}</span></span>";
+                                                break;
+                                            case "ObjectCode":
+                                                accAudit.ObjectCode = $"<span><span data-type='String'>{originalExpItem.ObjectCode}</span> {AuditSymbol("update")} <span data-type='String'>{accountingItem.ObjectCode}</span></span>";
+                                                break;
+                                            case "Amount":
+                                                if (originalExpItem.Amount.ToString().Equals("-1.00") || originalExpItem.Amount.ToString().Equals("-1"))
+                                                {
+                                                    accAudit.Amount = $"<span>{AuditSymbol("add")} <span data-type='Decimal'>{accountingItem.Amount}</span></span>";
+                                                }
+                                                else if (accountingItem.Amount.ToString().Equals("-1.00") || accountingItem.Amount.ToString().Equals("-1"))
+                                                {
+                                                    accAudit.Amount = $"<span>{AuditSymbol("remove")} <span data-type='Decimal'>{originalExpItem.Amount}</span></span>";
+                                                }
+                                                else
+                                                {
+                                                    accAudit.Amount = $"<span><span data-type='Decimal'>{originalExpItem.Amount}</span> {AuditSymbol("update")} <span data-type='Decimal'>{accountingItem.Amount}</span></span>";
+                                                }
+                                                break;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        switch (property.Name)
+                                        {
+                                            case "FundCode":
+                                                accAudit.FundCode = $"<span data-type='String'>{accountingItem.FundCode}</span>";
+                                                break;
+                                            case "DepartmentCode":
+                                                accAudit.DepartmentCode = $"<span data-type='String'>{accountingItem.DepartmentCode}</span>";
+                                                break;
+                                            case "UnitCode":
+                                                accAudit.UnitCode = $"<span data-type='String'>{accountingItem.UnitCode}</span>";
+                                                break;
+                                            case "ActivityCode":
+                                                accAudit.ActivityCode = $"<span data-type='String'>{accountingItem.ActivityCode}</span>";
+                                                break;
+                                            case "ObjectCode":
+                                                accAudit.ObjectCode = $"<span data-type='String'>{accountingItem.ObjectCode}</span>";
+                                                break;
+                                            case "Amount":
+                                                if (accountingItem.Amount.ToString().Equals("-1.00") || accountingItem.Amount.ToString().Equals("-1"))
+                                                {
+                                                    accAudit.Amount = $"<span data-type='String'>N/A</span>";
+                                                }
+                                                else
+                                                {
+                                                    accAudit.Amount = $"<span data-type='Decimal'>{accountingItem.Amount}</span>";
+                                                }
+                                                break;
+                                        }
+                                    }
+                                }
+                                accAuditList.Add(accAudit);
+                            }
                         }
                         else
                          {
@@ -2237,6 +2474,22 @@ namespace WebUI
                                 oaItem.EffectiveDate = DateTime.Now;
                                 oaItem.ExpirationDate = DateTime.MaxValue;
                                 updateExpAccsVal = Factory.Instance.Insert(oaItem, "sp_InsertOrdinance_Accounting", Skips("ordAccountingInsert"));
+
+                                if (updateExpAccsVal > 0)
+                                {
+                                    AccountingAudit accAudit = new AccountingAudit()
+                                    {
+                                        AccountingDesc = accountingItem.AccountingDesc,
+                                        AccountingID = ret,
+                                        FundCode = $"<span>{AuditSymbol("add")} <span data-type='String'>{accountingItem.FundCode}</span></span>",
+                                        DepartmentCode = $"<span>{AuditSymbol("add")} <span data-type='String'>{accountingItem.DepartmentCode}</span></span>",
+                                        UnitCode = $"<span>{AuditSymbol("add")} <span data-type='String'>{accountingItem.UnitCode}</span></span>",
+                                        ActivityCode = $"<span>{AuditSymbol("add")} <span data-type='String'>{accountingItem.ActivityCode}</span></span>",
+                                        ObjectCode = $"<span>{AuditSymbol("add")} <span data-type='String'>{accountingItem.ObjectCode}</span></span>",
+                                        Amount = $"<span>{AuditSymbol("add")} <span data-type='Decimal'>{accountingItem.Amount}</span></span>",
+                                    };
+                                    accAuditList.Add(accAudit);
+                                }
                             }
                             else
                             {
@@ -2307,6 +2560,7 @@ namespace WebUI
 
             int ordAuditVal = -1;
             int auditVal = new int();
+            int acctAuditVal = new int();
             OrdinanceAudit ordAudit = new OrdinanceAudit()
             {
                 OrdinanceID = Convert.ToInt32(hdnOrdID.Value),
@@ -2314,14 +2568,7 @@ namespace WebUI
                 LastUpdateBy = $"{_user.FirstName} {_user.LastName}",
                 LastUpdateDate = rejected ? DateTime.Now.AddSeconds(-2) : DateTime.Now,
             };
-            List<string> baseData = new List<string>()
-            {
-                "StatusID",
-                "LastUpdateBy",
-                "LastUpdateDate",
-                "EffectiveDate",
-                "ExpirationDate",
-            };
+            
             List<Audit> auditList = new List<Audit>();
 
             if (Session["OriginalStatus"] != null)
@@ -2480,12 +2727,80 @@ namespace WebUI
                     }
                 }
             }
+            if (accAuditList.Count > 0)
+            {
+                if (accAuditList.Any(i => i.AccountingDesc.Equals("revenue")))
+                {
+                    if (ordAuditVal < 0)
+                    {
+                        ordAuditVal = Factory.Instance.Insert(ordAudit, "sp_InsertOrdinance_Audit", Skips("ordAuditInsert"));
+                    }
+                    if (ordAuditVal > 0)
+                    {
+                        Audit audit = new Audit()
+                        {
+                            OrdinanceAuditID = ordAuditVal,
+                            Label = "Revenue",
+                            DataType = "Accounting",
+                            Type = "revenue",
+                            NewValue = string.Empty,
+                            OldValue = string.Empty
+                        };
+                        auditList.Add(audit);
+                    }
+                }
+                if (accAuditList.Any(i => i.AccountingDesc.Equals("expenditure")))
+                {
+                    if (ordAuditVal < 0)
+                    {
+                        ordAuditVal = Factory.Instance.Insert(ordAudit, "sp_InsertOrdinance_Audit", Skips("ordAuditInsert"));
+                    }
+                    if (ordAuditVal > 0)
+                    {
+                        Audit audit = new Audit()
+                        {
+                            OrdinanceAuditID = ordAuditVal,
+                            Label = "Expenditure",
+                            DataType = "Accounting",
+                            Type = "expenditure",
+                            NewValue = string.Empty,
+                            OldValue = string.Empty
+                        };
+                        auditList.Add(audit);
+                    }
+                }
+            }
 
             if (auditList.Count > 0)
             {
                 foreach (Audit item in auditList)
                 {
                     auditVal = Factory.Instance.Insert(item, "sp_InsertAuditDescription", Skips("auditInsert"));
+
+                    if (auditVal > 0 && item.Type.Equals("revenue") && accAuditList.Count > 0)
+                    {
+                        foreach (AccountingAudit accAudit in accAuditList.Where(i => i.AccountingDesc.Equals("revenue")))
+                        {
+                            accAudit.AuditID = auditVal;
+                            acctAuditVal = Factory.Instance.Insert(accAudit, "sp_InsertAccountingAuditDescription", Skips("acctAuditInsert"));
+                        }
+                    }
+                    else
+                    {
+                        acctAuditVal = 1;
+                    }
+                    if (auditVal > 0 && item.Type.Equals("expenditure") && accAuditList.Count > 0)
+                    {
+                        foreach (AccountingAudit accAudit in accAuditList.Where(i => i.AccountingDesc.Equals("expenditure")))
+                        {
+                            accAudit.AuditID = auditVal;
+                            acctAuditVal = Factory.Instance.Insert(accAudit, "sp_InsertAccountingAuditDescription", Skips("acctAuditInsert"));
+                        }
+                    }
+                    else
+                    {
+                        acctAuditVal = 1;
+                    }
                 }
             }
             else

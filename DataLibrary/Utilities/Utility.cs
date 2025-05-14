@@ -191,6 +191,7 @@ namespace DataLibrary
             Dictionary<string, string> dictionary = new Dictionary<string, string>()
             {
                 { "StatusDescription", "Status" },
+                { "OrdinanceNumber", "Ordinance Number" },
                 { "RequestDepartment", "Requesting Department" },
                 { "FirstReadDate", "First Read Date" },
                 { "RequestContact", "Requesting Contact" },
@@ -225,7 +226,9 @@ namespace DataLibrary
                 { "obmDirector", "OBM Director" },
                 { "mayor", "Mayor" },
 
-                { "RejectionReason", "Rejection Reason" }
+                { "RejectionReason", "Rejection Reason" },
+                { "Revenue", "Revenue" },
+                { "Expenditure", "Expenditure" }
             };
             return dictionary[key];
         }
@@ -245,7 +248,9 @@ namespace DataLibrary
                     "remove",
                     "<span class='fas fa-minus mx-1 text-danger fw-bold align-self-center'></span>"
                 },
-                { "rejected", "" }
+                { "rejected", string.Empty },
+                { "revenue", string.Empty },
+                { "expenditure", string.Empty }
             };
             return dictionary[key];
         }
@@ -294,6 +299,11 @@ namespace DataLibrary
                 {"auditInsert", new List<string>()
                     {
                         "AuditID"
+                    }
+                },
+                {"acctAuditInsert", new List<string>()
+                    {
+                        "AccountingAuditID"
                     }
                 },
                 {"ordUpdate", new List<string>()

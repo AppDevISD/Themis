@@ -547,7 +547,6 @@
 																	<td style="vertical-align: middle">
 																		<asp:HiddenField runat="server" ID="hdnRevID" Value='<%# DataBinder.Eval(Container.DataItem, "AccountingID") %>' />
 																		<asp:HiddenField runat="server" ID="hdnRevIndex" Value='<%# Container.ItemIndex %>' />
-																		<%--<asp:DropDownList ID="revenueFundCode" runat="server" CssClass="form-select" required="true" ValidateRequestMode="Enabled" DataSource='<%# fundCodes %>' SelectedValue='<%# DataBinder.Eval(Container.DataItem, "FundCode") %>'></asp:DropDownList>--%>
 																		<asp:TextBox runat="server" ID="revenueFundCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "FundCode") %>' required="true"></asp:TextBox>
 																	</td>
 																	<td style="vertical-align: middle">
@@ -931,7 +930,7 @@
 																<p class="m-0"><%# DataBinder.Eval(Container.DataItem, "UpdateType").Equals("REJECTED") ? "Rejection Reason:" : "Changes:" %></p>
 
 
-																<ul class="auditList">
+																<ul class="auditList" style="padding-right: 2rem;">
 																	<asp:Repeater runat="server" ID="rpAuditDesc">
 																		<ItemTemplate>
 																			<li>
@@ -997,7 +996,6 @@
 						</div>
 					</div>
 				</div>
-				<asp:HiddenField runat="server" ID="hdnTable" />
 			</ContentTemplate>
 		</asp:UpdatePanel>		
 	</section>

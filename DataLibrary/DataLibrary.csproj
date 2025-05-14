@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="OrdinanceTracking\Accounting.cs" />
+    <Compile Include="OrdinanceTracking\AccountingAudit.cs" />
     <Compile Include="OrdinanceTracking\AccountingCode.cs" />
     <Compile Include="OrdinanceTracking\Audit.cs" />
     <Compile Include="OrdinanceTracking\OrdinanceAudit.cs" />

@@ -307,7 +307,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!FundCode.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily />
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -339,7 +341,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!DepartmentCode.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily />
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -371,7 +375,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!UnitCode.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily />
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -403,7 +409,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!ActivityCode.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily />
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -435,7 +443,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!ObjectCode.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily />
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -466,9 +476,11 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=Fields!Amount.Value</Value>
+                                      <Label>Amount</Label>
+                                      <Value>=IIf(Fields!Amount.Value &lt;&gt; -1, Fields!Amount.Value, 0)</Value>
                                       <Style>
-                                        <Format>'$'#,0.00;('$'#,0.00)</Format>
+                                        <FontFamily />
+                                        <Format>'$'#,0.00;('$'#,0.00);'N/A'</Format>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -841,7 +853,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!FundCode.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily />
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -873,7 +887,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!DepartmentCode.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily />
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -905,7 +921,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!UnitCode.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily />
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -937,7 +955,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!ActivityCode.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily />
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -969,7 +989,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!ObjectCode.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily />
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1000,9 +1022,12 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=Fields!Amount.Value</Value>
+                                      <Label>Amount</Label>
+                                      <Value>=IIf(Fields!Amount.Value &lt;&gt; -1, Fields!Amount.Value, 0)</Value>
                                       <Style>
-                                        <Format>'$'#,0.00;('$'#,0.00)</Format>
+                                        <FontFamily />
+                                        <Format>'$'#,0.00;('$'#,0.00);'N/A'</Format>
+                                        <rd:FormatSymbolCulture>en-US</rd:FormatSymbolCulture>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
