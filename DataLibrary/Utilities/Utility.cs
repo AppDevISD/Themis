@@ -291,6 +291,11 @@ namespace DataLibrary
                         "SortOrder"
                     }
                 },
+                {"ordSignatureRequestInsert", new List<string>()
+                    {
+                        "SignatureRequestID",
+                    }
+                },
                 {"ordAuditInsert", new List<string>()
                     {
                         "OrdinanceAuditID"

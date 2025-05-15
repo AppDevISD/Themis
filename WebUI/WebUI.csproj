@@ -131,10 +131,10 @@
     <Content Include="assets\js\Site.js" />
     <Content Include="GenericError.aspx" />
     <Content Include="AccessDenied.aspx" />
+    <Content Include="Pages\Templates\Sandbox.aspx" />
     <Content Include="Scripts\Helpers\CSharp\FileUploadSaving.asmx" />
     <Content Include="Pages\OrdinanceTracking\NewFactSheet.aspx" />
     <Content Include="Pages\OrdinanceTracking\Ordinances.aspx" />
-    <Content Include="Pages\OrdinanceTracking\OrdinanceTrackingAdmin.aspx" />
     <Content Include="Scripts\ChartCode\chart-utils.min.js" />
     <Content Include="Scripts\ChartCode\ChartOptions.js" />
     <Content Include="Scripts\Helpers\JS\ChartHelpers.js" />
@@ -199,6 +199,13 @@
     <Compile Include="AccessDenied.aspx.designer.cs">
       <DependentUpon>AccessDenied.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Templates\Sandbox.aspx.cs">
+      <DependentUpon>Sandbox.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Templates\Sandbox.aspx.designer.cs">
+      <DependentUpon>Sandbox.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Reports\OrdinanceTracking\OrdinanceData.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -221,13 +228,6 @@
     </Compile>
     <Compile Include="Pages\OrdinanceTracking\Ordinances.aspx.designer.cs">
       <DependentUpon>Ordinances.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\OrdinanceTracking\OrdinanceTrackingAdmin.aspx.cs">
-      <DependentUpon>OrdinanceTrackingAdmin.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Pages\OrdinanceTracking\OrdinanceTrackingAdmin.aspx.designer.cs">
-      <DependentUpon>OrdinanceTrackingAdmin.aspx</DependentUpon>
     </Compile>
     <Compile Include="Scripts\Helpers\CSharp\ChartCodeHandler.cs" />
     <Compile Include="Scripts\Helpers\CSharp\ChartHandler.asmx.cs">

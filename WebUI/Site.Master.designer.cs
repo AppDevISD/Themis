@@ -87,15 +87,6 @@ namespace WebUI
         protected global::System.Web.UI.HtmlControls.HtmlAnchor Home;
 
         /// <summary>
-        /// A1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor A1;
-
-        /// <summary>
         /// SettingsMenu control.
         /// </summary>
         /// <remarks>
@@ -132,6 +123,42 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.CheckBox adminSwitch;
 
         /// <summary>
+        /// appDevToolsParent control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl appDevToolsParent;
+
+        /// <summary>
+        /// AppDevToolsMenu control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl AppDevToolsMenu;
+
+        /// <summary>
+        /// ImpersonateUser control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton ImpersonateUser;
+
+        /// <summary>
+        /// StopImpersonate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton StopImpersonate;
+
+        /// <summary>
         /// TriggerError control.
         /// </summary>
         /// <remarks>
@@ -157,5 +184,41 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton lnkInactivityRefresh;
+
+        /// <summary>
+        /// txtImpersonateUser control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtImpersonateUser;
+
+        /// <summary>
+        /// btnImpersonateUser control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnImpersonateUser;
+
+        /// <summary>
+        /// txtErrorCode control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtErrorCode;
+
+        /// <summary>
+        /// btnTriggerError control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnTriggerError;
     }
 }

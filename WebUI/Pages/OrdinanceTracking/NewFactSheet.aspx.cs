@@ -559,6 +559,25 @@ namespace WebUI
                     finishSubmit = false;
                 }
 
+                SignatureRequest signatureRequest = new SignatureRequest()
+                {
+                    OrdinanceID = retVal,
+                    FundsCheckBy = string.Empty,
+                    DirectorSupervisor = string.Empty,
+                    CityPurchasingAgent = string.Empty,
+                    OBMDirector = string.Empty,
+                    Mayor = string.Empty,
+                    LastUpdateBy = $"{_user.FirstName} {_user.LastName}",
+                    LastUpdateDate = DateTime.Now,
+                };
+
+                int signatureRequestRet = Factory.Instance.Insert(signatureRequest, "sp_InsertOrdinance_SignatureRequest", Skips("ordSignatureRequestInsert"));
+
+                if (signatureRequestRet < 1) 
+                {
+                    finishSubmit = false;
+                }
+
                 OrdinanceAudit ordAudit = new OrdinanceAudit()
                 {
                     OrdinanceID = Convert.ToInt32(retVal),

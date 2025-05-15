@@ -272,6 +272,30 @@ main {
 			border-bottom: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
 		}
 
+#appDevToolsParent {
+	position: absolute;
+	width: 100%;
+	bottom: 0;
+}
+
+#AppDevToolsMenu {
+	border-top: none !important;
+}
+
+#appDevToolsParent .btn-accordion:not(.collapsed) {
+	border-top: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
+}
+#appDevToolsParent .accordion-border::before {
+	content: "";
+	display: block;
+	position: absolute;
+	bottom: 1px;
+	top: 24px;
+	left: 20px;
+	border-left: var(--bs-border-color) 1px dotted;
+	z-index: 0;
+}
+
 
 
 /* --------------- Home Page --------------- */
@@ -818,6 +842,7 @@ pre[class*=language-] {
 		display: block !important;
 		overflow-y: auto;
 		scrollbar-width: none;
+		position: relative;
 	}
 
 	.accordion-border a.nav-link:hover span {

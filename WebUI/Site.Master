@@ -100,16 +100,16 @@
 										<span class="fas fa-file-circle-plus"></span>
 										<p class="m-0 fs-6 noto-sans-semi-bold">New Fact Sheet</p>
 									</a>
-									<%--<a class='nav-link <%:ActivePage("OrdinanceAdmin")?"activePage":""%>' href="./OrdinanceTrackingAdmin">
+									<a class='nav-link <%:ActivePage("OrdinanceAdmin")?"activePage":""%>' href="./OrdinanceTrackingAdmin">
 										<span class="fas fa-key"></span>
 										<p class="m-0 fs-6 noto-sans-semi-bold">Admin</p>
-									</a>--%>
+									</a>
 								</div>
 							</div>
 
 							<%-- SETTINGS --%>
 							<div id="settingsParent" class="nav-item accordion">
-								<a runat="server" id="A1" class="btn-accordion nav-link" href="javascript:void(0);" data-toggle="collapse" data-target="#SettingsMenu">
+								<a class="btn-accordion nav-link" href="javascript:void(0);" data-toggle="collapse" data-target="#SettingsMenu">
 									<span class="fas fa-gear"></span>
 									<p class="m-0 fs-6 noto-sans-semi-bold">Settings</p>
 								</a>
@@ -126,13 +126,30 @@
 											<asp:CheckBox runat="server" ID="adminSwitch" AutoPostBack="true" OnCheckedChanged="adminSwitch_CheckedChanged" CssClass="setting-form-check-input settingSwitch-input" />
 										</div>
 									</div>
-									<asp:LinkButton runat="server" ID="TriggerError" class='nav-link' OnClick="TriggerError_Click">
-										<span class="fas fa-triangle-exclamation"></span>
-										<p class="m-0 fs-6 noto-sans-semi-bold">Trigger Error</p>
-									</asp:LinkButton>
 								</div>
 							</div>
 						</nav>
+						<%-- APPDEV TOOLS --%>
+						<div runat="server" id="appDevToolsParent" class="nav-item accordion">
+							<div runat="server" id="AppDevToolsMenu" class="accordion-border collapse" data-parent="#appDevToolsParent">									
+								<asp:LinkButton runat="server" ID="ImpersonateUser" class='nav-link' data-toggle="modal" data-target="#impersonateUserModal">
+									<span class="fas fa-user-secret"></span>
+									<p class="m-0 fs-6 noto-sans-semi-bold">Impersonate</p>
+								</asp:LinkButton>
+								<asp:LinkButton runat="server" ID="StopImpersonate" class='nav-link' OnClick="StopImpersonate_Click">
+									<span class="fa-kit fa-solid-user-secret-slash"></span>
+									<p class="m-0 fs-6 noto-sans-semi-bold">Stop Impersonate</p>
+								</asp:LinkButton>
+								<asp:LinkButton runat="server" ID="TriggerError" class='nav-link' data-toggle="modal" data-target="#triggerErrorModal">
+									<span class="fas fa-triangle-exclamation"></span>
+									<p class="m-0 fs-6 noto-sans-semi-bold">Trigger Error</p>
+								</asp:LinkButton>
+							</div>
+							<a class="btn-accordion nav-link collapsed" href="javascript:void(0);" data-toggle="collapse" data-target="#AppDevToolsMenu">
+								<span class="fas fa-bug"></span>
+								<p class="m-0 fs-6 noto-sans-semi-bold">AppDev Tools</p>
+							</a>
+						</div>
 					</div>
 				</div>
 
@@ -163,6 +180,56 @@
 
 			<!-- HIDDEN TRIGGER FOR INACTIVITY REFRESH -->
 			<asp:LinkButton ID="lnkInactivityRefresh" runat="server" OnClick="lnkInactivityRefresh_Click" Style="display: none;" data-inactivity-trigger="true" />
+
+			<!-- TRIGGER ERROR MODAL -->
+			<div class="modal fade" id="impersonateUserModal" tabindex="-1" role="dialog" aria-labelledby="impersonateUserModalLabel">
+				<div class="modal-dialog modal-sm" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 class="modal-title" id="impersonateUserModalLabel">Impersonate User</h4>
+						</div>
+						<div class="modal-body bg-body-tertiary">
+							<div class="row mb-2">
+								<div class="col-md-12">
+									<div class="form-group">
+										<label for="ddErrorCode">User Login</label>
+										<asp:TextBox runat="server" ID="txtImpersonateUser" TextMode="SingleLine" CssClass="form-control"></asp:TextBox>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+							<asp:Button ID="btnImpersonateUser" runat="server" Text="Impersonate" CssClass="btn btn-primary" CausesValidation="false" UseSubmitBehavior="false" Visible="true" OnClick="btnImpersonateUser_Click" />
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- TRIGGER ERROR MODAL -->
+			<div class="modal fade" id="triggerErrorModal" tabindex="-1" role="dialog" aria-labelledby="triggerErrorModalLabel">
+				<div class="modal-dialog modal-sm" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 class="modal-title" id="triggerErrorModalLabel">Trigger Error</h4>
+						</div>
+						<div class="modal-body bg-body-tertiary">
+							<div class="row mb-2">
+								<div class="col-md-12">
+									<div class="form-group">
+										<label for="txtErrorCode">Error Code</label>
+										<asp:TextBox runat="server" ID="txtErrorCode" TextMode="Number" CssClass="form-control"></asp:TextBox>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+							<asp:Button ID="btnTriggerError" runat="server" Text="Trigger" CssClass="btn btn-danger" CausesValidation="false" UseSubmitBehavior="false" Visible="true" OnClick="TriggerError_Click" />
+						</div>
+					</div>
+				</div>
+			</div>
 
 			<%-- TOAST MESSAGE --%>
 			<div class="toast-container position-fixed bottom-0 end-0 p-3">

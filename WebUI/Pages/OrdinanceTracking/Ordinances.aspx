@@ -27,6 +27,7 @@
 
 				<asp:AsyncPostBackTrigger ControlID="purchaseMethod" EventName="SelectedIndexChanged" />
 				<asp:AsyncPostBackTrigger ControlID="ddStatus" EventName="SelectedIndexChanged" />
+				<asp:AsyncPostBackTrigger ControlID="signatureEmailAddress" EventName="TextChanged" />
 
 				<asp:AsyncPostBackTrigger ControlID="sortDate" EventName="Click" />
 				<asp:AsyncPostBackTrigger ControlID="sortTitle" EventName="Click" />
@@ -36,6 +37,12 @@
 				<asp:AsyncPostBackTrigger ControlID="btnSendSigEmail" EventName="Click" />
 				<asp:AsyncPostBackTrigger ControlID="btnSignDoc" EventName="Click" />
 				<asp:AsyncPostBackTrigger ControlID="btnCancelRejection" EventName="Click" />
+				<asp:AsyncPostBackTrigger ControlID="fundsCheckEmailBtn" EventName="Click" />
+				<asp:AsyncPostBackTrigger ControlID="directorSupervisorEmailBtn" EventName="Click" />
+				<asp:AsyncPostBackTrigger ControlID="cPAEmailBtn" EventName="Click" />
+				<asp:AsyncPostBackTrigger ControlID="obmDirectorEmailBtn" EventName="Click" />
+				<asp:AsyncPostBackTrigger ControlID="mayorEmailBtn" EventName="Click" />
+				
 				<asp:PostBackTrigger ControlID="btnSendRejection" />
 
 				<asp:PostBackTrigger ControlID="UploadDocBtn" />
@@ -706,7 +713,7 @@
 											<%-- FUNDS CHECK BY --%>
 											<div class="col-md-12">
 												<div class="form-group">
-													<label for="fundsCheckByGroup" class="mb-1">Funds Check By <asp:LinkButton runat="server" ID="fundsCheckEmailBtn" CssClass="text-primary fs-7 text-decoration-none ms-2" data-toggle="modal" data-target="#signatureEmailModal" OnClientClick="setEmailModal('fundsCheckByBtn', 'Funds Check By');"><span class="fas fa-envelope"></span>&nbsp;Send Request Email</asp:LinkButton></label>
+													<label for="fundsCheckByGroup" class="mb-1">Funds Check By <asp:LinkButton runat="server" ID="fundsCheckEmailBtn" CssClass="text-primary fs-7 text-decoration-none ms-2" OnClick="signatureEmailBtn_Click" CommandArgument="fundsCheckByBtn;Funds Check By" CommandName="FundsCheckBy"><span class="fas fa-envelope"></span>&nbsp;Send Request Email</asp:LinkButton></label>
 													<div id="fundsCheckByGroup">
 														<div runat="server" id="fundsCheckByBtnDiv" class="row readonly-color">
 															<%-- SIGN BUTTON --%>
@@ -741,7 +748,7 @@
 											<%-- DIRECTOR/SUPERVISOR --%>
 											<div class="col-md-12">
 												<div class="form-group">
-													<label for="directorSupervisorGroup">Director/Supervisor <asp:LinkButton runat="server" ID="directorSupervisorEmailBtn" CssClass="text-primary fs-7 text-decoration-none ms-2" data-toggle="modal" data-target="#signatureEmailModal" OnClientClick="setEmailModal('directorSupervisorBtn', 'Director/Supervisor');"><span class="fas fa-envelope"></span>&nbsp;Send Request Email</asp:LinkButton></label>
+													<label for="directorSupervisorGroup">Director/Supervisor <asp:LinkButton runat="server" ID="directorSupervisorEmailBtn" CssClass="text-primary fs-7 text-decoration-none ms-2" OnClick="signatureEmailBtn_Click" CommandArgument="directorSupervisorBtn;Director/Supervisor" CommandName="DirectorSupervisor"><span class="fas fa-envelope"></span>&nbsp;Send Request Email</asp:LinkButton></label>
 													<div id="directorSupervisorGroup">
 														<div runat="server" id="directorSupervisorBtnDiv" class="row readonly-color">
 															<%-- SIGN BUTTON --%>
@@ -776,7 +783,7 @@
 											<%-- CITY PURCHASING AGENT --%>
 											<div class="col-md-12">
 												<div class="form-group">
-													<label for="cPAGroup">City Purchasing Agent <asp:LinkButton runat="server" ID="cPAEmailBtn" CssClass="text-primary fs-7 text-decoration-none ms-2" data-toggle="modal" data-target="#signatureEmailModal" OnClientClick="setEmailModal('cPABtn', 'City Purchasing Agent');"><span class="fas fa-envelope"></span>&nbsp;Send Request Email</asp:LinkButton></label>
+													<label for="cPAGroup">City Purchasing Agent <asp:LinkButton runat="server" ID="cPAEmailBtn" CssClass="text-primary fs-7 text-decoration-none ms-2" OnClick="signatureEmailBtn_Click" CommandArgument="cPABtn;City Purchasing Agent" CommandName="CityPurchasingAgent"><span class="fas fa-envelope"></span>&nbsp;Send Request Email</asp:LinkButton></label>
 													<div id="cPAGroup">
 														<div runat="server" id="cPABtnDiv" class="row readonly-color">
 															<%-- SIGN BUTTON --%>
@@ -811,7 +818,7 @@
 											<%-- OBM DIRECTOR --%>
 											<div class="col-md-12">
 												<div class="form-group">
-													<label for="obmDirectorGroup">OBM Director <asp:LinkButton runat="server" ID="obmDirectorEmailBtn" CssClass="text-primary fs-7 text-decoration-none ms-2" data-toggle="modal" data-target="#signatureEmailModal" OnClientClick="setEmailModal('obmDirectorBtn', 'OBM Director');"><span class="fas fa-envelope"></span>&nbsp;Send Request Email</asp:LinkButton></label>
+													<label for="obmDirectorGroup">OBM Director <asp:LinkButton runat="server" ID="obmDirectorEmailBtn" CssClass="text-primary fs-7 text-decoration-none ms-2" OnClick="signatureEmailBtn_Click" CommandArgument="obmDirectorBtn;OBM Director" CommandName="OBMDirector"><span class="fas fa-envelope"></span>&nbsp;Send Request Email</asp:LinkButton></label>
 													<div id="obmDirectorGroup">
 														<div runat="server" id="obmDirectorBtnDiv" class="row readonly-color">
 															<%-- SIGN BUTTON --%>
@@ -846,7 +853,7 @@
 											<%-- MAYOR --%>
 											<div class="col-md-12">
 												<div class="form-group">
-													<label for="mayorGroup">Mayor <asp:LinkButton runat="server" ID="mayorEmailBtn" CssClass="text-primary fs-7 text-decoration-none ms-2" data-toggle="modal" data-target="#signatureEmailModal" OnClientClick="setEmailModal('mayorBtn', 'Mayor');"><span class="fas fa-envelope"></span>&nbsp;Send Request Email</asp:LinkButton></label>
+													<label for="mayorGroup">Mayor <asp:LinkButton runat="server" ID="mayorEmailBtn" CssClass="text-primary fs-7 text-decoration-none ms-2" OnClick="signatureEmailBtn_Click" CommandArgument="mayorBtn;Mayor" CommandName="Mayor"><span class="fas fa-envelope"></span>&nbsp;Send Request Email</asp:LinkButton></label>
 													<div id="mayorGroup">
 														<div runat="server" id="mayorBtnDiv" class="row readonly-color">
 															<%-- SIGN BUTTON --%>
@@ -1000,6 +1007,58 @@
 		</asp:UpdatePanel>		
 	</section>
 
+	<div runat="server" class="modal fade" id="signatureEmailModal" role="dialog" aria-labelledby="signatureEmailModalLabel">
+					<div class="modal-dialog" role="document" style="max-width: 750px;">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h4 class="modal-title" id="signatureEmailModalLabel">Signature Request Email</h4>
+							</div>
+							<asp:UpdatePanel runat="server" ID="pnlSigEmail">
+								<Triggers>
+									<asp:AsyncPostBackTrigger ControlID="AddRequestEmailAddress" EventName="Click" />
+								</Triggers>
+								<ContentTemplate>
+									<div class="modal-body bg-body-tertiary">
+										<div runat="server" id="emailListDiv" class="row mb-5">
+											<div class="col-md-12">
+											<asp:Repeater runat="server" ID="rpEmailList" OnItemCommand="rpEmailList_ItemCommand" OnItemCreated="rpEmailList_ItemCreated">
+													<ItemTemplate>
+														<div class="badge rounded-pill text-bg-secondary m-1" style="font-size: .95rem">
+															<%# Container.DataItem %>
+															<asp:LinkButton runat="server" ID="removeBtn" CssClass="text-danger" style="margin-left: 10px;" CommandName="remove" CommandArgument='<%# Container.DataItem %>'><span class="fa-solid fa-xmark"></span></asp:LinkButton>
+														</div>
+													</ItemTemplate>
+												</asp:Repeater>
+											</div>
+										</div>
+										<div class="row mb-2">
+											<div class="col-md-8">
+												<div class="input-group">
+													<span class="input-group-text fas fa-address-book"></span>
+													<asp:TextBox runat="server" ID="signatureEmailAddress" CssClass="form-control" TextMode="Email" AutoCompleteType="Email" placeholder="john.doe@corporate.com" ></asp:TextBox>
+												</div>
+											</div>
+											<div class="col-md-4">
+												<div class="form-group">
+													<asp:Button runat="server" ID="AddRequestEmailAddress" UseSubmitBehavior="false" CssClass="btn btn-success" Width="100%" Text="Add Email" OnClick="AddRequestEmailAddress_Click" disabled="disabled" />
+												</div>
+											</div>
+										</div>
+									</div>
+								</ContentTemplate>
+							</asp:UpdatePanel>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+								<asp:Button ID="btnSendSigEmail" runat="server" Text="Send" CssClass="btn btn-success" CausesValidation="false" UseSubmitBehavior="false" Visible="true" OnClick="btnSendSigEmail_Click" data-dismiss="modal" OnClientClick="ShowEmailToast();" />
+								<input runat="server" id="sigBtnTarget" type="hidden" name="sigBtnTarget"  />
+								<input runat="server" id="sigBtnLabel" type="hidden" name="sigBtnLabel"  />
+								<input runat="server" id="sigBtnType" type="hidden" name="sigBtnType"  />
+							</div>
+						</div>
+					</div>
+				</div>
+	
+
 	<!-- DELETE MODAL -->
 	<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel">
 		<div class="modal-dialog" role="document">
@@ -1062,33 +1121,6 @@
 		</div>
 	</div>
 
-	<!-- SIGNATURE EMAIL MODAL -->
-	<div class="modal fade" id="signatureEmailModal" tabindex="-1" role="dialog" aria-labelledby="signatureEmailModalLabel">
-		<div class="modal-dialog" role="document" style="max-width: 750px;">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title" id="signatureEmailModalLabel">Signature Request Email</h4>
-				</div>
-				<div class="modal-body bg-body-tertiary">
-					<div class="row mb-2">
-						<div class="col-md-8">
-							<div class="input-group">
-								<span class="input-group-text fas fa-address-book"></span>
-								<asp:TextBox runat="server" ID="signatureEmailAddress" CssClass="form-control" TextMode="Email" AutoCompleteType="Email" placeholder="john.doe@corporate.com"></asp:TextBox>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-					<asp:Button ID="btnSendSigEmail" runat="server" Text="Send" CssClass="btn btn-success" CausesValidation="false" UseSubmitBehavior="false" Visible="true" OnClick="btnSendSigEmail_Click" data-dismiss="modal" OnClientClick="ShowEmailToast();" />
-					<input runat="server" id="sigBtnTarget" type="hidden" name="sigBtnTarget"  />
-					<input runat="server" id="sigBtnLabel" type="hidden" name="sigBtnLabel"  />
-				</div>
-			</div>
-		</div>
-	</div>
-
 	<!-- REJECTION MODAL -->
 	<div class="modal fade" id="rejectionModal" tabindex="-1" role="dialog" aria-labelledby="rejectionModalLabel">
 		<div class="modal-dialog modal-lg" role="document">
@@ -1128,6 +1160,15 @@
 			DisableDDInitialOption();
 			scrollToElement();
 			HideAllTooltips();
+			$('#<%= signatureEmailAddress.ClientID %>').on('change keyup', function () {
+				var validEmail = $('#<%= signatureEmailAddress.ClientID %>').val().indexOf("@cwlp.com") > 1 || $('#<%= signatureEmailAddress.ClientID %>').val().indexOf("@springfield.il.us") > 1;
+				if (validEmail && $('#<%= signatureEmailAddress.ClientID %>').val().length > 0) {
+					$('#<%= AddRequestEmailAddress.ClientID %>').prop('disabled', false);
+				}
+				else {
+					$('#<%= AddRequestEmailAddress.ClientID %>').prop('disabled', true);
+				}
+			});
 		});
 
 		function DisableDDInitialOption() {
@@ -1232,12 +1273,15 @@
 			
 		}
 
-		function setEmailModal(btnID, btnLabel) {
+		function setEmailModal(btnID, btnLabel, sigType) {
 			const sigBtnTarget = $('#<%= sigBtnTarget.ClientID %>');
 			const sigBtnLabel = $('#<%= sigBtnLabel.ClientID %>');
+			const sigBtnType = $('#<%= sigBtnType.ClientID %>');
 			$(sigBtnTarget).attr("value", btnID);
 			$(sigBtnLabel).attr("value", btnLabel);
+			$(sigBtnType).attr("value", sigType);
 			$('#<%= signatureEmailAddress.ClientID %>').val('');
+			$('#signatureEmailModal').modal('show');
 		}
 
 		function scrollToElement() {
@@ -1290,6 +1334,7 @@
 			}
 		}
 
+		
 		$('#<%= sigName.ClientID %>').on('change keyup', function () {
 			if ($('#<%= certifySig.ClientID %>').prop('checked') == true && $('#<%= sigName.ClientID %>').val().length > 0 && $('#<%= sigDate.ClientID %>').val().length > 0) {
 				$('#<%= btnSignDoc.ClientID %>').prop('disabled', false);

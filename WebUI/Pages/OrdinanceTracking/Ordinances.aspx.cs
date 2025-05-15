@@ -759,6 +759,7 @@ namespace WebUI
             Session.Remove("OriginalStatus");
             Session.Remove("OriginalRevTable");
             Session.Remove("OriginalExpTable");
+            Session.Remove("SigRequestEmails");
 
 
             Session.Remove("ordRevTable");
@@ -967,7 +968,10 @@ namespace WebUI
 
             staffAnalysis.Text = ord.OrdinanceAnalysis;
 
-            List<OrdinanceSignature> ordSigs = Factory.Instance.GetAllLookup<OrdinanceSignature>(ordID, "sp_GetOrdinanceSignatureByOrdinanceID", "OrdinanceID");            
+            List<OrdinanceSignature> ordSigs = Factory.Instance.GetAllLookup<OrdinanceSignature>(ordID, "sp_GetOrdinanceSignatureByOrdinanceID", "OrdinanceID");   
+            
+            SignatureRequest signatureRequest = Factory.Instance.GetByID<SignatureRequest>(Convert.ToInt32(hdnOrdID.Value), "sp_GetOrdinanceSignatureRequestByOrdinanceID", "OrdinanceID");
+            Session["SigRequestEmails"] = signatureRequest;
 
             OrdinanceStatus ordStatus = new OrdinanceStatus();
 
@@ -1078,7 +1082,7 @@ namespace WebUI
                             ordinanceNumberDiv.Visible = true;
                             break;
                         case "Under Review":
-                            statusIcon.Attributes["class"] = "fas fa-memo-circle-info text-info";
+                            statusIcon.Attributes["class"] = "fa-kit fa-solid-memo-magnifying-glass text-info";
                             statusLabel.Attributes["class"] = "text-info";
                             ordinanceNumberDiv.Visible = true;
                             break;
@@ -1344,36 +1348,42 @@ namespace WebUI
                         }
                         else
                         {
+                            string[] validEmails;
                             switch (item.ClientID)
                             {
                                 case "fundsCheckBySig":
+                                    validEmails = signatureRequest.FundsCheckBy.Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
                                     fundsCheckByBtnDiv.Visible = true;
-                                    fundsCheckByBtn.Text = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null) ? "Sign" : "Awaiting Signature...";
-                                    fundsCheckByBtnDiv.Attributes["readonly"] = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null) ? "false" : "true";
+                                    fundsCheckByBtn.Text = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null || validEmails.Any(i => _user.Email.ToLower().Equals(i))) ? "Sign" : "Awaiting Signature...";
+                                    fundsCheckByBtnDiv.Attributes["readonly"] = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null || validEmails.Any(i => _user.Email.ToLower().Equals(i))) ? "false" : "true";
                                     fundsCheckByInputGroup.Visible = false;
                                     break;
                                 case "directorSupervisorSig":
+                                    validEmails = signatureRequest.DirectorSupervisor.Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
                                     directorSupervisorBtnDiv.Visible = true;
-                                    directorSupervisorBtn.Text = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null) ? "Sign" : "Awaiting Signature...";
-                                    directorSupervisorBtnDiv.Attributes["readonly"] = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null) ? "false" : "true";
+                                    directorSupervisorBtn.Text = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null || validEmails.Any(i => _user.Email.ToLower().Equals(i))) ? "Sign" : "Awaiting Signature...";
+                                    directorSupervisorBtnDiv.Attributes["readonly"] = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null || validEmails.Any(i => _user.Email.ToLower().Equals(i))) ? "false" : "true";
                                     directorSupervisorInputGroup.Visible = false;
                                     break;
                                 case "cPASig":
+                                    validEmails = signatureRequest.CityPurchasingAgent.Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
                                     cPABtnDiv.Visible = true;
-                                    cPABtn.Text = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null) ? "Sign" : "Awaiting Signature...";
-                                    cPABtnDiv.Attributes["readonly"] = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null) ? "false" : "true";
+                                    cPABtn.Text = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null || validEmails.Any(i => _user.Email.ToLower().Equals(i))) ? "Sign" : "Awaiting Signature...";
+                                    cPABtnDiv.Attributes["readonly"] = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null || validEmails.Any(i => _user.Email.ToLower().Equals(i))) ? "false" : "true";
                                     cPAInputGroup.Visible = false;
                                     break;
                                 case "obmDirectorSig":
+                                    validEmails = signatureRequest.OBMDirector.Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
                                     obmDirectorBtnDiv.Visible = true;
-                                    obmDirectorBtn.Text = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null) ? "Sign" : "Awaiting Signature...";
-                                    obmDirectorBtnDiv.Attributes["readonly"] = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null) ? "false" : "true";
+                                    obmDirectorBtn.Text = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null || validEmails.Any(i => _user.Email.ToLower().Equals(i))) ? "Sign" : "Awaiting Signature...";
+                                    obmDirectorBtnDiv.Attributes["readonly"] = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null || validEmails.Any(i => _user.Email.ToLower().Equals(i))) ? "false" : "true";
                                     obmDirectorInputGroup.Visible = false;
                                     break;
                                 case "mayorSig":
+                                    validEmails = signatureRequest.Mayor.Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
                                     mayorBtnDiv.Visible = true;
-                                    mayorBtn.Text = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null) ? "Sign" : "Awaiting Signature...";
-                                    mayorBtnDiv.Attributes["readonly"] = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null) ? "false" : "true";
+                                    mayorBtn.Text = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null || validEmails.Any(i => _user.Email.ToLower().Equals(i))) ? "Sign" : "Awaiting Signature...";
+                                    mayorBtnDiv.Attributes["readonly"] = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null || validEmails.Any(i => _user.Email.ToLower().Equals(i))) ? "false" : "true";
                                     mayorInputGroup.Visible = false;
                                     break;
                             }
@@ -3053,6 +3063,104 @@ namespace WebUI
                 unlock = true;
             }
             return unlock;
+        }
+        protected void signatureEmailBtn_Click(object sender, EventArgs e)
+        {
+            LinkButton btn = (LinkButton)sender;
+            string[] args = btn.CommandArgument.Split(';');
+            SignatureRequest sigRequests = Session["SigRequestEmails"] as SignatureRequest;
+            PropertyInfo sigType = (PropertyInfo)typeof(SignatureRequest).GetProperties().First(i => i.Name.Equals(btn.CommandName));;
+            string[] emails = sigType.GetValue(sigRequests).ToString().Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
+            if (emails.Length > 0)
+            {
+                emailListDiv.Visible = true;
+                btnSendSigEmail.Enabled = true;
+                rpEmailList.DataSource = emails;
+                rpEmailList.DataBind();
+            }
+            else
+            {
+                emailListDiv.Visible = false;
+                btnSendSigEmail.Enabled = false;
+                rpEmailList.DataSource = null;
+                rpEmailList.DataBind();
+            }
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "OpenSigEmailModal", $"setEmailModal('{args[0]}', '{args[1]}', '{btn.CommandName}');", true);
+        }
+
+        protected void AddRequestEmailAddress_Click(object sender, EventArgs e)
+        {
+            SignatureRequest sigRequests = Session["SigRequestEmails"] as SignatureRequest;            
+            PropertyInfo sigType = (PropertyInfo)typeof(SignatureRequest).GetProperties().First(i => i.Name.Equals(sigBtnType.Value));
+
+            List<string> emails = sigType.GetValue(sigRequests).ToString().Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToList();
+            string[] newEmailAddresses = signatureEmailAddress.Text.Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
+            foreach (string item in newEmailAddresses)
+            {
+                emails.Add(item);
+            }
+            sigType.SetValue(sigRequests, string.Join(";", emails.OrderBy(i => i)));
+            if (emails.Count > 0)
+            {
+                emailListDiv.Visible = true;
+                btnSendSigEmail.Enabled = true;
+                rpEmailList.DataSource = emails.OrderBy(i => i);
+                rpEmailList.DataBind();
+            }
+            else
+            {
+                emailListDiv.Visible = false;
+                btnSendSigEmail.Enabled = false;
+                rpEmailList.DataSource = null;
+                rpEmailList.DataBind();
+            }
+
+            int updateSigRequest = Factory.Instance.Update(sigRequests, "sp_UpdateOrdinance_SignatureRequest");
+            if (updateSigRequest > 0)
+            {
+                signatureEmailAddress.Text = string.Empty;
+            }
+        }
+
+        protected void rpEmailList_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            switch (e.CommandName)
+            {
+                case "remove":
+                    SignatureRequest sigRequests = Session["SigRequestEmails"] as SignatureRequest;
+                    PropertyInfo sigType = (PropertyInfo)typeof(SignatureRequest).GetProperties().First(i => i.Name.Equals(sigBtnType.Value));
+
+                    List<string> emails = sigType.GetValue(sigRequests).ToString().Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToList();
+                    emails.Remove(e.CommandArgument.ToString());
+                    sigType.SetValue(sigRequests, string.Join(";", emails.OrderBy(i => i)));
+                    if (emails.Count > 0)
+                    {
+                        emailListDiv.Visible = true;
+                        btnSendSigEmail.Enabled = true;
+                        rpEmailList.DataSource = emails.OrderBy(i => i);
+                        rpEmailList.DataBind();
+                    }
+                    else
+                    {
+                        emailListDiv.Visible = false;
+                        btnSendSigEmail.Enabled = false;
+                        rpEmailList.DataSource = null;
+                        rpEmailList.DataBind();
+                    }
+
+                    int updateSigRequest = Factory.Instance.Update(sigRequests, "sp_UpdateOrdinance_SignatureRequest");
+                    if (updateSigRequest > 0)
+                    {
+                        signatureEmailAddress.Text = string.Empty;
+                    }
+                    break;
+            }
+        }
+
+        protected void rpEmailList_ItemCreated(object sender, RepeaterItemEventArgs e)
+        {
+            LinkButton btn = (LinkButton)e.Item.FindControl("removeBtn");
+            ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(btn);            
         }
     }
 }

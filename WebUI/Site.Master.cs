@@ -57,6 +57,7 @@ namespace WebUI
                     }
                     Session["UserInformation"] = userInfo;
                 }
+                Session["ImpersonateUser"] = false;
             }
             
             if (!Page.IsPostBack && !Response.IsRequestBeingRedirected)
@@ -147,6 +148,9 @@ namespace WebUI
             _user = (ADUser)Session["CurrentUser"];
             List<ADGroups> aDGroups = ISDFactory.Instance.GetAllGroupsByLoginName(_user.Login);
             adminSwitchDiv.Visible = aDGroups.Any(i => i.GroupName.Equals("PG-THEMIS-ADMIN"));
+            appDevToolsParent.Visible = aDGroups.Any(i => i.GroupName.Equals("DG-PublicUtilities-InformationSystems-AppDev")) || (bool)Session["ImpersonateUser"];
+            ImpersonateUser.Visible = aDGroups.Any(i => i.GroupName.Equals("DG-PublicUtilities-InformationSystems-AppDev"));
+            StopImpersonate.Visible = (bool)Session["ImpersonateUser"];
             TriggerError.Visible = aDGroups.Any(i => i.GroupName.Equals("DG-PublicUtilities-InformationSystems-AppDev"));
         }
         protected void adminSwitch_CheckedChanged(object sender, EventArgs e)
@@ -169,7 +173,7 @@ namespace WebUI
         }
         protected void TriggerError_Click(object sender, EventArgs e)
         {
-            int errorCode = 500;
+            int errorCode = Convert.ToInt32(txtErrorCode.Text);
             throw new HttpException(errorCode, $"Error");
         }
 
@@ -188,6 +192,54 @@ namespace WebUI
                 toastColor = (string)Session["ToastColor"];
                 toastMessage = (string)Session["ToastMessage"];
             }
+        }
+
+        protected void btnImpersonateUser_Click(object sender, EventArgs e)
+        {
+            Session["ImpersonateUser"] = true;
+            Session.Remove("CurrentUser");
+            Session.Remove("UserInformation");
+            ADUser impersonateUser = new ADUser();
+
+            impersonateUser = AuthenticateUser(txtImpersonateUser.Text);
+            imgUser.Src = Photo.Instance.Base64ImgSrc(impersonateUser.PhotoLocation);
+            Session["CurrentUser"] = impersonateUser;
+
+            List<ADGroups> aDGroups = ISDFactory.Instance.GetAllGroupsByLoginName(impersonateUser.Login);
+            int employeeID = Convert.ToInt32(impersonateUser.EmployeeID.TrimStart());
+            if (Session["UserInformation"] == null)
+            {
+                userInfo = new UserInfo()
+                {
+                    UserFirstName = impersonateUser.FirstName,
+                    UserLastName = impersonateUser.LastName,
+                    UserDisplayName = $"{impersonateUser.FirstName} {impersonateUser.LastName}",
+                    UserEmail = impersonateUser.Email,
+                    IsAdmin = aDGroups.Any(i => i.GroupName.Equals("PG-THEMIS-ADMIN")),
+                    UserView = false,
+                    UserDepartmentID = Factory.Instance.GetUserDepartmentID(employeeID.ToString())
+                };
+                Dictionary<string, string> departments = DepartmentsList();
+                foreach (var department in departments.Keys)
+                {
+                    var value = departments[department];
+                    ListItem newItem = new ListItem(department, value);
+                    if (newItem.Value == userInfo.UserDepartmentID.ToString())
+                    {
+                        userInfo.UserDepartmentName = newItem.Text;
+                    }
+                }
+                Session["UserInformation"] = userInfo;
+            }
+            Response.Redirect(Request.RawUrl);
+        }
+
+        protected void StopImpersonate_Click(object sender, EventArgs e)
+        {
+            Session["ImpersonateUser"] = false;
+            Session.Remove("CurrentUser");
+            Session.Remove("UserInformation");
+            Response.Redirect(Request.RawUrl);
         }
     }
 }
