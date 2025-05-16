@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
 using System.Web;
 using System.Web.UI;
@@ -112,14 +113,18 @@ namespace WebUI
                     changeOrderNumber.Enabled = true;
                     additionalAmount.Enabled = true;
                     changeOrderNumber.Attributes.Add("required", "true");
+                    changeOrderNumber.Attributes.Add("placeholder", "0123456789");
                     additionalAmount.Attributes.Add("required", "true");
+                    additionalAmount.Attributes.Add("placeholder", "$0.00");
                     break;
 
                 case false:
                     changeOrderNumber.Enabled = false;
                     additionalAmount.Enabled = false;
                     changeOrderNumber.Attributes.Remove("required");
+                    changeOrderNumber.Attributes.Remove("placeholder");
                     additionalAmount.Attributes.Remove("required");
+                    additionalAmount.Attributes.Remove("placeholder");
                     break;
             }
         }
@@ -133,7 +138,7 @@ namespace WebUI
             switch (tableDesc)
             {
                 case "revenue":
-                    if (Session[tableDesc] != null)
+                    if (Session["ordRevTable"] != null)
                     {
                         for (int i = 0; i < rpRevenueTable.Items.Count; i++)
                         {
@@ -141,7 +146,7 @@ namespace WebUI
                             prvList.Add(accountingItem);
                         }
                         Session[tableDesc] = prvList;
-                        accountingList = (List<Accounting>)Session[tableDesc];
+                        accountingList = prvList;
                     }
                     accountingList.Add(newAccountingItem);
                     Session[tableDesc] = accountingList;
@@ -157,7 +162,7 @@ namespace WebUI
                             prvList.Add(accountingItem);
                         }
                         Session[tableDesc] = prvList;
-                        accountingList = (List<Accounting>)Session[tableDesc];
+                        accountingList = prvList;
                     }
                     accountingList.Add(newAccountingItem);
                     Session[tableDesc] = accountingList;
@@ -187,17 +192,6 @@ namespace WebUI
                             {
                                 Accounting accountingItem = new Accounting();
                                 var revItem = rpRevenueTable.Items[i];
-                                //DropDownList revFundCode = (DropDownList)revItem.FindControl("revenueFundCode");
-                                //DropDownList revAgencyCode = (DropDownList)revItem.FindControl("revenueAgencyCode");
-                                //DropDownList revOrgCode = (DropDownList)revItem.FindControl("revenueOrgCode");
-                                //DropDownList revActivityCode = (DropDownList)revItem.FindControl("revenueActivityCode");
-                                //DropDownList revObjectCode = (DropDownList)revItem.FindControl("revenueObjectCode");
-                                //TextBox revAmount = (TextBox)revItem.FindControl("revenueAmount");
-                                //accountingItem.FundCode = revFundCode.SelectedValue;
-                                //accountingItem.DepartmentCode = revAgencyCode.SelectedValue;
-                                //accountingItem.UnitCode = revOrgCode.SelectedValue;
-                                //accountingItem.ActivityCode = revActivityCode.SelectedValue;
-                                //accountingItem.ObjectCode = revObjectCode.SelectedValue;
                                 TextBox revFundCode = (TextBox)revItem.FindControl("revenueFundCode");                
                                 TextBox revAgencyCode = (TextBox)revItem.FindControl("revenueAgencyCode");
                                 TextBox revOrgCode = (TextBox)revItem.FindControl("revenueOrgCode");
@@ -210,15 +204,7 @@ namespace WebUI
                                 accountingItem.UnitCode = revOrgCode.Text;
                                 accountingItem.ActivityCode = revActivityCode.Text;
                                 accountingItem.ObjectCode = revObjectCode.Text;
-                                if (revAmount.Text.Length == 0)
-                                {
-
-                                    accountingItem.Amount = CurrencyToDecimal("-1");
-                                }
-                                else
-                                {
-                                    accountingItem.Amount = CurrencyToDecimal(revAmount.Text);
-                                }
+                                accountingItem.Amount = CurrencyToDecimal(revAmount.Text);
                                 prvList.Add(accountingItem);
                             }
                             Session[tableDesc] = prvList;
@@ -237,18 +223,6 @@ namespace WebUI
                             {
                                 Accounting accountingItem = new Accounting();
                                 var expItem = rpExpenditureTable.Items[i];
-                                //DropDownList expFundCode = (DropDownList)expItem.FindControl("expenditureFundCode");
-                                //DropDownList expAgencyCode = (DropDownList)expItem.FindControl("expenditureAgencyCode");
-                                //DropDownList expOrgCode = (DropDownList)expItem.FindControl("expenditureOrgCode");
-                                //DropDownList expActivityCode = (DropDownList)expItem.FindControl("expenditureActivityCode");
-                                //DropDownList expObjectCode = (DropDownList)expItem.FindControl("expenditureObjectCode");
-                                //TextBox expAmount = (TextBox)expItem.FindControl("expenditureAmount");
-                                //accountingItem.AccountingDesc = tableDesc;
-                                //accountingItem.FundCode = expFundCode.SelectedValue;
-                                //accountingItem.DepartmentCode = expAgencyCode.SelectedValue;
-                                //accountingItem.UnitCode = expOrgCode.SelectedValue;
-                                //accountingItem.ActivityCode = expActivityCode.SelectedValue;
-                                //accountingItem.ObjectCode = expObjectCode.SelectedValue;
                                 TextBox expFundCode = (TextBox)expItem.FindControl("expenditureFundCode");
                                 TextBox expAgencyCode = (TextBox)expItem.FindControl("expenditureAgencyCode");
                                 TextBox expOrgCode = (TextBox)expItem.FindControl("expenditureOrgCode");
@@ -261,15 +235,7 @@ namespace WebUI
                                 accountingItem.UnitCode = expOrgCode.Text;
                                 accountingItem.ActivityCode = expActivityCode.Text;
                                 accountingItem.ObjectCode = expObjectCode.Text;
-                                if (expAmount.Text.Length == 0)
-                                {
-
-                                    accountingItem.Amount = CurrencyToDecimal("-1");
-                                }
-                                else
-                                {
-                                    accountingItem.Amount = CurrencyToDecimal(expAmount.Text);
-                                }
+                                accountingItem.Amount = CurrencyToDecimal(expAmount.Text);
                                 prvList.Add(accountingItem);
                             }
                             Session[tableDesc] = prvList;
@@ -310,15 +276,7 @@ namespace WebUI
                     accountingItem.LastUpdateDate = DateTime.Now;
                     accountingItem.EffectiveDate = DateTime.Now;
                     accountingItem.ExpirationDate = DateTime.MaxValue;
-                    if (revAmount.Text.Length == 0)
-                    {
-
-                        accountingItem.Amount = CurrencyToDecimal("-1");
-                    }
-                    else
-                    {
-                        accountingItem.Amount = CurrencyToDecimal(revAmount.Text);
-                    }
+                    accountingItem.Amount = CurrencyToDecimal(revAmount.Text);
                     break;
                 case "expenditure":
                     var expItem = rpExpenditureTable.Items[itemIndex];
@@ -338,15 +296,7 @@ namespace WebUI
                     accountingItem.LastUpdateDate = DateTime.Now;
                     accountingItem.EffectiveDate = DateTime.Now;
                     accountingItem.ExpirationDate = DateTime.MaxValue;
-                    if (expAmount.Text.Length == 0)
-                    {
-
-                        accountingItem.Amount = CurrencyToDecimal("-1");
-                    }
-                    else
-                    {
-                        accountingItem.Amount = CurrencyToDecimal(expAmount.Text);
-                    }
+                    accountingItem.Amount = CurrencyToDecimal(expAmount.Text);
                     break;
             }
             return accountingItem;
@@ -375,15 +325,16 @@ namespace WebUI
             ordinance.ContractAmount = CurrencyToDecimal(contractAmount.Text);
             ordinance.ScopeChange = scYes.Checked;
             ordinance.ChangeOrderNumber = changeOrderNumber.Text ?? string.Empty;
-            if (scYes.Checked)
-            {
+            ordinance.AdditionalAmount = CurrencyToDecimal(additionalAmount.Text);
+            //if (scYes.Checked)
+            //{
 
-                ordinance.AdditionalAmount = CurrencyToDecimal(additionalAmount.Text);
-            }
-            else
-            {
-                ordinance.AdditionalAmount = CurrencyToDecimal("-1");
-            }
+            //    ordinance.AdditionalAmount = CurrencyToDecimal(additionalAmount.Text);
+            //}
+            //else
+            //{
+            //    ordinance.AdditionalAmount = CurrencyToDecimal("-1");
+            //}
             ordinance.ContractMethod = purchaseMethod.SelectedValue;
             ordinance.OtherException = otherException.Text ?? string.Empty;
             ordinance.PreviousOrdinanceNumbers = prevOrdinanceNums.Text;
@@ -569,6 +520,8 @@ namespace WebUI
                     Mayor = string.Empty,
                     LastUpdateBy = $"{_user.FirstName} {_user.LastName}",
                     LastUpdateDate = DateTime.Now,
+                    EffectiveDate = DateTime.Now,
+                    ExpirationDate = DateTime.MaxValue
                 };
 
                 int signatureRequestRet = Factory.Instance.Insert(signatureRequest, "sp_InsertOrdinance_SignatureRequest", Skips("ordSignatureRequestInsert"));
@@ -682,16 +635,12 @@ namespace WebUI
         }
         protected void GetCopyOrdinance(int ordID)
         {
-            Session.Remove("ordRevTable");
-            Session.Remove("ordExpTable");
+            Session.Remove("revenue");
+            Session.Remove("expenditure");
             Ordinance ord = Factory.Instance.GetByID<Ordinance>(ordID, "sp_GetOrdinanceByOrdinanceID", "OrdinanceID");
 
 
             requestDepartment.SelectedValue = DepartmentsList()[ord.RequestDepartment];
-            //firstReadDate.Text = ord.FirstReadDate.ToString("yyyy-MM-dd");
-            //requestContact.Text = ord.RequestContact;
-            //requestPhone.Text = ord.RequestPhone.SubstringUpToFirst('x');
-            //requestExt.Text = ord.RequestPhone.Substring(14);
 
             switch (ord.EmergencyPassage)
             {
@@ -710,7 +659,7 @@ namespace WebUI
             }
             epJustification.Text = ord.EmergencyPassageReason;
 
-            fiscalImpact.Text = ord.OrdinanceFiscalImpact.ToString();
+            fiscalImpact.Text = NotApplicable(ord.OrdinanceFiscalImpact.ToString());
             suggestedTitle.Text = ord.OrdinanceTitle;
 
             vendorName.Text = ord.ContractVendorName;
@@ -718,7 +667,7 @@ namespace WebUI
             contractStartDate.Text = ord.ContractStartDate;
             contractEndDate.Text = ord.ContractEndDate;
             contractTerm.Value = ord.ContractTerm;
-            contractAmount.Text = ord.ContractAmount.ToString();
+            contractAmount.Text = NotApplicable(ord.ContractAmount.ToString());
 
             switch (ord.ScopeChange)
             {
@@ -740,7 +689,7 @@ namespace WebUI
                         break;
             }
             changeOrderNumber.Text = ord.ChangeOrderNumber;
-            additionalAmount.Text = (ord.AdditionalAmount.ToString() != "-1.00") ? ord.AdditionalAmount.ToString() : string.Empty;
+            additionalAmount.Text = NotApplicable(ord.AdditionalAmount.ToString());
 
 
             purchaseMethod.SelectedValue = ord.ContractMethod;
@@ -758,15 +707,16 @@ namespace WebUI
                     break;
             }
             otherException.Text = ord.OtherException;
-            if (ord.PreviousOrdinanceNumbers != "")
+
+            List<string> prvOrdNums = ord.PreviousOrdinanceNumbers.Trim().Split(',').Where(i => !i.IsNullOrWhiteSpace()).ToList();
+            
+            if (!ord.OrdinanceNumber.IsNullOrWhiteSpace())
             {
-                ord.PreviousOrdinanceNumbers += $", {ord.OrdinanceNumber}";
-                prevOrdinanceNums.Text = ord.PreviousOrdinanceNumbers;
+                prvOrdNums.Add(ord.OrdinanceNumber);
             }
-            else
-            {
-                prevOrdinanceNums.Text = ord.OrdinanceNumber;
-            }
+            prevOrdinanceNums.Text = string.Join(", ", prvOrdNums);
+            ord.PreviousOrdinanceNumbers = prevOrdinanceNums.Text;
+            
             
 
             codeProvision.Text = ord.CodeProvision;
@@ -815,33 +765,33 @@ namespace WebUI
 
                 if (revItems.Count > 0)
                 {
-                    Session["ordRevTable"] = revItems;
+                    Session["revenue"] = revItems;
                     rpRevenueTable.DataSource = revItems;
                     rpRevenueTable.DataBind();
                 }
                 else
                 {
-                    Session.Remove("ordRevTable");
+                    Session.Remove("revenue");
                     rpRevenueTable.DataSource = null;
                     rpRevenueTable.DataBind();
                 }
                 if (expItems.Count > 0)
                 {
-                    Session["ordExpTable"] = expItems;
+                    Session["expenditure"] = expItems;
                     rpExpenditureTable.DataSource = expItems;
                     rpExpenditureTable.DataBind();
                 }
                 else
                 {
-                    Session.Remove("ordExpTable");
+                    Session.Remove("expenditure");
                     rpExpenditureTable.DataSource = null;
                     rpExpenditureTable.DataBind();
                 }
             }
             else
             {
-                Session.Remove("ordRevTable");
-                Session.Remove("ordExpTable");
+                Session.Remove("revenue");
+                Session.Remove("expenditure");
                 rpRevenueTable.DataSource = null;
                 rpExpenditureTable.DataSource = null;
                 rpRevenueTable.DataBind();

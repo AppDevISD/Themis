@@ -13,6 +13,22 @@ function FormatForms() {
             formatCurrency($(this), "blur");
         });
     });
+    $('[type="date"]').each(function () {
+        if ($(this).val() == "") {
+            $(this).css('color', 'rgba(var(--bs-body-color-rgb), 0.25) !important');
+        }
+        else {
+            $(this).css('color', 'var(--bs-body-color) !important');
+        }
+    });
+    $('[type="date"]').on('change keyup', function () {
+        if ($(this).val() == "") {
+            $(this).css('color', 'rgba(var(--bs-body-color-rgb), 0.25) !important');
+        }
+        else {
+            $(this).css('color', 'var(--bs-body-color) !important');
+        }
+    });
 
     var datePeriodStartEntered;
     var datePeriodEndEntered;

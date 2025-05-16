@@ -307,6 +307,10 @@ main {
 
 
 /* --------------- Forms --------------- */
+::placeholder {
+	color: rgba(var(--bs-body-color-rgb), 0.25) !important;
+}
+
 input[type="date"] {
 	cursor: text !important;
 }

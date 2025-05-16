@@ -100,10 +100,10 @@
 										<span class="fas fa-file-circle-plus"></span>
 										<p class="m-0 fs-6 noto-sans-semi-bold">New Fact Sheet</p>
 									</a>
-									<a class='nav-link <%:ActivePage("OrdinanceAdmin")?"activePage":""%>' href="./OrdinanceTrackingAdmin">
+									<%--<a class='nav-link <%:ActivePage("OrdinanceAdmin")?"activePage":""%>' href="./OrdinanceTrackingAdmin">
 										<span class="fas fa-key"></span>
 										<p class="m-0 fs-6 noto-sans-semi-bold">Admin</p>
-									</a>
+									</a>--%>
 								</div>
 							</div>
 

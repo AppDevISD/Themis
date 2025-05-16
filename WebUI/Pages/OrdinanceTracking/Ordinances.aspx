@@ -302,7 +302,7 @@
 											<div class="col-md-12">
 												<div class="form-group">
 													<label for="epJustification">If Yes, Explain Justification - See Attached Document</label>
-													<asp:TextBox runat="server" ID="epJustification" CssClass="form-control" TextMode="Multiline" Rows="8" AutoCompleteType="Disabled"></asp:TextBox>
+													<asp:TextBox runat="server" ID="epJustification" CssClass="form-control" TextMode="Multiline" Rows="4" AutoCompleteType="Disabled"></asp:TextBox>
 												</div>
 											</div>
 										</div>
@@ -316,7 +316,7 @@
 											<div class="col-md-2">
 												<div class="form-group">
 													<label for="fiscalImpact">Fiscal Impact</label>
-													<asp:TextBox runat="server" ID="fiscalImpact" CssClass="form-control" TextMode="SingleLine" data-type="currency" placeholder="$100,000.00" AutoCompleteType="Disabled" required="true"></asp:TextBox>
+													<asp:TextBox runat="server" ID="fiscalImpact" CssClass="form-control" TextMode="SingleLine" data-type="currency" placeholder="$0.00" AutoCompleteType="Disabled" ></asp:TextBox>
 												</div>
 											</div>
 										</div>
@@ -326,7 +326,7 @@
 											<%-- SUGGESTED TITLE --%>
 											<div class="col-md-12">
 												<label for="suggestedTitle">Suggested Title</label>
-												<asp:TextBox runat="server" ID="suggestedTitle" CssClass="form-control" TextMode="Multiline" Rows="12" AutoCompleteType="Disabled" required="true"></asp:TextBox>
+												<asp:TextBox runat="server" ID="suggestedTitle" CssClass="form-control" TextMode="Multiline" Rows="4" AutoCompleteType="Disabled" required="true"></asp:TextBox>
 											</div>
 										</div>
 									</div>
@@ -385,7 +385,7 @@
 											<div class="col-md-3">
 												<div class="form-group">
 													<label for="contractAmount">Contract Amount</label>
-													<asp:TextBox runat="server" ID="contractAmount" CssClass="form-control" TextMode="SingleLine" data-type="currency" placeholder="$100,000.00" AutoCompleteType="Disabled" required="true"></asp:TextBox>
+													<asp:TextBox runat="server" ID="contractAmount" CssClass="form-control" TextMode="SingleLine" data-type="currency" placeholder="$0.00" AutoCompleteType="Disabled"></asp:TextBox>
 												</div>
 											</div>
 										</div>
@@ -419,16 +419,16 @@
 										<%-- SECOND ROW --%>
 										<div runat="server" id="scopeChangeOptions" class="row mb-3">
 											<%-- CHANGE ORDER NUMBER --%>
-											<div class="col-md-10">
+											<div class="col-md-4">
 												<label for="changeOrderNumber">Change Order Number</label>
-												<asp:TextBox runat="server" ID="changeOrderNumber" CssClass="form-control" TextMode="SingleLine" placeholder="0123456789" AutoCompleteType="Disabled"></asp:TextBox>
+												<asp:TextBox runat="server" ID="changeOrderNumber" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled"></asp:TextBox>
 											</div>
 
 											<%-- ADDITIONAL AMOUNT --%>
 											<div class="col-md-2">
 												<div class="form-group">
 													<label for="additionalAmount">Additional Amount</label>
-													<asp:TextBox runat="server" ID="additionalAmount" CssClass="form-control" TextMode="SingleLine" data-type="currency" placeholder="$100,000.00" AutoCompleteType="Disabled"></asp:TextBox>
+													<asp:TextBox runat="server" ID="additionalAmount" CssClass="form-control" TextMode="SingleLine" data-type="currency" AutoCompleteType="Disabled"></asp:TextBox>
 												</div>
 											</div>
 										</div>
@@ -573,7 +573,7 @@
 																		<asp:TextBox runat="server" ID="revenueObjectCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "ObjectCode") %>' required="true"></asp:TextBox>
 																	</td>
 																	<td class="position-relative" style="vertical-align: middle">
-																		<asp:TextBox runat="server" ID="revenueAmount" CssClass="form-control" TextMode="SingleLine" data-type="currency" placeholder="$10,000.00" AutoCompleteType="Disabled" Text='<%# (Convert.ToInt32(DataBinder.Eval(Container.DataItem, "Amount")) >= 0)?DataBinder.Eval(Container.DataItem, "Amount"):string.Empty%>'></asp:TextBox>
+																		<asp:TextBox runat="server" ID="revenueAmount" CssClass="form-control" TextMode="SingleLine" data-type="currency" placeholder="$0.00" AutoCompleteType="Disabled" Text='<%# (Convert.ToInt32(DataBinder.Eval(Container.DataItem, "Amount")) >= 0)?DataBinder.Eval(Container.DataItem, "Amount"):string.Empty%>'></asp:TextBox>
 
 																		<div runat="server" id="removeRevRowDiv">
 																			<asp:Button runat="server" ID="removeRevenueRow" CssClass="btn row-delete" UseSubmitBehavior="false" CommandName="delete" CommandArgument="ordRevTable" Text="&#xf068;" />
@@ -640,7 +640,7 @@
 																		<asp:TextBox runat="server" ID="expenditureObjectCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "ObjectCode") %>' required="true"></asp:TextBox>
 																	</td>
 																	<td class="position-relative" style="vertical-align: middle">
-																		<asp:TextBox runat="server" ID="expenditureAmount" CssClass="form-control" TextMode="SingleLine" data-type="currency" placeholder="$10,000.00" AutoCompleteType="Disabled" Text='<%# (Convert.ToInt32(DataBinder.Eval(Container.DataItem, "Amount")) >= 0)?DataBinder.Eval(Container.DataItem, "Amount"):string.Empty%>'></asp:TextBox>
+																		<asp:TextBox runat="server" ID="expenditureAmount" CssClass="form-control" TextMode="SingleLine" data-type="currency" placeholder="$0.00" AutoCompleteType="Disabled" Text='<%# (Convert.ToInt32(DataBinder.Eval(Container.DataItem, "Amount")) >= 0)?DataBinder.Eval(Container.DataItem, "Amount"):string.Empty%>'></asp:TextBox>
 
 																		<div runat="server" id="removeExpRowDiv">
 																			<asp:Button runat="server" ID="removeExpenditureRow" CssClass="btn row-delete" UseSubmitBehavior="false" CommandName="delete" CommandArgument="ordExpTable" Text="&#xf068;" />
@@ -1007,56 +1007,7 @@
 		</asp:UpdatePanel>		
 	</section>
 
-	<div runat="server" class="modal fade" id="signatureEmailModal" role="dialog" aria-labelledby="signatureEmailModalLabel">
-					<div class="modal-dialog" role="document" style="max-width: 750px;">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h4 class="modal-title" id="signatureEmailModalLabel">Signature Request Email</h4>
-							</div>
-							<asp:UpdatePanel runat="server" ID="pnlSigEmail">
-								<Triggers>
-									<asp:AsyncPostBackTrigger ControlID="AddRequestEmailAddress" EventName="Click" />
-								</Triggers>
-								<ContentTemplate>
-									<div class="modal-body bg-body-tertiary">
-										<div runat="server" id="emailListDiv" class="row mb-5">
-											<div class="col-md-12">
-											<asp:Repeater runat="server" ID="rpEmailList" OnItemCommand="rpEmailList_ItemCommand" OnItemCreated="rpEmailList_ItemCreated">
-													<ItemTemplate>
-														<div class="badge rounded-pill text-bg-secondary m-1" style="font-size: .95rem">
-															<%# Container.DataItem %>
-															<asp:LinkButton runat="server" ID="removeBtn" CssClass="text-danger" style="margin-left: 10px;" CommandName="remove" CommandArgument='<%# Container.DataItem %>'><span class="fa-solid fa-xmark"></span></asp:LinkButton>
-														</div>
-													</ItemTemplate>
-												</asp:Repeater>
-											</div>
-										</div>
-										<div class="row mb-2">
-											<div class="col-md-8">
-												<div class="input-group">
-													<span class="input-group-text fas fa-address-book"></span>
-													<asp:TextBox runat="server" ID="signatureEmailAddress" CssClass="form-control" TextMode="Email" AutoCompleteType="Email" placeholder="john.doe@corporate.com" ></asp:TextBox>
-												</div>
-											</div>
-											<div class="col-md-4">
-												<div class="form-group">
-													<asp:Button runat="server" ID="AddRequestEmailAddress" UseSubmitBehavior="false" CssClass="btn btn-success" Width="100%" Text="Add Email" OnClick="AddRequestEmailAddress_Click" disabled="disabled" />
-												</div>
-											</div>
-										</div>
-									</div>
-								</ContentTemplate>
-							</asp:UpdatePanel>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-								<asp:Button ID="btnSendSigEmail" runat="server" Text="Send" CssClass="btn btn-success" CausesValidation="false" UseSubmitBehavior="false" Visible="true" OnClick="btnSendSigEmail_Click" data-dismiss="modal" OnClientClick="ShowEmailToast();" />
-								<input runat="server" id="sigBtnTarget" type="hidden" name="sigBtnTarget"  />
-								<input runat="server" id="sigBtnLabel" type="hidden" name="sigBtnLabel"  />
-								<input runat="server" id="sigBtnType" type="hidden" name="sigBtnType"  />
-							</div>
-						</div>
-					</div>
-				</div>
+	
 	
 
 	<!-- DELETE MODAL -->
@@ -1073,6 +1024,58 @@
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 					<asp:Button ID="btnDelete" runat="server" Text="Delete" CssClass="btn btn-danger" CausesValidation="false" UseSubmitBehavior="false" Visible="true" OnClick="mdlDeleteSubmit_ServerClick" OnClientClick="ShowSubmitToast();" />
 				</div>
+			</div>
+		</div>
+	</div>
+
+	<%-- SIGNATURE EMAIL --%>
+	<div runat="server" class="modal fade" id="signatureEmailModal" role="dialog" aria-labelledby="signatureEmailModalLabel">
+		<div class="modal-dialog" role="document" style="max-width: 750px;">
+			<div class="modal-content">
+				<asp:UpdatePanel runat="server" ID="pnlSigEmail">
+					<Triggers>
+						<asp:AsyncPostBackTrigger ControlID="AddRequestEmailAddress" EventName="Click" />
+					</Triggers>
+					<ContentTemplate>
+						<div class="modal-header">
+							<h4 class="modal-title" id="signatureEmailModalLabel">Signature Request Email</h4>
+						</div>
+						<div class="modal-body bg-body-tertiary">
+							<div runat="server" id="emailListDiv" class="row mb-5">
+								<div class="col-md-12">
+								<asp:Repeater runat="server" ID="rpEmailList" OnItemCommand="rpEmailList_ItemCommand" OnItemCreated="rpEmailList_ItemCreated">
+										<ItemTemplate>
+											<div class="badge rounded-pill text-bg-secondary m-1" style="font-size: .95rem">
+												<%# Container.DataItem %>
+												<asp:LinkButton runat="server" ID="removeBtn" CssClass="text-danger" style="margin-left: 10px;" CommandName="remove" CommandArgument='<%# Container.DataItem %>'><span class="fa-solid fa-xmark"></span></asp:LinkButton>
+											</div>
+										</ItemTemplate>
+									</asp:Repeater>
+								</div>
+							</div>
+							<div class="row mb-2">
+								<div class="col-md-8">
+									<div class="input-group">
+										<span class="input-group-text fas fa-address-book"></span>
+										<asp:TextBox runat="server" ID="signatureEmailAddress" CssClass="form-control" TextMode="Email" AutoCompleteType="Email" placeholder="john.doe@corporate.com" ></asp:TextBox>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+										<asp:Button runat="server" ID="AddRequestEmailAddress" UseSubmitBehavior="false" CssClass="btn btn-success" Width="100%" Text="Add Email" OnClick="AddRequestEmailAddress_Click" disabled="disabled" />
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+							<asp:Button ID="btnSendSigEmail" runat="server" Text="Send" CssClass="btn btn-success" CausesValidation="false" UseSubmitBehavior="false" Visible="true" OnClick="btnSendSigEmail_Click" data-dismiss="modal" OnClientClick="ShowEmailToast();"/>
+							<input runat="server" id="sigBtnTarget" type="hidden" name="sigBtnTarget"  />
+							<input runat="server" id="sigBtnLabel" type="hidden" name="sigBtnLabel"  />
+							<input runat="server" id="sigBtnType" type="hidden" name="sigBtnType"  />
+						</div>
+					</ContentTemplate>
+				</asp:UpdatePanel>
 			</div>
 		</div>
 	</div>
@@ -1334,7 +1337,6 @@
 			}
 		}
 
-		
 		$('#<%= sigName.ClientID %>').on('change keyup', function () {
 			if ($('#<%= certifySig.ClientID %>').prop('checked') == true && $('#<%= sigName.ClientID %>').val().length > 0 && $('#<%= sigDate.ClientID %>').val().length > 0) {
 				$('#<%= btnSignDoc.ClientID %>').prop('disabled', false);

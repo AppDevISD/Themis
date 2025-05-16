@@ -1,24 +1,25 @@
 ﻿using DataLibrary;
+using DataLibrary.OrdinanceTracking;
+using ISD.ActiveDirectory;
+using Microsoft.Ajax.Utilities;
+using Microsoft.Reporting.WebForms;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Security.Cryptography;
+using System.Text;
 using System.Web;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using static DataLibrary.TablePagination;
-using System.Diagnostics;
-using Microsoft.Ajax.Utilities;
-using System.Web.Services;
 using static DataLibrary.Utility;
-using ISD.ActiveDirectory;
-using System.IO;
-using System.Linq;
-using System.Security.Cryptography;
-using Microsoft.Reporting.WebForms;
-using System.Data;
-using DataLibrary.OrdinanceTracking;
-using System.Reflection;
-using System.Text;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace WebUI
 {
@@ -641,14 +642,18 @@ namespace WebUI
                     changeOrderNumber.Enabled = true;
                     additionalAmount.Enabled = true;
                     changeOrderNumber.Attributes.Add("required", "true");
+                    changeOrderNumber.Attributes.Add("placeholder", "0123456789");
                     additionalAmount.Attributes.Add("required", "true");
+                    additionalAmount.Attributes.Add("placeholder", "$0.00");
                     break;
 
                 case false:
                     changeOrderNumber.Enabled = false;
                     additionalAmount.Enabled = false;
                     changeOrderNumber.Attributes.Remove("required");
+                    changeOrderNumber.Attributes.Remove("placeholder");
                     additionalAmount.Attributes.Remove("required");
+                    additionalAmount.Attributes.Remove("placeholder");
                     break;
             }
         }
@@ -680,7 +685,16 @@ namespace WebUI
         }
         protected void btnSendSigEmail_Click(object sender, EventArgs e)
         {
-            Email.Instance.AddEmailAddress("SingleEmail", signatureEmailAddress.Text);
+            SignatureRequest sigRequests = Session["SigRequestEmails"] as SignatureRequest;
+            PropertyInfo sigType = (PropertyInfo)typeof(SignatureRequest).GetProperties().First(i => i.Name.Equals(sigBtnType.Value));
+
+            List<string> emails = sigType.GetValue(sigRequests).ToString().Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToList();
+
+            foreach (string item in emails)
+            {
+                Email.Instance.AddEmailAddress("SingleEmail", item);
+            }
+
             string href = $"apptest/Themis/Ordinances?id={hdnOrdID.Value.ToString()}&v=edit&f={sigBtnTarget.Value.ToString()}";
             string formType = "THΣMIS";
 
@@ -823,7 +837,7 @@ namespace WebUI
             }
             epJustification.Text = ord.EmergencyPassageReason;
 
-            fiscalImpact.Text = ord.OrdinanceFiscalImpact.ToString();
+            fiscalImpact.Text = NotApplicable(ord.OrdinanceFiscalImpact.ToString());
             suggestedTitle.Text = ord.OrdinanceTitle;
 
             vendorName.Text = ord.ContractVendorName;
@@ -831,7 +845,7 @@ namespace WebUI
             contractStartDate.Text = ord.ContractStartDate;
             contractEndDate.Text = ord.ContractEndDate;
             contractTerm.Value = ord.ContractTerm;
-            contractAmount.Text = ord.ContractAmount.ToString();
+            contractAmount.Text = NotApplicable(ord.ContractAmount.ToString());
 
             switch (ord.ScopeChange)
             {
@@ -847,7 +861,7 @@ namespace WebUI
                     break;
             }
             changeOrderNumber.Text = ord.ChangeOrderNumber;
-            additionalAmount.Text = (ord.AdditionalAmount.ToString() != "-1.00") ? ord.AdditionalAmount.ToString() : string.Empty;
+            additionalAmount.Text = NotApplicable(ord.AdditionalAmount.ToString());
 
 
             purchaseMethod.SelectedValue = ord.ContractMethod;
@@ -1006,8 +1020,10 @@ namespace WebUI
                     ddStatusDiv.Visible = false;
                     statusDiv.Visible = true;
                     requiredFieldDescriptor.Visible = false;
+                    fiscalImpact.Attributes["placeholder"] = "N/A";
                     vendorNumber.Attributes["placeholder"] = "N/A";
                     contractTerm.Attributes["placeholder"] = "N/A";
+                    contractAmount.Attributes["placeholder"] = "N/A";
                     prevOrdinanceNums.Attributes["placeholder"] = "N/A";
                     codeProvision.Attributes["placeholder"] = "N/A";
                     newRevenueRowDiv.Visible = false;
@@ -1230,8 +1246,10 @@ namespace WebUI
                     hdnOrdStatusID.Value = ordStatus.OrdinanceStatusID.ToString();
                     statusDiv.Visible = !userInfo.IsAdmin || userInfo.UserView ? true : false;
                     requiredFieldDescriptor.Visible = true;
+                    fiscalImpact.Attributes["placeholder"] = "$0.00";
                     vendorNumber.Attributes["placeholder"] = "0123456789";
                     contractTerm.Attributes["placeholder"] = "Calculating Term...";
+                    contractAmount.Attributes["placeholder"] = "$0.00";
                     prevOrdinanceNums.Attributes["placeholder"] = "123-45-6789";
                     codeProvision.Attributes["placeholder"] = "0123456789";
                     contractStartDate.TextMode = TextBoxMode.Date;
@@ -1253,7 +1271,7 @@ namespace WebUI
                             Button removeRevRow = item.FindControl("removeRevenueRow") as Button;
                             TextBox revAmount = item.FindControl("revenueAmount") as TextBox;
                             removeRevRow.Visible = true;
-                            revAmount.Attributes["placeholder"] = "$10,000.00";
+                            revAmount.Attributes["placeholder"] = "$0.00";
                             ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(removeRevRow);
                         }
                     }
@@ -1265,7 +1283,7 @@ namespace WebUI
                             Button removeExpRow = item.FindControl("removeExpenditureRow") as Button;
                             TextBox expAmount = item.FindControl("expenditureAmount") as TextBox;
                             removeExpRow.Visible = true;
-                            expAmount.Attributes["placeholder"] = "$10,000.00";
+                            expAmount.Attributes["placeholder"] = "$0.00";
                             ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(removeExpRow);
                         }
                     }
@@ -1282,14 +1300,18 @@ namespace WebUI
                             changeOrderNumber.Enabled = true;
                             additionalAmount.Enabled = true;
                             changeOrderNumber.Attributes.Add("required", "true");
+                            changeOrderNumber.Attributes.Add("placeholder", "0123456789");
                             additionalAmount.Attributes.Add("required", "true");
+                            additionalAmount.Attributes.Add("placeholder", "$0.00");
                             break;
 
                         case false:
                             changeOrderNumber.Enabled = false;
                             additionalAmount.Enabled = false;
                             changeOrderNumber.Attributes.Remove("required");
+                            changeOrderNumber.Attributes.Remove("placeholder");
                             additionalAmount.Attributes.Remove("required");
+                            additionalAmount.Attributes.Remove("placeholder");
                             break;
                     }
                     switch (purchaseMethod.SelectedItem.Value)
@@ -1604,15 +1626,7 @@ namespace WebUI
                                 accountingItem.UnitCode = revOrgCode.Text;
                                 accountingItem.ActivityCode = revActivityCode.Text;
                                 accountingItem.ObjectCode = revObjectCode.Text;
-                                if (revAmount.Text.Length == 0)
-                                {
-
-                                    accountingItem.Amount = CurrencyToDecimal("-1");
-                                }
-                                else
-                                {
-                                    accountingItem.Amount = CurrencyToDecimal(revAmount.Text);
-                                }
+                                accountingItem.Amount = CurrencyToDecimal(revAmount.Text);
                                 prvList.Add(accountingItem);
                             }
                             Session[tableDesc] = prvList;
@@ -1668,15 +1682,7 @@ namespace WebUI
                                 accountingItem.UnitCode = expOrgCode.Text;
                                 accountingItem.ActivityCode = expActivityCode.Text;
                                 accountingItem.ObjectCode = expObjectCode.Text;
-                                if (expAmount.Text.Length == 0)
-                                {
-
-                                    accountingItem.Amount = CurrencyToDecimal("-1");
-                                }
-                                else
-                                {
-                                    accountingItem.Amount = CurrencyToDecimal(expAmount.Text);
-                                }
+                                accountingItem.Amount = CurrencyToDecimal(expAmount.Text);
                                 prvList.Add(accountingItem);
                             }
                             Session[tableDesc] = prvList;
@@ -1962,15 +1968,7 @@ namespace WebUI
                     accountingItem.LastUpdateDate = DateTime.Now;
                     accountingItem.EffectiveDate = DateTime.Now;
                     accountingItem.ExpirationDate = DateTime.MaxValue;
-                    if (revAmount.Text.Length == 0)
-                    {
-
-                        accountingItem.Amount = CurrencyToDecimal("-1");
-                    }
-                    else
-                    {
-                        accountingItem.Amount = CurrencyToDecimal(revAmount.Text);
-                    }
+                    accountingItem.Amount = CurrencyToDecimal(revAmount.Text);
                     break;
                 case "expenditure":
                     var expItem = rpExpenditureTable.Items[itemIndex];
@@ -1992,15 +1990,7 @@ namespace WebUI
                     accountingItem.LastUpdateDate = DateTime.Now;
                     accountingItem.EffectiveDate = DateTime.Now;
                     accountingItem.ExpirationDate = DateTime.MaxValue;
-                    if (expAmount.Text.Length == 0)
-                    {
-
-                        accountingItem.Amount = CurrencyToDecimal("-1");
-                    }
-                    else
-                    {
-                        accountingItem.Amount = CurrencyToDecimal(expAmount.Text);
-                    }
+                    accountingItem.Amount = CurrencyToDecimal(expAmount.Text);
                     break;
             }
             return accountingItem;

@@ -327,7 +327,19 @@ namespace DataLibrary
         }
         public static decimal CurrencyToDecimal(string currency)
         {
-            return decimal.Parse(currency, NumberStyles.Any);
+            try
+            {
+                return decimal.Parse(currency, NumberStyles.Any);
+            }
+            catch (Exception)
+            {
+                return decimal.Parse("-1", NumberStyles.Any);
+            }
+            
+        }
+        public static string NotApplicable(string data)
+        {
+            return !data.Equals("-1.00") ? data : string.Empty;
         }
         public static void ConsoleLog(object message)
         {
