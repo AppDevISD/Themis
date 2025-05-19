@@ -91,13 +91,13 @@ namespace DataLibrary
         public static string EmployeeTitle(int pIntID)
         {
             string employeeTitle = string.Empty;
-            SqlConnection _cn = new SqlConnection(Properties.Settings.Default["EmployeeDirectoryDB"].ToString());
-            SqlCommand cmd = new SqlCommand("spGetEmployeeDetail", _cn);
+            SqlConnection cn = new SqlConnection(Properties.Settings.Default["EmployeeDirectoryDB"].ToString());
+            SqlCommand cmd = new SqlCommand("spGetEmployeeDetail", cn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@pIntID", pIntID);
-            using (_cn)
+            using (cn)
             {
-                _cn.Open();
+                cn.Open();
                 SqlDataReader rs;
                 rs = cmd.ExecuteReader();
 
@@ -111,13 +111,13 @@ namespace DataLibrary
         public static string EmployeePhone(int pIntID)
         {
             string employeePhone = string.Empty;
-            SqlConnection _cn = new SqlConnection(Properties.Settings.Default["EmployeeDirectoryDB"].ToString());
-            SqlCommand cmd = new SqlCommand("spGetEmployeeDetail", _cn);
+            SqlConnection cn = new SqlConnection(Properties.Settings.Default["EmployeeDirectoryDB"].ToString());
+            SqlCommand cmd = new SqlCommand("spGetEmployeeDetail", cn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@pIntID", pIntID);
-            using (_cn)
+            using (cn)
             {
-                _cn.Open();
+                cn.Open();
                 SqlDataReader rs;
                 rs = cmd.ExecuteReader();
 
@@ -131,13 +131,13 @@ namespace DataLibrary
         public static string EmployeeExt(int pIntID)
         {
             string employeeExt = string.Empty;
-            SqlConnection _cn = new SqlConnection(Properties.Settings.Default["EmployeeDirectoryDB"].ToString());
-            SqlCommand cmd = new SqlCommand("spGetEmployeeDetail", _cn);
+            SqlConnection cn = new SqlConnection(Properties.Settings.Default["EmployeeDirectoryDB"].ToString());
+            SqlCommand cmd = new SqlCommand("spGetEmployeeDetail", cn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@pIntID", pIntID);
-            using (_cn)
+            using (cn)
             {
-                _cn.Open();
+                cn.Open();
                 SqlDataReader rs;
                 rs = cmd.ExecuteReader();
 
@@ -147,6 +147,96 @@ namespace DataLibrary
                 }
             }
             return employeeExt;
+        }
+        public static Department GetUserDepartment(string employeeID)
+        {
+            Department department = new Department();
+            SqlConnection cn = new SqlConnection(Properties.Settings.Default["EmployeeDirectoryDB"].ToString());
+            SqlCommand cmd = new SqlCommand("spGetEmployeeDetail", cn);
+            cmd.Parameters.AddWithValue($"@pIntID", employeeID);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            using (cn)
+            {
+                cn.Open();
+                SqlDataReader rs;
+                rs = cmd.ExecuteReader();
+                while (rs.Read())
+                {
+                    department.DepartmentCode = Convert.ToInt32(rs["deptCode"]);
+                    department.DepartmentName = GetUserDepartmentName(department.DepartmentCode);
+                }
+            }
+            return department;
+        }
+        public static string GetUserDepartmentName(int key)
+        {
+            Dictionary<int, string> dictionary = new Dictionary<int, string>()
+            {
+                { 5,  "Budget & Management" },
+                { 13, "City Clerk" },
+                { 7,  "City Council" },
+                { 12, "City Treasurer" },
+                { 16, "Community Relations" },
+                { 14, "Convention & Visitor's Bureau" },
+                { 6,  "Corporation Counsel" },
+                { 4,  "Fire Department" },
+                { 8,  "Human Resources" },
+                { 15, "Lincoln Library" },
+                { 10, "Office of The Mayor" },
+                { 1,  "Planning & Economic Development" },
+                { 11, "Police Department" },
+                { 3,  "Public Utilities" },
+                { 9,  "Public Works" },
+            };
+
+            return dictionary[key];
+        }
+        public static Division GetUserDivision(string employeeID)
+        {
+            Division division = new Division();
+            SqlConnection cn = new SqlConnection(Properties.Settings.Default["EmployeeDirectoryDB"].ToString());
+            SqlCommand cmd = new SqlCommand("spGetEmployeeDetail", cn);
+            cmd.Parameters.AddWithValue($"@pIntID", employeeID);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            using (cn)
+            {
+                cn.Open();
+                SqlDataReader rs;
+                rs = cmd.ExecuteReader();
+                while (rs.Read())
+                {
+                    division.DivisionCode = Convert.ToInt32(rs["divCode"]);
+                    division.DivisionName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(rs["division"].ToString().ToLower());
+                }
+            }
+            return division;
+        }
+        public static List<Division> GetDivisionsByDept(int deptCode)
+        {
+            List<Division> lDivision = new List<Division>();
+            SqlConnection cn = new SqlConnection(Properties.Settings.Default["EmployeeDirectoryDB"].ToString());
+            SqlCommand cmd = new SqlCommand("spLoadDivisionsByDepartment", cn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@pDeptID", deptCode);
+
+            using (cn)
+            {
+                cn.Open();
+                SqlDataReader rs;
+                rs = cmd.ExecuteReader();
+
+                while (rs.Read())
+                {
+                    Division e = new Division();
+                    e.DivisionCode = Convert.ToInt32(rs["divCode"]);
+                    e.DivisionName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(rs["divDescription"].ToString().ToLower());
+                    lDivision.Add(e);
+                }
+
+            }
+            return lDivision;
         }
         public static Dictionary<string, string> DepartmentsList()
         {
@@ -169,7 +259,6 @@ namespace DataLibrary
                 {"Public Utilities",                    "3"},
                 {"Public Works",                        "9"},
             };
-
             return dictionary;
         }
         public static Dictionary<string, string> StatusList()
@@ -193,6 +282,7 @@ namespace DataLibrary
                 { "StatusDescription", "Status" },
                 { "OrdinanceNumber", "Ordinance Number" },
                 { "RequestDepartment", "Requesting Department" },
+                { "RequestDivision", "Requesting Division" },
                 { "FirstReadDate", "First Read Date" },
                 { "RequestContact", "Requesting Contact" },
                 { "RequestPhone", "Phone Number" },

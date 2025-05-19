@@ -14,7 +14,19 @@ namespace DataLibrary
         public string UserEmail { get; set; }
         public bool IsAdmin { get; set; }
         public bool UserView { get; set; }
-        public string UserDepartmentName { get; set; }
-        public int UserDepartmentID { get; set; }
+        public Department UserDepartment { get; set; }
+        public Division UserDivision { get; set; }
+    }
+
+    public class Department
+    {
+        public int DepartmentCode { get; set; }
+        public string DepartmentName { get; set; }
+    }
+
+    public class Division
+    {
+        public int DivisionCode { get; set; }
+        public string DivisionName { get; set; }
     }
 }

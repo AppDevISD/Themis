@@ -43,15 +43,20 @@
 						<%-- FIRST ROW --%>
 						<div class="row mb-3">
 							<%-- DEPARTMENT --%>
-							<div class="col-md-6">
+							<div class="col-md-5">
 								<div class="form-group">
 									<label for="requestDepartment">Requesting Department</label>
-									<asp:DropDownList ID="requestDepartment" runat="server" AutoPostBack="true" CssClass="form-select" required="true" ValidateRequestMode="Enabled"></asp:DropDownList>
+									<asp:DropDownList ID="requestDepartment" runat="server" AutoPostBack="true" CssClass="form-select" required="true" ValidateRequestMode="Enabled" OnSelectedIndexChanged="requestDepartment_SelectedIndexChanged"></asp:DropDownList>
 								</div>
 							</div>
 
-							<%-- BLANK SPACE --%>
-							<div class="col-md-4"></div>
+							<%-- DIVISION --%>
+							<div runat="server" id="requestDivisionDiv" class="col-md-5">
+								<div class="form-group">
+									<label for="requestDivision">Requesting Division</label>
+									<asp:DropDownList ID="requestDivision" runat="server" AutoPostBack="true" CssClass="form-select" required="true" ValidateRequestMode="Enabled"></asp:DropDownList>
+								</div>
+							</div>
 
 							<%-- 1ST READ DATE --%>
 							<div class="col-md-2">
@@ -563,6 +568,7 @@
 
 		function DisableDDInitialOption() {
 			var ddDepartment = document.getElementById('<%= requestDepartment.ClientID %>');
+			var ddDivision = document.getElementById('<%= requestDivision.ClientID %>');
 			var ddMethod = document.getElementById('<%= purchaseMethod.ClientID %>');
 			if (ddDepartment != null) {
 				if (ddDepartment.options[0].selected) {
@@ -572,6 +578,15 @@
 					ddDepartment.style.color = "unset";
 				}
 				ddDepartment.options[0].disabled = true;
+			}
+			if (ddDivision != null) {
+				if (ddDivision.options[0].selected) {
+					ddDivision.style.color = "rgb(from var(--bs-body-color) r g b / 35%)"
+				}
+				else {
+					ddDivision.style.color = "unset";
+				}
+				ddDivision.options[0].disabled = true;
 			}
 			if (ddMethod != null) {
 				if (ddMethod.options[0].selected) {

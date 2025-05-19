@@ -672,7 +672,7 @@
   opacity: 0.5;
 }
 
-label:has(+ .form-control:disabled) {
+label:has(+ .form-control:disabled), label:has(+ .form-select:disabled) {
   opacity: 0.25;
 }
 

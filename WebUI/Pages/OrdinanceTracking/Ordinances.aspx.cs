@@ -28,6 +28,7 @@ namespace WebUI
         private ADUser _user = new ADUser();
         public UserInfo userInfo = new UserInfo();
         private readonly string emailList = HttpContext.Current.IsDebuggingEnabled ? "NewFactSheetEmailListTEST" : "NewFactSheetEmailList";
+        public string deptDivColumnType = "RequestDepartment";
         
         public readonly List<string> lockedStatus = new List<string>()
         {
@@ -53,6 +54,7 @@ namespace WebUI
                 Session["sortDir"] = "desc";
                 Session["curCmd"] = "EffectiveDate";
                 Session["curDir"] = "desc";
+                Session["DeptDivColumn"] = "department";
                 GetAllDepartments();
                 GetAllStatuses();
                 GetAllPurchaseMethods();
@@ -155,6 +157,17 @@ namespace WebUI
                 filterDepartment.Items.Add(newItem);
             }
         }
+        protected void GetAllDivisions(DropDownList dd, string deptCode)
+        {
+            dd.Items.Clear();
+            dd.Items.Add(new ListItem() { Text = "Select Division...", Value = "" });
+            List<Division> divisionList = GetDivisionsByDept(Convert.ToInt32(deptCode));
+            foreach (Division item in divisionList)
+            {
+                ListItem newItem = new ListItem(item.DivisionName, item.DivisionCode.ToString());
+                dd.Items.Add(newItem);
+            }
+        }
         protected void GetAllStatuses()
         {
             Dictionary<string, string> statuses = StatusList();
@@ -184,6 +197,17 @@ namespace WebUI
             ordView.Visible = false;
             lblNoItems.Visible = false;
             filterDepartmentDiv.Visible = !userInfo.IsAdmin || userInfo.UserView ? false : true;
+            if (!filterDepartment.SelectedValue.IsNullOrWhiteSpace())
+            {
+                filterDivision.Enabled = true;
+                GetAllDivisions(filterDepartment, filterDepartment.SelectedValue);
+            }
+            else
+            {
+                filterDivision.Enabled = false;
+                filterDivision.Items.Add(new ListItem() { Text = "Select Division...", Value = "" });
+            }
+
         }
         protected void SetPagination(Repeater rpTable, Dictionary<string, LinkButton> pageBtns, Panel pnlPaging, Label lblPage, int ItemsPerPage, bool GetViewState = false)
         {
@@ -211,9 +235,9 @@ namespace WebUI
                     OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
                     ord.StatusDescription = ordStatus.StatusDescription;
                 }
-                if ((userInfo.UserDepartmentName != null && !isAdmin) || userInfo.UserView)
+                if ((userInfo.UserDepartment.DepartmentName != null && !isAdmin) || userInfo.UserView)
                 {
-                    ord_list = FilterList(ord_list, "department", userInfo.UserDepartmentName);
+                    ord_list = FilterList(ord_list, "department", userInfo.UserDepartment.DepartmentName);
                 }
                 BindDataRepeaterPagination("yes", ord_list);
             }
@@ -256,231 +280,40 @@ namespace WebUI
         protected void Filter_SelectedIndexChanged(object sender, EventArgs e)
         {
             Dictionary<string, LinkButton> pageBtns = new Dictionary<string, LinkButton>()
-                {
-                    { "firstBtn", lnkFirstSearchP },
-                    { "previousBtn", lnkPreviousSearchP },
-                    { "nextBtn", lnkNextSearchP },
-                    { "lastBtn", lnkLastSearchP },
-                };
+            {
+                { "firstBtn", lnkFirstSearchP },
+                { "previousBtn", lnkPreviousSearchP },
+                { "nextBtn", lnkNextSearchP },
+                { "lastBtn", lnkLastSearchP },
+            };
+
             SetPagination(rpOrdinanceTable, pageBtns, pnlPagingP, lblCurrentPageBottomSearchP, 10);
-            List<Ordinance> ord_list = new List<Ordinance>();
-            List<Ordinance> noFilterOrdList = new List<Ordinance>();
 
             DropDownList dropDown = (DropDownList)sender;
-            string commandName = dropDown.Attributes["data-command"];
-            string commandArgument = dropDown.SelectedItem.ToString();
-            List<Ordinance> filteredList = new List<Ordinance>();
+
+            string commandName = dropDown.Attributes["data-command"]; string commandArgument = dropDown.SelectedItem.ToString();
+
             userInfo = (UserInfo)Session["UserInformation"];
 
+            int statusID = !filterStatus.SelectedValue.IsNullOrWhiteSpace() ? Convert.ToInt32(filterStatus.SelectedValue) : -1;
+            string department = !filterDepartment.SelectedValue.IsNullOrWhiteSpace() ? filterDepartment.SelectedItem.Text : string.Empty;
+            string division = !filterDivision.SelectedValue.IsNullOrWhiteSpace() ? filterDivision.SelectedItem.Text : string.Empty;
 
-            switch (commandName)
+            List<Ordinance> filteredList = new List<Ordinance>();
+            filteredList = Factory.Instance.GetFilteredOrdinances(statusID, department, division);
+            if (filteredList.Count > 0)
             {
-                case "department":
-                    if (filterDepartment.SelectedValue != "")
-                    {
-                        switch (filterStatus.SelectedValue.Equals(""))
-                        {
-                            case true:
-                                //filteredList = Factory.Instance.GetAll<Ordinance>("sp_GetOrdinanceByEffective");
-                                filteredList = Factory.Instance.GetAllLookup<Ordinance>(0, "sp_GetOrdinanceByFilteredStatusID", "StatusID");
-                                if (filteredList.Count > 0)
-                                {
-                                    foreach (Ordinance ord in filteredList)
-                                    {
-                                        OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
-                                        ord.StatusDescription = ordStatus.StatusDescription;
-                                    }
-                                }
-                                break;
-
-                            case false:
-                                if (filterStatus.SelectedValue != "7")
-                                {
-                                    filteredList = Factory.Instance.GetAllLookup<Ordinance>(Convert.ToInt32(filterStatus.SelectedValue), "sp_GetOrdinanceByStatusID", "StatusID");
-                                    if (filteredList.Count > 0)
-                                    {
-                                        foreach (Ordinance ord in filteredList)
-                                        {
-                                            OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
-                                            ord.StatusDescription = ordStatus.StatusDescription;
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    filteredList = Factory.Instance.GetAll<Ordinance>("sp_GetDeletedOrdinanceByEffective");
-
-                                    if (filteredList.Count > 0)
-                                    {
-                                        foreach (Ordinance ord in filteredList)
-                                        {
-                                            OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
-                                            ord.StatusDescription = ordStatus.StatusDescription;
-                                        }
-                                    }
-                                }
-                                break;
-                        }
-                        filteredList = FilterList(filteredList, commandName, commandArgument);
-                    }
-                    else
-                    {
-                        switch (filterStatus.SelectedValue.Equals(""))
-                        {
-                            case true:
-                                //filteredList = Factory.Instance.GetAll<Ordinance>("sp_GetOrdinanceByEffective");
-                                filteredList = Factory.Instance.GetAllLookup<Ordinance>(0, "sp_GetOrdinanceByFilteredStatusID", "StatusID");
-                                if (filteredList.Count > 0)
-                                {
-                                    foreach (Ordinance ord in filteredList)
-                                    {
-                                        OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
-                                        ord.StatusDescription = ordStatus.StatusDescription;
-                                    }
-                                }
-                                BindDataRepeaterPagination("no", filteredList);
-                                break;
-
-                            case false:
-                                if (filterStatus.SelectedValue != "7")
-                                {
-                                    filteredList = Factory.Instance.GetAllLookup<Ordinance>(Convert.ToInt32(filterStatus.SelectedValue), "sp_GetOrdinanceByStatusID", "StatusID");
-                                    if (filteredList.Count > 0)
-                                    {
-                                        foreach (Ordinance ord in filteredList)
-                                        {
-                                            OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
-                                            ord.StatusDescription = ordStatus.StatusDescription;
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    filteredList = Factory.Instance.GetAll<Ordinance>("sp_GetDeletedOrdinanceByEffective");
-
-                                    if (filteredList.Count > 0)
-                                    {
-                                        foreach (Ordinance ord in filteredList)
-                                        {
-                                            OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
-                                            ord.StatusDescription = ordStatus.StatusDescription;
-                                        }
-                                    }
-                                }
-                                BindDataRepeaterPagination("no", filteredList);
-                                break;
-                        }
-                    }
-                    break;
-
-                case "status":
-                    if (filterStatus.SelectedValue != "")
-                    {
-                        if (filterStatus.SelectedValue != "7")
-                        {
-                            filteredList = Factory.Instance.GetAllLookup<Ordinance>(Convert.ToInt32(dropDown.SelectedValue), "sp_GetOrdinanceByStatusID", "StatusID");
-
-                            if (filteredList.Count > 0)
-                            {
-                                foreach (Ordinance ord in filteredList)
-                                {
-                                    OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
-                                    ord.StatusDescription = ordStatus.StatusDescription;
-                                }
-                            }
-
-                            switch (filterDepartment.SelectedValue.Equals(""))
-                            {
-                                case true:
-                                    switch (userInfo.IsAdmin && !userInfo.UserView)
-                                    {
-                                        case true:
-                                            BindDataRepeaterPagination("no", filteredList);
-                                            break;
-
-                                        case false:
-                                            filteredList = FilterList(filteredList, "department", userInfo.UserDepartmentName);
-                                            break;
-                                    }
-                                    break;
-
-                                case false:
-                                    filteredList = FilterList(filteredList, "department", filterDepartment.SelectedItem.ToString());
-                                    break;
-                            }
-                        }
-                        else
-                        {
-                            filteredList = Factory.Instance.GetAll<Ordinance>("sp_GetDeletedOrdinanceByEffective");
-
-                            if (filteredList.Count > 0)
-                            {
-                                foreach (Ordinance ord in filteredList)
-                                {
-                                    OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
-                                    ord.StatusDescription = ordStatus.StatusDescription;
-                                }
-                            }
-
-                            switch (filterDepartment.SelectedValue.Equals(""))
-                            {
-                                case true:
-                                    switch (userInfo.IsAdmin && !userInfo.UserView)
-                                    {
-                                        case true:
-                                            BindDataRepeaterPagination("no", filteredList);
-                                            break;
-
-                                        case false:
-                                            filteredList = FilterList(filteredList, "department", userInfo.UserDepartmentName);
-                                            break;
-                                    }
-                                    break;
-
-                                case false:
-                                    filteredList = FilterList(filteredList, "department", filterDepartment.SelectedItem.ToString());
-                                    break;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        //filteredList = Factory.Instance.GetAll<Ordinance>("sp_GetOrdinanceByEffective");
-                        filteredList = Factory.Instance.GetAllLookup<Ordinance>(0, "sp_GetOrdinanceByFilteredStatusID", "StatusID");
-                        if (filteredList.Count > 0)
-                        {
-                            foreach (Ordinance ord in filteredList)
-                            {
-                                OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
-                                ord.StatusDescription = ordStatus.StatusDescription;
-                            }
-                        }
-                        switch (filterDepartment.SelectedValue.Equals(""))
-                        {
-                            case true:
-                                switch (userInfo.IsAdmin && !userInfo.UserView)
-                                {
-                                    case true:
-                                        BindDataRepeaterPagination("no", filteredList);
-                                        break;
-
-                                    case false:
-                                        filteredList = FilterList(filteredList, "department", userInfo.UserDepartmentName);
-                                        break;
-                                }
-                                break;
-
-                            case false:
-                                filteredList = FilterList(filteredList, "department", filterDepartment.SelectedItem.ToString());
-                                break;
-                        }
-
-                    }
-                    break;
+                foreach (Ordinance ord in filteredList)
+                {
+                    OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
+                    ord.StatusDescription = ordStatus.StatusDescription;
+                }
             }
+
             Dictionary<string, object> sortRet = new Dictionary<string, object>();
 
             sortRet = GetCurrentSort(filteredList, Session["curCmd"].ToString(), Session["sortDir"].ToString());
+            BindDataRepeaterPagination("no", filteredList);
 
 
             Session["ord_list"] = sortRet["list"];
@@ -540,16 +373,68 @@ namespace WebUI
                 sortID,
                 sortDate,
                 sortTitle,
-                sortDepartment,
+                sortDepartmentDivision,
                 sortContact,
                 sortStatus
             };
             foreach (LinkButton item in sortButtonsList)
             {
-                item.Text = $"<strong>{item.Attributes["data-text"]}<span runat='server' class='float-end lh-1p5'></span></strong>";
+                switch (item.ID)
+                {
+                    case "sortDepartmentDivision":
+                        item.Text = $"<strong runat='server' id='txtDeptDivColumn'>{item.Attributes["data-text"]}<span runat='server' class='float-end lh-1p5'></span></strong>";
+                        break;
+                    default:
+                        item.Text = $"<strong>{item.Attributes["data-text"]}<span runat='server' class='float-end lh-1p5'></span></strong>";
+                        break;
+                }
+                
             }
 
-            button.Text = $"<strong>{commandText}<span runat='server' class='float-end lh-1p5 fas fa-arrow-{sortRet["arrow"]}'></span></strong>";
+            switch (button.ID)
+            {
+                case "sortDepartmentDivision":
+                    button.Text = $"<strong runat='server' id='txtDeptDivColumn'>{commandText}<span runat='server' class='float-end lh-1p5 fas fa-arrow-{sortRet["arrow"]}'></span></strong>";
+                    break;
+                default:
+                    button.Text = $"<strong>{commandText}<span runat='server' class='float-end lh-1p5 fas fa-arrow-{sortRet["arrow"]}'></span></strong>";
+                    break;
+            }
+
+            List<Label> departmentLabels = new List<Label>();
+            List<Label> divisionLabels = new List<Label>();
+
+            foreach (RepeaterItem item in rpOrdinanceTable.Items)
+            {
+                Label deptLabel = (Label)item.FindControl("ordTableDepartment");
+                Label divLabel = (Label)item.FindControl("ordTableDivision");
+                departmentLabels.Add(deptLabel);
+                divisionLabels.Add(divLabel);
+            }
+
+            switch (Session["DeptDivColumn"])
+            {
+                case "department":
+                    foreach (Label item in departmentLabels)
+                    {
+                        item.Visible = true;
+                    }
+                    foreach (Label item in divisionLabels)
+                    {
+                        item.Visible = false;
+                    }
+                    break;
+                case "division":
+                    foreach (Label item in departmentLabels)
+                    {
+                        item.Visible = false;
+                    }
+                    foreach (Label item in divisionLabels)
+                    {
+                        item.Visible = true;
+                    }
+                    break;
+            }
             Session["ViewState"] = ViewState;
         }
         protected void paginationBtn_Click(object sender, EventArgs e)
@@ -601,6 +486,19 @@ namespace WebUI
             if (ddStatus.SelectedItem.Text.Equals("Rejected"))
             {
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "OpenRejectionModal", "OpenRejectionModal();", true);
+            }
+        }
+        protected void requestDepartment_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!requestDepartment.SelectedValue.IsNullOrWhiteSpace())
+            {
+                requestDivision.Enabled = true;
+                GetAllDivisions(requestDivision, requestDepartment.SelectedValue);
+            }
+            else
+            {
+                requestDivision.Enabled = false;
+                requestDivision.Items.Add(new ListItem() { Text = "Select Division...", Value = "" });
             }
         }
         protected void PurchaseMethodSelectedIndexChanged(object sender, EventArgs e)
@@ -814,6 +712,11 @@ namespace WebUI
             ddStatus.SelectedValue = ord.StatusDescription;
             ordinanceNumber.Text = ord.OrdinanceNumber;
             requestDepartment.SelectedValue = DepartmentsList()[ord.RequestDepartment];
+
+            requestDivision.Enabled = true;
+            GetAllDivisions(requestDivision, requestDepartment.SelectedValue);
+            requestDivision.SelectedValue = GetDivisionsByDept(Convert.ToInt32(requestDepartment.SelectedValue)).First(i => i.DivisionName.Equals(ord.RequestDivision)).DivisionCode.ToString();
+
             firstReadDate.Text = ord.FirstReadDate.ToString("yyyy-MM-dd");
             requestContact.Text = ord.RequestContact;
             requestEmail.Text = ord.RequestEmail;
@@ -2023,6 +1926,7 @@ namespace WebUI
             ordinance.OrdinanceID = Convert.ToInt32(hdnOrdID.Value);
             ordinance.OrdinanceNumber = ordinanceNumber.Text;
             ordinance.RequestDepartment = requestDepartment.SelectedItem.Text;
+            ordinance.RequestDivision = requestDivision.SelectedItem.Text;
             ordinance.RequestContact = requestContact.Text;
             ordinance.RequestPhone = $"{requestPhone.Text}{requestExt.Text}";
             ordinance.RequestEmail = requestEmail.Text.ToLower();
@@ -3151,6 +3055,57 @@ namespace WebUI
         {
             LinkButton btn = (LinkButton)e.Item.FindControl("removeBtn");
             ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(btn);            
+        }
+
+        protected void btnDeptDivColumn_Click(object sender, EventArgs e)
+        {
+            sortDepartmentDivision.Attributes.Remove("data-command");
+            sortDepartmentDivision.Attributes.Remove("data-text");
+            List<Label> departmentLabels = new List<Label>();
+            List<Label> divisionLabels = new List<Label>();
+
+            foreach (RepeaterItem item in rpOrdinanceTable.Items)
+            {
+                Label deptLabel = (Label)item.FindControl("ordTableDepartment");
+                Label divLabel = (Label)item.FindControl("ordTableDivision");
+                departmentLabels.Add(deptLabel);
+                divisionLabels.Add(divLabel);
+            }
+
+            Button btn = (Button)sender;
+            switch (btn.CommandName)
+            {
+                case "department":
+                    sortDepartmentDivision.Attributes.Add("data-command", "RequestDepartment");
+                    sortDepartmentDivision.Attributes.Add("data-text", "Department");
+                    txtDeptDivColumn.InnerText = "Department";
+                    deptDivColumnType = "RequestDepartment";
+                    foreach (Label item in departmentLabels)
+                    {
+                        item.Visible = true;
+                    }
+                    foreach (Label item in divisionLabels)
+                    {
+                        item.Visible = false;
+                    }
+                    Session["DeptDivColumn"] = "department";
+                    break;
+                case "division":
+                    sortDepartmentDivision.Attributes.Add("data-command", "RequestDivision");
+                    sortDepartmentDivision.Attributes.Add("data-text", "Division");
+                    txtDeptDivColumn.InnerText = "Division";
+                    deptDivColumnType = "RequestDivision";
+                    foreach (Label item in departmentLabels)
+                    {
+                        item.Visible = false;
+                    }
+                    foreach (Label item in divisionLabels)
+                    {
+                        item.Visible = true;
+                    }
+                    Session["DeptDivColumn"] = "division";
+                    break;
+            }
         }
     }
 }

@@ -43,18 +43,9 @@ namespace WebUI
                         UserEmail = _user.Email,
                         IsAdmin = aDGroups.Any(i => i.GroupName.Equals("PG-THEMIS-ADMIN")),
                         UserView = false,
-                        UserDepartmentID = Factory.Instance.GetUserDepartmentID(employeeID.ToString())
+                        UserDepartment = GetUserDepartment(employeeID.ToString()),
+                        UserDivision = GetUserDivision(employeeID.ToString())
                     };
-                    Dictionary<string, string> departments = DepartmentsList();
-                    foreach (var department in departments.Keys)
-                    {
-                        var value = departments[department];
-                        ListItem newItem = new ListItem(department, value);
-                        if (newItem.Value == userInfo.UserDepartmentID.ToString())
-                        {
-                            userInfo.UserDepartmentName = newItem.Text;
-                        }
-                    }
                     Session["UserInformation"] = userInfo;
                 }
                 Session["ImpersonateUser"] = false;
@@ -106,7 +97,8 @@ namespace WebUI
             string userName = _user.Login.ToUpper();
             string userDisplayName = $"{_user.FirstName} {_user.LastName}";
             lblUser.Text = userDisplayName;
-            lblTitle.Text = userInfo.UserDepartmentName;
+            lblDepartment.Text = userInfo.UserDepartment.DepartmentName;
+            lblDivision.Text = userInfo.UserDivision.DivisionName;
             imgUser.Src = Photo.Instance.Base64ImgSrc(_user.PhotoLocation);
         }
         protected void SetPageTitle()
@@ -217,18 +209,9 @@ namespace WebUI
                     UserEmail = impersonateUser.Email,
                     IsAdmin = aDGroups.Any(i => i.GroupName.Equals("PG-THEMIS-ADMIN")),
                     UserView = false,
-                    UserDepartmentID = Factory.Instance.GetUserDepartmentID(employeeID.ToString())
+                    UserDepartment = GetUserDepartment(employeeID.ToString()),
+                    UserDivision = GetUserDivision(employeeID.ToString())
                 };
-                Dictionary<string, string> departments = DepartmentsList();
-                foreach (var department in departments.Keys)
-                {
-                    var value = departments[department];
-                    ListItem newItem = new ListItem(department, value);
-                    if (newItem.Value == userInfo.UserDepartmentID.ToString())
-                    {
-                        userInfo.UserDepartmentName = newItem.Text;
-                    }
-                }
                 Session["UserInformation"] = userInfo;
             }
             Response.Redirect(Request.RawUrl);

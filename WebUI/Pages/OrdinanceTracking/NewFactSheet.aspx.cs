@@ -34,11 +34,14 @@ namespace WebUI
                 GetAllPurchaseMethods();
                 SetStartupActives();
 
-                requestDepartment.SelectedValue = userInfo.UserDepartmentID.ToString();
+                //requestDepartment.SelectedValue = userInfo.UserDepartment.DepartmentCode.ToString();
                 requestContact.Text = $"{_user.FirstName} {_user.LastName}";
                 requestEmail.Text = _user.Email.ToLower();
                 requestPhone.Text = _user.Telephone;
                 requestExt.Text = _user.IPPhone;
+
+                
+
             }
 
             if (!Page.IsPostBack && Request.QueryString["id"] != null)
@@ -54,6 +57,17 @@ namespace WebUI
             changeOrderNumber.Enabled = false;
             additionalAmount.Enabled = false;
             otherException.Enabled = false;
+            if (!requestDepartment.SelectedValue.IsNullOrWhiteSpace())
+            {
+                requestDivision.Enabled = true;
+                GetAllDivisions(requestDepartment.SelectedValue);
+                //requestDivision.SelectedValue = userInfo.UserDivision.DivisionCode.ToString();
+            }
+            else
+            {
+                requestDivision.Enabled = false;
+                requestDivision.Items.Add(new ListItem() { Text = "Select Division...", Value = "" });
+            }
         }
         protected void GetAllDepartments()
         {
@@ -63,6 +77,17 @@ namespace WebUI
                 var value = departments[department];
                 ListItem newItem = new ListItem(department, value);
                 requestDepartment.Items.Add(newItem);
+            }
+        }
+        protected void GetAllDivisions(string deptCode)
+        {
+            requestDivision.Items.Clear();
+            requestDivision.Items.Add(new ListItem() { Text = "Select Division...", Value = "" });
+            List<Division> divisionList = GetDivisionsByDept(Convert.ToInt32(deptCode));
+            foreach (Division item in divisionList)
+            {
+                ListItem newItem = new ListItem(item.DivisionName, item.DivisionCode.ToString());
+                requestDivision.Items.Add(newItem);
             }
         }
         protected void GetAllPurchaseMethods()
@@ -309,6 +334,7 @@ namespace WebUI
 
             ordinance.OrdinanceNumber = string.Empty;
             ordinance.RequestDepartment = requestDepartment.SelectedItem.Text;
+            ordinance.RequestDivision = requestDivision.SelectedItem.Text;
             ordinance.RequestContact = requestContact.Text;
             ordinance.RequestPhone = $"{requestPhone.Text}{xString}{requestExt.Text}";
             ordinance.RequestEmail = requestEmail.Text;
@@ -326,15 +352,6 @@ namespace WebUI
             ordinance.ScopeChange = scYes.Checked;
             ordinance.ChangeOrderNumber = changeOrderNumber.Text ?? string.Empty;
             ordinance.AdditionalAmount = CurrencyToDecimal(additionalAmount.Text);
-            //if (scYes.Checked)
-            //{
-
-            //    ordinance.AdditionalAmount = CurrencyToDecimal(additionalAmount.Text);
-            //}
-            //else
-            //{
-            //    ordinance.AdditionalAmount = CurrencyToDecimal("-1");
-            //}
             ordinance.ContractMethod = purchaseMethod.SelectedValue;
             ordinance.OtherException = otherException.Text ?? string.Empty;
             ordinance.PreviousOrdinanceNumbers = prevOrdinanceNums.Text;
@@ -802,6 +819,21 @@ namespace WebUI
 
             ScriptManager.RegisterStartupScript(this, this.GetType(), "CurrencyFormatting", "CurrencyFormatting();", true);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "FormatForms", "FormatForms();", true);
+        }
+
+        protected void requestDepartment_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!requestDepartment.SelectedValue.IsNullOrWhiteSpace())
+            {
+                requestDivision.Enabled = true;
+                GetAllDivisions(requestDepartment.SelectedValue);
+                //requestDivision.SelectedValue = userInfo.UserDivision.DivisionCode.ToString();
+            }
+            else
+            {
+                requestDivision.Enabled = false;
+                requestDivision.Items.Add(new ListItem() { Text = "Select Division...", Value = "" });
+            }
         }
     }
 }

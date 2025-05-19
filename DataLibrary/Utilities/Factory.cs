@@ -200,13 +200,16 @@ namespace DataLibrary
             }
             return item;
         }
-        public int GetUserDepartmentID(string employeeID)
+        public List<Ordinance> GetFilteredOrdinances(int statusID, string dept, string division)
         {
-            int departmentID = 0;
-            SqlConnection cn = new SqlConnection(Properties.Settings.Default["EmployeeDirectoryDB"].ToString());
-            SqlCommand cmd = new SqlCommand("spGetEmployeeDetail", cn);
-            cmd.Parameters.AddWithValue($"@pIntID", employeeID);
+            PropertyInfo[] classType = typeof(Ordinance).GetProperties();
+            List<Ordinance> lOrdinance = new List<Ordinance>();
+            SqlConnection cn = new SqlConnection(Properties.Settings.Default["ThemisDB"].ToString());
+            SqlCommand cmd = new SqlCommand("sp_GetFilteredOrdinances", cn);
             cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@pStatusID", statusID);
+            cmd.Parameters.AddWithValue("@pRequestDepartment", dept);
+            cmd.Parameters.AddWithValue("@pRequestDivision", division);
 
             using (cn)
             {
@@ -215,11 +218,44 @@ namespace DataLibrary
                 rs = cmd.ExecuteReader();
                 while (rs.Read())
                 {
-                    departmentID = Convert.ToInt32(rs["deptCode"]);
+
+                    Ordinance item = (Ordinance)Activator.CreateInstance(typeof(Ordinance));
+                    foreach (var property in classType)
+                    {
+                        try
+                        {
+                            Type propertyType = property.PropertyType;
+                            if (rs[property.Name] != DBNull.Value)
+                            {
+                                object value = Convert.ChangeType(rs[property.Name], propertyType);
+                                if (value != null && propertyType.IsAssignableFrom(value.GetType()))
+                                {
+                                    property.SetValue(item, value);
+                                }
+                            }
+                            else
+                            {
+                                if (Nullable.GetUnderlyingType(propertyType) != null)
+                                {
+                                    property.SetValue(item, null);
+                                }
+                                else
+                                {
+                                    property.SetValue(item, Activator.CreateInstance(propertyType));
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"Error setting property {property.Name}: {ex.Message}");
+                        }
+                    }
+                    lOrdinance.Add(item);
                 }
             }
-            return departmentID;
+            return lOrdinance;
         }
+
 
 
 

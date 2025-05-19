@@ -68,7 +68,8 @@
 							<div class="user-info text-end">
 								<div class="user-stack text-stack">
 									<asp:Label ID="lblUser" runat="server" CssClass="border-bottom" Text="John Doe" />
-									<asp:Label ID="lblTitle" runat="server" CssClass="user-title" Text="Current Position" />
+									<asp:Label ID="lblDepartment" runat="server" CssClass="user-department" Text="Department" />
+									<asp:Label ID="lblDivision" runat="server" CssClass="user-division" Text="Division" />
 								</div>
 								<img id="imgUser" runat="server" class="user-avatar" alt="" src="./assets/images/icons/noavatar.jpg" height="60" />
 							</div>

@@ -118,8 +118,13 @@ main {
 		flex-direction: column;
 	}
 
-.user-title {
-	font-size: 10pt;
+.user-department {
+	font-size: 10.5pt;
+}
+
+.user-division {
+	font-size: 9pt;
+	line-height: 1;
 }
 
 .user-avatar {

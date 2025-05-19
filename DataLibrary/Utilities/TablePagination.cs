@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
+using System.Reflection;
+using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.SessionState;
 using System.Web;
+using System.Web.SessionState;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
-using System.Security.AccessControl;
-using System.Reflection;
+using System.Web.UI.WebControls;
 
 namespace DataLibrary
 {
@@ -163,22 +165,56 @@ namespace DataLibrary
             switch (!argument.Contains("Select"))
             {
                 case true:
-                    foreach (Ordinance item in DataList.Where(o => o.RequestDepartment.Equals(argument)))
+                    switch (command)
                     {
-                        newList.Add(item);
+                        case "department":
+                            foreach (Ordinance item in DataList.Where(o => o.RequestDepartment.Equals(argument)))
+                            {
+                                newList.Add(item);
+                            }
+                            break;
+                        case "division":
+                            foreach (Ordinance item in DataList.Where(o => o.RequestDivision.Equals(argument)))
+                            {
+                                newList.Add(item);
+                            }
+                            break;
                     }
                     DataList = newList;
                     break;
                 case false:
-                    foreach (Ordinance item in DataList)
+                    switch (command)
                     {
-                        newList.Add(item);
+                        case "department":
+                            foreach (Ordinance item in DataList)
+                            {
+                                newList.Add(item);
+                            }
+                            break;
+                        case "division":
+                            break;
                     }
                     DataList = newList;
                     break;
             }
             BindDataRepeaterPagination("no", DataList);
             return newList;
+        }
+
+        public static List<Ordinance> GetFilteredByStatus(DropDownList dd)
+        {
+            List<Ordinance> result; if (string.IsNullOrEmpty(dd.SelectedValue)) { result = Factory.Instance.GetAllLookup<Ordinance>(0, "sp_GetOrdinanceByFilteredStatusID", "StatusID"); } else if (dd.SelectedValue == "7") { result = Factory.Instance.GetAll<Ordinance>("sp_GetDeletedOrdinanceByEffective"); } else { result = Factory.Instance.GetAllLookup<Ordinance>(Convert.ToInt32(dd.SelectedValue), "sp_GetOrdinanceByStatusID", "StatusID"); }
+
+            AddOrdinanceStatusDescriptions(result);
+            return result;
+
+        }
+
+        
+
+        public static void AddOrdinanceStatusDescriptions(List<Ordinance> ordinances)
+        {
+            foreach (Ordinance ord in ordinances) { OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID"); ord.StatusDescription = ordStatus.StatusDescription; }
         }
 
         public static void BindDataRepeaterPagination<T>(string isNewSearch, List<T> _list)

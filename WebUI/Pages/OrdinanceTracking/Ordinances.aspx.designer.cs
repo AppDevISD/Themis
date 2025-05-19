@@ -51,6 +51,24 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.DropDownList filterDepartment;
 
         /// <summary>
+        /// filterDivisionDiv control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl filterDivisionDiv;
+
+        /// <summary>
+        /// filterDivision control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList filterDivision;
+
+        /// <summary>
         /// filterStatus control.
         /// </summary>
         /// <remarks>
@@ -96,13 +114,40 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.LinkButton sortTitle;
 
         /// <summary>
-        /// sortDepartment control.
+        /// sortDepartmentDivision control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton sortDepartment;
+        protected global::System.Web.UI.WebControls.LinkButton sortDepartmentDivision;
+
+        /// <summary>
+        /// txtDeptDivColumn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl txtDeptDivColumn;
+
+        /// <summary>
+        /// btnDeptColumn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnDeptColumn;
+
+        /// <summary>
+        /// btnDivisionColumn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnDivisionColumn;
 
         /// <summary>
         /// sortContact control.
@@ -391,6 +436,24 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList requestDepartment;
+
+        /// <summary>
+        /// requestDivisionDiv control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl requestDivisionDiv;
+
+        /// <summary>
+        /// requestDivision control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList requestDivision;
 
         /// <summary>
         /// firstReadDate control.

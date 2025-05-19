@@ -20,6 +20,10 @@
 				<asp:AsyncPostBackTrigger ControlID="lnkAuditNextSearchP" EventName="Click" />
 				<asp:AsyncPostBackTrigger ControlID="lnkAuditLastSearchP" EventName="Click" />
 
+				<asp:AsyncPostBackTrigger ControlID="filterDepartment" EventName="SelectedIndexChanged" />
+				<asp:AsyncPostBackTrigger ControlID="filterDivision" EventName="SelectedIndexChanged" />
+				<asp:AsyncPostBackTrigger ControlID="filterStatus" EventName="SelectedIndexChanged" />
+
 				<asp:AsyncPostBackTrigger ControlID="epYes" EventName="CheckedChanged" />
 				<asp:AsyncPostBackTrigger ControlID="epNo" EventName="CheckedChanged" />
 				<asp:AsyncPostBackTrigger ControlID="scYes" EventName="CheckedChanged" />
@@ -31,7 +35,9 @@
 
 				<asp:AsyncPostBackTrigger ControlID="sortDate" EventName="Click" />
 				<asp:AsyncPostBackTrigger ControlID="sortTitle" EventName="Click" />
-				<asp:AsyncPostBackTrigger ControlID="sortDepartment" EventName="Click" />
+				<asp:AsyncPostBackTrigger ControlID="sortDepartmentDivision" EventName="Click" />
+				<asp:AsyncPostBackTrigger ControlID="btnDeptColumn" EventName="Click" />
+				<asp:AsyncPostBackTrigger ControlID="btnDivisionColumn" EventName="Click" />
 				<asp:AsyncPostBackTrigger ControlID="sortContact" EventName="Click" />
 				<asp:AsyncPostBackTrigger ControlID="sortStatus" EventName="Click" />
 				<asp:AsyncPostBackTrigger ControlID="btnSendSigEmail" EventName="Click" />
@@ -65,6 +71,12 @@
 									<asp:DropDownList ID="filterDepartment" runat="server" AutoPostBack="true" CssClass="form-select" OnSelectedIndexChanged="Filter_SelectedIndexChanged" data-command="department"></asp:DropDownList>
 								</div>
 							</div>
+							<div class="col-md-3" runat="server" id="filterDivisionDiv">
+								<div class="form-group">
+									<label for="filterDivision">Filter by Division</label>
+									<asp:DropDownList ID="filterDivision" runat="server" AutoPostBack="true" CssClass="form-select" OnSelectedIndexChanged="Filter_SelectedIndexChanged" data-command="division"></asp:DropDownList>
+								</div>
+							</div>
 							<div class="col-md-3">
 								<div class="form-group">
 									<label for="filterStatus">Filter by Status</label>
@@ -80,8 +92,19 @@
 									<tr>
 										<th style="width: 4%; text-align: center"><asp:LinkButton runat="server" ID="sortID" data-command="OrdinanceID" data-text="ID" OnClick="SortBtn_Click" class="btn btn-sort"><strong>ID<span runat="server" class='float-end lh-1p5'></span></strong></asp:LinkButton></th>
 										<th style="width: 6%; text-align: center"><asp:LinkButton runat="server" ID="sortDate" data-command="EffectiveDate" data-text="Date" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Date<span runat="server" class='float-end lh-1p5 fas fa-arrow-down'></span></strong></asp:LinkButton></th>
-										<th style="width: 39%; text-align: center"><asp:LinkButton runat="server" ID="sortTitle" data-command="OrdinanceTitle" data-text="Title" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Title<span class="float-end lh-1p5"></span></strong></asp:LinkButton></th>
-										<th style="width: 20%; text-align: center"><asp:LinkButton runat="server" ID="sortDepartment" data-command="RequestDepartment" data-text="Department" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Department<span class="float-end lh-1p5"></span></strong></asp:LinkButton></th>
+										<th style="width: 34%; text-align: center"><asp:LinkButton runat="server" ID="sortTitle" data-command="OrdinanceTitle" data-text="Title" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Title<span class="float-end lh-1p5 me-1"></span></strong></asp:LinkButton></th>
+
+
+										<th style="width: 25%; text-align: center">
+											<div class="btn-group">
+												<asp:LinkButton runat="server" ID="sortDepartmentDivision" data-command="RequestDepartment" data-text="Department" OnClick="SortBtn_Click" class="btn btn-sort"><strong runat="server" id="txtDeptDivColumn">Department<span class="float-end lh-1p5"></span></strong></span></asp:LinkButton>
+												<button type="button" class="btn btn-sort dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+												<div class="dropdown-menu">
+													<asp:Button runat="server" ID="btnDeptColumn" Text="Department" CommandName="department" CssClass="dropdown-item" OnClick="btnDeptDivColumn_Click" />
+													<asp:Button runat="server" ID="btnDivisionColumn" Text="Division" CommandName="division" CssClass="dropdown-item" OnClick="btnDeptDivColumn_Click" />
+												</div>
+											</div>
+										</th>
 										<th style="width: 15%; text-align: center"><asp:LinkButton runat="server" ID="sortContact" data-command="RequestContact" data-text="Contact" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Contact<span class="float-end lh-1p5"></span></strong></asp:LinkButton></th>
 										<th style="width: 10%; text-align: center"><asp:LinkButton runat="server" ID="sortStatus" data-command="StatusDescription" data-text="Status" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Status<span class="float-end lh-1p5"></span></strong></asp:LinkButton></th>
 										<th style="width: 6%; text-align: center"><strong>Action</strong></th>
@@ -103,6 +126,7 @@
 											</td>
 											<td class="align-middle">
 												<asp:Label ID="ordTableDepartment" Text='<%# DataBinder.Eval(Container.DataItem, "RequestDepartment") %>' runat="server" />
+												<asp:Label ID="ordTableDivision" Text='<%# DataBinder.Eval(Container.DataItem, "RequestDivision") %>' runat="server" Visible="false" />
 											</td>
 											<td class="align-middle">
 												<asp:Label ID="ordTableContact" Text='<%# DataBinder.Eval(Container.DataItem, "RequestContact") %>' runat="server" />
@@ -214,15 +238,20 @@
 										<%-- FIRST ROW --%>
 										<div class="row mb-3">
 											<%-- DEPARTMENT --%>
-											<div class="col-md-6">
+											<div class="col-md-5">
 												<div class="form-group">
 													<label for="requestDepartment">Requesting Department</label>
-													<asp:DropDownList ID="requestDepartment" runat="server" AutoPostBack="true" CssClass="form-select" required="true" ValidateRequestMode="Enabled"></asp:DropDownList>
+													<asp:DropDownList ID="requestDepartment" runat="server" AutoPostBack="true" CssClass="form-select" required="true" ValidateRequestMode="Enabled" OnSelectedIndexChanged="requestDepartment_SelectedIndexChanged"></asp:DropDownList>
 												</div>
 											</div>
 
-											<%-- BLANK SPACE --%>
-											<div class="col-md-4"></div>
+											<%-- DIVISION --%>
+											<div runat="server" id="requestDivisionDiv" class="col-md-5">
+												<div class="form-group">
+													<label for="requestDivision">Requesting Division</label>
+													<asp:DropDownList ID="requestDivision" runat="server" AutoPostBack="true" CssClass="form-select" required="true" ValidateRequestMode="Enabled"></asp:DropDownList>
+												</div>
+											</div>
 
 											<%-- 1ST READ DATE --%>
 											<div class="col-md-2">
@@ -1177,6 +1206,7 @@
 		function DisableDDInitialOption() {
 			var ddStatus = document.getElementById('<%= ddStatus.ClientID %>');
 			var ddDepartment = document.getElementById('<%= requestDepartment.ClientID %>');
+			var ddDivision = document.getElementById('<%= requestDivision.ClientID %>');
 			var ddMethod = document.getElementById('<%= purchaseMethod.ClientID %>');
 			if (ddStatus != null) {
 				if (ddStatus.options[0].selected) {
@@ -1195,6 +1225,15 @@
 					ddDepartment.style.color = "unset";
 				}
 				ddDepartment.options[0].disabled = true;
+			}
+			if (ddDivision != null) {
+				if (ddDivision.options[0].selected) {
+					ddDivision.style.color = "rgb(from var(--bs-body-color) r g b / 35%)"
+				}
+				else {
+					ddDivision.style.color = "unset";
+				}
+				ddDivision.options[0].disabled = true;
 			}
 			if (ddMethod != null) {
 				if (ddMethod.options[0].selected) {
