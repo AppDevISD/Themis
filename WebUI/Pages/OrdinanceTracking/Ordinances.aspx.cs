@@ -293,6 +293,20 @@ namespace WebUI
 
             string commandName = dropDown.Attributes["data-command"]; string commandArgument = dropDown.SelectedItem.ToString();
 
+            if (commandName.Equals("department"))
+            {
+                if (!filterDepartment.SelectedValue.IsNullOrWhiteSpace())
+                {
+                    filterDivision.Enabled = true;
+                    GetAllDivisions(filterDivision, filterDepartment.SelectedValue);
+                }
+                else
+                {
+                    filterDivision.Enabled = false;
+                    filterDivision.Items.Add(new ListItem() { Text = "Select Division...", Value = "" });
+                }
+            }
+
             userInfo = (UserInfo)Session["UserInformation"];
 
             int statusID = !filterStatus.SelectedValue.IsNullOrWhiteSpace() ? Convert.ToInt32(filterStatus.SelectedValue) : -1;

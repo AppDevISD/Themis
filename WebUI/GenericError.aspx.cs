@@ -18,7 +18,6 @@ namespace WebUI
         {
             if (Session["Error"] != null)
             {
-                Debug.WriteLine(Server.GetLastError());
                 HttpException httpException = (HttpException)Session["Error"];
                 StackTrace trace = new StackTrace(httpException.InnerException.GetBaseException(), true);
                 int httpCode = httpException?.GetHttpCode() ?? 500;
