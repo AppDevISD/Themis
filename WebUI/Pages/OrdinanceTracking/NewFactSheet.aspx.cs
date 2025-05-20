@@ -32,16 +32,7 @@ namespace WebUI
                 Session.Remove("ordDocs");
                 GetAllDepartments();
                 GetAllPurchaseMethods();
-                requestDepartment.SelectedValue = userInfo.UserDepartment.DepartmentCode.ToString();
                 SetStartupActives();
-
-                requestContact.Text = $"{_user.FirstName} {_user.LastName}";
-                requestEmail.Text = _user.Email.ToLower();
-                requestPhone.Text = _user.Telephone;
-                requestExt.Text = _user.IPPhone;
-
-                
-
             }
 
             if (!Page.IsPostBack && Request.QueryString["id"] != null)
@@ -57,10 +48,18 @@ namespace WebUI
             changeOrderNumber.Enabled = false;
             additionalAmount.Enabled = false;
             otherException.Enabled = false;
+
+            requestDepartment.SelectedValue = userInfo.UserDepartment.DepartmentCode.ToString();
+            requestContact.Text = $"{_user.FirstName} {_user.LastName}";
+            requestEmail.Text = _user.Email.ToLower();
+            requestPhone.Text = _user.Telephone;
+            requestExt.Text = _user.IPPhone;
+
+            GetAllDivisions(requestDepartment.SelectedValue);
+
             if (!requestDepartment.SelectedValue.IsNullOrWhiteSpace())
             {
                 requestDivision.Enabled = true;
-                GetAllDivisions(requestDepartment.SelectedValue);
                 requestDivision.SelectedValue = userInfo.UserDivision.DivisionCode.ToString();
             }
             else

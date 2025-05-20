@@ -723,9 +723,12 @@
 															</ItemTemplate>
 														</asp:Repeater>
 													</ul>
-													<div id="supportingDocumentationGroup" class="d-flex">
+													<div id="supportingDocumentationGroup" class="d-flex mb-2">
 														<asp:FileUpload runat="server" ID="supportingDocumentation" CssClass="form-control mt-3" AllowMultiple="true" onchange="SetUploadActive();" />
 														<asp:Button runat="server" ID="UploadDocBtn" UseSubmitBehavior="false" CssClass="btn btn-success mt-3 ms-3" Width="25%" Text="Upload" OnClick="UploadDocBtn_Click" disabled="disabled" />
+													</div>
+													<div class="progress" role="progressbar">
+														<div class="porgress-bar" style="width:0%"></div>
 													</div>
 												</div>
 											</div>
@@ -1178,6 +1181,7 @@
 		FormatForms();
 		SetTooltips();
 		scrollToElement();
+		progressBar();
 		
 
 		var prm = Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
@@ -1188,6 +1192,7 @@
 			DisableDDInitialOption();
 			scrollToElement();
 			HideAllTooltips();
+			progressBar();
 			$('#<%= signatureEmailAddress.ClientID %>').on('change keyup', function () {
 				var validEmail = $('#<%= signatureEmailAddress.ClientID %>').val().indexOf("@cwlp.com") > 1 || $('#<%= signatureEmailAddress.ClientID %>').val().indexOf("@springfield.il.us") > 1;
 				if (validEmail && $('#<%= signatureEmailAddress.ClientID %>').val().length > 0) {
@@ -1298,6 +1303,38 @@
 			//setTimeout(() => {
 			//	OrdinanceVisibility("ord");
 			//}, 1000);
+		}
+
+		function progressBar() {
+			$('#<%= supportingDocumentation.ClientID %>').change(function () {
+				var data = "";
+				$.ajax({
+					xhr: function () {
+						var xhr = new window.XMLHttpRequest();
+
+						xhr.upload.addEventListener("progress", function (evt) {
+							if (evt.lengthComputable) {
+								var percentComplete = evt.loaded / evt.total;
+								percentComplete = parseInt(percentComplete * 100);
+
+								$('.progress-bar').width(percentComplete + '%');
+								$('.progress-bar').html(percentComplete + '%');
+
+							}
+						}, false);
+
+						return xhr;
+					},
+					url: "./Ordinances",
+					type: "POST",
+					data: data,
+					contentType: false,
+					processData: false,
+					success: function (result) {
+						console.log(result);
+					}
+				});
+			})
 		}
 
 		function SetUploadActive() {

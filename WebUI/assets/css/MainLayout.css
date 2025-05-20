@@ -118,6 +118,10 @@ main {
 		flex-direction: column;
 	}
 
+		.user-info .user-stack :not(:last-child) {
+			font-weight: 600;
+		}
+
 .user-department {
 	font-size: 10.5pt;
 }

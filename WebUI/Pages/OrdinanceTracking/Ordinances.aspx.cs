@@ -196,6 +196,7 @@ namespace WebUI
             ordTable.Visible = true;
             ordView.Visible = false;
             lblNoItems.Visible = false;
+            ddDeptDivision.SelectedValue = "RequestDepartment";
             filterDepartmentDiv.Visible = !userInfo.IsAdmin || userInfo.UserView ? false : true;
             filterDivisionDiv.Visible = !userInfo.IsAdmin || userInfo.UserView ? false : true;
             if (!filterDepartment.SelectedValue.IsNullOrWhiteSpace())
@@ -227,15 +228,13 @@ namespace WebUI
         public void GetStartupData(bool isAdmin)
         {
             List<Ordinance> ord_list = new List<Ordinance>();
-            //ord_list = Factory.Instance.GetAll<Ordinance>("sp_GetOrdinanceByEffective");
             ord_list = Factory.Instance.GetAllLookup<Ordinance>(0, "sp_GetOrdinanceByFilteredStatusID", "StatusID");
             if (ord_list.Count > 0)
             {
                 
                 if ((userInfo.UserDepartment.DepartmentName != null && userInfo.UserDivision.DivisionName != null && !isAdmin) || userInfo.UserView)
                 {
-                    ord_list = Factory.Instance.GetFilteredOrdinances(-1, userInfo.UserDepartment.DepartmentName, userInfo.UserDivision.DivisionName);
-                    
+                    ord_list = Factory.Instance.GetFilteredOrdinances(-1, userInfo.UserDepartment.DepartmentName, string.Empty);
                 }
                 foreach (Ordinance ord in ord_list)
                 {
@@ -322,7 +321,6 @@ namespace WebUI
             if ((userInfo.UserDepartment.DepartmentName != null && userInfo.UserDivision.DivisionName != null && !userInfo.IsAdmin) || userInfo.UserView)
             {
                 department = userInfo.UserDepartment.DepartmentName;
-                division = userInfo.UserDivision.DivisionName;
             }
 
             filteredList = Factory.Instance.GetFilteredOrdinances(statusID, department, division);
