@@ -36,10 +36,9 @@
 				<asp:AsyncPostBackTrigger ControlID="sortDate" EventName="Click" />
 				<asp:AsyncPostBackTrigger ControlID="sortTitle" EventName="Click" />
 				<asp:AsyncPostBackTrigger ControlID="sortDepartmentDivision" EventName="Click" />
-				<asp:AsyncPostBackTrigger ControlID="btnDeptColumn" EventName="Click" />
-				<asp:AsyncPostBackTrigger ControlID="btnDivisionColumn" EventName="Click" />
+				<asp:AsyncPostBackTrigger ControlID="ddDeptDivision" EventName="SelectedIndexChanged" />
 				<asp:AsyncPostBackTrigger ControlID="sortContact" EventName="Click" />
-				<asp:AsyncPostBackTrigger ControlID="sortStatus" EventName="Click" />
+				<asp:AsyncPostBackTrigger ControlID="sortStatus" EventName="Click" />				
 				<asp:AsyncPostBackTrigger ControlID="btnSendSigEmail" EventName="Click" />
 				<asp:AsyncPostBackTrigger ControlID="btnSignDoc" EventName="Click" />
 				<asp:AsyncPostBackTrigger ControlID="btnCancelRejection" EventName="Click" />
@@ -93,18 +92,16 @@
 										<th style="width: 4%; text-align: center"><asp:LinkButton runat="server" ID="sortID" data-command="OrdinanceID" data-text="ID" OnClick="SortBtn_Click" class="btn btn-sort"><strong>ID<span runat="server" class='float-end lh-1p5'></span></strong></asp:LinkButton></th>
 										<th style="width: 6%; text-align: center"><asp:LinkButton runat="server" ID="sortDate" data-command="EffectiveDate" data-text="Date" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Date<span runat="server" class='float-end lh-1p5 fas fa-arrow-down'></span></strong></asp:LinkButton></th>
 										<th style="width: 34%; text-align: center"><asp:LinkButton runat="server" ID="sortTitle" data-command="OrdinanceTitle" data-text="Title" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Title<span class="float-end lh-1p5 me-1"></span></strong></asp:LinkButton></th>
-
-
 										<th style="width: 25%; text-align: center">
-											<div class="btn-group">
-												<asp:LinkButton runat="server" ID="sortDepartmentDivision" data-command="RequestDepartment" data-text="Department" OnClick="SortBtn_Click" class="btn btn-sort"><strong runat="server" id="txtDeptDivColumn">Department<span class="float-end lh-1p5"></span></strong></span></asp:LinkButton>
-												<button type="button" class="btn btn-sort dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-												<div class="dropdown-menu">
-													<asp:Button runat="server" ID="btnDeptColumn" Text="Department" CommandName="department" CssClass="dropdown-item" OnClick="btnDeptDivColumn_Click" />
-													<asp:Button runat="server" ID="btnDivisionColumn" Text="Division" CommandName="division" CssClass="dropdown-item" OnClick="btnDeptDivColumn_Click" />
-												</div>
+											<div style="position: relative;">
+												<asp:LinkButton runat="server" ID="sortDepartmentDivision" data-command="RequestDepartment" data-text="Department" OnClick="SortBtn_Click" class="btn-sort btn-dd-sort"><strong><span class="float-end lh-1p5"></span></strong></span></asp:LinkButton>
+												<asp:DropDownList runat="server" ID="ddDeptDivision" CssClass="form-select dd-sort" OnSelectedIndexChanged="ddDeptDivision_SelectedIndexChanged" AutoPostBack="true" >
+													<asp:ListItem Text="Department" Value="RequestDepartment"></asp:ListItem>
+													<asp:ListItem Text="Division" Value="RequestDivision"></asp:ListItem>
+												</asp:DropDownList>
 											</div>
 										</th>
+										
 										<th style="width: 15%; text-align: center"><asp:LinkButton runat="server" ID="sortContact" data-command="RequestContact" data-text="Contact" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Contact<span class="float-end lh-1p5"></span></strong></asp:LinkButton></th>
 										<th style="width: 10%; text-align: center"><asp:LinkButton runat="server" ID="sortStatus" data-command="StatusDescription" data-text="Status" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Status<span class="float-end lh-1p5"></span></strong></asp:LinkButton></th>
 										<th style="width: 6%; text-align: center"><strong>Action</strong></th>
@@ -742,7 +739,7 @@
 											<%-- FUNDS CHECK BY --%>
 											<div class="col-md-12">
 												<div class="form-group">
-													<label for="fundsCheckByGroup" class="mb-1">Funds Check By <asp:LinkButton runat="server" ID="fundsCheckEmailBtn" CssClass="text-primary fs-7 text-decoration-none ms-2" OnClick="signatureEmailBtn_Click" CommandArgument="fundsCheckByBtn;Funds Check By" CommandName="FundsCheckBy"><span class="fas fa-envelope"></span>&nbsp;Send Request Email</asp:LinkButton></label>
+													<label for="fundsCheckByGroup" class="mb-1">Funds Check By <asp:LinkButton runat="server" ID="fundsCheckEmailBtn" CssClass="text-primary fs-7 text-decoration-none ms-2" OnClick="signatureEmailBtn_Click" CommandArgument="fundsCheckByBtn;Funds Check By" CommandName="FundsCheckBy"><span class="fa-kit fa-solid-signature-circle-user"></span>&nbsp;Assign Signature</asp:LinkButton></label>
 													<div id="fundsCheckByGroup">
 														<div runat="server" id="fundsCheckByBtnDiv" class="row readonly-color">
 															<%-- SIGN BUTTON --%>
@@ -777,7 +774,7 @@
 											<%-- DIRECTOR/SUPERVISOR --%>
 											<div class="col-md-12">
 												<div class="form-group">
-													<label for="directorSupervisorGroup">Director/Supervisor <asp:LinkButton runat="server" ID="directorSupervisorEmailBtn" CssClass="text-primary fs-7 text-decoration-none ms-2" OnClick="signatureEmailBtn_Click" CommandArgument="directorSupervisorBtn;Director/Supervisor" CommandName="DirectorSupervisor"><span class="fas fa-envelope"></span>&nbsp;Send Request Email</asp:LinkButton></label>
+													<label for="directorSupervisorGroup">Director/Supervisor <asp:LinkButton runat="server" ID="directorSupervisorEmailBtn" CssClass="text-primary fs-7 text-decoration-none ms-2" OnClick="signatureEmailBtn_Click" CommandArgument="directorSupervisorBtn;Director/Supervisor" CommandName="DirectorSupervisor"><span class="fa-kit fa-solid-signature-circle-user"></span>&nbsp;Assign Signature</asp:LinkButton></label>
 													<div id="directorSupervisorGroup">
 														<div runat="server" id="directorSupervisorBtnDiv" class="row readonly-color">
 															<%-- SIGN BUTTON --%>
@@ -812,7 +809,7 @@
 											<%-- CITY PURCHASING AGENT --%>
 											<div class="col-md-12">
 												<div class="form-group">
-													<label for="cPAGroup">City Purchasing Agent <asp:LinkButton runat="server" ID="cPAEmailBtn" CssClass="text-primary fs-7 text-decoration-none ms-2" OnClick="signatureEmailBtn_Click" CommandArgument="cPABtn;City Purchasing Agent" CommandName="CityPurchasingAgent"><span class="fas fa-envelope"></span>&nbsp;Send Request Email</asp:LinkButton></label>
+													<label for="cPAGroup">City Purchasing Agent <asp:LinkButton runat="server" ID="cPAEmailBtn" CssClass="text-primary fs-7 text-decoration-none ms-2" OnClick="signatureEmailBtn_Click" CommandArgument="cPABtn;City Purchasing Agent" CommandName="CityPurchasingAgent"><span class="fa-kit fa-solid-signature-circle-user"></span>&nbsp;Assign Signature</asp:LinkButton></label>
 													<div id="cPAGroup">
 														<div runat="server" id="cPABtnDiv" class="row readonly-color">
 															<%-- SIGN BUTTON --%>
@@ -847,7 +844,7 @@
 											<%-- OBM DIRECTOR --%>
 											<div class="col-md-12">
 												<div class="form-group">
-													<label for="obmDirectorGroup">OBM Director <asp:LinkButton runat="server" ID="obmDirectorEmailBtn" CssClass="text-primary fs-7 text-decoration-none ms-2" OnClick="signatureEmailBtn_Click" CommandArgument="obmDirectorBtn;OBM Director" CommandName="OBMDirector"><span class="fas fa-envelope"></span>&nbsp;Send Request Email</asp:LinkButton></label>
+													<label for="obmDirectorGroup">OBM Director <asp:LinkButton runat="server" ID="obmDirectorEmailBtn" CssClass="text-primary fs-7 text-decoration-none ms-2" OnClick="signatureEmailBtn_Click" CommandArgument="obmDirectorBtn;OBM Director" CommandName="OBMDirector"><span class="fa-kit fa-solid-signature-circle-user"></span>&nbsp;Assign Signature</asp:LinkButton></label>
 													<div id="obmDirectorGroup">
 														<div runat="server" id="obmDirectorBtnDiv" class="row readonly-color">
 															<%-- SIGN BUTTON --%>
@@ -882,7 +879,7 @@
 											<%-- MAYOR --%>
 											<div class="col-md-12">
 												<div class="form-group">
-													<label for="mayorGroup">Mayor <asp:LinkButton runat="server" ID="mayorEmailBtn" CssClass="text-primary fs-7 text-decoration-none ms-2" OnClick="signatureEmailBtn_Click" CommandArgument="mayorBtn;Mayor" CommandName="Mayor"><span class="fas fa-envelope"></span>&nbsp;Send Request Email</asp:LinkButton></label>
+													<label for="mayorGroup">Mayor <asp:LinkButton runat="server" ID="mayorEmailBtn" CssClass="text-primary fs-7 text-decoration-none ms-2" OnClick="signatureEmailBtn_Click" CommandArgument="mayorBtn;Mayor" CommandName="Mayor"><span class="fa-kit fa-solid-signature-circle-user"></span>&nbsp;Assign Signature</asp:LinkButton></label>
 													<div id="mayorGroup">
 														<div runat="server" id="mayorBtnDiv" class="row readonly-color">
 															<%-- SIGN BUTTON --%>
@@ -1036,9 +1033,6 @@
 		</asp:UpdatePanel>		
 	</section>
 
-	
-	
-
 	<!-- DELETE MODAL -->
 	<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel">
 		<div class="modal-dialog" role="document">
@@ -1067,7 +1061,7 @@
 					</Triggers>
 					<ContentTemplate>
 						<div class="modal-header">
-							<h4 class="modal-title" id="signatureEmailModalLabel">Signature Request Email</h4>
+							<h4 class="modal-title" id="signatureEmailModalLabel">Assign Signature</h4>
 						</div>
 						<div class="modal-body bg-body-tertiary">
 							<div runat="server" id="emailListDiv" class="row mb-5">
@@ -1082,23 +1076,24 @@
 									</asp:Repeater>
 								</div>
 							</div>
-							<div class="row mb-2">
-								<div class="col-md-8">
+							<div class="row mb-5">
+								<div class="col-md-10">
 									<div class="input-group">
 										<span class="input-group-text fas fa-address-book"></span>
 										<asp:TextBox runat="server" ID="signatureEmailAddress" CssClass="form-control" TextMode="Email" AutoCompleteType="Email" placeholder="john.doe@corporate.com" ></asp:TextBox>
 									</div>
 								</div>
-								<div class="col-md-4">
-									<div class="form-group">
-										<asp:Button runat="server" ID="AddRequestEmailAddress" UseSubmitBehavior="false" CssClass="btn btn-success" Width="100%" Text="Add Email" OnClick="AddRequestEmailAddress_Click" disabled="disabled" />
+								<div class="col-md-2">
+									<div class="btn-group">
+										<%-- DON'T CHANGE THE TEXT VALUES HERE!!!! THEY ARE UNICODE FOR THE ICONS!!! --%>
+										<asp:Button runat="server" ID="AddRequestEmailAddress" UseSubmitBehavior="false" CssClass="btn btn-success fas-btn" OnClick="AddRequestEmailAddress_Click" disabled="disabled" Text=''/>
+										<asp:Button ID="btnSendSigEmail" runat="server" CssClass="btn btn-primary fas-btn" CausesValidation="false" UseSubmitBehavior="false" Visible="true" OnClick="btnSendSigEmail_Click" OnClientClick="ShowEmailToast();" Text="" />
 									</div>
 								</div>
 							</div>
 						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-							<asp:Button ID="btnSendSigEmail" runat="server" Text="Send" CssClass="btn btn-success" CausesValidation="false" UseSubmitBehavior="false" Visible="true" OnClick="btnSendSigEmail_Click" data-dismiss="modal" OnClientClick="ShowEmailToast();"/>
+						<div class="modal-footer">							
+							<button type="button" class="btn btn-success" data-dismiss="modal">Done</button>
 							<input runat="server" id="sigBtnTarget" type="hidden" name="sigBtnTarget"  />
 							<input runat="server" id="sigBtnLabel" type="hidden" name="sigBtnLabel"  />
 							<input runat="server" id="sigBtnType" type="hidden" name="sigBtnType"  />
@@ -1183,6 +1178,7 @@
 		FormatForms();
 		SetTooltips();
 		scrollToElement();
+		
 
 		var prm = Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
 			GetToastStatus();
@@ -1195,6 +1191,7 @@
 			$('#<%= signatureEmailAddress.ClientID %>').on('change keyup', function () {
 				var validEmail = $('#<%= signatureEmailAddress.ClientID %>').val().indexOf("@cwlp.com") > 1 || $('#<%= signatureEmailAddress.ClientID %>').val().indexOf("@springfield.il.us") > 1;
 				if (validEmail && $('#<%= signatureEmailAddress.ClientID %>').val().length > 0) {
+					console.log("Working");
 					$('#<%= AddRequestEmailAddress.ClientID %>').prop('disabled', false);
 				}
 				else {

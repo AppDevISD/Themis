@@ -176,13 +176,68 @@
 	position: relative;
 	width: 100%;
 }
-[data-text="Department"] strong span, [data-text="Division"] strong span {
-	transform: translateX(-20px);
+
+[data-text="Department"] strong, [data-text="Division"] strong {
+	padding-left: 5%;
 }
-.btn-sort.dropdown-toggle.dropdown-toggle-split {
-	position: absolute;
+
+[data-text="Department"] strong span, [data-text="Division"] strong span {
+	transform: translateX(-10px);
+}
+
+.btn-sort.dropdown-toggle.dropdown-toggle-split {	
 	width: 5%;
-	padding-left: .5rem !important;
-	right: 0;
+	padding-left: .5rem !important;	
 	border-left: var(--bs-border-width) solid var(--bs-border-color);
 }
+
+.btn-dd-sort {
+	position: absolute;
+	width: 90%;
+	height: 100%;
+	left: 0;
+	border-right: var(--bs-border-width) solid var(--bs-border-color);
+	border-radius: 0;
+}
+
+.dd-sort {
+	border: none;
+	text-align: center;
+	padding: 0 !important;
+	font-weight: bold;
+	transition: background-color 0.3s ease;
+}
+
+.dd-sort:focus {
+	border-color: none;
+	box-shadow: none;
+}
+
+.form-select:disabled {
+	color: rgb(from var(--bs-body-color) r g b / 35%);
+}
+
+a[disabled='disabled'] {
+	background-color: var(--bs-secondary-bg);
+	opacity: 1;
+	pointer-events: none !important;
+	--bs-form-select-bg-img: none !important;
+	border-color: var(--bs-secondary-bg);
+}
+
+.fas-btn {
+	position: relative;
+	font-family: "Font Awesome 6 Pro";
+	font-weight: 900;
+}
+
+		/*.fas-btn.fa-circle-plus::before {
+			content: "\f055";*/ /* Unicode for fa-circle-plus */
+			 /* or 5 if using FA5 */
+			/*font-weight: 900;*/ /* Needed for solid icons */
+			/*position: absolute;
+			left: 0.75rem;
+			top: 50%;
+			transform: translateY(-50%);
+			font-size: 1rem;
+		}*/

@@ -197,6 +197,7 @@ namespace WebUI
             ordView.Visible = false;
             lblNoItems.Visible = false;
             filterDepartmentDiv.Visible = !userInfo.IsAdmin || userInfo.UserView ? false : true;
+            filterDivisionDiv.Visible = !userInfo.IsAdmin || userInfo.UserView ? false : true;
             if (!filterDepartment.SelectedValue.IsNullOrWhiteSpace())
             {
                 filterDivision.Enabled = true;
@@ -230,14 +231,16 @@ namespace WebUI
             ord_list = Factory.Instance.GetAllLookup<Ordinance>(0, "sp_GetOrdinanceByFilteredStatusID", "StatusID");
             if (ord_list.Count > 0)
             {
+                
+                if ((userInfo.UserDepartment.DepartmentName != null && userInfo.UserDivision.DivisionName != null && !isAdmin) || userInfo.UserView)
+                {
+                    ord_list = Factory.Instance.GetFilteredOrdinances(-1, userInfo.UserDepartment.DepartmentName, userInfo.UserDivision.DivisionName);
+                    
+                }
                 foreach (Ordinance ord in ord_list)
                 {
                     OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
                     ord.StatusDescription = ordStatus.StatusDescription;
-                }
-                if ((userInfo.UserDepartment.DepartmentName != null && !isAdmin) || userInfo.UserView)
-                {
-                    ord_list = FilterList(ord_list, "department", userInfo.UserDepartment.DepartmentName);
                 }
                 BindDataRepeaterPagination("yes", ord_list);
             }
@@ -295,6 +298,8 @@ namespace WebUI
 
             if (commandName.Equals("department"))
             {
+                filterDivision.Items.Clear();
+
                 if (!filterDepartment.SelectedValue.IsNullOrWhiteSpace())
                 {
                     filterDivision.Enabled = true;
@@ -314,7 +319,14 @@ namespace WebUI
             string division = !filterDivision.SelectedValue.IsNullOrWhiteSpace() ? filterDivision.SelectedItem.Text : string.Empty;
 
             List<Ordinance> filteredList = new List<Ordinance>();
+            if ((userInfo.UserDepartment.DepartmentName != null && userInfo.UserDivision.DivisionName != null && !userInfo.IsAdmin) || userInfo.UserView)
+            {
+                department = userInfo.UserDepartment.DepartmentName;
+                division = userInfo.UserDivision.DivisionName;
+            }
+
             filteredList = Factory.Instance.GetFilteredOrdinances(statusID, department, division);
+
             if (filteredList.Count > 0)
             {
                 foreach (Ordinance ord in filteredList)
@@ -340,6 +352,41 @@ namespace WebUI
             {
                 formTableDiv.Visible = false;
                 lblNoItems.Visible = true;
+            }
+
+            List<Label> departmentLabels = new List<Label>();
+            List<Label> divisionLabels = new List<Label>();
+
+            foreach (RepeaterItem item in rpOrdinanceTable.Items)
+            {
+                Label deptLabel = (Label)item.FindControl("ordTableDepartment");
+                Label divLabel = (Label)item.FindControl("ordTableDivision");
+                departmentLabels.Add(deptLabel);
+                divisionLabels.Add(divLabel);
+            }
+
+            switch (Session["DeptDivColumn"])
+            {
+                case "department":
+                    foreach (Label item in departmentLabels)
+                    {
+                        item.Visible = true;
+                    }
+                    foreach (Label item in divisionLabels)
+                    {
+                        item.Visible = false;
+                    }
+                    break;
+                case "division":
+                    foreach (Label item in departmentLabels)
+                    {
+                        item.Visible = false;
+                    }
+                    foreach (Label item in divisionLabels)
+                    {
+                        item.Visible = true;
+                    }
+                    break;
             }
             Session["ViewState"] = ViewState;
         }
@@ -396,7 +443,7 @@ namespace WebUI
                 switch (item.ID)
                 {
                     case "sortDepartmentDivision":
-                        item.Text = $"<strong runat='server' id='txtDeptDivColumn'>{item.Attributes["data-text"]}<span runat='server' class='float-end lh-1p5'></span></strong>";
+                        item.Text = $"<strong><span runat='server' class='float-end lh-1p5'></span></strong>";
                         break;
                     default:
                         item.Text = $"<strong>{item.Attributes["data-text"]}<span runat='server' class='float-end lh-1p5'></span></strong>";
@@ -408,7 +455,7 @@ namespace WebUI
             switch (button.ID)
             {
                 case "sortDepartmentDivision":
-                    button.Text = $"<strong runat='server' id='txtDeptDivColumn'>{commandText}<span runat='server' class='float-end lh-1p5 fas fa-arrow-{sortRet["arrow"]}'></span></strong>";
+                    button.Text = $"<strong><span runat='server' class='float-end lh-1p5 fas fa-arrow-{sortRet["arrow"]}'></span></strong>";
                     break;
                 default:
                     button.Text = $"<strong>{commandText}<span runat='server' class='float-end lh-1p5 fas fa-arrow-{sortRet["arrow"]}'></span></strong>";
@@ -3071,6 +3118,54 @@ namespace WebUI
             ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(btn);            
         }
 
+        protected void ddDeptDivision_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            sortDepartmentDivision.Attributes.Remove("data-command");
+            sortDepartmentDivision.Attributes.Remove("data-text");
+
+            List<Label> departmentLabels = new List<Label>();
+            List<Label> divisionLabels = new List<Label>();
+
+            foreach (RepeaterItem item in rpOrdinanceTable.Items)
+            {
+                Label deptLabel = (Label)item.FindControl("ordTableDepartment");
+                Label divLabel = (Label)item.FindControl("ordTableDivision");
+                departmentLabels.Add(deptLabel);
+                divisionLabels.Add(divLabel);
+            }
+            sortDepartmentDivision.Text = "<strong><span runat='server' class='float-end lh-1p5'></span></strong>";
+            if (Session["sortBtn"].Equals("sortDepartmentDivision"))
+            {
+                Session["sortDir"] = "asc";
+            }
+            switch (ddDeptDivision.SelectedValue)
+            {
+                case "RequestDepartment":
+                    foreach (Label item in departmentLabels)
+                    {
+                        item.Visible = true;
+                    }
+                    foreach (Label item in divisionLabels)
+                    {
+                        item.Visible = false;
+                    }
+                    break;
+                case "RequestDivision":
+                    foreach (Label item in departmentLabels)
+                    {
+                        item.Visible = false;
+                    }
+                    foreach (Label item in divisionLabels)
+                    {
+                        item.Visible = true;
+                    }
+                    break;
+            }
+            sortDepartmentDivision.Attributes.Add("data-command", ddDeptDivision.SelectedValue);
+            sortDepartmentDivision.Attributes.Add("data-text", ddDeptDivision.SelectedItem.Text);
+            Session["DeptDivColumn"] = ddDeptDivision.SelectedItem.Text.ToLower();
+        }
+
         protected void btnDeptDivColumn_Click(object sender, EventArgs e)
         {
             sortDepartmentDivision.Attributes.Remove("data-command");
@@ -3092,8 +3187,6 @@ namespace WebUI
                 case "department":
                     sortDepartmentDivision.Attributes.Add("data-command", "RequestDepartment");
                     sortDepartmentDivision.Attributes.Add("data-text", "Department");
-                    txtDeptDivColumn.InnerText = "Department";
-                    deptDivColumnType = "RequestDepartment";
                     foreach (Label item in departmentLabels)
                     {
                         item.Visible = true;
@@ -3107,8 +3200,6 @@ namespace WebUI
                 case "division":
                     sortDepartmentDivision.Attributes.Add("data-command", "RequestDivision");
                     sortDepartmentDivision.Attributes.Add("data-text", "Division");
-                    txtDeptDivColumn.InnerText = "Division";
-                    deptDivColumnType = "RequestDivision";
                     foreach (Label item in departmentLabels)
                     {
                         item.Visible = false;

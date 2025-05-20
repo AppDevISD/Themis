@@ -30,7 +30,9 @@ namespace WebUI
             {
                 Exception exception = ex as HttpException;
                 HttpException httpException = exception as HttpException;
-                StackTrace trace = new StackTrace(httpException.GetBaseException(), true);
+                Session["Error"] = httpException;
+                int httpCode = httpException?.GetHttpCode() ?? 500;
+                Response.Redirect(httpCode != 403 ? $"./GenericError?err={httpCode}" : $"./AccessDenied?err={httpCode}");
             }
             Server.ClearError();
         }

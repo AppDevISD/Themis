@@ -32,9 +32,9 @@ namespace WebUI
                 Session.Remove("ordDocs");
                 GetAllDepartments();
                 GetAllPurchaseMethods();
+                requestDepartment.SelectedValue = userInfo.UserDepartment.DepartmentCode.ToString();
                 SetStartupActives();
 
-                //requestDepartment.SelectedValue = userInfo.UserDepartment.DepartmentCode.ToString();
                 requestContact.Text = $"{_user.FirstName} {_user.LastName}";
                 requestEmail.Text = _user.Email.ToLower();
                 requestPhone.Text = _user.Telephone;
@@ -61,7 +61,7 @@ namespace WebUI
             {
                 requestDivision.Enabled = true;
                 GetAllDivisions(requestDepartment.SelectedValue);
-                //requestDivision.SelectedValue = userInfo.UserDivision.DivisionCode.ToString();
+                requestDivision.SelectedValue = userInfo.UserDivision.DivisionCode.ToString();
             }
             else
             {
@@ -827,7 +827,7 @@ namespace WebUI
             {
                 requestDivision.Enabled = true;
                 GetAllDivisions(requestDepartment.SelectedValue);
-                //requestDivision.SelectedValue = userInfo.UserDivision.DivisionCode.ToString();
+                requestDivision.SelectedValue = userInfo.UserDivision.DivisionCode.ToString();
             }
             else
             {

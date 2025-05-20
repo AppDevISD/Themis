@@ -403,6 +403,10 @@ select:disabled, .disabled-control, .disabled-control input {
 		cursor: default !important;
 	}
 
+.form-select {
+	transition: background-color 0.3s ease;
+}
+
 .input-group:has([data-control-type="shape-button"]) {
 	position: relative;
 	width: unset;

@@ -123,31 +123,13 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.LinkButton sortDepartmentDivision;
 
         /// <summary>
-        /// txtDeptDivColumn control.
+        /// ddDeptDivision control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl txtDeptDivColumn;
-
-        /// <summary>
-        /// btnDeptColumn control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnDeptColumn;
-
-        /// <summary>
-        /// btnDivisionColumn control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnDivisionColumn;
+        protected global::System.Web.UI.WebControls.DropDownList ddDeptDivision;
 
         /// <summary>
         /// sortContact control.
