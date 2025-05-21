@@ -103,7 +103,6 @@ namespace WebUI
                 ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(editButton);
                 ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(viewButton);
             }
-
             if (!Page.IsPostBack && Request.QueryString["id"] != null)
             {
                 string id = Request.QueryString["id"];
@@ -140,6 +139,11 @@ namespace WebUI
                 }
             }
 
+            if (ScriptManager.GetCurrent(Page).IsInAsyncPostBack)
+            {
+                
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "HideLoading", "hideLoadingModal();", true);
+            }
             GetUploadedDocs();
         }
 
@@ -616,8 +620,17 @@ namespace WebUI
         }
         protected void UploadDocBtn_Click(object sender, EventArgs e)
         {
-            List<OrdinanceDocument> originalOrdDocList = Session["ordDocs"] as List<OrdinanceDocument> ?? new List<OrdinanceDocument>();
-            List<OrdinanceDocument> ordDocList = Session["addOrdDocs"] as List<OrdinanceDocument> ?? new List<OrdinanceDocument>();
+            List<OrdinanceDocument> originalOrdDocList = new List<OrdinanceDocument>();
+            List<OrdinanceDocument> ordDocList = new List<OrdinanceDocument>();
+            if (Session["ordDocs"] != null)
+            {
+                originalOrdDocList = Session["ordDocs"] as List<OrdinanceDocument>;
+            }
+            if (Session["addOrdDocs"] != null)
+            {
+                ordDocList = Session["addOrdDocs"] as List<OrdinanceDocument>;
+            }
+            
 
             for (int i = 0; i < supportingDocumentation.PostedFiles.Count; i++)
             {
@@ -724,6 +737,7 @@ namespace WebUI
         // REPEATER COMMANDS //        
         protected void rpOrdinanceTable_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
+            //ScriptManager.RegisterStartupScript(this, this.GetType(), "ShowLoading", "showLoadingModal();", true);
             ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(backBtn);
 
             Session.Remove("OriginalOrdinance");
@@ -2799,7 +2813,7 @@ namespace WebUI
                         break;
                     case false:
                         Session["ToastMessage"] = "Form Saved!";
-                        Email.Instance.SendEmail(newEmail, emailList);
+                        //Email.Instance.SendEmail(newEmail, emailList);
                         break;
                 }
                 Response.Redirect("./Ordinances");

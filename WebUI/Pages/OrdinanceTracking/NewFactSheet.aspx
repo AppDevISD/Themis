@@ -518,8 +518,11 @@
 										</asp:Repeater>
 									</ul>
 									<div id="supportingDocumentationGroup" class="d-flex">
-										<asp:FileUpload runat="server" ID="supportingDocumentation" CssClass="form-control mt-3" AllowMultiple="true" onchange="SetUploadActive();" />
+										<asp:FileUpload runat="server" ID="supportingDocumentation" CssClass="form-control mt-3" AllowMultiple="true" onchange="SetUploadActive();" onfocus="showFileWaiting();" />
 										<asp:Button runat="server" ID="UploadDocBtn" UseSubmitBehavior="false" CssClass="btn btn-success mt-3 ms-3" Width="25%" Text="Upload" OnClick="UploadDocBtn_Click" disabled="disabled" />
+									</div>
+									<div id="fileWaiting" class="mt-2" hidden>
+										<strong class="text-warning fa-fade"><span class="fa-solid fa-hourglass-end fa-flip"></span>&nbsp;Waiting for file...</strong>
 									</div>
 								</div>
 							</div>
@@ -546,15 +549,18 @@
 	<script type="text/javascript" src="./assets/js/FileUploadSaving.js"></script>
 	<script>
 		DisableDDInitialOption();
+		cancelFilePick();
 
 		var prm = Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
 			GetToastStatus();
 			FormatForms();
 			DisableDDInitialOption();
 			CurrencyFormatting();
+			cancelFilePick();
 		});
 
 		function SetUploadActive() {
+			$('#fileWaiting').prop('hidden', true);
 			const supportingDocumentation = document.getElementById('<%= supportingDocumentation.ClientID %>')
 			var UploadDocBtn = document.getElementById('<%= UploadDocBtn.ClientID %>')
 			if (supportingDocumentation.files.length > 0) {
@@ -563,7 +569,6 @@
 			else {
 				UploadDocBtn.disabled = true;
 			}
-
 		}
 
 		function DisableDDInitialOption() {
@@ -614,6 +619,13 @@
 			}
 		}
 
-		
+		function showFileWaiting() {
+			$('#fileWaiting').prop('hidden', false);
+		}
+		function cancelFilePick() {
+			$('#<%= supportingDocumentation.ClientID %>').on('cancel', function () {
+				$('#fileWaiting').prop('hidden', true);
+			});
+		}
 	</script>
 </asp:Content>

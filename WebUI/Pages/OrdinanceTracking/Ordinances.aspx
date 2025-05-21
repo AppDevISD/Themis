@@ -67,19 +67,19 @@
 							<div class="col-md-3" runat="server" id="filterDepartmentDiv">
 								<div class="form-group">
 									<label for="filterDepartment">Filter by Department</label>
-									<asp:DropDownList ID="filterDepartment" runat="server" AutoPostBack="true" CssClass="form-select" OnSelectedIndexChanged="Filter_SelectedIndexChanged" data-command="department"></asp:DropDownList>
+									<asp:DropDownList ID="filterDepartment" runat="server" AutoPostBack="true" CssClass="form-select" OnSelectedIndexChanged="Filter_SelectedIndexChanged" data-command="department" onchange="showLoadingModal();" ></asp:DropDownList>
 								</div>
 							</div>
 							<div class="col-md-3" runat="server" id="filterDivisionDiv">
 								<div class="form-group">
 									<label for="filterDivision">Filter by Division</label>
-									<asp:DropDownList ID="filterDivision" runat="server" AutoPostBack="true" CssClass="form-select" OnSelectedIndexChanged="Filter_SelectedIndexChanged" data-command="division"></asp:DropDownList>
+									<asp:DropDownList ID="filterDivision" runat="server" AutoPostBack="true" CssClass="form-select" OnSelectedIndexChanged="Filter_SelectedIndexChanged" data-command="division" onchange="showLoadingModal();"></asp:DropDownList>
 								</div>
 							</div>
 							<div class="col-md-3">
 								<div class="form-group">
 									<label for="filterStatus">Filter by Status</label>
-									<asp:DropDownList ID="filterStatus" runat="server" AutoPostBack="true" CssClass="form-select" OnSelectedIndexChanged="Filter_SelectedIndexChanged" data-command="status"></asp:DropDownList>
+									<asp:DropDownList ID="filterStatus" runat="server" AutoPostBack="true" CssClass="form-select" OnSelectedIndexChanged="Filter_SelectedIndexChanged" data-command="status" onchange="showLoadingModal();"></asp:DropDownList>
 								</div>
 							</div>
 						</div>
@@ -132,8 +132,8 @@
 												<asp:Label ID="ordTableStatus" Text='<%# DataBinder.Eval(Container.DataItem, "StatusDescription") %>' runat="server" />
 											</td>
 											<td class="align-middle d-flex justify-content-around">
-												<asp:LinkButton runat="server" ID="editOrd" CommandName="edit" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' CssClass="ordActionBtn" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="Edit" Visible='<%# adminUnlockedOrd(DataBinder.Eval(Container.DataItem, "StatusDescription").ToString()) %>'><i class="fas fa-pen-to-square text-warning-light"></i></asp:LinkButton>
-												<asp:LinkButton runat="server" ID="viewOrd" CommandName="view" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' CssClass="ordActionBtn" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="View"><i class="fas fa-magnifying-glass text-info"></i></asp:LinkButton>
+												<asp:LinkButton runat="server" ID="editOrd" CommandName="edit" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' CssClass="ordActionBtn" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="Edit" Visible='<%# adminUnlockedOrd(DataBinder.Eval(Container.DataItem, "StatusDescription").ToString()) %>' OnClientClick="showLoadingModal();"><i class="fas fa-pen-to-square text-warning-light"></i></asp:LinkButton>
+												<asp:LinkButton runat="server" ID="viewOrd" CommandName="view" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' CssClass="ordActionBtn" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="View" OnClientClick="showLoadingModal();"><i class="fas fa-magnifying-glass text-info"></i></asp:LinkButton>
 												<asp:LinkButton runat="server" ID="downloadOrd" CommandName="download" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' CssClass="ordActionBtn" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="Download"><i class="fas fa-download text-primary"></i></asp:LinkButton>
 											</td>
 										</tr>
@@ -155,10 +155,10 @@
 							<table class="table m-0" runat="server">
 								<tr>
 									<td class="text-left">
-										<asp:LinkButton ID="lnkFirstSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="first" data-list="ordTable" style="width: 150px;" causesvalidation="false"><i class="fas fa-angles-left"></i>&nbsp;First</asp:LinkButton>
+										<asp:LinkButton ID="lnkFirstSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="first" data-list="ordTable" style="width: 150px;" CausesValidation="false" OnClientClick="showLoadingModal();"><i class="fas fa-angles-left"></i>&nbsp;First</asp:LinkButton>
 									</td>
 									<td class="text-center">
-										<asp:LinkButton ID="lnkPreviousSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="previous" data-list="ordTable" style="width: 150px;" causesvalidation="false"><i class="fas fa-angle-left"></i>&nbsp;Previous</asp:LinkButton>
+										<asp:LinkButton ID="lnkPreviousSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="previous" data-list="ordTable" style="width: 150px;" CausesValidation="false" OnClientClick="showLoadingModal();"><i class="fas fa-angle-left"></i>&nbsp;Previous</asp:LinkButton>
 									</td>
 									<td class="text-center">
 										<div style="margin-top: 5px">
@@ -166,10 +166,10 @@
 										</div>
 									</td>
 									<td class="text-center">
-										<asp:LinkButton ID="lnkNextSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="next" data-list="ordTable" style="width: 150px;" causesvalidation="false">Next&nbsp;<i class="fas fa-angle-right"></i></asp:LinkButton>
+										<asp:LinkButton ID="lnkNextSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="next" data-list="ordTable" style="width: 150px;" CausesValidation="false" OnClientClick="showLoadingModal();">Next&nbsp;<i class="fas fa-angle-right"></i></asp:LinkButton>
 									</td>
 									<td class="text-end">
-										<asp:LinkButton ID="lnkLastSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="last" data-list="ordTable" style="width: 150px;" causesvalidation="false">Last&nbsp;<i class="fas fa-angles-right"></i></asp:LinkButton>
+										<asp:LinkButton ID="lnkLastSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="last" data-list="ordTable" style="width: 150px;" CausesValidation="false" OnClientClick="showLoadingModal();">Last&nbsp;<i class="fas fa-angles-right"></i></asp:LinkButton>
 									</td>
 								</tr>
 							</table>
@@ -194,8 +194,8 @@
 									<h1><span class="fas fa-book-section"></span>&nbsp;Ordinance</h1>
 								</div>
 								<asp:Label runat="server" ID="lblOrdID" CssClass="text-primary-emphasis ordID">ID:</asp:Label>
-								<asp:LinkButton runat="server" ID="backBtn" CssClass="btn bg-danger backBtn" OnClick="backBtn_Click"><span class="fas fa-xmark text-light"></span></asp:LinkButton>
-								<asp:LinkButton runat="server" ID="copyOrd" CssClass="btn btn-primary copyBtn" OnClick="copyOrd_Click"><span class="fas fa-copy"></span>&nbsp;Copy</asp:LinkButton>
+								<asp:LinkButton runat="server" ID="backBtn" CssClass="btn bg-danger backBtn" OnClick="backBtn_Click" OnClientClick="showLoadingModal();"><span class="fas fa-xmark text-light"></span></asp:LinkButton>
+								<asp:LinkButton runat="server" ID="copyOrd" CssClass="btn btn-primary copyBtn" OnClick="copyOrd_Click" OnClientClick="showLoadingModal();"><span class="fas fa-copy"></span>&nbsp;Copy</asp:LinkButton>
 
 								<div class="statusDropDown text-start">
 									<div runat="server" id="ddStatusDiv" class="form-group text-start w-75 me-auto">
@@ -724,11 +724,11 @@
 														</asp:Repeater>
 													</ul>
 													<div id="supportingDocumentationGroup" class="d-flex mb-2">
-														<asp:FileUpload runat="server" ID="supportingDocumentation" CssClass="form-control mt-3" AllowMultiple="true" onchange="SetUploadActive();" />
-														<asp:Button runat="server" ID="UploadDocBtn" UseSubmitBehavior="false" CssClass="btn btn-success mt-3 ms-3" Width="25%" Text="Upload" OnClick="UploadDocBtn_Click" disabled="disabled" />
+														<asp:FileUpload runat="server" ID="supportingDocumentation" CssClass="form-control mt-3" AllowMultiple="true" onchange="SetUploadActive();" onfocus="showFileWaiting();" />
+														<asp:Button runat="server" ID="UploadDocBtn" UseSubmitBehavior="false" CssClass="btn btn-success mt-3 ms-3 text-nowrap" Width="25%" Text="Upload" OnClick="UploadDocBtn_Click" data-load-btn="true" data-load-text="Uploading" data-load-icon="fa-upload" data-prevent-type="disabled" disabled="disabled" />
 													</div>
-													<div class="progress" role="progressbar">
-														<div class="porgress-bar" style="width:0%"></div>
+													<div id="fileWaiting" class="mt-2" hidden>
+														<strong class="text-warning fa-fade"><span class="fa-solid fa-hourglass-end fa-flip"></span>&nbsp;Waiting for file...</strong>
 													</div>
 												</div>
 											</div>
@@ -919,7 +919,7 @@
 										<div class="row mt-3 mb-3 text-center">
 											<%-- SAVE BUTTON --%>
 											<div class="col-md-6">
-												<asp:Button runat="server" ID="SaveFactSheet" UseSubmitBehavior="true" CssClass="btn btn-primary float-end" Width="50%" Text="Save" OnClick="SaveFactSheet_Click" OnClientClick="saveFactSheet();" />
+												<asp:Button runat="server" ID="SaveFactSheet" UseSubmitBehavior="true" CssClass="btn btn-primary float-end text-nowrap" Width="50%" Text="Save" OnClick="SaveFactSheet_Click" data-load-btn="true" data-load-text="Saving" data-load-icon="fa-floppy-disk" data-prevent-type="disabled" />
 											</div>
 											<%-- DELETE BUTTON --%>
 											<div class="col-md-6">
@@ -1008,10 +1008,10 @@
 										<table class="table m-0" runat="server">
 											<tr>
 												<td class="text-left">
-													<asp:LinkButton ID="lnkAuditFirstSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="first" data-list="auditTable" style="width: 150px;" causesvalidation="false" Enabled="false"><i class="fas fa-angles-left"></i>&nbsp;First</asp:LinkButton>
+													<asp:LinkButton ID="lnkAuditFirstSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="first" data-list="auditTable" style="width: 150px;" CausesValidation="false" OnClientClick="showLoadingModal();" Enabled="false"><i class="fas fa-angles-left"></i>&nbsp;First</asp:LinkButton>
 												</td>
 												<td class="text-center">
-													<asp:LinkButton ID="lnkAuditPreviousSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="previous" data-list="auditTable" style="width: 150px;" causesvalidation="false"><i class="fas fa-angle-left"></i>&nbsp;Previous</asp:LinkButton>
+													<asp:LinkButton ID="lnkAuditPreviousSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="previous" data-list="auditTable" style="width: 150px;" CausesValidation="false" OnClientClick="showLoadingModal();"><i class="fas fa-angle-left"></i>&nbsp;Previous</asp:LinkButton>
 												</td>
 												<td class="text-center">
 													<div style="margin-top: 5px">
@@ -1019,10 +1019,10 @@
 													</div>
 												</td>
 												<td class="text-center">
-													<asp:LinkButton ID="lnkAuditNextSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="next" data-list="auditTable" style="width: 150px;" causesvalidation="false">Next&nbsp;<i class="fas fa-angle-right"></i></asp:LinkButton>
+													<asp:LinkButton ID="lnkAuditNextSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="next" data-list="auditTable" style="width: 150px;" CausesValidation="false" OnClientClick="showLoadingModal();">Next&nbsp;<i class="fas fa-angle-right"></i></asp:LinkButton>
 												</td>
 												<td class="text-end">
-													<asp:LinkButton ID="lnkAuditLastSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="last" data-list="auditTable" style="width: 150px;" causesvalidation="false">Last&nbsp;<i class="fas fa-angles-right"></i></asp:LinkButton>
+													<asp:LinkButton ID="lnkAuditLastSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="last" data-list="auditTable" style="width: 150px;" CausesValidation="false" OnClientClick="showLoadingModal();">Last&nbsp;<i class="fas fa-angles-right"></i></asp:LinkButton>
 												</td>
 											</tr>
 										</table>
@@ -1176,12 +1176,15 @@
 		</div>
 	</div>
 
+
 	<%-- JAVASCRIPT --%>
 	<script>
 		FormatForms();
 		SetTooltips();
 		scrollToElement();
-		progressBar();
+		SetSignEnabled();
+		showLoadingButtons();
+		cancelFilePick();
 		
 
 		var prm = Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
@@ -1192,7 +1195,8 @@
 			DisableDDInitialOption();
 			scrollToElement();
 			HideAllTooltips();
-			progressBar();
+			showLoadingButtons();
+			cancelFilePick();
 			$('#<%= signatureEmailAddress.ClientID %>').on('change keyup', function () {
 				var validEmail = $('#<%= signatureEmailAddress.ClientID %>').val().indexOf("@cwlp.com") > 1 || $('#<%= signatureEmailAddress.ClientID %>').val().indexOf("@springfield.il.us") > 1;
 				if (validEmail && $('#<%= signatureEmailAddress.ClientID %>').val().length > 0) {
@@ -1293,6 +1297,7 @@
 			//	OrdinanceVisibility("table");
 			//}, 1000);
 		}
+
 		function OrdTableFadeIn() {
 			var ordTable = document.getElementById('<%= ordTable.ClientID %>')
 			var ordView = document.getElementById('<%= ordView.ClientID %>')
@@ -1305,39 +1310,8 @@
 			//}, 1000);
 		}
 
-		function progressBar() {
-			$('#<%= supportingDocumentation.ClientID %>').change(function () {
-				var data = "";
-				$.ajax({
-					xhr: function () {
-						var xhr = new window.XMLHttpRequest();
-
-						xhr.upload.addEventListener("progress", function (evt) {
-							if (evt.lengthComputable) {
-								var percentComplete = evt.loaded / evt.total;
-								percentComplete = parseInt(percentComplete * 100);
-
-								$('.progress-bar').width(percentComplete + '%');
-								$('.progress-bar').html(percentComplete + '%');
-
-							}
-						}, false);
-
-						return xhr;
-					},
-					url: "./Ordinances",
-					type: "POST",
-					data: data,
-					contentType: false,
-					processData: false,
-					success: function (result) {
-						console.log(result);
-					}
-				});
-			})
-		}
-
 		function SetUploadActive() {
+			$('#fileWaiting').prop('hidden', true);
 			const supportingDocumentation = document.getElementById('<%= supportingDocumentation.ClientID %>')
 			var UploadDocBtn = document.getElementById('<%= UploadDocBtn.ClientID %>')
 			if (supportingDocumentation.files.length > 0) {
@@ -1347,6 +1321,16 @@
 				UploadDocBtn.disabled = true;
 			}
 			
+		}
+
+		function showFileWaiting() {
+			$('#fileWaiting').prop('hidden', false);
+		}
+
+		function cancelFilePick() {
+			$('#<%= supportingDocumentation.ClientID %>').on('cancel', function () {
+				$('#fileWaiting').prop('hidden', true);
+			});
 		}
 
 		function setEmailModal(btnID, btnLabel, sigType) {
@@ -1387,10 +1371,6 @@
 			$('#<%= certifySig.ClientID %>').prop('checked', false);
 		}
 
-		function testMultiple() {
-			console.log("Working");
-		}
-
 		function FormatAudit() {
 			$("[data-type='Decimal']").each(function () {
 				formatCurrencyDecimal($(this), "blur");
@@ -1401,25 +1381,38 @@
 			$('#rejectionModal').modal('show');
 		}
 
-		function saveFactSheet() {
-			var form = document.getElementById('formMain');
-			var invalidList = form.querySelectorAll(':invalid');
-			if (invalidList.length < 1) {
-				$('#<%= SaveFactSheet.ClientID %>').prop('readonly', true);
-				ShowSubmitToast();
-			}
+		function showLoadingButtons() {
+			$('[data-load-btn="true"]').each(function () {
+				$(this).on('click', function () {
+					const id = $(this).attr('id');
+					if (id == "SaveFactSheet") {
+						var form = document.getElementById('formMain');
+						var invalidList = form.querySelectorAll(':invalid');
+						if (invalidList.length < 1) {
+							$(this).hide();
+							$(`#${id}Loading`).prop('hidden', false);
+							ShowSubmitToast();
+						}
+					}
+					else {
+						$(this).hide();
+						$(`#${id}Loading`).prop('hidden', false);
+					}
+				});
+			});
 		}
 
-		$('#<%= sigName.ClientID %>').on('change keyup', function () {
-			if ($('#<%= certifySig.ClientID %>').prop('checked') == true && $('#<%= sigName.ClientID %>').val().length > 0 && $('#<%= sigDate.ClientID %>').val().length > 0) {
-				$('#<%= btnSignDoc.ClientID %>').prop('disabled', false);
+		function SetSignEnabled() {
+			$('#<%= sigName.ClientID %>').on('change keyup', function () {
+				if ($('#<%= certifySig.ClientID %>').prop('checked') == true && $('#<%= sigName.ClientID %>').val().length > 0 && $('#<%= sigDate.ClientID %>').val().length > 0) {
+					$('#<%= btnSignDoc.ClientID %>').prop('disabled', false);
 			}
 			else {
 				$('#<%= btnSignDoc.ClientID %>').prop('disabled', true);
-			}
-		});
-		$('#<%= sigDate.ClientID %>').on('change keyup', function () {
-			if ($('#<%= certifySig.ClientID %>').prop('checked') == true && $('#<%= sigName.ClientID %>').val().length > 0 && $('#<%= sigDate.ClientID %>').val().length > 0) {
+				}
+			});
+			$('#<%= sigDate.ClientID %>').on('change keyup', function () {
+				if ($('#<%= certifySig.ClientID %>').prop('checked') == true && $('#<%= sigName.ClientID %>').val().length > 0 && $('#<%= sigDate.ClientID %>').val().length > 0) {
 				$('#<%= btnSignDoc.ClientID %>').prop('disabled', false);
 			}
 			else {
@@ -1434,5 +1427,6 @@
 				$('#<%= btnSignDoc.ClientID %>').prop('disabled', true);
 			}
 		});
+		}
 	</script>
 </asp:Content>

@@ -124,7 +124,7 @@
 									<div class="Settings nav-link switchSetting" runat="server" id="adminSwitchDiv">
 										<p class="m-0 fs-6 noto-sans-semi-bold">User View</p>
 										<div class="form-check form-switch" style="display: flex; align-items: center;">
-											<asp:CheckBox runat="server" ID="adminSwitch" AutoPostBack="true" OnCheckedChanged="adminSwitch_CheckedChanged" CssClass="setting-form-check-input settingSwitch-input" />
+											<asp:CheckBox runat="server" ID="adminSwitch" AutoPostBack="true" OnCheckedChanged="adminSwitch_CheckedChanged" CssClass="setting-form-check-input settingSwitch-input" onchange="showLoadingModal();" />
 										</div>
 									</div>
 								</div>
@@ -137,7 +137,7 @@
 									<span class="fas fa-user-secret"></span>
 									<p class="m-0 fs-6 noto-sans-semi-bold">Impersonate</p>
 								</asp:LinkButton>
-								<asp:LinkButton runat="server" ID="StopImpersonate" class='nav-link' OnClick="StopImpersonate_Click">
+								<asp:LinkButton runat="server" ID="StopImpersonate" class='nav-link' OnClick="StopImpersonate_Click" OnClientClick="showLoadingModal();">
 									<span class="fa-kit fa-solid-user-secret-slash"></span>
 									<p class="m-0 fs-6 noto-sans-semi-bold">Stop Impersonate</p>
 								</asp:LinkButton>
@@ -182,8 +182,8 @@
 			<!-- HIDDEN TRIGGER FOR INACTIVITY REFRESH -->
 			<asp:LinkButton ID="lnkInactivityRefresh" runat="server" OnClick="lnkInactivityRefresh_Click" Style="display: none;" data-inactivity-trigger="true" />
 
-			<!-- TRIGGER ERROR MODAL -->
-			<div class="modal fade" id="impersonateUserModal" tabindex="-1" role="dialog" aria-labelledby="impersonateUserModalLabel">
+			<!-- IMPERSONATE MODAL -->
+			<div class="modal fade" id="impersonateUserModal" role="dialog" aria-labelledby="impersonateUserModalLabel">
 				<div class="modal-dialog modal-sm" role="document">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -201,14 +201,15 @@
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-							<asp:Button ID="btnImpersonateUser" runat="server" Text="Impersonate" CssClass="btn btn-primary" CausesValidation="false" UseSubmitBehavior="false" Visible="true" OnClick="btnImpersonateUser_Click" />
+							<asp:Button ID="btnImpersonateUser" runat="server" Text="Impersonate" CssClass="btn btn-primary" CausesValidation="false" UseSubmitBehavior="false" Visible="true" OnClick="btnImpersonateUser_Click" OnClientClick="appDevModalClick('#impersonateUserModal');" />
 						</div>
 					</div>
 				</div>
 			</div>
 
+
 			<!-- TRIGGER ERROR MODAL -->
-			<div class="modal fade" id="triggerErrorModal" tabindex="-1" role="dialog" aria-labelledby="triggerErrorModalLabel">
+			<div class="modal fade" id="triggerErrorModal" role="dialog" aria-labelledby="triggerErrorModalLabel">
 				<div class="modal-dialog modal-sm" role="document">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -226,11 +227,25 @@
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-							<asp:Button ID="btnTriggerError" runat="server" Text="Trigger" CssClass="btn btn-danger" CausesValidation="false" UseSubmitBehavior="false" Visible="true" OnClick="TriggerError_Click" />
+							<asp:Button ID="btnTriggerError" runat="server" Text="Trigger" CssClass="btn btn-danger" CausesValidation="false" UseSubmitBehavior="false" Visible="true" OnClick="TriggerError_Click" OnClientClick="appDevModalClick('#triggerErrorModal');" />
 						</div>
 					</div>
 				</div>
 			</div>
+
+			<%-- LOADING MODAL --%>
+			<asp:UpdatePanel runat="server" ID="pnlLoading">
+				<ContentTemplate>
+					<div id="loadingModal" class="modal fade">
+						<div class="d-flex justify-content-center align-items-center h-100">
+							<strong class="color-theme-text" style="font-size: 5rem !important;"><span class="fa-solid fa-spinner-scale fa-spin-pulse"></span>&nbsp;Loading...</strong>
+						</div>
+					</div>
+				</ContentTemplate>
+			</asp:UpdatePanel>
+
+			
+			
 
 			<%-- TOAST MESSAGE --%>
 			<div class="toast-container position-fixed bottom-0 end-0 p-3">

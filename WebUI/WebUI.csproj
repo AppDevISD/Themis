@@ -129,8 +129,6 @@
     <Content Include="assets\css\Site.css" />
     <Content Include="assets\images\icons\theme-dark.svg" />
     <Content Include="assets\images\icons\theme-light.svg" />
-    <Content Include="assets\js\FileUploadSaving.js" />
-    <Content Include="assets\js\Ordinances.js" />
     <Content Include="assets\js\Site.js" />
     <Content Include="GenericError.aspx" />
     <Content Include="AccessDenied.aspx" />
@@ -152,12 +150,11 @@
     </Content>
     <Content Include="Scripts\Helpers\JS\ColorMode.js" />
     <Content Include="Scripts\Helpers\CSharp\ChartHandler.asmx" />
-    <Content Include="Pages\Templates\Charts.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="assets\css\Animations.css" />
-    <Content Include="assets\js\Charts.js" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\Helpers\JS\InactiveTimer.js" />
+    <Content Include="Scripts\Helpers\JS\LoadingBtn.js" />
     <Content Include="Scripts\Helpers\JS\RequiredFieldsAndActivePage.js" />
     <Content Include="Scripts\Helpers\JS\Settings.js" />
     <Content Include="Scripts\Helpers\JS\SubmitToast.js" />
@@ -238,13 +235,6 @@
     <Compile Include="Scripts\Helpers\CSharp\ChartHandler.asmx.cs">
       <DependentUpon>ChartHandler.asmx</DependentUpon>
       <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Pages\Templates\Charts.aspx.cs">
-      <DependentUpon>Charts.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Pages\Templates\Charts.aspx.designer.cs">
-      <DependentUpon>Charts.aspx</DependentUpon>
     </Compile>
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>

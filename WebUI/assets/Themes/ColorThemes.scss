@@ -378,6 +378,15 @@ a.aspNetDisabled, [type="submit"][readonly] {
 	--bs-form-select-bg-img: none !important;
 	border-color: var(--bs-secondary-bg);
 }
+
+button[readonly="readonly"] {
+	background-color: var(--bs-secondary-bg);
+	opacity: 1;
+	pointer-events: none !important;
+	--bs-form-select-bg-img: none !important;
+	border-color: var(--bs-secondary-bg);
+}
+
 [readonly="true"] {
 	input, select, .form-select, textarea, .radioListDiv .form-check input {
 		background-color: var(--bs-secondary-bg);

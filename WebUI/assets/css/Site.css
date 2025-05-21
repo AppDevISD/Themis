@@ -241,3 +241,7 @@ a[disabled='disabled'] {
 			transform: translateY(-50%);
 			font-size: 1rem;
 		}*/
+
+.upload-clamp {
+	text-wrap-mode: nowrap;
+}

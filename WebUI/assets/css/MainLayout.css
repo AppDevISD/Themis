@@ -803,6 +803,13 @@ pre[class*=language-] {
 
 
 
+/* --------------- Colors --------------- */
+.color-theme-text {
+		color: var(--color-theme-text) !important;
+}
+
+
+
 /* --------------- Responsive --------------- */
 /* Desktop */
 @media (min-width: 641px) {
