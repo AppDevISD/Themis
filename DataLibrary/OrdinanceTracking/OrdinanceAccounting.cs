@@ -8,9 +8,23 @@ namespace DataLibrary
 {
     public class OrdinanceAccounting
     {
+        //public int OrdinanceAccountingID { get; set; }
+        //public int OrdinanceID { get; set; }
+        //public int AccountingID { get; set; }
+        //public string LastUpdateBy { get; set; }
+        //public DateTime LastUpdateDate { get; set; }
+        //public DateTime EffectiveDate { get; set; }
+        //public DateTime ExpirationDate { get; set; }
+
         public int OrdinanceAccountingID { get; set; }
         public int OrdinanceID { get; set; }
-        public int AccountingID { get; set; }
+        public string AccountingDesc { get; set; }
+        public string FundCode { get; set; }
+        public string DepartmentCode { get; set; }
+        public string UnitCode { get; set; }
+        public string ActivityCode { get; set; }
+        public string ObjectCode { get; set; }
+        public decimal Amount { get; set; }
         public string LastUpdateBy { get; set; }
         public DateTime LastUpdateDate { get; set; }
         public DateTime EffectiveDate { get; set; }

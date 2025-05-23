@@ -356,11 +356,6 @@ namespace DataLibrary
                 },
                 {"accountingInsert", new List<string>()
                     {
-                        "AccountingID",
-                    }
-                },
-                {"ordAccountingInsert", new List<string>()
-                    {
                         "OrdinanceAccountingID",
                     }
                 },

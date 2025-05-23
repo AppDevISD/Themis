@@ -154,9 +154,9 @@ namespace WebUI
         }
         protected void NewAccountingRow(string tableDesc)
         {
-            List<Accounting> prvList = new List<Accounting>();
-            List<Accounting> accountingList = new List<Accounting>();
-            Accounting newAccountingItem = new Accounting();
+            List<OrdinanceAccounting> prvList = new List<OrdinanceAccounting>();
+            List<OrdinanceAccounting> accountingList = new List<OrdinanceAccounting>();
+            OrdinanceAccounting newAccountingItem = new OrdinanceAccounting();
             newAccountingItem.Amount = CurrencyToDecimal("-1");
 
             switch (tableDesc)
@@ -166,7 +166,7 @@ namespace WebUI
                     {
                         for (int i = 0; i < rpRevenueTable.Items.Count; i++)
                         {
-                            Accounting accountingItem = GetAccountingItem("revenue", i);
+                            OrdinanceAccounting accountingItem = GetAccountingItem("revenue", i);
                             prvList.Add(accountingItem);
                         }
                         Session[tableDesc] = prvList;
@@ -182,7 +182,7 @@ namespace WebUI
                     {
                         for (int i = 0; i < rpExpenditureTable.Items.Count; i++)
                         {
-                            Accounting accountingItem = GetAccountingItem("expenditure", i);
+                            OrdinanceAccounting accountingItem = GetAccountingItem("expenditure", i);
                             prvList.Add(accountingItem);
                         }
                         Session[tableDesc] = prvList;
@@ -277,9 +277,9 @@ namespace WebUI
                     break;
             }
         }
-        protected Accounting GetAccountingItem(string tableDesc, int itemIndex)
+        protected OrdinanceAccounting GetAccountingItem(string tableDesc, int itemIndex)
         {
-            Accounting accountingItem = new Accounting();
+            OrdinanceAccounting accountingItem = new OrdinanceAccounting();
             switch (tableDesc)
             {
                 case "revenue":
@@ -395,28 +395,17 @@ namespace WebUI
                         {
                             for (int i = 0; i < rpRevenueTable.Items.Count; i++)
                             {
-                                Accounting accountingItem = GetAccountingItem("revenue", i);
-                                int ret = Factory.Instance.Insert(accountingItem, "sp_InsertlkAccounting", Skips("accountingInsert"));
+                                OrdinanceAccounting accountingItem = GetAccountingItem("revenue", i);
+                                accountingItem.OrdinanceID = retVal;
+                                int ret = Factory.Instance.Insert(accountingItem, "sp_InsertOrdinance_Accounting", Skips("accountingInsert"));
                                 //int ret = 1;
                                 if (ret > 0)
                                 {
-                                    OrdinanceAccounting oaItem = new OrdinanceAccounting();
-                                    oaItem.OrdinanceID = retVal;
-                                    oaItem.AccountingID = ret;
-                                    oaItem.LastUpdateBy = _user.Login;
-                                    oaItem.LastUpdateDate = DateTime.Now;
-                                    oaItem.EffectiveDate = DateTime.Now;
-                                    oaItem.ExpirationDate = DateTime.MaxValue;
-                                    int finalRet = Factory.Instance.Insert(oaItem, "sp_InsertOrdinance_Accounting", Skips("ordAccountingInsert"));
-                                    //int finalRet = 1;
-                                    if (finalRet > 0)
-                                    {
-                                        revSubmit = true;
-                                    }
-                                    else
-                                    {
-                                        revSubmit = false;
-                                    }
+                                    revSubmit = true;
+                                }
+                                else
+                                {
+                                    revSubmit = false;
                                 }
                             }
                         }
@@ -429,28 +418,17 @@ namespace WebUI
                         {
                             for (int i = 0; i < rpExpenditureTable.Items.Count; i++)
                             {
-                                Accounting accountingItem = GetAccountingItem("expenditure", i);
-                                int ret = Factory.Instance.Insert(accountingItem, "sp_InsertlkAccounting", Skips("accountingInsert"));
+                                OrdinanceAccounting accountingItem = GetAccountingItem("expenditure", i);
+                                accountingItem.OrdinanceID = retVal;
+                                int ret = Factory.Instance.Insert(accountingItem, "sp_InsertOrdinance_Accounting", Skips("accountingInsert"));
                                 //int ret = 1;
                                 if (ret > 0)
                                 {
-                                    OrdinanceAccounting oaItem = new OrdinanceAccounting();
-                                    oaItem.OrdinanceID = retVal;
-                                    oaItem.AccountingID = ret;
-                                    oaItem.LastUpdateBy = _user.Login;
-                                    oaItem.LastUpdateDate = DateTime.Now;
-                                    oaItem.EffectiveDate = DateTime.Now;
-                                    oaItem.ExpirationDate = DateTime.MaxValue;
-                                    int finalRet = Factory.Instance.Insert(oaItem, "sp_InsertOrdinance_Accounting", Skips("ordAccountingInsert"));
-                                    //int finalRet = 1;
-                                    if (finalRet > 0)
-                                    {
-                                        expSubmit = true;
-                                    }
-                                    else
-                                    {
-                                        expSubmit = false;
-                                    }
+                                    expSubmit = true;
+                                }
+                                else
+                                {
+                                    expSubmit = false;
                                 }
                             }
                         }
@@ -470,7 +448,7 @@ namespace WebUI
                 {
                     case true:
                         foreach (OrdinanceDocument ordDoc in ordDocs)
-                        {                            
+                        {
                             ordDoc.OrdinanceID = retVal;
                             int ret = Factory.Instance.Insert(ordDoc, "sp_InsertOrdinance_Document", Skips("ordDocumentInsert"));
                             //int ret = 1;
@@ -542,7 +520,7 @@ namespace WebUI
 
                 int signatureRequestRet = Factory.Instance.Insert(signatureRequest, "sp_InsertOrdinance_SignatureRequest", Skips("ordSignatureRequestInsert"));
 
-                if (signatureRequestRet < 1) 
+                if (signatureRequestRet < 1)
                 {
                     finishSubmit = false;
                 }
@@ -648,7 +626,7 @@ namespace WebUI
             Session["ordDocs"] = ordDocList;
             rpSupportingDocumentation.DataSource = ordDocList;
             rpSupportingDocumentation.DataBind();
-        }
+        }      
         protected void GetCopyOrdinance(int ordID)
         {
             Session.Remove("revenue");
@@ -761,20 +739,19 @@ namespace WebUI
             }
 
             List<OrdinanceAccounting> ordAcc = Factory.Instance.GetAllLookup<OrdinanceAccounting>(ordID, "sp_GetOrdinanceAccountingByOrdinanceID", "OrdinanceID");
-            List<Accounting> revItems = new List<Accounting>();
-            List<Accounting> expItems = new List<Accounting>();
+            List<OrdinanceAccounting> revItems = new List<OrdinanceAccounting>();
+            List<OrdinanceAccounting> expItems = new List<OrdinanceAccounting>();
             if (ordAcc.Count > 0)
             {
                 foreach (OrdinanceAccounting item in ordAcc)
                 {
-                    Accounting acctItem = Factory.Instance.GetByID<Accounting>(item.AccountingID, "sp_GetLkAccountingByAccountingID", "AccountingID");
-                    switch (acctItem.AccountingDesc)
+                    switch (item.AccountingDesc)
                     {
                         case "revenue":
-                            revItems.Add(acctItem);
+                            revItems.Add(item);
                             break;
                         case "expenditure":
-                            expItems.Add(acctItem);
+                            expItems.Add(item);
                             break;
                     }
                 }

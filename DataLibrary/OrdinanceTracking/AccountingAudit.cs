@@ -10,7 +10,7 @@ namespace DataLibrary
     {
         public int AccountingAuditID { get; set; }
         public int AuditID { get; set; }
-        public int AccountingID { get; set; }
+        public int OrdinanceAccountingID { get; set; }
         public string AccountingDesc { get; set; }
         public string FundCode { get; set; }
         public string DepartmentCode { get; set; }

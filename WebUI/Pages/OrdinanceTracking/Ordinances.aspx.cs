@@ -887,20 +887,19 @@ namespace WebUI
             }
 
             List<OrdinanceAccounting> ordAcc = Factory.Instance.GetAllLookup<OrdinanceAccounting>(ordID, "sp_GetOrdinanceAccountingByOrdinanceID", "OrdinanceID");
-            List<Accounting> revItems = new List<Accounting>();
-            List<Accounting> expItems = new List<Accounting>();
+            List<OrdinanceAccounting> revItems = new List<OrdinanceAccounting>();
+            List<OrdinanceAccounting> expItems = new List<OrdinanceAccounting>();
             if (ordAcc.Count > 0)
             {
                 foreach (OrdinanceAccounting item in ordAcc)
                 {
-                    Accounting acctItem = Factory.Instance.GetByID<Accounting>(item.AccountingID, "sp_GetLkAccountingByAccountingID", "AccountingID");
-                    switch (acctItem.AccountingDesc)
+                    switch (item.AccountingDesc)
                     {
                         case "revenue":
-                            revItems.Add(acctItem);
+                            revItems.Add(item);
                             break;
                         case "expenditure":
-                            expItems.Add(acctItem);
+                            expItems.Add(item);
                             break;
                     }
                 }
@@ -909,7 +908,7 @@ namespace WebUI
                 {
                     Session["ordRevTable"] = revItems;
                     Session["OriginalRevTable"] = revItems;
-                    rpRevenueTable.DataSource = revItems.OrderBy(i => i.AccountingID);
+                    rpRevenueTable.DataSource = revItems.OrderBy(i => i.OrdinanceAccountingID);
                     rpRevenueTable.DataBind();
                 }
                 else
@@ -922,7 +921,7 @@ namespace WebUI
                 {
                     Session["ordExpTable"] = expItems;
                     Session["OriginalExpTable"] = expItems;
-                    rpExpenditureTable.DataSource = expItems.OrderBy(i => i.AccountingID);
+                    rpExpenditureTable.DataSource = expItems.OrderBy(i => i.OrdinanceAccountingID);
                     rpExpenditureTable.DataBind();
                 }
                 else
@@ -1588,22 +1587,20 @@ namespace WebUI
         protected void rpAccountingTable_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
             string tableDesc = e.CommandArgument.ToString();
-            List<Accounting> prvList = new List<Accounting>();
-            List<Accounting> accountingList = new List<Accounting>();
+            List<OrdinanceAccounting> prvList = new List<OrdinanceAccounting>();
+            List<OrdinanceAccounting> accountingList = new List<OrdinanceAccounting>();
 
-            List<Accounting> removeAccs = new List<Accounting>();
             List<OrdinanceAccounting> removeOrdAccs = new List<OrdinanceAccounting>();
 
             switch (e.CommandName)
             {
                 case "delete":
-
                     switch (tableDesc)
                     {
                         case "ordRevTable":
                             for (int i = 0; i < rpRevenueTable.Items.Count; i++)
                             {
-                                Accounting accountingItem = new Accounting();
+                                OrdinanceAccounting accountingItem = new OrdinanceAccounting();
                                 var revItem = rpRevenueTable.Items[i];
                                 HiddenField revHdnIDField = (HiddenField)revItem.FindControl("hdnRevID");
                                 TextBox revFundCode = (TextBox)revItem.FindControl("revenueFundCode");
@@ -1612,7 +1609,8 @@ namespace WebUI
                                 TextBox revActivityCode = (TextBox)revItem.FindControl("revenueActivityCode");
                                 TextBox revObjectCode = (TextBox)revItem.FindControl("revenueObjectCode");
                                 TextBox revAmount = (TextBox)revItem.FindControl("revenueAmount");
-                                accountingItem.AccountingID = Convert.ToInt32(revHdnIDField.Value);
+                                accountingItem.OrdinanceAccountingID = Convert.ToInt32(revHdnIDField.Value);
+                                accountingItem.OrdinanceID = Convert.ToInt32(hdnOrdID.Value);
                                 accountingItem.AccountingDesc = tableDesc;
                                 accountingItem.FundCode = revFundCode.Text;
                                 accountingItem.DepartmentCode = revAgencyCode.Text;
@@ -1626,16 +1624,12 @@ namespace WebUI
                             HiddenField revHdnIndex = (HiddenField)e.Item.FindControl("hdnRevIndex");
                             if (Session[tableDesc] != null)
                             {
-                                accountingList = (List<Accounting>)Session[tableDesc];
+                                accountingList = (List<OrdinanceAccounting>)Session[tableDesc];
                             }
 
 
                             HiddenField revHdnID = (HiddenField)e.Item.FindControl("hdnRevID");
 
-                            if (Session["RemoveAccs"] != null)
-                            {
-                                removeAccs = Session["RemoveAccs"] as List<Accounting>;
-                            }
                             if (Session["RemoveOrdAccs"] != null)
                             {
                                 removeOrdAccs = Session["RemoveOrdAccs"] as List<OrdinanceAccounting>;
@@ -1643,12 +1637,9 @@ namespace WebUI
                             if (Convert.ToInt32(revHdnID.Value) > 0)
                             {
                                 int accID = Convert.ToInt32(revHdnID.Value);
-                                Accounting acc = Factory.Instance.GetByID<Accounting>(accID, "sp_GetLkAccountingByAccountingID", "AccountingID");
-                                removeAccs.Add(acc);
                                 OrdinanceAccounting ordAcc = Factory.Instance.GetByID<OrdinanceAccounting>(accID, "sp_GetOrdinanceAccountingByAccountingID", "AccountingID");
                                 removeOrdAccs.Add(ordAcc);
                             }
-                            Session["RemoveAccs"] = removeAccs;
                             Session["RemoveOrdAccs"] = removeOrdAccs;
 
                             accountingList.RemoveAt(Convert.ToInt32(revHdnIndex.Value));
@@ -1659,7 +1650,7 @@ namespace WebUI
                         case "ordExpTable":
                             for (int i = 0; i < rpExpenditureTable.Items.Count; i++)
                             {
-                                Accounting accountingItem = new Accounting();
+                                OrdinanceAccounting accountingItem = new OrdinanceAccounting();
                                 var expItem = rpExpenditureTable.Items[i];
                                 HiddenField expHdnIDField = (HiddenField)expItem.FindControl("hdnExpID");
                                 TextBox expFundCode = (TextBox)expItem.FindControl("expenditureFundCode");
@@ -1668,7 +1659,8 @@ namespace WebUI
                                 TextBox expActivityCode = (TextBox)expItem.FindControl("expenditureActivityCode");
                                 TextBox expObjectCode = (TextBox)expItem.FindControl("expenditureObjectCode");
                                 TextBox expAmount = (TextBox)expItem.FindControl("expenditureAmount");
-                                accountingItem.AccountingID = Convert.ToInt32(expHdnIDField.Value);
+                                accountingItem.OrdinanceAccountingID = Convert.ToInt32(expHdnIDField.Value);
+                                accountingItem.OrdinanceID = Convert.ToInt32(hdnOrdID.Value);
                                 accountingItem.AccountingDesc = tableDesc;
                                 accountingItem.FundCode = expFundCode.Text;
                                 accountingItem.DepartmentCode = expAgencyCode.Text;
@@ -1683,15 +1675,11 @@ namespace WebUI
 
                             if (Session[tableDesc] != null)
                             {
-                                accountingList = (List<Accounting>)Session[tableDesc];
+                                accountingList = (List<OrdinanceAccounting>)Session[tableDesc];
                             }
 
                             HiddenField expHdnID = (HiddenField)e.Item.FindControl("hdnExpID");
 
-                            if (Session["RemoveAccs"] != null)
-                            {
-                                removeAccs = Session["RemoveAccs"] as List<Accounting>;
-                            }
                             if (Session["RemoveOrdAccs"] != null)
                             {
                                 removeOrdAccs = Session["RemoveOrdAccs"] as List<OrdinanceAccounting>;
@@ -1699,12 +1687,9 @@ namespace WebUI
                             if (Convert.ToInt32(expHdnID.Value) > 0)
                             {
                                 int accID = Convert.ToInt32(expHdnID.Value);
-                                Accounting acc = Factory.Instance.GetByID<Accounting>(accID, "sp_GetLkAccountingByAccountingID", "AccountingID");
-                                removeAccs.Add(acc);
                                 OrdinanceAccounting ordAcc = Factory.Instance.GetByID<OrdinanceAccounting>(accID, "sp_GetOrdinanceAccountingByAccountingID", "AccountingID");
                                 removeOrdAccs.Add(ordAcc);
                             }
-                            Session["RemoveAccs"] = removeAccs;
                             Session["RemoveOrdAccs"] = removeOrdAccs;
 
                             accountingList.RemoveAt(Convert.ToInt32(expHdnIndex.Value));
@@ -1803,6 +1788,7 @@ namespace WebUI
 
                     if (oldValue == "-1.00" || oldValue == "-1")
                     {
+                        oldValue = null;
                     }
                     if (newValue == "-1.00" || newValue == "-1")
                     {
@@ -1890,9 +1876,9 @@ namespace WebUI
         // ACCOUNTING TABLES //
         protected void NewAccountingRow(string tableDesc)
         {
-            List<Accounting> prvList = new List<Accounting>();
-            List<Accounting> accountingList = new List<Accounting>();
-            Accounting newAccountingItem = new Accounting();
+            List<OrdinanceAccounting> prvList = new List<OrdinanceAccounting>();
+            List<OrdinanceAccounting> accountingList = new List<OrdinanceAccounting>();
+            OrdinanceAccounting newAccountingItem = new OrdinanceAccounting();
             newAccountingItem.Amount = CurrencyToDecimal("-1");
 
             switch (tableDesc)
@@ -1902,11 +1888,11 @@ namespace WebUI
                     {
                         for (int i = 0; i < rpRevenueTable.Items.Count; i++)
                         {
-                            Accounting accountingItem = GetAccountingItem("revenue", i);
+                            OrdinanceAccounting accountingItem = GetAccountingItem("revenue", i);
                             prvList.Add(accountingItem);
                         }
                         Session[tableDesc] = prvList;
-                        accountingList = (List<Accounting>)Session[tableDesc];
+                        accountingList = (List<OrdinanceAccounting>)Session[tableDesc];
                     }
                     accountingList.Add(newAccountingItem);
                     Session[tableDesc] = accountingList;
@@ -1918,11 +1904,11 @@ namespace WebUI
                     {
                         for (int i = 0; i < rpExpenditureTable.Items.Count; i++)
                         {
-                            Accounting accountingItem = GetAccountingItem("expenditure", i);
+                            OrdinanceAccounting accountingItem = GetAccountingItem("expenditure", i);
                             prvList.Add(accountingItem);
                         }
                         Session[tableDesc] = prvList;
-                        accountingList = (List<Accounting>)Session[tableDesc];
+                        accountingList = (List<OrdinanceAccounting>)Session[tableDesc];
                     }
                     accountingList.Add(newAccountingItem);
                     Session[tableDesc] = accountingList;
@@ -1936,9 +1922,9 @@ namespace WebUI
             Button button = (Button)sender;
             NewAccountingRow(button.CommandName);
         }
-        protected Accounting GetAccountingItem(string tableDesc, int itemIndex)
+        protected OrdinanceAccounting GetAccountingItem(string tableDesc, int itemIndex)
         {
-            Accounting accountingItem = new Accounting();
+            OrdinanceAccounting accountingItem = new OrdinanceAccounting();
             switch (tableDesc)
             {
                 case "revenue":
@@ -1950,7 +1936,8 @@ namespace WebUI
                     TextBox revActivityCode = (TextBox)revItem.FindControl("revenueActivityCode");
                     TextBox revObjectCode = (TextBox)revItem.FindControl("revenueObjectCode");
                     TextBox revAmount = (TextBox)revItem.FindControl("revenueAmount");
-                    accountingItem.AccountingID = Convert.ToInt32(revHdnID.Value);
+                    accountingItem.OrdinanceAccountingID = Convert.ToInt32(revHdnID.Value);
+                    accountingItem.OrdinanceID = Convert.ToInt32(hdnOrdID.Value);
                     accountingItem.AccountingDesc = tableDesc;
                     accountingItem.FundCode = revFundCode.Text.ToUpper();
                     accountingItem.DepartmentCode = revAgencyCode.Text.ToUpper();
@@ -1972,7 +1959,8 @@ namespace WebUI
                     TextBox expActivityCode = (TextBox)expItem.FindControl("expenditureActivityCode");
                     TextBox expObjectCode = (TextBox)expItem.FindControl("expenditureObjectCode");
                     TextBox expAmount = (TextBox)expItem.FindControl("expenditureAmount");
-                    accountingItem.AccountingID = Convert.ToInt32(expHdnID.Value);
+                    accountingItem.OrdinanceAccountingID = Convert.ToInt32(expHdnID.Value);
+                    accountingItem.OrdinanceID = Convert.ToInt32(hdnOrdID.Value);
                     accountingItem.AccountingDesc = tableDesc;
                     accountingItem.FundCode = expFundCode.Text.ToUpper();
                     accountingItem.DepartmentCode = expAgencyCode.Text.ToUpper();
@@ -2159,52 +2147,12 @@ namespace WebUI
 
             List<AccountingAudit> accAuditList = new List<AccountingAudit>();
 
-            int removeAccsVal = new int();
             int removeOrdAccsVal = new int();
-            List<Accounting> removeAccs = new List<Accounting>();
             List<OrdinanceAccounting> removeOrdAccs = new List<OrdinanceAccounting>();
-            if (Session["RemoveAccs"] != null)
-            {
-                removeAccs = Session["RemoveAccs"] as List<Accounting>;
-            }
             if (Session["RemoveOrdAccs"] != null)
             {
                 removeOrdAccs = Session["RemoveOrdAccs"] as List<OrdinanceAccounting>;
             }
-            if (removeAccs.Count > 0)
-            {
-                foreach (Accounting item in removeAccs)
-                {
-                    item.LastUpdateBy = _user.Login;
-                    item.LastUpdateDate = DateTime.Now;
-                    item.EffectiveDate = DateTime.Now;
-                    removeAccsVal = Factory.Instance.Expire(item, "sp_UpdatelkAccounting");
-                    if (removeAccsVal > 0)
-                    {
-                        AccountingAudit accAudit = new AccountingAudit()
-                        {
-                            AccountingDesc = item.AccountingDesc,
-                            AccountingID = item.AccountingID,
-                            FundCode = $"<span>{AuditSymbol("remove")} <span data-type='String'>{item.FundCode}</span></span>",
-                            DepartmentCode = $"<span>{AuditSymbol("remove")} <span data-type='String'>{item.DepartmentCode}</span></span>",
-                            UnitCode = $"<span>{AuditSymbol("remove")} <span data-type='String'>{item.UnitCode}</span></span>",
-                            ActivityCode = $"<span>{AuditSymbol("remove")} <span data-type='String'>{item.ActivityCode}</span></span>",
-                            ObjectCode = $"<span>{AuditSymbol("remove")} <span data-type='String'>{item.ObjectCode}</span></span>",
-                            Amount = $"<span>{AuditSymbol("remove")} <span data-type='Decimal'>{item.Amount}</span></span>",
-                        };
-                        accAuditList.Add(accAudit);
-                    }
-                    if (removeAccsVal < 1)
-                    {
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                removeAccsVal = 1;
-            }
-
             if (removeOrdAccs.Count > 0)
             {
                 foreach (OrdinanceAccounting item in removeOrdAccs)
@@ -2213,6 +2161,30 @@ namespace WebUI
                     item.LastUpdateDate = DateTime.Now;
                     item.EffectiveDate = DateTime.Now;
                     removeOrdAccsVal = Factory.Instance.Expire(item, "sp_UpdateOrdinance_Accounting");
+                    if (removeOrdAccsVal > 0)
+                    {
+                        string getAmount = string.Empty;
+                        if (item.Amount.ToString().Equals("-1.00") || item.Amount.ToString().Equals("-1"))
+                        {
+                            getAmount = $"<span>{AuditSymbol("remove")} <span data-type='String'>N/A</span></span>";
+                        }
+                        else
+                        {
+                            getAmount = $"<span>{AuditSymbol("remove")} <span data-type='Decimal'>{item.Amount}</span></span>";
+                        }
+                        AccountingAudit accAudit = new AccountingAudit()
+                        {
+                            AccountingDesc = item.AccountingDesc,
+                            OrdinanceAccountingID = item.OrdinanceAccountingID,
+                            FundCode = $"<span>{AuditSymbol("remove")} <span data-type='String'>{item.FundCode}</span></span>",
+                            DepartmentCode = $"<span>{AuditSymbol("remove")} <span data-type='String'>{item.DepartmentCode}</span></span>",
+                            UnitCode = $"<span>{AuditSymbol("remove")} <span data-type='String'>{item.UnitCode}</span></span>",
+                            ActivityCode = $"<span>{AuditSymbol("remove")} <span data-type='String'>{item.ActivityCode}</span></span>",
+                            ObjectCode = $"<span>{AuditSymbol("remove")} <span data-type='String'>{item.ObjectCode}</span></span>",
+                            Amount = getAmount,
+                        };
+                        accAuditList.Add(accAudit);
+                    }
                     if (removeOrdAccsVal < 1)
                     {
                         break;
@@ -2232,19 +2204,19 @@ namespace WebUI
                 {
                     for (int i = 0; i < rpRevenueTable.Items.Count; i++)
                     {
-                        Accounting accountingItem = GetAccountingItem("revenue", i);
-                        if (accountingItem.AccountingID > 0)
+                        OrdinanceAccounting accountingItem = GetAccountingItem("revenue", i);
+                        if (accountingItem.OrdinanceAccountingID > 0)
                         {
-                            updateRevAccsVal = Factory.Instance.Update(accountingItem, "sp_UpdatelkAccounting");
-                            List<Accounting> originalRevList = Session["OriginalRevTable"] as List<Accounting>;
-                            Accounting originalRevItem = originalRevList.First(r => r.AccountingID.Equals(accountingItem.AccountingID));
-                            PropertyInfo[] properties = typeof(Accounting).GetProperties();
+                            updateRevAccsVal = Factory.Instance.Update(accountingItem, "sp_UpdateOrdinance_Accounting");
+                            List<OrdinanceAccounting> originalRevList = Session["OriginalRevTable"] as List<OrdinanceAccounting>;
+                            OrdinanceAccounting originalRevItem = originalRevList.First(r => r.OrdinanceAccountingID.Equals(accountingItem.OrdinanceAccountingID));
+                            PropertyInfo[] properties = typeof(OrdinanceAccounting).GetProperties();
                             if (accAuditList.Count > 0 || (properties.Any(p => !p.GetValue(accountingItem).Equals(p.GetValue(originalRevItem)) && !baseData.Any(b => b.Contains(p.Name)))))
                             {
                                 AccountingAudit accAudit = new AccountingAudit()
                                 {
                                     AccountingDesc = accountingItem.AccountingDesc,
-                                    AccountingID = accountingItem.AccountingID,
+                                    OrdinanceAccountingID = accountingItem.OrdinanceAccountingID,
                                 };
                                 foreach (PropertyInfo property in properties.Where(p => !baseData.Any(b => b.Contains(p.Name))))
                                 {
@@ -2280,7 +2252,7 @@ namespace WebUI
                                                 {
                                                     accAudit.Amount = $"<span><span data-type='Decimal'>{originalRevItem.Amount}</span> {AuditSymbol("update")} <span data-type='Decimal'>{accountingItem.Amount}</span></span>";
                                                 }
-                                                    break;
+                                                break;
                                         }
                                     }
                                     else
@@ -2320,33 +2292,30 @@ namespace WebUI
                         }
                         else
                         {
-                            int ret = Factory.Instance.Insert(accountingItem, "sp_InsertlkAccounting", Skips("accountingInsert"));
-                            if (ret > 0)
+                            updateRevAccsVal = Factory.Instance.Insert(accountingItem, "sp_InsertOrdinance_Accounting", Skips("accountingInsert"));
+                            string getAmount = string.Empty;
+                            if (accountingItem.Amount.ToString().Equals("-1.00") || accountingItem.Amount.ToString().Equals("-1"))
                             {
-                                OrdinanceAccounting oaItem = new OrdinanceAccounting();
-                                oaItem.OrdinanceID = Convert.ToInt32(hdnOrdID.Value);
-                                oaItem.AccountingID = ret;
-                                oaItem.LastUpdateBy = _user.Login;
-                                oaItem.LastUpdateDate = DateTime.Now;
-                                oaItem.EffectiveDate = DateTime.Now;
-                                oaItem.ExpirationDate = DateTime.MaxValue;
-                                updateRevAccsVal = Factory.Instance.Insert(oaItem, "sp_InsertOrdinance_Accounting", Skips("ordAccountingInsert"));
-
-                                if (updateRevAccsVal > 0)
+                                getAmount = $"<span>{AuditSymbol("add")} <span data-type='String'>N/A</span></span>";
+                            }
+                            else
+                            {
+                                getAmount = $"<span>{AuditSymbol("add")} <span data-type='Decimal'>{accountingItem.Amount}</span></span>";
+                            }
+                            if (updateRevAccsVal > 0)
+                            {
+                                AccountingAudit accAudit = new AccountingAudit()
                                 {
-                                    AccountingAudit accAudit = new AccountingAudit()
-                                    {
-                                        AccountingDesc = accountingItem.AccountingDesc,
-                                        AccountingID = ret,
-                                        FundCode = $"<span>{AuditSymbol("add")} <span data-type='String'>{accountingItem.FundCode}</span></span>",
-                                        DepartmentCode = $"<span>{AuditSymbol("add")} <span data-type='String'>{accountingItem.DepartmentCode}</span></span>",
-                                        UnitCode = $"<span>{AuditSymbol("add")} <span data-type='String'>{accountingItem.UnitCode}</span></span>",
-                                        ActivityCode = $"<span>{AuditSymbol("add")} <span data-type='String'>{accountingItem.ActivityCode}</span></span>",
-                                        ObjectCode = $"<span>{AuditSymbol("add")} <span data-type='String'>{accountingItem.ObjectCode}</span></span>",
-                                        Amount = $"<span>{AuditSymbol("add")} <span data-type='Decimal'>{accountingItem.Amount}</span></span>",
-                                    };
-                                    accAuditList.Add(accAudit);
-                                }
+                                    AccountingDesc = accountingItem.AccountingDesc,
+                                    OrdinanceAccountingID = updateRevAccsVal,
+                                    FundCode = $"<span>{AuditSymbol("add")} <span data-type='String'>{accountingItem.FundCode}</span></span>",
+                                    DepartmentCode = $"<span>{AuditSymbol("add")} <span data-type='String'>{accountingItem.DepartmentCode}</span></span>",
+                                    UnitCode = $"<span>{AuditSymbol("add")} <span data-type='String'>{accountingItem.UnitCode}</span></span>",
+                                    ActivityCode = $"<span>{AuditSymbol("add")} <span data-type='String'>{accountingItem.ActivityCode}</span></span>",
+                                    ObjectCode = $"<span>{AuditSymbol("add")} <span data-type='String'>{accountingItem.ObjectCode}</span></span>",
+                                    Amount = getAmount,
+                                };
+                                accAuditList.Add(accAudit);
                             }
                             else
                             {
@@ -2369,19 +2338,19 @@ namespace WebUI
                 {
                     for (int i = 0; i < rpExpenditureTable.Items.Count; i++)
                     {
-                        Accounting accountingItem = GetAccountingItem("expenditure", i);
-                        if (accountingItem.AccountingID > 0)
+                        OrdinanceAccounting accountingItem = GetAccountingItem("expenditure", i);
+                        if (accountingItem.OrdinanceAccountingID > 0)
                         {
-                            updateExpAccsVal = Factory.Instance.Update(accountingItem, "sp_UpdatelkAccounting");
-                            List<Accounting> originalExpList = Session["OriginalExpTable"] as List<Accounting>;
-                            Accounting originalExpItem = originalExpList.First(r => r.AccountingID.Equals(accountingItem.AccountingID));
-                            PropertyInfo[] properties = typeof(Accounting).GetProperties();
+                            updateExpAccsVal = Factory.Instance.Update(accountingItem, "sp_UpdateOrdinance_Accounting");
+                            List<OrdinanceAccounting> originalExpList = Session["OriginalExpTable"] as List<OrdinanceAccounting>;
+                            OrdinanceAccounting originalExpItem = originalExpList.First(r => r.OrdinanceAccountingID.Equals(accountingItem.OrdinanceAccountingID));
+                            PropertyInfo[] properties = typeof(OrdinanceAccounting).GetProperties();
                             if (accAuditList.Count > 0 || (properties.Any(p => !p.GetValue(accountingItem).Equals(p.GetValue(originalExpItem)) && !baseData.Any(b => b.Contains(p.Name)))))
                             {
                                 AccountingAudit accAudit = new AccountingAudit()
                                 {
                                     AccountingDesc = accountingItem.AccountingDesc,
-                                    AccountingID = accountingItem.AccountingID,
+                                    OrdinanceAccountingID = accountingItem.OrdinanceAccountingID,
                                 };
                                 foreach (PropertyInfo property in properties.Where(p => !baseData.Any(b => b.Contains(p.Name))))
                                 {
@@ -2456,34 +2425,31 @@ namespace WebUI
                             }
                         }
                         else
-                         {
-                            int ret = Factory.Instance.Insert(accountingItem, "sp_InsertlkAccounting", Skips("accountingInsert"));
-                            if (ret > 0)
+                        {
+                            updateExpAccsVal = Factory.Instance.Insert(accountingItem, "sp_InsertOrdinance_Accounting", Skips("accountingInsert"));
+                            string getAmount = string.Empty;
+                            if (accountingItem.Amount.ToString().Equals("-1.00") || accountingItem.Amount.ToString().Equals("-1"))
                             {
-                                OrdinanceAccounting oaItem = new OrdinanceAccounting();
-                                oaItem.OrdinanceID = Convert.ToInt32(hdnOrdID.Value);
-                                oaItem.AccountingID = ret;
-                                oaItem.LastUpdateBy = _user.Login;
-                                oaItem.LastUpdateDate = DateTime.Now;
-                                oaItem.EffectiveDate = DateTime.Now;
-                                oaItem.ExpirationDate = DateTime.MaxValue;
-                                updateExpAccsVal = Factory.Instance.Insert(oaItem, "sp_InsertOrdinance_Accounting", Skips("ordAccountingInsert"));
-
-                                if (updateExpAccsVal > 0)
+                                getAmount = $"<span>{AuditSymbol("add")} <span data-type='String'>N/A</span></span>";
+                            }
+                            else
+                            {
+                                getAmount = $"<span>{AuditSymbol("add")} <span data-type='Decimal'>{accountingItem.Amount}</span></span>";
+                            }
+                            if (updateExpAccsVal > 0)
+                            {
+                                AccountingAudit accAudit = new AccountingAudit()
                                 {
-                                    AccountingAudit accAudit = new AccountingAudit()
-                                    {
-                                        AccountingDesc = accountingItem.AccountingDesc,
-                                        AccountingID = ret,
-                                        FundCode = $"<span>{AuditSymbol("add")} <span data-type='String'>{accountingItem.FundCode}</span></span>",
-                                        DepartmentCode = $"<span>{AuditSymbol("add")} <span data-type='String'>{accountingItem.DepartmentCode}</span></span>",
-                                        UnitCode = $"<span>{AuditSymbol("add")} <span data-type='String'>{accountingItem.UnitCode}</span></span>",
-                                        ActivityCode = $"<span>{AuditSymbol("add")} <span data-type='String'>{accountingItem.ActivityCode}</span></span>",
-                                        ObjectCode = $"<span>{AuditSymbol("add")} <span data-type='String'>{accountingItem.ObjectCode}</span></span>",
-                                        Amount = $"<span>{AuditSymbol("add")} <span data-type='Decimal'>{accountingItem.Amount}</span></span>",
-                                    };
-                                    accAuditList.Add(accAudit);
-                                }
+                                    AccountingDesc = accountingItem.AccountingDesc,
+                                    OrdinanceAccountingID = updateExpAccsVal,
+                                    FundCode = $"<span>{AuditSymbol("add")} <span data-type='String'>{accountingItem.FundCode}</span></span>",
+                                    DepartmentCode = $"<span>{AuditSymbol("add")} <span data-type='String'>{accountingItem.DepartmentCode}</span></span>",
+                                    UnitCode = $"<span>{AuditSymbol("add")} <span data-type='String'>{accountingItem.UnitCode}</span></span>",
+                                    ActivityCode = $"<span>{AuditSymbol("add")} <span data-type='String'>{accountingItem.ActivityCode}</span></span>",
+                                    ObjectCode = $"<span>{AuditSymbol("add")} <span data-type='String'>{accountingItem.ObjectCode}</span></span>",
+                                    Amount = getAmount,
+                                };
+                                accAuditList.Add(accAudit);
                             }
                             else
                             {
@@ -2810,10 +2776,10 @@ namespace WebUI
                 removeDocVal,
                 addDocsVal,
                 addUploadedDocsVal,
-                removeAccsVal,
-                removeOrdAccsVal,
-                updateRevAccsVal,
-                updateExpAccsVal,
+                //removeAccsVal,
+                //removeOrdAccsVal,
+                //updateRevAccsVal,
+                //updateExpAccsVal,
                 insertSignatureVal,
                 sigAuditVal,
                 auditVal
