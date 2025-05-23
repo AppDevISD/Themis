@@ -15,7 +15,7 @@ using static DataLibrary.Utility;
 
 namespace WebUI
 {
-    public partial class NewFactSheet : InactiveRefreshPage
+    public partial class NewFactSheet : System.Web.UI.Page
     {
         private ADUser _user = new ADUser();
         public UserInfo userInfo = new UserInfo();

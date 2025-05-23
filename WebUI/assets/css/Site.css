@@ -55,11 +55,11 @@
 	transform: scale(0.95);
 }
 
-.ordActionBtn {
+.ordActionBtn i {
 	transition: all 0.3s;
 }
 
-	.ordActionBtn:hover {
+	.ordActionBtn:hover i {
 		transform: scale(1.2) !important;
 	}
 
@@ -230,17 +230,6 @@ a[disabled='disabled'] {
 	font-family: "Font Awesome 6 Pro";
 	font-weight: 900;
 }
-
-		/*.fas-btn.fa-circle-plus::before {
-			content: "\f055";*/ /* Unicode for fa-circle-plus */
-			 /* or 5 if using FA5 */
-			/*font-weight: 900;*/ /* Needed for solid icons */
-			/*position: absolute;
-			left: 0.75rem;
-			top: 50%;
-			transform: translateY(-50%);
-			font-size: 1rem;
-		}*/
 
 .upload-clamp {
 	text-wrap-mode: nowrap;

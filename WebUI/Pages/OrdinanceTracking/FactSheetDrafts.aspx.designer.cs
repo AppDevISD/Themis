@@ -11,71 +11,26 @@ namespace WebUI
 {
 
 
-    public partial class Ordinances
+    public partial class FactSheetDrafts
     {
 
         /// <summary>
-        /// pnlOrdinanceTable control.
+        /// pnlDraftsTable control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel pnlOrdinanceTable;
+        protected global::System.Web.UI.UpdatePanel pnlDraftsTable;
 
         /// <summary>
-        /// ordTable control.
+        /// draftsTable control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl ordTable;
-
-        /// <summary>
-        /// filterDepartmentDiv control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl filterDepartmentDiv;
-
-        /// <summary>
-        /// filterDepartment control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList filterDepartment;
-
-        /// <summary>
-        /// filterDivisionDiv control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl filterDivisionDiv;
-
-        /// <summary>
-        /// filterDivision control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList filterDivision;
-
-        /// <summary>
-        /// filterStatus control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList filterStatus;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl draftsTable;
 
         /// <summary>
         /// filterSearchTitle control.
@@ -132,49 +87,13 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.LinkButton sortTitle;
 
         /// <summary>
-        /// sortDepartmentDivision control.
+        /// rpDraftsTable control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton sortDepartmentDivision;
-
-        /// <summary>
-        /// ddDeptDivision control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddDeptDivision;
-
-        /// <summary>
-        /// sortContact control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton sortContact;
-
-        /// <summary>
-        /// sortStatus control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton sortStatus;
-
-        /// <summary>
-        /// rpOrdinanceTable control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rpOrdinanceTable;
+        protected global::System.Web.UI.WebControls.Repeater rpDraftsTable;
 
         /// <summary>
         /// lblNoItems control.

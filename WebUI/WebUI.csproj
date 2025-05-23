@@ -132,6 +132,7 @@
     <Content Include="assets\js\Site.js" />
     <Content Include="GenericError.aspx" />
     <Content Include="AccessDenied.aspx" />
+    <Content Include="Pages\OrdinanceTracking\FactSheetDrafts.aspx" />
     <Content Include="Pages\OrdinanceTracking\NewFactSheet.aspx" />
     <Content Include="Pages\Templates\Sandbox.aspx" />
     <Content Include="Scripts\Helpers\CSharp\FileUploadSaving.asmx" />
@@ -200,6 +201,13 @@
     </Compile>
     <Compile Include="AccessDenied.aspx.designer.cs">
       <DependentUpon>AccessDenied.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\OrdinanceTracking\FactSheetDrafts.aspx.cs">
+      <DependentUpon>FactSheetDrafts.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\OrdinanceTracking\FactSheetDrafts.aspx.designer.cs">
+      <DependentUpon>FactSheetDrafts.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\OrdinanceTracking\NewFactSheet.aspx.cs">
       <DependentUpon>NewFactSheet.aspx</DependentUpon>

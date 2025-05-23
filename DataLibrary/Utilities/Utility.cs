@@ -269,7 +269,7 @@ namespace DataLibrary
             {
                 {"Select Status...", "" }
             };
-            foreach (Status status in statusList)
+            foreach (Status status in statusList.Where(i => !i.StatusID.Equals(9)))
             {
                 dictionary.Add(status.StatusDescription, status.StatusID.ToString());
             }

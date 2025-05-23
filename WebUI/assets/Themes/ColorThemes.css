@@ -662,6 +662,10 @@
   background-color: var(--active-bg-subtle);
 }
 
+.btn.input-group-text:hover {
+  background-color: rgb(from var(--active-bg-subtle) r g b/50%);
+}
+
 .form-control:read-only {
   background-color: var(--bs-secondary-bg);
   opacity: 1;
@@ -883,6 +887,10 @@ button[readonly=readonly] {
   max-width: 0;
 }
 
+.form-select:has([data-item=first]:selected) {
+  color: blue;
+}
+
 /* --------------- Prism Code Blocks --------------- */
 [data-bs-theme=dark] pre[class*=language-] {
   background: var(--bs-body-bg) !important;
@@ -935,6 +943,14 @@ button[readonly=readonly] {
 
 [data-bs-theme=dark] .text-hazard {
   color: #fd7e14;
+}
+
+[data-bs-theme=light] .text-drafted {
+  color: rgb(26.3965665236, 165.8034334764, 124.5587982833);
+}
+
+[data-bs-theme=dark] .text-drafted {
+  color: #20c997;
 }
 
 .lh-1p5 {

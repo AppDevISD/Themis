@@ -187,6 +187,10 @@
 	background-color: var(--active-bg-subtle);
 }
 
+.btn.input-group-text:hover {
+	background-color: rgb(from var(--active-bg-subtle) r g b / 50%)
+}
+
 .form-control:read-only {
 	background-color: var(--bs-secondary-bg);
 	opacity: 1;
@@ -415,6 +419,10 @@ button[readonly="readonly"] {
 	max-width: 0;
 }
 
+.form-select:has([data-item="first"]:selected) {
+	color: blue;
+}
+
 
 
 /* --------------- Prism Code Blocks --------------- */
@@ -471,6 +479,14 @@ button[readonly="readonly"] {
 
 [data-bs-theme="dark"] .text-hazard {
 	color: $orange-500;
+}
+
+[data-bs-theme="light"] .text-drafted {
+	color: darken($teal-500, 8%);
+}
+
+[data-bs-theme="dark"] .text-drafted {
+	color: $teal-500;
 }
 
 .lh-1p5 {

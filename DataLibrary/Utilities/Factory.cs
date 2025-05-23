@@ -200,7 +200,7 @@ namespace DataLibrary
             }
             return item;
         }
-        public List<Ordinance> GetFilteredOrdinances(int statusID, string dept, string division)
+        public List<Ordinance> GetFilteredOrdinances(int statusID, string dept, string division, string title, string user = "")
         {
             PropertyInfo[] classType = typeof(Ordinance).GetProperties();
             List<Ordinance> lOrdinance = new List<Ordinance>();
@@ -210,6 +210,8 @@ namespace DataLibrary
             cmd.Parameters.AddWithValue("@pStatusID", statusID);
             cmd.Parameters.AddWithValue("@pRequestDepartment", dept);
             cmd.Parameters.AddWithValue("@pRequestDivision", division);
+            cmd.Parameters.AddWithValue("@pTitle", title);
+            cmd.Parameters.AddWithValue("@pUser", user);
 
             using (cn)
             {

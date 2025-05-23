@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Ordinances" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Ordinances.aspx.cs" Inherits="WebUI.Ordinances" ClientIDMode="Static" MaintainScrollPositionOnPostback="true" %>
+﻿<%@ Page Title="Fact Sheet Drafts" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="FactSheetDrafts.aspx.cs" Inherits="WebUI.FactSheetDrafts" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 
@@ -7,7 +7,7 @@
 <asp:Content ID="MainContent" ContentPlaceHolderID="MainContent" runat="server">
 	<%-- PAGE CONTENT --%>
 	<section>
-		<asp:UpdatePanel runat="server" ID="pnlOrdinanceTable" UpdateMode="Always" class="overlap-panels">
+		<asp:UpdatePanel runat="server" ID="pnlDraftsTable" UpdateMode="Always" class="overlap-panels">
 			<Triggers>
 				<asp:AsyncPostBackTrigger ControlID="backBtn" EventName="Click" />
 				<asp:AsyncPostBackTrigger ControlID="lnkFirstSearchP" EventName="Click" />
@@ -15,14 +15,6 @@
 				<asp:AsyncPostBackTrigger ControlID="lnkNextSearchP" EventName="Click" />
 				<asp:AsyncPostBackTrigger ControlID="lnkLastSearchP" EventName="Click" />
 
-				<asp:AsyncPostBackTrigger ControlID="lnkAuditFirstSearchP" EventName="Click" />
-				<asp:AsyncPostBackTrigger ControlID="lnkAuditPreviousSearchP" EventName="Click" />
-				<asp:AsyncPostBackTrigger ControlID="lnkAuditNextSearchP" EventName="Click" />
-				<asp:AsyncPostBackTrigger ControlID="lnkAuditLastSearchP" EventName="Click" />
-
-				<asp:AsyncPostBackTrigger ControlID="filterDepartment" EventName="SelectedIndexChanged" />
-				<asp:AsyncPostBackTrigger ControlID="filterDivision" EventName="SelectedIndexChanged" />
-				<asp:AsyncPostBackTrigger ControlID="filterStatus" EventName="SelectedIndexChanged" />
 				<asp:AsyncPostBackTrigger ControlID="btnFilterSearchTitle" EventName="Click" />
 
 				<asp:AsyncPostBackTrigger ControlID="epYes" EventName="CheckedChanged" />
@@ -35,11 +27,7 @@
 				<asp:AsyncPostBackTrigger ControlID="signatureEmailAddress" EventName="TextChanged" />
 
 				<asp:AsyncPostBackTrigger ControlID="sortDate" EventName="Click" />
-				<asp:AsyncPostBackTrigger ControlID="sortTitle" EventName="Click" />
-				<asp:AsyncPostBackTrigger ControlID="sortDepartmentDivision" EventName="Click" />
-				<asp:AsyncPostBackTrigger ControlID="ddDeptDivision" EventName="SelectedIndexChanged" />
-				<asp:AsyncPostBackTrigger ControlID="sortContact" EventName="Click" />
-				<asp:AsyncPostBackTrigger ControlID="sortStatus" EventName="Click" />				
+				<asp:AsyncPostBackTrigger ControlID="sortTitle" EventName="Click" />			
 				<asp:AsyncPostBackTrigger ControlID="btnSendSigEmail" EventName="Click" />
 				<asp:AsyncPostBackTrigger ControlID="btnSignDoc" EventName="Click" />
 				<asp:AsyncPostBackTrigger ControlID="btnCancelRejection" EventName="Click" />
@@ -58,31 +46,13 @@
 			</Triggers>
 
 			<ContentTemplate>
-				<div runat="server" id="ordTable" class="card">
+				<div runat="server" id="draftsTable" class="card">
 					<div class="card-header bg-body">
 						<h3><i class="fas fa-book-section"></i>&nbsp;Ordinances</h3>
 					</div>
 					<div class="card-body bg-body-tertiary">
 						<%-- FILTERS & SORTING --%>
 						<div class="row mb-4">
-							<div class="col-md-3" runat="server" id="filterDepartmentDiv">
-								<div class="form-group">
-									<label for="filterDepartment">Filter by Department</label>
-									<asp:DropDownList ID="filterDepartment" runat="server" AutoPostBack="true" CssClass="form-select" OnSelectedIndexChanged="Filter_SelectedIndexChanged" data-command="department" onchange="showLoadingModal();" data-filter="true" ></asp:DropDownList>
-								</div>
-							</div>
-							<div class="col-md-3" runat="server" id="filterDivisionDiv">
-								<div class="form-group">
-									<label for="filterDivision">Filter by Division</label>
-									<asp:DropDownList ID="filterDivision" runat="server" AutoPostBack="true" CssClass="form-select" OnSelectedIndexChanged="Filter_SelectedIndexChanged" data-command="division" onchange="showLoadingModal();" data-filter="true" ></asp:DropDownList>
-								</div>
-							</div>
-							<div class="col-md-3" id="filterStatusDiv">
-								<div class="form-group">
-									<label for="filterStatus">Filter by Status</label>
-									<asp:DropDownList ID="filterStatus" runat="server" AutoPostBack="true" CssClass="form-select" OnSelectedIndexChanged="Filter_SelectedIndexChanged" data-command="status" onchange="showLoadingModal();" data-filter="true" ></asp:DropDownList>
-								</div>
-							</div>
 							<div class="col-md-3" id="filterSearchTitleDiv">
 								<div class="form-group">
 									<label for="filterSearchTitleGroup">Search Title</label>
@@ -100,24 +70,12 @@
 								<thead>
 									<tr>
 										<th style="width: 4%; text-align: center"><asp:LinkButton runat="server" ID="sortID" data-command="OrdinanceID" data-text="ID" OnClick="SortBtn_Click" class="btn btn-sort"><strong>ID<span runat="server" class='float-end lh-1p5'></span></strong></asp:LinkButton></th>
-										<th style="width: 6%; text-align: center"><asp:LinkButton runat="server" ID="sortDate" data-command="EffectiveDate" data-text="Date" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Date<span runat="server" class='float-end lh-1p5 fas fa-arrow-down'></span></strong></asp:LinkButton></th>
-										<th style="width: 34%; text-align: center"><asp:LinkButton runat="server" ID="sortTitle" data-command="OrdinanceTitle" data-text="Title" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Title<span class="float-end lh-1p5 me-1"></span></strong></asp:LinkButton></th>
-										<th style="width: 25%; text-align: center">
-											<div style="position: relative;">
-												<asp:LinkButton runat="server" ID="sortDepartmentDivision" data-command="RequestDepartment" data-text="Department" OnClick="SortBtn_Click" class="btn-sort btn-dd-sort"><strong><span class="float-end lh-1p5"></span></strong></span></asp:LinkButton>
-												<asp:DropDownList runat="server" ID="ddDeptDivision" CssClass="form-select dd-sort" OnSelectedIndexChanged="ddDeptDivision_SelectedIndexChanged" AutoPostBack="true" >
-													<asp:ListItem Text="Department" Value="RequestDepartment"></asp:ListItem>
-													<asp:ListItem Text="Division" Value="RequestDivision"></asp:ListItem>
-												</asp:DropDownList>
-											</div>
-										</th>
-										
-										<th style="width: 15%; text-align: center"><asp:LinkButton runat="server" ID="sortContact" data-command="RequestContact" data-text="Contact" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Contact<span class="float-end lh-1p5"></span></strong></asp:LinkButton></th>
-										<th style="width: 10%; text-align: center"><asp:LinkButton runat="server" ID="sortStatus" data-command="StatusDescription" data-text="Status" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Status<span class="float-end lh-1p5"></span></strong></asp:LinkButton></th>
+										<th style="width: 15%; text-align: center"><asp:LinkButton runat="server" ID="sortDate" data-command="LastUpdateDate" data-text="Last Updated" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Last Updated<span runat="server" class='float-end lh-1p5 fas fa-arrow-down'></span></strong></asp:LinkButton></th>
+										<th style="width: 100%; text-align: center"><asp:LinkButton runat="server" ID="sortTitle" data-command="OrdinanceTitle" data-text="Title" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Title<span class="float-end lh-1p5 me-1"></span></strong></asp:LinkButton></th>
 										<th style="width: 6%; text-align: center"><strong>Action</strong></th>
 									</tr>
 								</thead>
-								<asp:Repeater runat="server" ID="rpOrdinanceTable" OnItemCommand="rpOrdinanceTable_ItemCommand">
+								<asp:Repeater runat="server" ID="rpDraftsTable" OnItemCommand="rpDraftsTable_ItemCommand">
 									<HeaderTemplate></HeaderTemplate>
 									<ItemTemplate>
 										<tr>
@@ -126,25 +84,13 @@
 												<asp:Label ID="ordID" Text='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' runat="server" />
 											</td>
 											<td class="align-middle">
-												<asp:Label ID="ordTableDate" Text='<%# DataBinder.Eval(Container.DataItem, "EffectiveDate", "{0:MM/dd/yyyy}") %>' runat="server" />
+												<asp:Label ID="draftsTableDate" Text='<%# DataBinder.Eval(Container.DataItem, "LastUpdateDate", "{0:MM/dd/yyyy - h:MM:ss tt}") %>' runat="server" />
 											</td>
 											<td class="align-middle text-start mw-0 text-truncate" data-overflow-tooltip="true" data-tooltip="tooltip" data-placement="right" title='<%# DataBinder.Eval(Container.DataItem, "OrdinanceTitle") %>'>
-												<asp:Label ID="ordTableTitle" Text='<%# DataBinder.Eval(Container.DataItem, "OrdinanceTitle") %>' runat="server" />
-											</td>
-											<td class="align-middle">
-												<asp:Label ID="ordTableDepartment" Text='<%# DataBinder.Eval(Container.DataItem, "RequestDepartment") %>' runat="server" />
-												<asp:Label ID="ordTableDivision" Text='<%# DataBinder.Eval(Container.DataItem, "RequestDivision") %>' runat="server" Visible="false" />
-											</td>
-											<td class="align-middle">
-												<asp:Label ID="ordTableContact" Text='<%# DataBinder.Eval(Container.DataItem, "RequestContact") %>' runat="server" />
-											</td>
-											<td class="align-middle">
-												<asp:Label ID="ordTableStatus" Text='<%# DataBinder.Eval(Container.DataItem, "StatusDescription") %>' runat="server" />
+												<asp:Label ID="draftsTableTitle" Text='<%# DataBinder.Eval(Container.DataItem, "OrdinanceTitle") %>' runat="server" />
 											</td>
 											<td class="align-middle d-flex justify-content-center px-0">
-												<asp:LinkButton runat="server" ID="editOrd" CommandName="edit" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' CssClass="ordActionBtn border-end px-2" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="Edit" Visible='<%# adminUnlockedOrd(DataBinder.Eval(Container.DataItem, "StatusDescription").ToString()) %>' OnClientClick="showLoadingModal();"><i class="fas fa-pen-to-square text-warning-light"></i></asp:LinkButton>
-												<asp:LinkButton runat="server" ID="viewOrd" CommandName="view" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' CssClass="ordActionBtn border-end px-2" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="View" OnClientClick="showLoadingModal();"><i class="fas fa-magnifying-glass text-info"></i></asp:LinkButton>
-												<asp:LinkButton runat="server" ID="downloadOrd" CommandName="download" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' CssClass="ordActionBtn px-2" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="Download"><i class="fas fa-download text-primary"></i></asp:LinkButton>
+												<%--<asp:LinkButton runat="server" ID="editOrd" CommandName="edit" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' CssClass="ordActionBtn px-2" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="Edit" OnClientClick="showLoadingModal();"><i class="fas fa-pen-to-square text-warning-light"></i></asp:LinkButton>--%>
 											</td>
 										</tr>
 									</ItemTemplate>
@@ -165,10 +111,10 @@
 							<table class="table m-0" runat="server">
 								<tr>
 									<td class="text-left">
-										<asp:LinkButton ID="lnkFirstSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="first" data-list="ordTable" style="width: 150px;" CausesValidation="false" OnClientClick="showLoadingModal();"><i class="fas fa-angles-left"></i>&nbsp;First</asp:LinkButton>
+										<asp:LinkButton ID="lnkFirstSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="first" data-list="draftsTable" style="width: 150px;" CausesValidation="false" OnClientClick="showLoadingModal();"><i class="fas fa-angles-left"></i>&nbsp;First</asp:LinkButton>
 									</td>
 									<td class="text-center">
-										<asp:LinkButton ID="lnkPreviousSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="previous" data-list="ordTable" style="width: 150px;" CausesValidation="false" OnClientClick="showLoadingModal();"><i class="fas fa-angle-left"></i>&nbsp;Previous</asp:LinkButton>
+										<asp:LinkButton ID="lnkPreviousSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="previous" data-list="draftsTable" style="width: 150px;" CausesValidation="false" OnClientClick="showLoadingModal();"><i class="fas fa-angle-left"></i>&nbsp;Previous</asp:LinkButton>
 									</td>
 									<td class="text-center">
 										<div style="margin-top: 5px">
@@ -176,10 +122,10 @@
 										</div>
 									</td>
 									<td class="text-center">
-										<asp:LinkButton ID="lnkNextSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="next" data-list="ordTable" style="width: 150px;" CausesValidation="false" OnClientClick="showLoadingModal();">Next&nbsp;<i class="fas fa-angle-right"></i></asp:LinkButton>
+										<asp:LinkButton ID="lnkNextSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="next" data-list="draftsTable" style="width: 150px;" CausesValidation="false" OnClientClick="showLoadingModal();">Next&nbsp;<i class="fas fa-angle-right"></i></asp:LinkButton>
 									</td>
 									<td class="text-end">
-										<asp:LinkButton ID="lnkLastSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="last" data-list="ordTable" style="width: 150px;" CausesValidation="false" OnClientClick="showLoadingModal();">Last&nbsp;<i class="fas fa-angles-right"></i></asp:LinkButton>
+										<asp:LinkButton ID="lnkLastSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="last" data-list="draftsTable" style="width: 150px;" CausesValidation="false" OnClientClick="showLoadingModal();">Last&nbsp;<i class="fas fa-angles-right"></i></asp:LinkButton>
 									</td>
 								</tr>
 							</table>
@@ -1322,10 +1268,10 @@
 		}
 		
 		function OrdTableFadeOut() {
-			var ordTable = document.getElementById('<%= ordTable.ClientID %>')
+			var draftsTable = document.getElementById('<%= draftsTable.ClientID %>')
 			var ordView = document.getElementById('<%= ordView.ClientID %>')
 			
-			$(ordTable).fadeOut(500);
+			$(draftsTable).fadeOut(500);
 			setTimeout(() => {
 				$(ordView).fadeIn(500);
 			}, 500);
@@ -1335,11 +1281,11 @@
 		}
 
 		function OrdTableFadeIn() {
-			var ordTable = document.getElementById('<%= ordTable.ClientID %>')
+			var draftsTable = document.getElementById('<%= draftsTable.ClientID %>')
 			var ordView = document.getElementById('<%= ordView.ClientID %>')
 			$(ordView).fadeOut(500);
 			setTimeout(() => {
-				$(ordTable).fadeIn(500);
+				$(draftsTable).fadeIn(500);
 			}, 500);
 			//setTimeout(() => {
 			//	OrdinanceVisibility("ord");

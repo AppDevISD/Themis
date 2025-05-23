@@ -23,13 +23,13 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace WebUI
 {
-    public partial class Ordinances : System.Web.UI.Page
+    public partial class FactSheetDrafts : System.Web.UI.Page
     {
         private ADUser _user = new ADUser();
         public UserInfo userInfo = new UserInfo();
         private readonly string emailList = HttpContext.Current.IsDebuggingEnabled ? "NewFactSheetEmailListTEST" : "NewFactSheetEmailList";
         public string deptDivColumnType = "RequestDepartment";
-        
+
         public readonly List<string> lockedStatus = new List<string>()
         {
             "Pending",
@@ -48,13 +48,14 @@ namespace WebUI
 
             if (!Page.IsPostBack && !Response.IsRequestBeingRedirected)
             {
+                Session.Remove("ord_list");
                 Session.Remove("ordRevTable");
                 Session.Remove("ordExpTable");
                 Session.Remove("ordDocs");
                 Session.Remove("addOrdDocs");
                 Session["sortBtn"] = "sortDate";
                 Session["sortDir"] = "desc";
-                Session["curCmd"] = "EffectiveDate";
+                Session["curCmd"] = "LastUpdateDate";
                 Session["curDir"] = "desc";
                 Session["DeptDivColumn"] = "department";
                 GetAllDepartments();
@@ -68,10 +69,10 @@ namespace WebUI
                     { "nextBtn", lnkNextSearchP },
                     { "lastBtn", lnkLastSearchP },
                 };
-                SetPagination(rpOrdinanceTable, pageBtns, pnlPagingP, lblCurrentPageBottomSearchP, 10);
+                SetPagination(rpDraftsTable, pageBtns, pnlPagingP, lblCurrentPageBottomSearchP, 10);
                 Session["ViewState"] = ViewState;
-                GetStartupData(userInfo.IsAdmin);
-            }            
+                GetStartupData();
+            }
             if (Page.IsPostBack && Page.Request.Params.Get("__EVENTTARGET").Contains("adminSwitch"))
             {
                 userInfo = ((SiteMaster)Page.Master).UserView();
@@ -91,59 +92,20 @@ namespace WebUI
                     { "nextBtn", lnkNextSearchP },
                     { "lastBtn", lnkLastSearchP },
                 };
-                SetPagination(rpOrdinanceTable, pageBtns, pnlPagingP, lblCurrentPageBottomSearchP, 10);
+                SetPagination(rpDraftsTable, pageBtns, pnlPagingP, lblCurrentPageBottomSearchP, 10);
                 Session["ViewState"] = ViewState;
-                filterStatus.SelectedIndex = 0;
-                filterDepartment.SelectedIndex = 0;
-                GetStartupData(userInfo.IsAdmin);
+                GetStartupData();
             }
 
-            foreach (RepeaterItem item in rpOrdinanceTable.Items)
-            {
-                LinkButton editButton = item.FindControl("editOrd") as LinkButton;
-                LinkButton viewButton = item.FindControl("viewOrd") as LinkButton;
-                ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(editButton);
-                ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(viewButton);
-            }
-            if (!Page.IsPostBack && Request.QueryString["id"] != null)
-            {
-                string id = Request.QueryString["id"];
-                string cmd = Request.QueryString["v"] ?? "view";
-                
-                GetByID(id.ToString(), cmd.ToString());
-                if (Request.QueryString["f"] != null)
-                {
-                    string ctrl = Request.QueryString["f"];
-                    List<HtmlGenericControl> signBtnDivs = new List<HtmlGenericControl>()
-                    {
-                        fundsCheckByBtnDiv,
-                        directorSupervisorBtnDiv,
-                        cPABtnDiv,
-                        obmDirectorBtnDiv,
-                        mayorBtnDiv
-                    };
-                    List<Button> signBtns = new List<Button>()
-                    {
-                        fundsCheckByBtn,
-                        directorSupervisorBtn,
-                        cPABtn,
-                        obmDirectorBtn,
-                        mayorBtn
-                    };
-                    foreach (HtmlGenericControl item in signBtnDivs.Where(i => !i.ClientID.Equals($"{ctrl.ToString()}Div")))
-                    {
-                        item.Attributes["readonly"] = "true";
-                    }
-                    foreach (Button item in signBtns.Where(i => !i.ClientID.Equals(ctrl.ToString())))
-                    {
-                        item.Text = "Awaiting Signature...";
-                    }
-                }
-            }
+            //foreach (RepeaterItem item in rpDraftsTable.Items)
+            //{
+            //    LinkButton editButton = item.FindControl("editOrd") as LinkButton;
+            //    ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(editButton);
+            //}
 
             if (ScriptManager.GetCurrent(Page).IsInAsyncPostBack)
             {
-                
+
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "HideLoading", "hideLoadingModal();", true);
             }
             GetUploadedDocs();
@@ -160,7 +122,6 @@ namespace WebUI
                 var value = departments[department];
                 ListItem newItem = new ListItem(department, value);
                 requestDepartment.Items.Add(newItem);
-                filterDepartment.Items.Add(newItem);
             }
         }
         protected void GetAllDivisions(DropDownList dd, string deptCode)
@@ -185,7 +146,6 @@ namespace WebUI
                 {
                     ddStatus.Items.Add(newItem);
                 }
-                filterStatus.Items.Add(newItem);
             }
         }
         protected void GetAllPurchaseMethods()
@@ -199,22 +159,9 @@ namespace WebUI
         }
         protected void SetStartupActives()
         {
-            ordTable.Visible = true;
+            draftsTable.Visible = true;
             ordView.Visible = false;
             lblNoItems.Visible = false;
-            ddDeptDivision.SelectedValue = "RequestDepartment";
-            filterDepartmentDiv.Visible = !userInfo.IsAdmin || userInfo.UserView ? false : true;
-            filterDivisionDiv.Visible = !userInfo.IsAdmin || userInfo.UserView ? false : true;
-            if (!filterDepartment.SelectedValue.IsNullOrWhiteSpace())
-            {
-                filterDivision.Enabled = true;
-                GetAllDivisions(filterDepartment, filterDepartment.SelectedValue);
-            }
-            else
-            {
-                filterDivision.Enabled = false;
-                filterDivision.Items.Add(new ListItem() { Text = "Select Division...", Value = "" });
-            }
 
         }
         protected void SetPagination(Repeater rpTable, Dictionary<string, LinkButton> pageBtns, Panel pnlPaging, Label lblPage, int ItemsPerPage, bool GetViewState = false)
@@ -231,17 +178,12 @@ namespace WebUI
             SetViewState(ViewState, ItemsPerPage);
             GetControls(lnkAuditFirstSearchP, lnkAuditPreviousSearchP, lnkAuditNextSearchP, lnkAuditLastSearchP, rpTable, pnlAuditPagingP, lblAuditCurrentPageBottomSearchP);
         }
-        public void GetStartupData(bool isAdmin)
+        public void GetStartupData()
         {
             List<Ordinance> ord_list = new List<Ordinance>();
-            ord_list = Factory.Instance.GetAllLookup<Ordinance>(0, "sp_GetOrdinanceByFilteredStatusID", "StatusID");
+            ord_list = Factory.Instance.GetFilteredOrdinances(-1, string.Empty, string.Empty, string.Empty, _user.Login.ToLower());
             if (ord_list.Count > 0)
             {
-                
-                if ((userInfo.UserDepartment.DepartmentName != null && userInfo.UserDivision.DivisionName != null && !isAdmin) || userInfo.UserView)
-                {
-                    ord_list = Factory.Instance.GetFilteredOrdinances(-1, userInfo.UserDepartment.DepartmentName, string.Empty, string.Empty);
-                }
                 foreach (Ordinance ord in ord_list)
                 {
                     OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
@@ -278,8 +220,8 @@ namespace WebUI
         {
             CommandEventArgs eventArgs = new CommandEventArgs(cmd, id);
             RepeaterItem rpItem = new RepeaterItem(0, ListItemType.Item);
-            RepeaterCommandEventArgs args = new RepeaterCommandEventArgs(rpItem, rpOrdinanceTable, eventArgs);
-            rpOrdinanceTable_ItemCommand(rpOrdinanceTable, args);
+            RepeaterCommandEventArgs args = new RepeaterCommandEventArgs(rpItem, rpDraftsTable, eventArgs);
+            rpDraftsTable_ItemCommand(rpDraftsTable, args);
         }
 
 
@@ -295,49 +237,15 @@ namespace WebUI
                 { "lastBtn", lnkLastSearchP },
             };
 
-            SetPagination(rpOrdinanceTable, pageBtns, pnlPagingP, lblCurrentPageBottomSearchP, 10);
-
-            try
-            {
-                DropDownList dropDown = (DropDownList)sender;
-
-                string commandName = dropDown.Attributes["data-command"]; string commandArgument = dropDown.SelectedItem.ToString();
-
-                if (commandName.Equals("department"))
-                {
-                    filterDivision.Items.Clear();
-
-                    if (!filterDepartment.SelectedValue.IsNullOrWhiteSpace())
-                    {
-                        filterDivision.Enabled = true;
-                        GetAllDivisions(filterDivision, filterDepartment.SelectedValue);
-                    }
-                    else
-                    {
-                        filterDivision.Enabled = false;
-                        filterDivision.Items.Add(new ListItem() { Text = "Select Division...", Value = "" });
-                    }
-                }
-            }
-            catch (Exception)
-            {
-
-            }
-
+            SetPagination(rpDraftsTable, pageBtns, pnlPagingP, lblCurrentPageBottomSearchP, 10);
             userInfo = (UserInfo)Session["UserInformation"];
 
-            int statusID = !filterStatus.SelectedValue.IsNullOrWhiteSpace() ? Convert.ToInt32(filterStatus.SelectedValue) : -1;
-            string department = !filterDepartment.SelectedValue.IsNullOrWhiteSpace() ? filterDepartment.SelectedItem.Text : string.Empty;
-            string division = !filterDivision.SelectedValue.IsNullOrWhiteSpace() ? filterDivision.SelectedItem.Text : string.Empty;
             string title = !filterSearchTitle.Text.IsNullOrWhiteSpace() ? filterSearchTitle.Text : string.Empty;
+            string user = _user.Login.ToLower();
 
             List<Ordinance> filteredList = new List<Ordinance>();
-            if ((userInfo.UserDepartment.DepartmentName != null && userInfo.UserDivision.DivisionName != null && !userInfo.IsAdmin) || userInfo.UserView)
-            {
-                department = userInfo.UserDepartment.DepartmentName;
-            }
 
-            filteredList = Factory.Instance.GetFilteredOrdinances(statusID, department, division, title);
+            filteredList = Factory.Instance.GetFilteredOrdinances(-1, string.Empty, string.Empty, title, user);
 
             if (filteredList.Count > 0)
             {
@@ -364,41 +272,6 @@ namespace WebUI
                 formTableDiv.Visible = false;
                 lblNoItems.Visible = true;
             }
-
-            List<Label> departmentLabels = new List<Label>();
-            List<Label> divisionLabels = new List<Label>();
-
-            foreach (RepeaterItem item in rpOrdinanceTable.Items)
-            {
-                Label deptLabel = (Label)item.FindControl("ordTableDepartment");
-                Label divLabel = (Label)item.FindControl("ordTableDivision");
-                departmentLabels.Add(deptLabel);
-                divisionLabels.Add(divLabel);
-            }
-
-            switch (Session["DeptDivColumn"])
-            {
-                case "department":
-                    foreach (Label item in departmentLabels)
-                    {
-                        item.Visible = true;
-                    }
-                    foreach (Label item in divisionLabels)
-                    {
-                        item.Visible = false;
-                    }
-                    break;
-                case "division":
-                    foreach (Label item in departmentLabels)
-                    {
-                        item.Visible = false;
-                    }
-                    foreach (Label item in divisionLabels)
-                    {
-                        item.Visible = true;
-                    }
-                    break;
-            }
             Session["ViewState"] = ViewState;
         }
         protected void SortBtn_Click(object sender, EventArgs e)
@@ -410,7 +283,7 @@ namespace WebUI
                     { "nextBtn", lnkNextSearchP },
                     { "lastBtn", lnkLastSearchP },
                 };
-            SetPagination(rpOrdinanceTable, pageBtns, pnlPagingP, lblCurrentPageBottomSearchP, 10);
+            SetPagination(rpDraftsTable, pageBtns, pnlPagingP, lblCurrentPageBottomSearchP, 10);
             List<Ordinance> ord_list = new List<Ordinance>();
             ord_list = (List<Ordinance>)Session["ord_list"];
             LinkButton button = (LinkButton)sender;
@@ -445,68 +318,16 @@ namespace WebUI
                 sortID,
                 sortDate,
                 sortTitle,
-                sortDepartmentDivision,
-                sortContact,
-                sortStatus
             };
             foreach (LinkButton item in sortButtonsList)
             {
-                switch (item.ID)
-                {
-                    case "sortDepartmentDivision":
-                        item.Text = $"<strong><span runat='server' class='float-end lh-1p5'></span></strong>";
-                        break;
-                    default:
-                        item.Text = $"<strong>{item.Attributes["data-text"]}<span runat='server' class='float-end lh-1p5'></span></strong>";
-                        break;
-                }
-                
+                item.Text = $"<strong>{item.Attributes["data-text"]}<span runat='server' class='float-end lh-1p5'></span></strong>";
+
             }
 
-            switch (button.ID)
-            {
-                case "sortDepartmentDivision":
-                    button.Text = $"<strong><span runat='server' class='float-end lh-1p5 fas fa-arrow-{sortRet["arrow"]}'></span></strong>";
-                    break;
-                default:
-                    button.Text = $"<strong>{commandText}<span runat='server' class='float-end lh-1p5 fas fa-arrow-{sortRet["arrow"]}'></span></strong>";
-                    break;
-            }
+            button.Text = $"<strong>{commandText}<span runat='server' class='float-end lh-1p5 fas fa-arrow-{sortRet["arrow"]}'></span></strong>";
 
-            List<Label> departmentLabels = new List<Label>();
-            List<Label> divisionLabels = new List<Label>();
 
-            foreach (RepeaterItem item in rpOrdinanceTable.Items)
-            {
-                Label deptLabel = (Label)item.FindControl("ordTableDepartment");
-                Label divLabel = (Label)item.FindControl("ordTableDivision");
-                departmentLabels.Add(deptLabel);
-                divisionLabels.Add(divLabel);
-            }
-
-            switch (Session["DeptDivColumn"])
-            {
-                case "department":
-                    foreach (Label item in departmentLabels)
-                    {
-                        item.Visible = true;
-                    }
-                    foreach (Label item in divisionLabels)
-                    {
-                        item.Visible = false;
-                    }
-                    break;
-                case "division":
-                    foreach (Label item in departmentLabels)
-                    {
-                        item.Visible = false;
-                    }
-                    foreach (Label item in divisionLabels)
-                    {
-                        item.Visible = true;
-                    }
-                    break;
-            }
             Session["ViewState"] = ViewState;
         }
         protected void paginationBtn_Click(object sender, EventArgs e)
@@ -517,7 +338,7 @@ namespace WebUI
             Dictionary<string, LinkButton> pageBtns;
             switch (listType)
             {
-                case "ordTable":
+                case "draftsTable":
                     pageBtns = new Dictionary<string, LinkButton>()
                     {
                         { "firstBtn", lnkFirstSearchP },
@@ -525,7 +346,7 @@ namespace WebUI
                         { "nextBtn", lnkNextSearchP },
                         { "lastBtn", lnkLastSearchP },
                     };
-                    SetPagination(rpOrdinanceTable, pageBtns, pnlPagingP, lblCurrentPageBottomSearchP, 10, false);
+                    SetPagination(rpDraftsTable, pageBtns, pnlPagingP, lblCurrentPageBottomSearchP, 10, false);
                     List<Ordinance> ord_list = new List<Ordinance>();
                     ord_list = (List<Ordinance>)Session["ord_list"];
                     PageButtonClick(ord_list, commandName);
@@ -639,7 +460,7 @@ namespace WebUI
             {
                 ordDocList = Session["addOrdDocs"] as List<OrdinanceDocument>;
             }
-            
+
 
             for (int i = 0; i < supportingDocumentation.PostedFiles.Count; i++)
             {
@@ -744,7 +565,7 @@ namespace WebUI
 
 
         // REPEATER COMMANDS //        
-        protected void rpOrdinanceTable_ItemCommand(object source, RepeaterCommandEventArgs e)
+        protected void rpDraftsTable_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
             ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(backBtn);
 
@@ -757,7 +578,7 @@ namespace WebUI
 
             Session.Remove("ordRevTable");
             Session.Remove("ordExpTable");
-            Session.Remove("insertSigList");            
+            Session.Remove("insertSigList");
 
             List<TextBox> sigTextBoxes = new List<TextBox>()
             {
@@ -767,7 +588,7 @@ namespace WebUI
                 obmDirectorSig,
                 mayorSig
             };
-            List<LinkButton> emailBtns = new List<LinkButton>() 
+            List<LinkButton> emailBtns = new List<LinkButton>()
             {
                 fundsCheckEmailBtn,
                 directorSupervisorEmailBtn,
@@ -966,8 +787,8 @@ namespace WebUI
 
             staffAnalysis.Text = ord.OrdinanceAnalysis;
 
-            List<OrdinanceSignature> ordSigs = Factory.Instance.GetAllLookup<OrdinanceSignature>(ordID, "sp_GetOrdinanceSignatureByOrdinanceID", "OrdinanceID");   
-            
+            List<OrdinanceSignature> ordSigs = Factory.Instance.GetAllLookup<OrdinanceSignature>(ordID, "sp_GetOrdinanceSignatureByOrdinanceID", "OrdinanceID");
+
             SignatureRequest signatureRequest = Factory.Instance.GetByID<SignatureRequest>(Convert.ToInt32(hdnOrdID.Value), "sp_GetOrdinanceSignatureRequestByOrdinanceID", "OrdinanceID");
             Session["SigRequestEmails"] = signatureRequest;
 
@@ -1146,7 +967,7 @@ namespace WebUI
                                     break;
                             }
                         }
-                    else
+                        else
                         {
                             switch (item.ClientID)
                             {
@@ -1537,7 +1358,7 @@ namespace WebUI
                     Context.ApplicationInstance.CompleteRequest();
                     break;
             }
-            
+
             foreach (OrdinanceSignature item in ordSigs)
             {
                 switch (item.SignatureType)
@@ -1583,7 +1404,7 @@ namespace WebUI
             ScriptManager.RegisterStartupScript(this, this.GetType(), "CurrencyFormatting", "CurrencyFormatting();", true);
 
             ordView.Visible = true;
-            ordTable.Visible = false;
+            draftsTable.Visible = false;
         }
         protected void rpAccountingTable_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
@@ -1757,7 +1578,7 @@ namespace WebUI
             int auditID = Convert.ToInt32(hdnAuditItem.Value);
             Repeater rpAuditDesc = (Repeater)e.Item.FindControl("rpAuditDesc");
 
-            
+
 
             List<OrdinanceAudit> ordAudits = Session["ordAudit"] as List<OrdinanceAudit>;
             List<Audit> audits = Factory.Instance.GetAllLookup<Audit>(auditID, "sp_GetAuditDescriptionByID", "OrdinanceAuditID");
@@ -1846,7 +1667,8 @@ namespace WebUI
                         case "rejected":
                             itemString = $"<div class='change-bg lh-1p5'> {newValue} </div>";
                             break;
-                        case "revenue": case "expenditure":
+                        case "revenue":
+                        case "expenditure":
                             sb.Append("<table class='table table-bordered table-hover table-standard text-center w-75' style='padding: 0px; margin: 0px'>");
                             foreach (string header in HeaderCells)
                             {
@@ -1868,8 +1690,8 @@ namespace WebUI
                                 sb.Append("</tr>");
                             }
                             sb.Append("</tbody></table>");
-                            
-                            
+
+
                             itemString = $"<p class='m-0'>{label}:</p> {sb}";
                             break;
                     }
@@ -1988,7 +1810,7 @@ namespace WebUI
             }
             return accountingItem;
         }
-        
+
 
 
         // SUBMITS //
@@ -2280,7 +2102,7 @@ namespace WebUI
                                                 {
                                                     accAudit.Amount = $"<span><span data-type='Decimal'>{originalRevItem.Amount}</span> {AuditSymbol("update")} <span data-type='Decimal'>{accountingItem.Amount}</span></span>";
                                                 }
-                                                    break;
+                                                break;
                                         }
                                     }
                                     else
@@ -2456,7 +2278,7 @@ namespace WebUI
                             }
                         }
                         else
-                         {
+                        {
                             int ret = Factory.Instance.Insert(accountingItem, "sp_InsertlkAccounting", Skips("accountingInsert"));
                             if (ret > 0)
                             {
@@ -2562,7 +2384,7 @@ namespace WebUI
                 LastUpdateBy = $"{_user.FirstName} {_user.LastName}",
                 LastUpdateDate = rejected ? DateTime.Now.AddSeconds(-2) : DateTime.Now,
             };
-            
+
             List<Audit> auditList = new List<Audit>();
 
             if (Session["OriginalStatus"] != null)
@@ -2803,7 +2625,7 @@ namespace WebUI
             }
 
 
-            List<int> submitVals = new List<int>(new int[] 
+            List<int> submitVals = new List<int>(new int[]
             {
                 retVal,
                 statusVal,
@@ -2878,7 +2700,7 @@ namespace WebUI
             if (retVal > 0)
             {
                 int statusVal = Factory.Instance.Update(ordStatus, "sp_UpdateOrdinance_Status", Skips("ordStatusUpdate"));
-                
+
                 if (statusVal > 0)
                 {
                     OrdinanceAudit deleteAudit = new OrdinanceAudit()
@@ -2927,7 +2749,7 @@ namespace WebUI
             }
             else
             {
-                ordTable.Visible = true;
+                draftsTable.Visible = true;
                 List<TextBox> sigTextBoxes = new List<TextBox>()
                 {
                     fundsCheckBySig,
@@ -2950,7 +2772,7 @@ namespace WebUI
                     { "nextBtn", lnkNextSearchP },
                     { "lastBtn", lnkLastSearchP },
                 };
-                SetPagination(rpOrdinanceTable, pageBtns, pnlPagingP, lblCurrentPageBottomSearchP, 10, true);
+                SetPagination(rpDraftsTable, pageBtns, pnlPagingP, lblCurrentPageBottomSearchP, 10, true);
                 List<Ordinance> ord_list = new List<Ordinance>();
                 ord_list = (List<Ordinance>)Session["ord_list"];
                 BindDataRepeaterPagination("no", ord_list);
@@ -3012,7 +2834,7 @@ namespace WebUI
                     OldValue = string.Empty,
                     NewValue = reason
                 };
-               rejectedAuditVal = Factory.Instance.Insert(audit, "sp_InsertAuditDescription", Skips("auditInsert"));
+                rejectedAuditVal = Factory.Instance.Insert(audit, "sp_InsertAuditDescription", Skips("auditInsert"));
             }
             if (rejectedAuditVal > 0)
             {
@@ -3054,7 +2876,7 @@ namespace WebUI
             LinkButton btn = (LinkButton)sender;
             string[] args = btn.CommandArgument.Split(';');
             SignatureRequest sigRequests = Session["SigRequestEmails"] as SignatureRequest;
-            PropertyInfo sigType = (PropertyInfo)typeof(SignatureRequest).GetProperties().First(i => i.Name.Equals(btn.CommandName));;
+            PropertyInfo sigType = (PropertyInfo)typeof(SignatureRequest).GetProperties().First(i => i.Name.Equals(btn.CommandName)); ;
             string[] emails = sigType.GetValue(sigRequests).ToString().Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
             if (emails.Length > 0)
             {
@@ -3075,7 +2897,7 @@ namespace WebUI
 
         protected void AddRequestEmailAddress_Click(object sender, EventArgs e)
         {
-            SignatureRequest sigRequests = Session["SigRequestEmails"] as SignatureRequest;            
+            SignatureRequest sigRequests = Session["SigRequestEmails"] as SignatureRequest;
             PropertyInfo sigType = (PropertyInfo)typeof(SignatureRequest).GetProperties().First(i => i.Name.Equals(sigBtnType.Value));
 
             List<string> emails = sigType.GetValue(sigRequests).ToString().Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToList();
@@ -3145,102 +2967,7 @@ namespace WebUI
         protected void rpEmailList_ItemCreated(object sender, RepeaterItemEventArgs e)
         {
             LinkButton btn = (LinkButton)e.Item.FindControl("removeBtn");
-            ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(btn);            
-        }
-
-        protected void ddDeptDivision_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            sortDepartmentDivision.Attributes.Remove("data-command");
-            sortDepartmentDivision.Attributes.Remove("data-text");
-
-            List<Label> departmentLabels = new List<Label>();
-            List<Label> divisionLabels = new List<Label>();
-
-            foreach (RepeaterItem item in rpOrdinanceTable.Items)
-            {
-                Label deptLabel = (Label)item.FindControl("ordTableDepartment");
-                Label divLabel = (Label)item.FindControl("ordTableDivision");
-                departmentLabels.Add(deptLabel);
-                divisionLabels.Add(divLabel);
-            }
-            sortDepartmentDivision.Text = "<strong><span runat='server' class='float-end lh-1p5'></span></strong>";
-            if (Session["sortBtn"].Equals("sortDepartmentDivision"))
-            {
-                Session["sortDir"] = "asc";
-            }
-            switch (ddDeptDivision.SelectedValue)
-            {
-                case "RequestDepartment":
-                    foreach (Label item in departmentLabels)
-                    {
-                        item.Visible = true;
-                    }
-                    foreach (Label item in divisionLabels)
-                    {
-                        item.Visible = false;
-                    }
-                    break;
-                case "RequestDivision":
-                    foreach (Label item in departmentLabels)
-                    {
-                        item.Visible = false;
-                    }
-                    foreach (Label item in divisionLabels)
-                    {
-                        item.Visible = true;
-                    }
-                    break;
-            }
-            sortDepartmentDivision.Attributes.Add("data-command", ddDeptDivision.SelectedValue);
-            sortDepartmentDivision.Attributes.Add("data-text", ddDeptDivision.SelectedItem.Text);
-            Session["DeptDivColumn"] = ddDeptDivision.SelectedItem.Text.ToLower();
-        }
-
-        protected void btnDeptDivColumn_Click(object sender, EventArgs e)
-        {
-            sortDepartmentDivision.Attributes.Remove("data-command");
-            sortDepartmentDivision.Attributes.Remove("data-text");
-            List<Label> departmentLabels = new List<Label>();
-            List<Label> divisionLabels = new List<Label>();
-
-            foreach (RepeaterItem item in rpOrdinanceTable.Items)
-            {
-                Label deptLabel = (Label)item.FindControl("ordTableDepartment");
-                Label divLabel = (Label)item.FindControl("ordTableDivision");
-                departmentLabels.Add(deptLabel);
-                divisionLabels.Add(divLabel);
-            }
-
-            Button btn = (Button)sender;
-            switch (btn.CommandName)
-            {
-                case "department":
-                    sortDepartmentDivision.Attributes.Add("data-command", "RequestDepartment");
-                    sortDepartmentDivision.Attributes.Add("data-text", "Department");
-                    foreach (Label item in departmentLabels)
-                    {
-                        item.Visible = true;
-                    }
-                    foreach (Label item in divisionLabels)
-                    {
-                        item.Visible = false;
-                    }
-                    Session["DeptDivColumn"] = "department";
-                    break;
-                case "division":
-                    sortDepartmentDivision.Attributes.Add("data-command", "RequestDivision");
-                    sortDepartmentDivision.Attributes.Add("data-text", "Division");
-                    foreach (Label item in departmentLabels)
-                    {
-                        item.Visible = false;
-                    }
-                    foreach (Label item in divisionLabels)
-                    {
-                        item.Visible = true;
-                    }
-                    Session["DeptDivColumn"] = "division";
-                    break;
-            }
+            ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(btn);
         }
 
     }
