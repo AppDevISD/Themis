@@ -11,6 +11,7 @@ namespace DataLibrary
         public int OrdinanceID { get; set; }
         public string StatusDescription { get; set; }
         public string OrdinanceNumber { get; set; }
+        public string AgendaNumber { get; set; }
         public string RequestDepartment { get; set; }
         public string RequestDivision { get; set; }
         public string RequestContact { get; set; }

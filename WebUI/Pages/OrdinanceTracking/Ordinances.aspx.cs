@@ -2815,7 +2815,7 @@ namespace WebUI
             OrdinanceStatus ordStatus = new OrdinanceStatus();
             ordStatus.OrdinanceStatusID = Convert.ToInt32(hdnOrdStatusID.Value);
             ordStatus.OrdinanceID = Convert.ToInt32(hdnOrdID.Value);
-            ordStatus.StatusID = 7;
+            ordStatus.StatusID = 8;
             ordStatus.LastUpdateBy = _user.Login;
             ordStatus.LastUpdateDate = DateTime.Now;
             ordStatus.EffectiveDate = Convert.ToDateTime(hdnEffectiveDate.Value);

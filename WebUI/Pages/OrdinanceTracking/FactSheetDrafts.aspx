@@ -39,7 +39,7 @@
 			<ContentTemplate>
 				<div runat="server" id="draftsTable" class="card">
 					<div class="card-header bg-body">
-						<h3><i class="fas fa-book-section"></i>&nbsp;Ordinances</h3>
+						<h3><i class="fas fa-pen-ruler"></i>&nbsp;Drafts</h3>
 					</div>
 					<div class="card-body bg-body-tertiary">
 						<%-- FILTERS & SORTING --%>
@@ -60,7 +60,6 @@
 							<table id="FormTable" class="table table-bordered table-striped table-hover text-center" style="padding: 0px; margin: 0px">
 								<thead>
 									<tr>
-										<th style="width: 4%; text-align: center"><asp:LinkButton runat="server" ID="sortID" data-command="OrdinanceID" data-text="ID" OnClick="SortBtn_Click" class="btn btn-sort"><strong>ID<span runat="server" class='float-end lh-1p5'></span></strong></asp:LinkButton></th>
 										<th style="width: 15%; text-align: center"><asp:LinkButton runat="server" ID="sortDate" data-command="LastUpdateDate" data-text="Last Updated" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Last Updated<span runat="server" class='float-end lh-1p5 fas fa-arrow-down'></span></strong></asp:LinkButton></th>
 										<th style="width: 100%; text-align: center"><asp:LinkButton runat="server" ID="sortTitle" data-command="OrdinanceTitle" data-text="Title" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Title<span class="float-end lh-1p5 me-1"></span></strong></asp:LinkButton></th>
 										<th style="width: 6%; text-align: center"><strong>Action</strong></th>
@@ -72,16 +71,14 @@
 										<tr>
 											<td class="align-middle">
 												<asp:HiddenField runat="server" ID="hdnID" Value='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' />
-												<asp:Label ID="ordID" Text='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' runat="server" />
-											</td>
-											<td class="align-middle">
 												<asp:Label ID="draftsTableDate" Text='<%# DataBinder.Eval(Container.DataItem, "LastUpdateDate", "{0:MM/dd/yyyy - h:MM:ss tt}") %>' runat="server" />
 											</td>
-											<td class="align-middle text-start mw-0 text-truncate" data-overflow-tooltip="true" data-tooltip="tooltip" data-placement="right" title='<%# DataBinder.Eval(Container.DataItem, "OrdinanceTitle") %>'>
+											<td class="align-middle text-start mw-0 text-truncate" data-overflow-tooltip="true" data-placement="top" title='<%# DataBinder.Eval(Container.DataItem, "OrdinanceTitle") %>'>
 												<asp:Label ID="draftsTableTitle" Text='<%# DataBinder.Eval(Container.DataItem, "OrdinanceTitle") %>' runat="server" />
 											</td>
 											<td class="align-middle d-flex justify-content-center px-0">
-												<asp:LinkButton runat="server" ID="editOrd" CommandName="edit" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' CssClass="ordActionBtn px-2" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="Edit" OnClientClick="showLoadingModal();"><i class="fas fa-pen-to-square text-warning-light"></i></asp:LinkButton>
+												<asp:LinkButton runat="server" ID="editOrd" CommandName="edit" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' CssClass="ordActionBtn border-end px-2" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="Edit" OnClientClick="showLoadingModal();"><i class="fas fa-pen-to-square text-warning-light"></i></asp:LinkButton>
+												<asp:LinkButton runat="server" ID="deleteOrd" CommandName="delete" CssClass="ordActionBtn px-2" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="Delete" OnClientClick='<%# $"SetDeleteModal({DataBinder.Eval(Container.DataItem, "OrdinanceID")});" %>'><i class="fas fa-trash-can text-danger"></i></asp:LinkButton>
 											</td>
 										</tr>
 									</ItemTemplate>
@@ -93,7 +90,7 @@
 						</div>
 						<div runat="server" id="lblNoItems" class="row text-center" style="margin-top: 12.5%;">
 							<div class="col-md-12">
-								<h4 class="text-danger">There are no items to show for the current filter(s)</h4>
+								<h4 runat="server" id="lblNoItemsTxt" class="text-danger">There are no items to show for the current search</h4>
 							</div>
 						</div>
 					</div>
@@ -134,9 +131,8 @@
 						<%-- FORM HEADER --%>
 						<section class="container form-header bg-body text-center position-relative">
 							<div class="row h-100 align-items-center">
-								<h1><span class="fas fa-book-section"></span>&nbsp;Fact Sheet</h1>
+								<h1><span class="fas fa-pen-ruler"></span>&nbsp;Fact Sheet</h1>
 							</div>
-							<asp:Label runat="server" ID="lblOrdID" CssClass="text-primary-emphasis ordID">ID:</asp:Label>
 							<asp:LinkButton runat="server" ID="backBtn" CssClass="btn bg-danger backBtn" OnClick="backBtn_Click" OnClientClick="showLoadingModal();"><span class="fas fa-xmark text-light"></span></asp:LinkButton>
 						</section>
 
@@ -157,7 +153,7 @@
 										<div class="col-md-5">
 											<div class="form-group">
 												<label for="requestDepartment">Requesting Department</label>
-												<asp:DropDownList ID="requestDepartment" runat="server" AutoPostBack="true" CssClass="form-select" required="true" ValidateRequestMode="Enabled" OnSelectedIndexChanged="requestDepartment_SelectedIndexChanged"></asp:DropDownList>
+												<asp:DropDownList ID="requestDepartment" runat="server" AutoPostBack="true" CssClass="form-select" required="true" data-required="true" ValidateRequestMode="Enabled" OnSelectedIndexChanged="requestDepartment_SelectedIndexChanged"></asp:DropDownList>
 											</div>
 										</div>
 
@@ -165,7 +161,7 @@
 										<div runat="server" id="requestDivisionDiv" class="col-md-5">
 											<div class="form-group">
 												<label for="requestDivision">Requesting Division</label>
-												<asp:DropDownList ID="requestDivision" runat="server" AutoPostBack="true" CssClass="form-select" required="true" ValidateRequestMode="Enabled"></asp:DropDownList>
+												<asp:DropDownList ID="requestDivision" runat="server" AutoPostBack="true" CssClass="form-select" required="true" data-required="true" ValidateRequestMode="Enabled"></asp:DropDownList>
 											</div>
 										</div>
 
@@ -173,7 +169,7 @@
 										<div class="col-md-2">
 											<div class="form-group">
 												<label for="firstReadDate">Date of 1<sup>st</sup> Reading</label>
-												<asp:TextBox runat="server" ID="firstReadDate" CssClass="form-control" TextMode="Date" required="true"></asp:TextBox>
+												<asp:TextBox runat="server" ID="firstReadDate" CssClass="form-control" TextMode="Date" required="true" data-required="true"></asp:TextBox>
 											</div>
 										</div>
 									</div>
@@ -184,7 +180,7 @@
 										<div class="col-md-5">
 											<div class="form-group">
 												<label for="requestContact">Requesting Contact</label>
-												<asp:TextBox runat="server" ID="requestContact" CssClass="form-control" TextMode="SingleLine" placeholder="John Doe" AutoCompleteType="DisplayName" required="true"></asp:TextBox>
+												<asp:TextBox runat="server" ID="requestContact" CssClass="form-control" TextMode="SingleLine" placeholder="John Doe" AutoCompleteType="DisplayName" required="true" data-required="true"></asp:TextBox>
 											</div>
 										</div>
 
@@ -192,7 +188,7 @@
 										<div class="col-md-3">
 											<div class="form-group">
 												<label for="requestEmail">Email</label>
-												<asp:TextBox runat="server" ID="requestEmail" CssClass="form-control" TextMode="Email" AutoCompleteType="Email" placeholder="john.doe@corporate.com" required="true"></asp:TextBox>
+												<asp:TextBox runat="server" ID="requestEmail" CssClass="form-control" TextMode="Email" AutoCompleteType="Email" placeholder="john.doe@corporate.com" required="true" data-required="true"></asp:TextBox>
 											</div>
 										</div>
 
@@ -207,10 +203,10 @@
 											<%-- INPUTS --%>
 											<div class="input-group">
 												<%-- PHONE NUMBER --%>
-												<asp:TextBox runat="server" ID="requestPhone" CssClass="form-control" TextMode="Phone" data-type="telephone" placeholder="(555) 555-5555" AutoCompleteType="Disabled" required="true"></asp:TextBox>
+												<asp:TextBox runat="server" ID="requestPhone" CssClass="form-control" TextMode="Phone" data-type="telephone" placeholder="(555) 555-5555" AutoCompleteType="Disabled" required="true" data-required="true"></asp:TextBox>
 
 												<%-- EXTENSION --%>
-												<asp:TextBox runat="server" ID="requestExt" CssClass="form-control ext-split" TextMode="SingleLine" data-type="extension" placeholder="x1234" AutoCompleteType="Disabled" required="true"></asp:TextBox>
+												<asp:TextBox runat="server" ID="requestExt" CssClass="form-control ext-split" TextMode="SingleLine" data-type="extension" placeholder="x1234" AutoCompleteType="Disabled" required="true" data-required="true"></asp:TextBox>
 											</div>
 										</div>
 									</div>
@@ -271,7 +267,7 @@
 										<%-- SUGGESTED TITLE --%>
 										<div class="col-md-12">
 											<label for="suggestedTitle">Suggested Title</label>
-											<asp:TextBox runat="server" ID="suggestedTitle" CssClass="form-control" TextMode="Multiline" Rows="4" AutoCompleteType="Disabled" required="true"></asp:TextBox>
+											<asp:TextBox runat="server" ID="suggestedTitle" CssClass="form-control" TextMode="Multiline" Rows="4" AutoCompleteType="Disabled" required="true" data-required="true"></asp:TextBox>
 										</div>
 									</div>
 								</div>
@@ -387,7 +383,7 @@
 										<div class="col-md-5">
 											<div class="form-group">
 												<label for="purchaseMethod">Method of Purchase</label>
-												<asp:DropDownList ID="purchaseMethod" runat="server" OnSelectedIndexChanged="PurchaseMethodSelectedIndexChanged" AutoPostBack="true" CssClass="form-select" required="true"></asp:DropDownList>
+												<asp:DropDownList ID="purchaseMethod" runat="server" OnSelectedIndexChanged="PurchaseMethodSelectedIndexChanged" AutoPostBack="true" CssClass="form-select" required="true" data-required="true"></asp:DropDownList>
 											</div>
 										</div>
 
@@ -497,25 +493,25 @@
 														<ItemTemplate>
 															<tr class="upperCaseField">
 																<td style="vertical-align: middle">
-																	<asp:HiddenField runat="server" ID="hdnRevID" Value='<%# DataBinder.Eval(Container.DataItem, "AccountingID") %>' />
+																	<asp:HiddenField runat="server" ID="hdnRevID" Value='<%# DataBinder.Eval(Container.DataItem, "OrdinanceAccountingID") %>' />
 																	<asp:HiddenField runat="server" ID="hdnRevIndex" Value='<%# Container.ItemIndex %>' />
-																	<asp:TextBox runat="server" ID="revenueFundCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "FundCode") %>' required="true"></asp:TextBox>
+																	<asp:TextBox runat="server" ID="revenueFundCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "FundCode") %>' required="true" data-required="true"></asp:TextBox>
 																</td>
 																<td style="vertical-align: middle">
-																	<%--<asp:DropDownList ID="revenueAgencyCode" runat="server" CssClass="form-select" required="true" ValidateRequestMode="Enabled" DataSource='<%# agencyCodes %>' SelectedValue='<%# DataBinder.Eval(Container.DataItem, "DepartmentCode") %>'></asp:DropDownList>--%>
-																	<asp:TextBox runat="server" ID="revenueAgencyCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "DepartmentCode") %>' required="true"></asp:TextBox>
+																	<%--<asp:DropDownList ID="revenueAgencyCode" runat="server" CssClass="form-select" required="true" data-required="true" ValidateRequestMode="Enabled" DataSource='<%# agencyCodes %>' SelectedValue='<%# DataBinder.Eval(Container.DataItem, "DepartmentCode") %>'></asp:DropDownList>--%>
+																	<asp:TextBox runat="server" ID="revenueAgencyCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "DepartmentCode") %>' required="true" data-required="true"></asp:TextBox>
 																</td>
 																<td style="vertical-align: middle">
-																	<%--<asp:DropDownList ID="revenueOrgCode" runat="server" CssClass="form-select" required="true" ValidateRequestMode="Enabled" DataSource='<%# orgCodes %>' SelectedValue='<%# DataBinder.Eval(Container.DataItem, "UnitCode") %>'></asp:DropDownList>--%>
-																	<asp:TextBox runat="server" ID="revenueOrgCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "UnitCode") %>' required="true"></asp:TextBox>
+																	<%--<asp:DropDownList ID="revenueOrgCode" runat="server" CssClass="form-select" required="true" data-required="true" ValidateRequestMode="Enabled" DataSource='<%# orgCodes %>' SelectedValue='<%# DataBinder.Eval(Container.DataItem, "UnitCode") %>'></asp:DropDownList>--%>
+																	<asp:TextBox runat="server" ID="revenueOrgCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "UnitCode") %>' required="true" data-required="true"></asp:TextBox>
 																</td>
 																<td style="vertical-align: middle">
-																	<%--<asp:DropDownList ID="revenueActivityCode" runat="server" CssClass="form-select" required="true" ValidateRequestMode="Enabled" DataSource='<%# activityCodes %>' SelectedValue='<%# DataBinder.Eval(Container.DataItem, "ActivityCode") %>'></asp:DropDownList>--%>
-																	<asp:TextBox runat="server" ID="revenueActivityCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "ActivityCode") %>' required="true"></asp:TextBox>
+																	<%--<asp:DropDownList ID="revenueActivityCode" runat="server" CssClass="form-select" required="true" data-required="true" ValidateRequestMode="Enabled" DataSource='<%# activityCodes %>' SelectedValue='<%# DataBinder.Eval(Container.DataItem, "ActivityCode") %>'></asp:DropDownList>--%>
+																	<asp:TextBox runat="server" ID="revenueActivityCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "ActivityCode") %>' required="true" data-required="true"></asp:TextBox>
 																</td>
 																<td style="vertical-align: middle">
-																	<%--<asp:DropDownList ID="revenueObjectCode" runat="server" CssClass="form-select" required="true" ValidateRequestMode="Enabled" DataSource='<%# objectCodes %>' SelectedValue='<%# DataBinder.Eval(Container.DataItem, "ObjectCode") %>'></asp:DropDownList>--%>
-																	<asp:TextBox runat="server" ID="revenueObjectCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "ObjectCode") %>' required="true"></asp:TextBox>
+																	<%--<asp:DropDownList ID="revenueObjectCode" runat="server" CssClass="form-select" required="true" data-required="true" ValidateRequestMode="Enabled" DataSource='<%# objectCodes %>' SelectedValue='<%# DataBinder.Eval(Container.DataItem, "ObjectCode") %>'></asp:DropDownList>--%>
+																	<asp:TextBox runat="server" ID="revenueObjectCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "ObjectCode") %>' required="true" data-required="true"></asp:TextBox>
 																</td>
 																<td class="position-relative" style="vertical-align: middle">
 																	<asp:TextBox runat="server" ID="revenueAmount" CssClass="form-control" TextMode="SingleLine" data-type="currency" placeholder="$0.00" AutoCompleteType="Disabled" Text='<%# (Convert.ToInt32(DataBinder.Eval(Container.DataItem, "Amount")) >= 0)?DataBinder.Eval(Container.DataItem, "Amount"):string.Empty%>'></asp:TextBox>
@@ -563,26 +559,26 @@
 														<ItemTemplate>
 															<tr class="upperCaseField">
 																<td style="vertical-align: middle">
-																	<asp:HiddenField runat="server" ID="hdnExpID" Value='<%# DataBinder.Eval(Container.DataItem, "AccountingID") %>' />
+																	<asp:HiddenField runat="server" ID="hdnExpID" Value='<%# DataBinder.Eval(Container.DataItem, "OrdinanceAccountingID") %>' />
 																	<asp:HiddenField runat="server" ID="hdnExpIndex" Value='<%# Container.ItemIndex %>' />
-																	<%--<asp:DropDownList ID="expenditureFundCode" runat="server" CssClass="form-select" required="true" ValidateRequestMode="Enabled" DataSource='<%# fundCodes %>' SelectedValue='<%# DataBinder.Eval(Container.DataItem, "FundCode") %>'></asp:DropDownList>--%>
-																	<asp:TextBox runat="server" ID="expenditureFundCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "FundCode") %>' required="true"></asp:TextBox>
+																	<%--<asp:DropDownList ID="expenditureFundCode" runat="server" CssClass="form-select" required="true" data-required="true" ValidateRequestMode="Enabled" DataSource='<%# fundCodes %>' SelectedValue='<%# DataBinder.Eval(Container.DataItem, "FundCode") %>'></asp:DropDownList>--%>
+																	<asp:TextBox runat="server" ID="expenditureFundCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "FundCode") %>' required="true" data-required="true"></asp:TextBox>
 																</td>
 																<td style="vertical-align: middle">
-																	<%--<asp:DropDownList ID="expenditureAgencyCode" runat="server" CssClass="form-select" required="true" ValidateRequestMode="Enabled" DataSource='<%# agencyCodes %>' SelectedValue='<%# DataBinder.Eval(Container.DataItem, "DepartmentCode") %>'></asp:DropDownList>--%>
-																	<asp:TextBox runat="server" ID="expenditureAgencyCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "DepartmentCode") %>' required="true"></asp:TextBox>
+																	<%--<asp:DropDownList ID="expenditureAgencyCode" runat="server" CssClass="form-select" required="true" data-required="true" ValidateRequestMode="Enabled" DataSource='<%# agencyCodes %>' SelectedValue='<%# DataBinder.Eval(Container.DataItem, "DepartmentCode") %>'></asp:DropDownList>--%>
+																	<asp:TextBox runat="server" ID="expenditureAgencyCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "DepartmentCode") %>' required="true" data-required="true"></asp:TextBox>
 																</td>
 																<td style="vertical-align: middle">
-																	<%--<asp:DropDownList ID="expenditureOrgCode" runat="server" CssClass="form-select" required="true" ValidateRequestMode="Enabled" DataSource='<%# orgCodes %>' SelectedValue='<%# DataBinder.Eval(Container.DataItem, "UnitCode") %>'></asp:DropDownList>--%>
-																	<asp:TextBox runat="server" ID="expenditureOrgCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "UnitCode") %>' required="true"></asp:TextBox>
+																	<%--<asp:DropDownList ID="expenditureOrgCode" runat="server" CssClass="form-select" required="true" data-required="true" ValidateRequestMode="Enabled" DataSource='<%# orgCodes %>' SelectedValue='<%# DataBinder.Eval(Container.DataItem, "UnitCode") %>'></asp:DropDownList>--%>
+																	<asp:TextBox runat="server" ID="expenditureOrgCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "UnitCode") %>' required="true" data-required="true"></asp:TextBox>
 																</td>
 																<td style="vertical-align: middle">
-																	<%--<asp:DropDownList ID="expenditureActivityCode" runat="server" CssClass="form-select" required="true" ValidateRequestMode="Enabled" DataSource='<%# activityCodes %>' SelectedValue='<%# DataBinder.Eval(Container.DataItem, "ActivityCode") %>'></asp:DropDownList>--%>
-																	<asp:TextBox runat="server" ID="expenditureActivityCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "ActivityCode") %>' required="true"></asp:TextBox>
+																	<%--<asp:DropDownList ID="expenditureActivityCode" runat="server" CssClass="form-select" required="true" data-required="true" ValidateRequestMode="Enabled" DataSource='<%# activityCodes %>' SelectedValue='<%# DataBinder.Eval(Container.DataItem, "ActivityCode") %>'></asp:DropDownList>--%>
+																	<asp:TextBox runat="server" ID="expenditureActivityCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "ActivityCode") %>' required="true" data-required="true"></asp:TextBox>
 																</td>
 																<td style="vertical-align: middle">
-																	<%--<asp:DropDownList ID="expenditureObjectCode" runat="server" CssClass="form-select" required="true" ValidateRequestMode="Enabled" DataSource='<%# objectCodes %>' SelectedValue='<%# DataBinder.Eval(Container.DataItem, "ObjectCode") %>'></asp:DropDownList>--%>
-																	<asp:TextBox runat="server" ID="expenditureObjectCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "ObjectCode") %>' required="true"></asp:TextBox>
+																	<%--<asp:DropDownList ID="expenditureObjectCode" runat="server" CssClass="form-select" required="true" data-required="true" ValidateRequestMode="Enabled" DataSource='<%# objectCodes %>' SelectedValue='<%# DataBinder.Eval(Container.DataItem, "ObjectCode") %>'></asp:DropDownList>--%>
+																	<asp:TextBox runat="server" ID="expenditureObjectCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "ObjectCode") %>' required="true" data-required="true"></asp:TextBox>
 																</td>
 																<td class="position-relative" style="vertical-align: middle">
 																	<asp:TextBox runat="server" ID="expenditureAmount" CssClass="form-control" TextMode="SingleLine" data-type="currency" placeholder="$0.00" AutoCompleteType="Disabled" Text='<%# (Convert.ToInt32(DataBinder.Eval(Container.DataItem, "Amount")) >= 0)?DataBinder.Eval(Container.DataItem, "Amount"):string.Empty%>'></asp:TextBox>
@@ -616,7 +612,7 @@
 										<div class="col-md-12">
 											<div class="form-group">
 												<label for="staffAnalysis">Staff Analysis</label>
-												<asp:TextBox runat="server" ID="staffAnalysis" CssClass="form-control" TextMode="Multiline" Rows="18" AutoCompleteType="Disabled" required="true"></asp:TextBox>
+												<asp:TextBox runat="server" ID="staffAnalysis" CssClass="form-control" TextMode="Multiline" Rows="18" AutoCompleteType="Disabled" required="true" data-required="true"></asp:TextBox>
 											</div>
 										</div>
 									</div>
@@ -725,34 +721,8 @@
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 					<asp:Button ID="btnDelete" runat="server" Text="Delete" CssClass="btn btn-danger" CausesValidation="false" UseSubmitBehavior="false" Visible="true" OnClick="mdlDeleteSubmit_ServerClick" OnClientClick="ShowSubmitToast();" />
+					<asp:HiddenField runat="server" ID="hdnDeleteID" />
 				</div>
-			</div>
-		</div>
-	</div>
-
-	<%-- SIGNATURE EMAIL --%>
-	<div runat="server" class="modal fade" id="signatureEmailModal" role="dialog" aria-labelledby="signatureEmailModalLabel">
-		<div class="modal-dialog" role="document" style="max-width: 750px;">
-			<div class="modal-content">
-				<asp:UpdatePanel runat="server" ID="pnlSigEmail">
-					<Triggers>
-						
-					</Triggers>
-					<ContentTemplate>
-						<div class="modal-header">
-							<h4 class="modal-title" id="signatureEmailModalLabel">Assign Signature</h4>
-						</div>
-						<div class="modal-body bg-body-tertiary">
-							
-						</div>
-						<div class="modal-footer">							
-							<button type="button" class="btn btn-success" data-dismiss="modal">Done</button>
-							<input runat="server" id="sigBtnTarget" type="hidden" name="sigBtnTarget"  />
-							<input runat="server" id="sigBtnLabel" type="hidden" name="sigBtnLabel"  />
-							<input runat="server" id="sigBtnType" type="hidden" name="sigBtnType"  />
-						</div>
-					</ContentTemplate>
-				</asp:UpdatePanel>
 			</div>
 		</div>
 	</div>
@@ -762,7 +732,6 @@
 	<script>
 		FormatForms();
 		SetTooltips();
-		scrollToElement();
 		showLoadingButtons();
 		cancelFilePick();
 		searchBtn();
@@ -778,7 +747,6 @@
 			CurrencyFormatting();
 			SetTooltips();
 			DisableDDInitialOption();
-			scrollToElement();
 			HideAllTooltips();
 			showLoadingButtons();
 			cancelFilePick();
@@ -854,44 +822,6 @@
 			});
 		}
 
-		function OrdinanceVisibility(fadeOut) {
-			var dataString = JSON.stringify({ fadeOut: fadeOut });
-			var valArray = [];
-			$.ajax({
-				type: "POST",
-				async: false,
-				url: "./Pages/OrdinanceTracking/Ordinances.aspx.cs/OrdVisibility",
-				data: dataString,
-				contentType: "application/json",
-				dataType: "json"
-			});
-		}
-		
-		function OrdTableFadeOut() {
-			var draftsTable = document.getElementById('<%= draftsTable.ClientID %>')
-			var ordView = document.getElementById('<%= ordView.ClientID %>')
-			
-			$(draftsTable).fadeOut(500);
-			setTimeout(() => {
-				$(ordView).fadeIn(500);
-			}, 500);
-			//setTimeout(() => {
-			//	OrdinanceVisibility("table");
-			//}, 1000);
-		}
-
-		function OrdTableFadeIn() {
-			var draftsTable = document.getElementById('<%= draftsTable.ClientID %>')
-			var ordView = document.getElementById('<%= ordView.ClientID %>')
-			$(ordView).fadeOut(500);
-			setTimeout(() => {
-				$(draftsTable).fadeIn(500);
-			}, 500);
-			//setTimeout(() => {
-			//	OrdinanceVisibility("ord");
-			//}, 1000);
-		}
-
 		function SetUploadActive() {
 			$('#fileWaiting').prop('hidden', true);
 			const supportingDocumentation = document.getElementById('<%= supportingDocumentation.ClientID %>')
@@ -915,24 +845,11 @@
 			});
 		}
 
-		function setEmailModal(btnID, btnLabel, sigType) {
-			const sigBtnTarget = $('#<%= sigBtnTarget.ClientID %>');
-			const sigBtnLabel = $('#<%= sigBtnLabel.ClientID %>');
-			const sigBtnType = $('#<%= sigBtnType.ClientID %>');
-			$(sigBtnTarget).attr("value", btnID);
-			$(sigBtnLabel).attr("value", btnLabel);
-			$(sigBtnType).attr("value", sigType);
-			$('#<%= signatureEmailAddress.ClientID %>').val('');
-			$('#signatureEmailModal').modal('show');
-		}
-
-		function scrollToElement() {
-			const urlParams = new URLSearchParams(window.location.search);
-			if (urlParams.get('f')) {
-				setTimeout(() => document.getElementById(urlParams.get('f')).scrollIntoView(), 500);
-				document.getElementById(urlParams.get('f')).focus();
-				//setTimeout(() => , 500);
-			}
+		function SetDeleteModal(ordID) {
+			const hdnDeleteID = $('#<%= hdnDeleteID.ClientID %>');
+			$(hdnDeleteID).attr("value", ordID);
+			$('#deleteModal').modal('show');
+			
 		}
 
 		function ShowEmailToast() {
@@ -944,20 +861,9 @@
 			GetToastStatus();
 		}
 
-		function FormatAudit() {
-			$("[data-type='Decimal']").each(function () {
-				formatCurrencyDecimal($(this), "blur");
-			});
-		}
-
-		function OpenRejectionModal() {
-			$('#rejectionModal').modal('show');
-		}
-
 		function showLoadingButtons() {
 			$('[data-load-btn="true"]').each(function () {
 				$(this).on('click', function () {
-					console.log("Clicked");
 					const id = $(this).attr('id');
 					if (id == "SaveFactSheet") {
 						var form = document.getElementById('formMain');

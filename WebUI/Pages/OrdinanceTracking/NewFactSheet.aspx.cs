@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices.ComTypes;
 using System.Web;
 using System.Web.UI;
@@ -45,9 +46,13 @@ namespace WebUI
         protected void SetStartupActives()
         {
             epJustificationGroup.Visible = false;
+            epJustificationValid.Enabled = false;
             changeOrderNumber.Enabled = false;
+            changeOrderNumberValid.Enabled = false;
             additionalAmount.Enabled = false;
+            additionalAmountValid.Enabled = false;
             otherException.Enabled = false;
+            otherExceptionValid.Enabled = false;
 
             requestDepartment.SelectedValue = userInfo.UserDepartment.DepartmentCode.ToString();
             requestContact.Text = $"{_user.FirstName} {_user.LastName}";
@@ -91,7 +96,7 @@ namespace WebUI
         }
         protected void GetAllPurchaseMethods()
         {
-            purchaseMethod.Items.Insert(0, new ListItem("Select Purchase Method...", null));
+            purchaseMethod.Items.Insert(0, new ListItem("Select Purchase Method...", ""));
             purchaseMethod.Items.Insert(1, new ListItem("Low Bid", "Low Bid"));
             purchaseMethod.Items.Insert(2, new ListItem("Low Bid Meeting Specs", "Low Bid Meeting Specs"));
             purchaseMethod.Items.Insert(3, new ListItem("Low Evaluated Bid", "Low Evaluated Bid"));
@@ -104,13 +109,15 @@ namespace WebUI
             {
                 default:
                     otherException.Enabled = false;
+                    otherExceptionValid.Enabled = false;
                     otherException.Text = string.Empty;
-                    otherException.Attributes.Remove("required");
+                    otherException.Attributes.Remove("data-required");
                     break;
                 case "Other":
                 case "Exception":
                     otherException.Enabled = true;
-                    otherException.Attributes.Add("required", "true");
+                    otherExceptionValid.Enabled = true;
+                    otherException.Attributes.Add("data-required", "true");
                     break;
             }
         }
@@ -120,12 +127,14 @@ namespace WebUI
             {
                 case true:
                     epJustificationGroup.Visible = true;
-                    epJustification.Attributes.Add("required", "true");
+                    epJustification.Attributes.Add("data-required", "true");
+                    epJustificationValid.Enabled = true;
                     break;
 
                 case false:
                     epJustificationGroup.Visible = false;
-                    epJustification.Attributes.Remove("required");
+                    epJustification.Attributes.Remove("data-required");
+                    epJustificationValid.Enabled = false;
                     break;
             }
         }
@@ -135,19 +144,25 @@ namespace WebUI
             {
                 case true:
                     changeOrderNumber.Enabled = true;
+                    changeOrderNumberValid.Enabled = true;
                     additionalAmount.Enabled = true;
-                    changeOrderNumber.Attributes.Add("required", "true");
+                    additionalAmountValid.Enabled = true;
+                    
+                    changeOrderNumber.Attributes.Add("data-required", "true");
                     changeOrderNumber.Attributes.Add("placeholder", "0123456789");
-                    additionalAmount.Attributes.Add("required", "true");
+                    additionalAmount.Attributes.Add("data-required", "true");
                     additionalAmount.Attributes.Add("placeholder", "$0.00");
                     break;
 
                 case false:
                     changeOrderNumber.Enabled = false;
+                    changeOrderNumberValid.Enabled = false;
                     additionalAmount.Enabled = false;
-                    changeOrderNumber.Attributes.Remove("required");
+                    additionalAmountValid.Enabled = false;
+
+                    changeOrderNumber.Attributes.Remove("data-required");
                     changeOrderNumber.Attributes.Remove("placeholder");
-                    additionalAmount.Attributes.Remove("required");
+                    additionalAmount.Attributes.Remove("data-required");
                     additionalAmount.Attributes.Remove("placeholder");
                     break;
             }
@@ -327,248 +342,290 @@ namespace WebUI
         }
         protected void SubmitForm_Click(object sender, EventArgs e)
         {
-            Ordinance ordinance = new Ordinance();
-
-            string xString = !requestExt.Text.Contains("x") ? "x" : string.Empty;
-
-            ordinance.OrdinanceNumber = string.Empty;
-            ordinance.RequestDepartment = requestDepartment.SelectedItem.Text;
-            ordinance.RequestDivision = requestDivision.SelectedItem.Text;
-            ordinance.RequestContact = requestContact.Text;
-            ordinance.RequestPhone = $"{requestPhone.Text}{xString}{requestExt.Text}";
-            ordinance.RequestEmail = requestEmail.Text;
-            ordinance.FirstReadDate = Convert.ToDateTime(firstReadDate.Text);
-            ordinance.EmergencyPassage = epYes.Checked;
-            ordinance.EmergencyPassageReason = epJustification.Text ?? string.Empty;
-            ordinance.OrdinanceFiscalImpact = CurrencyToDecimal(fiscalImpact.Text);
-            ordinance.OrdinanceTitle = suggestedTitle.Text;
-            ordinance.ContractVendorName = vendorName.Text;
-            ordinance.ContractVendorNumber = vendorNumber.Text;
-            ordinance.ContractStartDate = contractStartDate.Text;
-            ordinance.ContractEndDate = contractEndDate.Text;
-            ordinance.ContractTerm = contractTerm.Value;
-            ordinance.ContractAmount = CurrencyToDecimal(contractAmount.Text);
-            ordinance.ScopeChange = scYes.Checked;
-            ordinance.ChangeOrderNumber = changeOrderNumber.Text ?? string.Empty;
-            ordinance.AdditionalAmount = CurrencyToDecimal(additionalAmount.Text);
-            ordinance.ContractMethod = purchaseMethod.SelectedValue;
-            ordinance.OtherException = otherException.Text ?? string.Empty;
-            ordinance.PreviousOrdinanceNumbers = prevOrdinanceNums.Text;
-            ordinance.CodeProvision = codeProvision.Text;
-            ordinance.PAApprovalRequired = paApprovalRequiredYes.Checked;
-            ordinance.PAApprovalIncluded = paApprovalAttachedYes.Checked;
-            ordinance.OrdinanceAnalysis = staffAnalysis.Text;
-            ordinance.LastUpdateBy = _user.Login;
-            ordinance.LastUpdateDate = DateTime.Now;
-            ordinance.EffectiveDate = DateTime.Now;
-            ordinance.ExpirationDate = DateTime.MaxValue;
-
-            int retVal = Factory.Instance.Insert(ordinance, "sp_InsertOrdinance", Skips("ordInsert"));
-            //int retVal = 1;
-            if (retVal > 0)
+            if (Page.IsValid)
             {
-                bool revExpTables = false;
-                bool documentation = false;
-                bool uploadedDocumentation = false;
-                List<OrdinanceDocument> ordDocs = new List<OrdinanceDocument>();
-                bool finishSubmit = true;
-                if (rpRevenueTable.Items.Count > 0 || rpExpenditureTable.Items.Count > 0)
-                {
-                    revExpTables = true;
-                }
-                if (supportingDocumentation.HasFiles)
-                {
-                    documentation = true;
-                }
-                if (Session["ordDocs"] != null)
-                {
-                    uploadedDocumentation = true;
-                    ordDocs = Session["ordDocs"] as List<OrdinanceDocument>;
-                }
+                Button btn = (Button)sender;
+                Ordinance ordinance = new Ordinance();
 
-                switch (revExpTables)
+                string xString = !requestExt.Text.Contains("x") ? "x" : string.Empty;
+
+                ordinance.OrdinanceNumber = string.Empty;
+                ordinance.AgendaNumber = string.Empty;
+                ordinance.RequestDepartment = requestDepartment.SelectedItem.Text;
+                ordinance.RequestDivision = requestDivision.SelectedItem.Text;
+                ordinance.RequestContact = requestContact.Text;
+                ordinance.RequestPhone = $"{requestPhone.Text}{xString}{requestExt.Text}";
+                ordinance.RequestEmail = requestEmail.Text;
+                ordinance.FirstReadDate = Convert.ToDateTime(firstReadDate.Text);
+                ordinance.EmergencyPassage = epYes.Checked;
+                ordinance.EmergencyPassageReason = epJustification.Text ?? string.Empty;
+                ordinance.OrdinanceFiscalImpact = CurrencyToDecimal(fiscalImpact.Text);
+                ordinance.OrdinanceTitle = suggestedTitle.Text;
+                ordinance.ContractVendorName = vendorName.Text;
+                ordinance.ContractVendorNumber = vendorNumber.Text;
+                ordinance.ContractStartDate = contractStartDate.Text;
+                ordinance.ContractEndDate = contractEndDate.Text;
+                ordinance.ContractTerm = contractTerm.Value;
+                ordinance.ContractAmount = CurrencyToDecimal(contractAmount.Text);
+                ordinance.ScopeChange = scYes.Checked;
+                ordinance.ChangeOrderNumber = changeOrderNumber.Text ?? string.Empty;
+                ordinance.AdditionalAmount = CurrencyToDecimal(additionalAmount.Text);
+                ordinance.ContractMethod = purchaseMethod.SelectedValue;
+                ordinance.OtherException = otherException.Text ?? string.Empty;
+                ordinance.PreviousOrdinanceNumbers = prevOrdinanceNums.Text;
+                ordinance.CodeProvision = codeProvision.Text;
+                ordinance.PAApprovalRequired = paApprovalRequiredYes.Checked;
+                ordinance.PAApprovalIncluded = paApprovalAttachedYes.Checked;
+                ordinance.OrdinanceAnalysis = staffAnalysis.Text;
+                ordinance.LastUpdateBy = _user.Login;
+                ordinance.LastUpdateDate = DateTime.Now;
+                ordinance.EffectiveDate = DateTime.Now;
+                ordinance.ExpirationDate = DateTime.MaxValue;
+
+                int retVal = Factory.Instance.Insert(ordinance, "sp_InsertOrdinance", Skips("ordInsert"));
+                //int retVal = 0;
+                if (retVal > 0)
                 {
-                    case true:
-                        bool revSubmit = false;
-                        bool expSubmit = false;
-                        if (rpRevenueTable.Items.Count > 0)
-                        {
-                            for (int i = 0; i < rpRevenueTable.Items.Count; i++)
+                    bool revExpTables = false;
+                    bool documentation = false;
+                    bool uploadedDocumentation = false;
+                    List<OrdinanceDocument> ordDocs = new List<OrdinanceDocument>();
+                    bool finishSubmit = true;
+                    if (rpRevenueTable.Items.Count > 0 || rpExpenditureTable.Items.Count > 0)
+                    {
+                        revExpTables = true;
+                    }
+                    if (supportingDocumentation.HasFiles)
+                    {
+                        documentation = true;
+                    }
+                    if (Session["ordDocs"] != null)
+                    {
+                        uploadedDocumentation = true;
+                        ordDocs = Session["ordDocs"] as List<OrdinanceDocument>;
+                    }
+
+                    switch (revExpTables)
+                    {
+                        case true:
+                            bool revSubmit = false;
+                            bool expSubmit = false;
+                            if (rpRevenueTable.Items.Count > 0)
                             {
-                                OrdinanceAccounting accountingItem = GetAccountingItem("revenue", i);
-                                accountingItem.OrdinanceID = retVal;
-                                int ret = Factory.Instance.Insert(accountingItem, "sp_InsertOrdinance_Accounting", Skips("accountingInsert"));
-                                //int ret = 1;
-                                if (ret > 0)
+                                for (int i = 0; i < rpRevenueTable.Items.Count; i++)
                                 {
-                                    revSubmit = true;
-                                }
-                                else
-                                {
-                                    revSubmit = false;
+                                    OrdinanceAccounting accountingItem = GetAccountingItem("revenue", i);
+                                    accountingItem.OrdinanceID = retVal;
+                                    int ret = Factory.Instance.Insert(accountingItem, "sp_InsertOrdinance_Accounting", Skips("accountingInsert"));
+                                    //int ret = 1;
+                                    if (ret > 0)
+                                    {
+                                        revSubmit = true;
+                                    }
+                                    else
+                                    {
+                                        revSubmit = false;
+                                    }
                                 }
                             }
-                        }
-                        else
-                        {
-                            revSubmit = true;
-                        }
-
-                        if (rpExpenditureTable.Items.Count > 0)
-                        {
-                            for (int i = 0; i < rpExpenditureTable.Items.Count; i++)
+                            else
                             {
-                                OrdinanceAccounting accountingItem = GetAccountingItem("expenditure", i);
-                                accountingItem.OrdinanceID = retVal;
-                                int ret = Factory.Instance.Insert(accountingItem, "sp_InsertOrdinance_Accounting", Skips("accountingInsert"));
-                                //int ret = 1;
-                                if (ret > 0)
+                                revSubmit = true;
+                            }
+
+                            if (rpExpenditureTable.Items.Count > 0)
+                            {
+                                for (int i = 0; i < rpExpenditureTable.Items.Count; i++)
                                 {
-                                    expSubmit = true;
-                                }
-                                else
-                                {
-                                    expSubmit = false;
+                                    OrdinanceAccounting accountingItem = GetAccountingItem("expenditure", i);
+                                    accountingItem.OrdinanceID = retVal;
+                                    int ret = Factory.Instance.Insert(accountingItem, "sp_InsertOrdinance_Accounting", Skips("accountingInsert"));
+                                    //int ret = 1;
+                                    if (ret > 0)
+                                    {
+                                        expSubmit = true;
+                                    }
+                                    else
+                                    {
+                                        expSubmit = false;
+                                    }
                                 }
                             }
-                        }
-                        else
-                        {
-                            expSubmit = true;
-                        }
+                            else
+                            {
+                                expSubmit = true;
+                            }
 
-                        if (!revSubmit || !expSubmit)
-                        {
-                            finishSubmit = false;
-                        }
-                        break;
-                }
-
-                switch (uploadedDocumentation)
-                {
-                    case true:
-                        foreach (OrdinanceDocument ordDoc in ordDocs)
-                        {
-                            ordDoc.OrdinanceID = retVal;
-                            int ret = Factory.Instance.Insert(ordDoc, "sp_InsertOrdinance_Document", Skips("ordDocumentInsert"));
-                            //int ret = 1;
-                            if (ret < 1)
+                            if (!revSubmit || !expSubmit)
                             {
                                 finishSubmit = false;
                             }
-                        }
+                            break;
+                    }
 
-                        break;
-                }
-
-                switch (documentation)
-                {
-                    case true:
-
-                        for (int i = 0; i < supportingDocumentation.PostedFiles.Count; i++)
-                        {
-                            OrdinanceDocument ordDoc = new OrdinanceDocument();
-                            ordDoc.OrdinanceID = retVal;
-                            ordDoc.DocumentName = supportingDocumentation.PostedFiles[i].FileName;
-                            Stream stream = supportingDocumentation.PostedFiles[i].InputStream;
-                            using (var fileBytes = new BinaryReader(stream))
+                    switch (uploadedDocumentation)
+                    {
+                        case true:
+                            foreach (OrdinanceDocument ordDoc in ordDocs)
                             {
-                                ordDoc.DocumentData = fileBytes.ReadBytes((int)stream.Length);
+                                ordDoc.OrdinanceID = retVal;
+                                int ret = Factory.Instance.Insert(ordDoc, "sp_InsertOrdinance_Document", Skips("ordDocumentInsert"));
+                                //int ret = 1;
+                                if (ret < 1)
+                                {
+                                    finishSubmit = false;
+                                }
                             }
-                            ordDoc.LastUpdateBy = _user.Login;
-                            ordDoc.LastUpdateDate = DateTime.Now;
-                            ordDoc.EffectiveDate = DateTime.Now;
-                            ordDoc.ExpirationDate = DateTime.MaxValue;
-                            int ret = Factory.Instance.Insert(ordDoc, "sp_InsertOrdinance_Document", Skips("ordDocumentInsert"));
-                            //int ret = 1;
-                            if (ret < 1)
+
+                            break;
+                    }
+
+                    switch (documentation)
+                    {
+                        case true:
+
+                            for (int i = 0; i < supportingDocumentation.PostedFiles.Count; i++)
                             {
-                                finishSubmit = false;
+                                OrdinanceDocument ordDoc = new OrdinanceDocument();
+                                ordDoc.OrdinanceID = retVal;
+                                ordDoc.DocumentName = supportingDocumentation.PostedFiles[i].FileName;
+                                Stream stream = supportingDocumentation.PostedFiles[i].InputStream;
+                                using (var fileBytes = new BinaryReader(stream))
+                                {
+                                    ordDoc.DocumentData = fileBytes.ReadBytes((int)stream.Length);
+                                }
+                                ordDoc.LastUpdateBy = _user.Login;
+                                ordDoc.LastUpdateDate = DateTime.Now;
+                                ordDoc.EffectiveDate = DateTime.Now;
+                                ordDoc.ExpirationDate = DateTime.MaxValue;
+                                int ret = Factory.Instance.Insert(ordDoc, "sp_InsertOrdinance_Document", Skips("ordDocumentInsert"));
+                                //int ret = 1;
+                                if (ret < 1)
+                                {
+                                    finishSubmit = false;
+                                }
                             }
-                        }
 
-                        break;
+                            break;
+                    }
+
+                    OrdinanceStatus ordStatus = new OrdinanceStatus();
+                    ordStatus.OrdinanceID = retVal;
+                    switch (btn.CommandName)
+                    {
+                        case "submit":
+                            ordStatus.StatusID = 1;
+                            break;
+                        case "save":
+                            ordStatus.StatusID = 9;
+                            break;
+                    }
+                    ordStatus.LastUpdateBy = _user.Login;
+                    ordStatus.LastUpdateDate = DateTime.Now;
+                    ordStatus.EffectiveDate = DateTime.Now;
+                    ordStatus.ExpirationDate = DateTime.MaxValue;
+                    int statusRet = Factory.Instance.Insert(ordStatus, "sp_InsertOrdinance_Status", Skips("ordStatusInsert"));
+
+                    if (statusRet < 1)
+                    {
+                        finishSubmit = false;
+                    }
+                    
+                    SignatureRequest signatureRequest = new SignatureRequest()
+                    {
+                        OrdinanceID = retVal,
+                        FundsCheckBy = string.Empty,
+                        DirectorSupervisor = string.Empty,
+                        CityPurchasingAgent = string.Empty,
+                        OBMDirector = string.Empty,
+                        Mayor = string.Empty,
+                        LastUpdateBy = $"{_user.FirstName} {_user.LastName}",
+                        LastUpdateDate = DateTime.Now,
+                        EffectiveDate = DateTime.Now,
+                        ExpirationDate = DateTime.MaxValue
+                    };
+
+                    if (Session["SigRequestEmails"] != null)
+                    {
+                        SignatureRequest directorSupervisorSigRequest = Session["SigRequestEmails"] as SignatureRequest;
+                        signatureRequest.DirectorSupervisor = directorSupervisorSigRequest.DirectorSupervisor;
+                    }
+
+                    int signatureRequestRet = Factory.Instance.Insert(signatureRequest, "sp_InsertOrdinance_SignatureRequest", Skips("ordSignatureRequestInsert"));
+
+                    if (signatureRequestRet < 1)
+                    {
+                        finishSubmit = false;
+                    }
+
+                    OrdinanceAudit ordAudit = new OrdinanceAudit()
+                    {
+                        OrdinanceID = Convert.ToInt32(retVal),
+                        UpdateType = "CREATED",
+                        LastUpdateBy = $"{_user.FirstName} {_user.LastName}",
+                        LastUpdateDate = DateTime.Now,
+                    };
+                    int ordAuditRet = Factory.Instance.Insert(ordAudit, "sp_InsertOrdinance_Audit", Skips("ordAuditInsert"));
+                    if (ordAuditRet < 1)
+                    {
+                        finishSubmit = false;
+                    }
+
+
+                    Email.Instance.AddEmailAddress(emailList, _user.Email);
+                    string formType = "Ordinance Fact Sheet";
+                    string href = $"apptest/Themis/Ordinances?id={retVal}&v=view";
+
+                    Email newEmail = new Email();
+
+                    newEmail.EmailSubject = $"{formType} SUBMITTED";
+                    newEmail.EmailTitle = $"{formType} SUBMITTED";
+                    newEmail.EmailText = $"<p style='margin: 0;'><span style='font-size:36.0pt;font-family:\"Times New Roman\",serif;color:#2D71D5;font-weight:bold'>THΣMIS</span></p><div align=center style='text-align:center'><span><hr size='2' width='100%' align='center' style='margin-top: 0;'></span></div><p><span>An <b>{formType}</b> has been SUBMITTED by <b>{_user.FirstName} {_user.LastName}</b>.</span></p><br /><p style='margin: 0; line-height: 1.5;'><span>ID: {retVal}</span></p><p style='margin: 0; line-height: 1.5;'><span>Date: {DateTime.Now}</span></p><p style='margin: 0; line-height: 1.5;'><span>Department: {requestDepartment.SelectedItem.Text}</span></p><p style='margin: 0; line-height: 1.5;'><span>Contact: {requestContact.Text}</span></p><p style='margin: 0; line-height: 1.5;'><span>Phone: {ordinance.RequestPhone}</span></p><br /><p><span>Please click the button below to review the document:</span></p><table border='0' cellpadding='0' cellspacing='0' style='border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;'><tr><td style='font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #0d6efd; border-radius: 5px; text-align: center;' valign='top' bgcolor='#0d6efd' align='center'><a href='{href}' target='_blank' style='display: inline-block; color: #ffffff; background-color: #0d6efd; border: solid 1px #0d6efd; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 15px 25px; text-transform: capitalize; border-color: #0d6efd; '>View Ordinance</a></td></tr></table>";
+
+                    switch (btn.CommandName)
+                    {
+                        case "submit":
+                            switch (finishSubmit)
+                            {
+                                case true:
+                                    Session["SubmitStatus"] = "success";
+                                    Session["ToastColor"] = "text-bg-success";
+                                    Session["ToastMessage"] = "Form Submitted!";
+                                    Email.Instance.SendEmail(newEmail, emailList);
+                                    Response.Redirect("./NewFactSheet", false);
+                                    break;
+                                case false:
+                                    Session["SubmitStatus"] = "error";
+                                    Session["ToastColor"] = "text-bg-danger";
+                                    Session["ToastMessage"] = "Something went wrong while submitting!";
+                                    break;
+                            }
+                            break;
+                        case "save":
+                            switch (finishSubmit)
+                            {
+                                case true:
+                                    Session["SubmitStatus"] = "success";
+                                    Session["ToastColor"] = "text-bg-success";
+                                    Session["ToastMessage"] = "Form Saved!";
+                                    Response.Redirect("./FactSheetDrafts", false);
+                                    break;
+                                case false:
+                                    Session["SubmitStatus"] = "error";
+                                    Session["ToastColor"] = "text-bg-danger";
+                                    Session["ToastMessage"] = "Something went wrong while saving!";
+                                    break;
+                            }
+                            break;
+                    }
+
                 }
-
-                OrdinanceStatus ordStatus = new OrdinanceStatus();
-                ordStatus.OrdinanceID = retVal;
-                ordStatus.StatusID = 1;
-                ordStatus.LastUpdateBy = _user.Login;
-                ordStatus.LastUpdateDate = DateTime.Now;
-                ordStatus.EffectiveDate = DateTime.Now;
-                ordStatus.ExpirationDate = DateTime.MaxValue;
-                int statusRet = Factory.Instance.Insert(ordStatus, "sp_InsertOrdinance_Status", Skips("ordStatusInsert"));
-
-                if (statusRet < 1)
+                else
                 {
-                    finishSubmit = false;
+                    Session["SubmitStatus"] = "error";
+                    Session["ToastColor"] = "text-bg-danger";
+                    Session["ToastMessage"] = "Something went wrong while submitting!";
                 }
-
-                SignatureRequest signatureRequest = new SignatureRequest()
-                {
-                    OrdinanceID = retVal,
-                    FundsCheckBy = string.Empty,
-                    DirectorSupervisor = string.Empty,
-                    CityPurchasingAgent = string.Empty,
-                    OBMDirector = string.Empty,
-                    Mayor = string.Empty,
-                    LastUpdateBy = $"{_user.FirstName} {_user.LastName}",
-                    LastUpdateDate = DateTime.Now,
-                    EffectiveDate = DateTime.Now,
-                    ExpirationDate = DateTime.MaxValue
-                };
-
-                int signatureRequestRet = Factory.Instance.Insert(signatureRequest, "sp_InsertOrdinance_SignatureRequest", Skips("ordSignatureRequestInsert"));
-
-                if (signatureRequestRet < 1)
-                {
-                    finishSubmit = false;
-                }
-
-                OrdinanceAudit ordAudit = new OrdinanceAudit()
-                {
-                    OrdinanceID = Convert.ToInt32(retVal),
-                    UpdateType = "CREATED",
-                    LastUpdateBy = $"{_user.FirstName} {_user.LastName}",
-                    LastUpdateDate = DateTime.Now,
-                };
-                int ordAuditRet = Factory.Instance.Insert(ordAudit, "sp_InsertOrdinance_Audit", Skips("ordAuditInsert"));
-                if (ordAuditRet < 1)
-                {
-                    finishSubmit = false;
-                }
-
-
-                Email.Instance.AddEmailAddress(emailList, _user.Email);
-                string formType = "Ordinance Fact Sheet";
-                string href = $"apptest/Themis/Ordinances?id={retVal}&v=view";
-
-                Email newEmail = new Email();
-
-                newEmail.EmailSubject = $"{formType} SUBMITTED";
-                newEmail.EmailTitle = $"{formType} SUBMITTED";
-                newEmail.EmailText = $"<p style='margin: 0;'><span style='font-size:36.0pt;font-family:\"Times New Roman\",serif;color:#2D71D5;font-weight:bold'>THΣMIS</span></p><div align=center style='text-align:center'><span><hr size='2' width='100%' align='center' style='margin-top: 0;'></span></div><p><span>An <b>{formType}</b> has been SUBMITTED by <b>{_user.FirstName} {_user.LastName}</b>.</span></p><br /><p style='margin: 0; line-height: 1.5;'><span>ID: {retVal}</span></p><p style='margin: 0; line-height: 1.5;'><span>Date: {DateTime.Now}</span></p><p style='margin: 0; line-height: 1.5;'><span>Department: {requestDepartment.SelectedItem.Text}</span></p><p style='margin: 0; line-height: 1.5;'><span>Contact: {requestContact.Text}</span></p><p style='margin: 0; line-height: 1.5;'><span>Phone: {ordinance.RequestPhone}</span></p><br /><p><span>Please click the button below to review the document:</span></p><table border='0' cellpadding='0' cellspacing='0' style='border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;'><tr><td style='font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #0d6efd; border-radius: 5px; text-align: center;' valign='top' bgcolor='#0d6efd' align='center'><a href='{href}' target='_blank' style='display: inline-block; color: #ffffff; background-color: #0d6efd; border: solid 1px #0d6efd; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 15px 25px; text-transform: capitalize; border-color: #0d6efd; '>View Ordinance</a></td></tr></table>";
-                switch (finishSubmit)
-                {
-                    case true:
-                        Session["SubmitStatus"] = "success";
-                        Session["ToastColor"] = "text-bg-success";
-                        Session["ToastMessage"] = "Form Submitted!";
-                        Email.Instance.SendEmail(newEmail, emailList);
-                        Response.Redirect("./NewFactSheet", false);
-                        break;
-                    case false:
-                        Session["SubmitStatus"] = "error";
-                        Session["ToastColor"] = "text-bg-danger";
-                        Session["ToastMessage"] = "Something went wrong while submitting!";
-                        break;
-                }
-            }
-            else
-            {
-                Session["SubmitStatus"] = "error";
-                Session["ToastColor"] = "text-bg-danger";
-                Session["ToastMessage"] = "Something went wrong while submitting!";
             }
         }
         protected void rpSupportingDocumentation_ItemCommand(object source, RepeaterCommandEventArgs e)
@@ -810,6 +867,75 @@ namespace WebUI
                 requestDivision.Enabled = false;
                 requestDivision.Items.Add(new ListItem() { Text = "Select Division...", Value = "" });
             }
+        }
+        protected void AddRequestEmailAddress_Click(object sender, EventArgs e)
+        {
+            SignatureRequest sigRequests = new SignatureRequest();
+            PropertyInfo sigType = (PropertyInfo)typeof(SignatureRequest).GetProperties().First(i => i.Name.Equals("DirectorSupervisor"));
+            List<string> emails = new List<string>();
+            if (Session["SigRequestEmails"] != null)
+            {
+                sigRequests = Session["SigRequestEmails"] as SignatureRequest;
+                emails = sigType.GetValue(sigRequests).ToString().Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToList();
+            }
+            
+            string[] newEmailAddresses = signatureEmailAddress.Text.Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
+            foreach (string item in newEmailAddresses)
+            {
+                emails.Add(item);
+            }
+            sigType.SetValue(sigRequests, string.Join(";", emails.OrderBy(i => i)));
+            if (emails.Count > 0)
+            {
+                directorSupervisorEmailAddresses.Text = signatureEmailAddress.Text;
+                emailListDiv.Visible = true;
+                rpEmailList.DataSource = emails.OrderBy(i => i);
+                rpEmailList.DataBind();
+            }
+            else
+            {
+                directorSupervisorEmailAddresses.Text = string.Empty;
+                emailListDiv.Visible = false;
+                rpEmailList.DataSource = null;
+                rpEmailList.DataBind();
+            }
+            signatureEmailAddress.Text = string.Empty;
+        }
+
+        protected void rpEmailList_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            switch (e.CommandName)
+            {
+                case "remove":
+                    SignatureRequest sigRequests = Session["SigRequestEmails"] as SignatureRequest;
+                    PropertyInfo sigType = (PropertyInfo)typeof(SignatureRequest).GetProperties().First(i => i.Name.Equals("DirectorSupervisor"));
+
+                    List<string> emails = sigType.GetValue(sigRequests).ToString().Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToList();
+                    emails.Remove(e.CommandArgument.ToString());
+                    sigType.SetValue(sigRequests, string.Join(";", emails.OrderBy(i => i)));
+                    if (emails.Count > 0)
+                    {
+                        rpEmailList.DataSource = emails.OrderBy(i => i);
+                        rpEmailList.DataBind();
+                    }
+                    else
+                    {
+                        rpEmailList.DataSource = null;
+                        rpEmailList.DataBind();
+                    }
+
+                    int updateSigRequest = Factory.Instance.Update(sigRequests, "sp_UpdateOrdinance_SignatureRequest");
+                    if (updateSigRequest > 0)
+                    {
+                        signatureEmailAddress.Text = string.Empty;
+                    }
+                    break;
+            }
+        }
+        protected void rpEmailList_ItemCreated(object sender, RepeaterItemEventArgs e)
+        {
+            LinkButton btn = (LinkButton)e.Item.FindControl("removeBtn");
+            ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(btn);
         }
     }
 }

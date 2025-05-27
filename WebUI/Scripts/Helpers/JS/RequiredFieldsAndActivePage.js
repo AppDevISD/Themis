@@ -1,5 +1,5 @@
 ﻿function pageLoad(sender, args) {
-	var requiredFields = document.querySelectorAll('[required="true"]');
+	var requiredFields = document.querySelectorAll('[data-required="true"]');
 	var readonly;
 	try {
 		var readonlyDiv = document.getElementById('ordView');

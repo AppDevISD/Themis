@@ -33,6 +33,15 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.DropDownList requestDepartment;
 
         /// <summary>
+        /// requestDepartmentValid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator requestDepartmentValid;
+
+        /// <summary>
         /// requestDivisionDiv control.
         /// </summary>
         /// <remarks>
@@ -51,6 +60,15 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.DropDownList requestDivision;
 
         /// <summary>
+        /// requestDivisionValid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator requestDivisionValid;
+
+        /// <summary>
         /// firstReadDate control.
         /// </summary>
         /// <remarks>
@@ -58,6 +76,15 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox firstReadDate;
+
+        /// <summary>
+        /// readDateValid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator readDateValid;
 
         /// <summary>
         /// requestContact control.
@@ -69,6 +96,15 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.TextBox requestContact;
 
         /// <summary>
+        /// requestContactValid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator requestContactValid;
+
+        /// <summary>
         /// requestEmail control.
         /// </summary>
         /// <remarks>
@@ -76,6 +112,15 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox requestEmail;
+
+        /// <summary>
+        /// requestEmailValid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator requestEmailValid;
 
         /// <summary>
         /// requestPhone control.
@@ -94,6 +139,24 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox requestExt;
+
+        /// <summary>
+        /// requestPhoneValid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator requestPhoneValid;
+
+        /// <summary>
+        /// requestExtValid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator requestExtValid;
 
         /// <summary>
         /// epYes control.
@@ -132,6 +195,15 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.TextBox epJustification;
 
         /// <summary>
+        /// epJustificationValid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator epJustificationValid;
+
+        /// <summary>
         /// fiscalImpact control.
         /// </summary>
         /// <remarks>
@@ -148,6 +220,15 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox suggestedTitle;
+
+        /// <summary>
+        /// suggestedTitleValid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator suggestedTitleValid;
 
         /// <summary>
         /// vendorName control.
@@ -231,6 +312,15 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.TextBox changeOrderNumber;
 
         /// <summary>
+        /// changeOrderNumberValid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator changeOrderNumberValid;
+
+        /// <summary>
         /// additionalAmount control.
         /// </summary>
         /// <remarks>
@@ -238,6 +328,15 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox additionalAmount;
+
+        /// <summary>
+        /// additionalAmountValid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator additionalAmountValid;
 
         /// <summary>
         /// purchaseMethod control.
@@ -249,6 +348,15 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.DropDownList purchaseMethod;
 
         /// <summary>
+        /// purchaseMethodValid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator purchaseMethodValid;
+
+        /// <summary>
         /// otherException control.
         /// </summary>
         /// <remarks>
@@ -256,6 +364,15 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox otherException;
+
+        /// <summary>
+        /// otherExceptionValid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator otherExceptionValid;
 
         /// <summary>
         /// prevOrdinanceNums control.
@@ -357,6 +474,15 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.TextBox staffAnalysis;
 
         /// <summary>
+        /// staffAnalysisValid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator staffAnalysisValid;
+
+        /// <summary>
         /// rpSupportingDocumentation control.
         /// </summary>
         /// <remarks>
@@ -384,6 +510,69 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.Button UploadDocBtn;
 
         /// <summary>
+        /// signatureSection control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl signatureSection;
+
+        /// <summary>
+        /// emailListDiv control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl emailListDiv;
+
+        /// <summary>
+        /// rpEmailList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rpEmailList;
+
+        /// <summary>
+        /// signatureEmailAddress control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox signatureEmailAddress;
+
+        /// <summary>
+        /// AddRequestEmailAddress control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button AddRequestEmailAddress;
+
+        /// <summary>
+        /// directorSupervisorEmailAddresses control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox directorSupervisorEmailAddresses;
+
+        /// <summary>
+        /// directorSupervisorEmailAddressesValid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator directorSupervisorEmailAddressesValid;
+
+        /// <summary>
         /// SubmitFactSheet control.
         /// </summary>
         /// <remarks>
@@ -391,5 +580,14 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button SubmitFactSheet;
+
+        /// <summary>
+        /// SaveFactSheet control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button SaveFactSheet;
     }
 }

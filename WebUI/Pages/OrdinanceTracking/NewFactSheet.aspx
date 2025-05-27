@@ -32,6 +32,7 @@
 
 					<asp:PostBackTrigger ControlID="UploadDocBtn" />
 					<asp:PostBackTrigger ControlID="SubmitFactSheet" />
+					<asp:PostBackTrigger ControlID="SaveFactSheet" />
 
 					<asp:AsyncPostBackTrigger ControlID="lnkInactivityRefresh" EventName="Click" />
 				</Triggers>
@@ -46,7 +47,8 @@
 							<div class="col-md-5">
 								<div class="form-group">
 									<label for="requestDepartment">Requesting Department</label>
-									<asp:DropDownList ID="requestDepartment" runat="server" AutoPostBack="true" CssClass="form-select" required="true" ValidateRequestMode="Enabled" OnSelectedIndexChanged="requestDepartment_SelectedIndexChanged"></asp:DropDownList>
+									<asp:DropDownList ID="requestDepartment" runat="server" AutoPostBack="true" CssClass="form-select" data-required="true" ValidateRequestMode="Enabled" OnSelectedIndexChanged="requestDepartment_SelectedIndexChanged"></asp:DropDownList>				
+									<asp:RequiredFieldValidator runat="server" ID="requestDepartmentValid" ControlToValidate="requestDepartment" ErrorMessage="Please Select a Department" ValidationGroup="factSheetMain" SetFocusOnError="true" Display="Dynamic" CssClass="text-danger invalid-feedback ps-2"></asp:RequiredFieldValidator>
 								</div>
 							</div>
 
@@ -54,7 +56,8 @@
 							<div runat="server" id="requestDivisionDiv" class="col-md-5">
 								<div class="form-group">
 									<label for="requestDivision">Requesting Division</label>
-									<asp:DropDownList ID="requestDivision" runat="server" AutoPostBack="true" CssClass="form-select" required="true" ValidateRequestMode="Enabled"></asp:DropDownList>
+									<asp:DropDownList ID="requestDivision" runat="server" AutoPostBack="true" CssClass="form-select" data-required="true" ValidateRequestMode="Enabled"></asp:DropDownList>
+									<asp:RequiredFieldValidator runat="server" ID="requestDivisionValid" ControlToValidate="requestDivision" ErrorMessage="Please Select a Division" ValidationGroup="factSheetMain" SetFocusOnError="true" Display="Dynamic" CssClass="text-danger invalid-feedback ps-2"></asp:RequiredFieldValidator>
 								</div>
 							</div>
 
@@ -62,7 +65,8 @@
 							<div class="col-md-2">
 								<div class="form-group">
 									<label for="firstReadDate">Date of 1<sup>st</sup> Reading</label>
-									<asp:TextBox runat="server" ID="firstReadDate" CssClass="form-control" TextMode="Date" required="true"></asp:TextBox>
+									<asp:TextBox runat="server" ID="firstReadDate" CssClass="form-control" TextMode="Date" data-required="true"></asp:TextBox>
+									<asp:RequiredFieldValidator runat="server" ID="readDateValid" ControlToValidate="firstReadDate" ErrorMessage="Please Select a Date" ValidationGroup="factSheetMain" SetFocusOnError="true" Display="Dynamic" CssClass="text-danger invalid-feedback ps-2"></asp:RequiredFieldValidator>
 								</div>
 							</div>
 						</div>
@@ -73,7 +77,8 @@
 							<div class="col-md-5">
 								<div class="form-group">
 									<label for="requestContact">Requesting Contact</label>
-									<asp:TextBox runat="server" ID="requestContact" CssClass="form-control" TextMode="SingleLine" placeholder="John Doe" AutoCompleteType="DisplayName" required="true"></asp:TextBox>
+									<asp:TextBox runat="server" ID="requestContact" CssClass="form-control" TextMode="SingleLine" placeholder="John Doe" AutoCompleteType="DisplayName" data-required="true"></asp:TextBox>
+									<asp:RequiredFieldValidator runat="server" ID="requestContactValid" ControlToValidate="requestContact" ErrorMessage="Please Enter a Name" ValidationGroup="factSheetMain" SetFocusOnError="true" Display="Dynamic" CssClass="text-danger invalid-feedback ps-2"></asp:RequiredFieldValidator>
 								</div>
 							</div>
 
@@ -81,7 +86,8 @@
 							<div class="col-md-3">
 								<div class="form-group">
 									<label for="requestEmail">Email</label>
-									<asp:TextBox runat="server" ID="requestEmail" CssClass="form-control" TextMode="Email" AutoCompleteType="Email" placeholder="john.doe@corporate.com" required="true"></asp:TextBox>
+									<asp:TextBox runat="server" ID="requestEmail" CssClass="form-control" TextMode="Email" AutoCompleteType="Email" placeholder="john.doe@corporate.com" data-required="true"></asp:TextBox>
+									<asp:RequiredFieldValidator runat="server" ID="requestEmailValid" ControlToValidate="requestEmail" ErrorMessage="Please Enter an Email" ValidationGroup="factSheetMain" SetFocusOnError="true" Display="Dynamic" CssClass="text-danger invalid-feedback ps-2"></asp:RequiredFieldValidator>
 								</div>
 							</div>
 
@@ -96,10 +102,14 @@
 								<%-- INPUTS --%>
 								<div class="input-group">
 									<%-- PHONE NUMBER --%>
-									<asp:TextBox runat="server" ID="requestPhone" CssClass="form-control" TextMode="Phone" data-type="telephone" placeholder="(555) 555-5555" AutoCompleteType="Disabled" required="true"></asp:TextBox>
+									<asp:TextBox runat="server" ID="requestPhone" CssClass="form-control" TextMode="Phone" data-type="telephone" placeholder="(555) 555-5555" AutoCompleteType="Disabled" data-required="true"></asp:TextBox>
 
 									<%-- EXTENSION --%>
-									<asp:TextBox runat="server" ID="requestExt" CssClass="form-control ext-split" TextMode="SingleLine" data-type="extension" placeholder="x1234" AutoCompleteType="Disabled" required="true"></asp:TextBox>
+									<asp:TextBox runat="server" ID="requestExt" CssClass="form-control ext-split" TextMode="SingleLine" data-type="extension" placeholder="x1234" AutoCompleteType="Disabled" data-required="true"></asp:TextBox>
+								</div>
+								<div class="d-flex justify-content-between">
+									<asp:RequiredFieldValidator runat="server" ID="requestPhoneValid" ControlToValidate="requestPhone" ErrorMessage="Please Enter a Phone Number" ValidationGroup="factSheetMain" SetFocusOnError="true" Display="Dynamic" CssClass="text-danger invalid-feedback ps-2"></asp:RequiredFieldValidator>
+									<asp:RequiredFieldValidator runat="server" ID="requestExtValid" ControlToValidate="requestExt" ErrorMessage="Please Enter an Extension" ValidationGroup="factSheetMain" SetFocusOnError="true" Display="Dynamic" CssClass="text-danger invalid-feedback text-end"></asp:RequiredFieldValidator>
 								</div>
 							</div>
 						</div>
@@ -137,6 +147,7 @@
 								<div class="form-group">
 									<label for="epJustification">If Yes, Explain Justification - See Attached Document</label>
 									<asp:TextBox runat="server" ID="epJustification" CssClass="form-control" TextMode="Multiline" Rows="4" AutoCompleteType="Disabled"></asp:TextBox>
+									<asp:RequiredFieldValidator runat="server" ID="epJustificationValid" ControlToValidate="epJustification" ErrorMessage="Please Explain Justification" ValidationGroup="factSheetMain" SetFocusOnError="true" Display="Dynamic" CssClass="text-danger invalid-feedback ps-2"></asp:RequiredFieldValidator>
 								</div>
 							</div>
 						</div>
@@ -160,7 +171,8 @@
 							<%-- SUGGESTED TITLE --%>
 							<div class="col-md-12">
 								<label for="suggestedTitle">Suggested Title</label>
-								<asp:TextBox runat="server" ID="suggestedTitle" CssClass="form-control" TextMode="Multiline" Rows="4" AutoCompleteType="Disabled" required="true"></asp:TextBox>
+								<asp:TextBox runat="server" ID="suggestedTitle" CssClass="form-control" TextMode="Multiline" Rows="4" AutoCompleteType="Disabled" data-required="true"></asp:TextBox>
+								<asp:RequiredFieldValidator runat="server" ID="suggestedTitleValid" ControlToValidate="suggestedTitle" ErrorMessage="Please Enter a Title" ValidationGroup="factSheetMain" SetFocusOnError="true" Display="Dynamic" CssClass="text-danger invalid-feedback ps-2" ></asp:RequiredFieldValidator>
 							</div>
 						</div>
 					</div>
@@ -254,14 +266,16 @@
 							<%-- CHANGE ORDER NUMBER --%>
 							<div class="col-md-4">
 								<label for="changeOrderNumber">Change Order Number</label>
-								<asp:TextBox runat="server" ID="changeOrderNumber" CssClass="form-control" TextMode="SingleLine" placeholder="0123456789" AutoCompleteType="Disabled"></asp:TextBox>
+								<asp:TextBox runat="server" ID="changeOrderNumber" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled"></asp:TextBox>
+								<asp:RequiredFieldValidator runat="server" ID="changeOrderNumberValid" ControlToValidate="changeOrderNumber" ErrorMessage="Please Enter a Change Order Number" ValidationGroup="factSheetMain" SetFocusOnError="true" Display="Dynamic" CssClass="text-danger invalid-feedback ps-2"></asp:RequiredFieldValidator>
 							</div>
 
 							<%-- ADDITIONAL AMOUNT --%>
 							<div class="col-md-2">
 								<div class="form-group">
 									<label for="additionalAmount">Additional Amount</label>
-									<asp:TextBox runat="server" ID="additionalAmount" CssClass="form-control" TextMode="SingleLine" data-type="currency" placeholder="$0.00" AutoCompleteType="Disabled"></asp:TextBox>
+									<asp:TextBox runat="server" ID="additionalAmount" CssClass="form-control" TextMode="SingleLine" data-type="currency" AutoCompleteType="Disabled"></asp:TextBox>
+									<asp:RequiredFieldValidator runat="server" ID="additionalAmountValid" ControlToValidate="additionalAmount" ErrorMessage="Please Enter an Amount" ValidationGroup="factSheetMain" SetFocusOnError="true" Display="Dynamic" CssClass="text-danger invalid-feedback ps-2"></asp:RequiredFieldValidator>
 								</div>
 							</div>
 						</div>
@@ -275,7 +289,8 @@
 							<div class="col-md-5">
 								<div class="form-group">
 									<label for="purchaseMethod">Method of Purchase</label>
-									<asp:DropDownList ID="purchaseMethod" runat="server" OnSelectedIndexChanged="PurchaseMethodSelectedIndexChanged" AutoPostBack="true" CssClass="form-select" required="true"></asp:DropDownList>
+									<asp:DropDownList ID="purchaseMethod" runat="server" OnSelectedIndexChanged="PurchaseMethodSelectedIndexChanged" AutoPostBack="true" CssClass="form-select" data-required="true"></asp:DropDownList>
+									<asp:RequiredFieldValidator runat="server" ID="purchaseMethodValid" ControlToValidate="purchaseMethod" ErrorMessage="Please Select a Method" ValidationGroup="factSheetMain" SetFocusOnError="true" Display="Dynamic" CssClass="text-danger invalid-feedback ps-2"></asp:RequiredFieldValidator>
 								</div>
 							</div>
 
@@ -284,6 +299,7 @@
 								<div id="otherExceptionDiv" class="form-group">
 									<label for="otherException">Other/Exception</label>
 									<asp:TextBox runat="server" ID="otherException" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled"></asp:TextBox>
+									<asp:RequiredFieldValidator runat="server" ID="otherExceptionValid" ControlToValidate="otherException" ErrorMessage="Please Enter a Method" ValidationGroup="factSheetMain" SetFocusOnError="true" Display="Dynamic" CssClass="text-danger invalid-feedback ps-2"></asp:RequiredFieldValidator>
 								</div>
 							</div>
 						</div>
@@ -386,19 +402,19 @@
 												<tr class="upperCaseField">
 													<td style="vertical-align: middle">
 														<asp:HiddenField runat="server" ID="hdnRevID" Value='<%# Container.ItemIndex %>' />
-														<asp:TextBox runat="server" ID="revenueFundCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "FundCode") %>' required="true"></asp:TextBox>
+														<asp:TextBox runat="server" ID="revenueFundCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "FundCode") %>' data-required="true"></asp:TextBox>
 													</td>
 													<td style="vertical-align: middle">
-														<asp:TextBox runat="server" ID="revenueAgencyCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "DepartmentCode") %>' required="true"></asp:TextBox>
+														<asp:TextBox runat="server" ID="revenueAgencyCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "DepartmentCode") %>' data-required="true"></asp:TextBox>
 													</td>
 													<td style="vertical-align: middle">
-														<asp:TextBox runat="server" ID="revenueOrgCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "UnitCode") %>' required="true"></asp:TextBox>
+														<asp:TextBox runat="server" ID="revenueOrgCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "UnitCode") %>' data-required="true"></asp:TextBox>
 													</td>
 													<td style="vertical-align: middle">
-														<asp:TextBox runat="server" ID="revenueActivityCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "ActivityCode") %>' required="true"></asp:TextBox>
+														<asp:TextBox runat="server" ID="revenueActivityCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "ActivityCode") %>' data-required="true"></asp:TextBox>
 													</td>
 													<td style="vertical-align: middle">
-														<asp:TextBox runat="server" ID="revenueObjectCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "ObjectCode") %>' required="true"></asp:TextBox>
+														<asp:TextBox runat="server" ID="revenueObjectCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "ObjectCode") %>' data-required="true"></asp:TextBox>
 													</td>
 													<td class="position-relative" style="vertical-align: middle">
 														<asp:TextBox runat="server" ID="revenueAmount" CssClass="form-control" TextMode="SingleLine" data-type="currency" placeholder="$0.00" AutoCompleteType="Disabled" Text='<%# (Convert.ToInt32(DataBinder.Eval(Container.DataItem, "Amount")) >= 0)?DataBinder.Eval(Container.DataItem, "Amount"):string.Empty%>'></asp:TextBox>
@@ -447,19 +463,19 @@
 												<tr class="upperCaseField">
 													<td style="vertical-align: middle">
 														<asp:HiddenField runat="server" ID="hdnExpID" Value='<%# Container.ItemIndex %>' />
-														<asp:TextBox runat="server" ID="expenditureFundCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "FundCode") %>' required="true"></asp:TextBox>
+														<asp:TextBox runat="server" ID="expenditureFundCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "FundCode") %>' data-required="true"></asp:TextBox>
 													</td>
 													<td style="vertical-align: middle">
-														<asp:TextBox runat="server" ID="expenditureAgencyCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "DepartmentCode") %>' required="true"></asp:TextBox>
+														<asp:TextBox runat="server" ID="expenditureAgencyCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "DepartmentCode") %>' data-required="true"></asp:TextBox>
 													</td>
 													<td style="vertical-align: middle">
-														<asp:TextBox runat="server" ID="expenditureOrgCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "UnitCode") %>' required="true"></asp:TextBox>
+														<asp:TextBox runat="server" ID="expenditureOrgCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "UnitCode") %>' data-required="true"></asp:TextBox>
 													</td>
 													<td style="vertical-align: middle">
-														<asp:TextBox runat="server" ID="expenditureActivityCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "ActivityCode") %>' required="true"></asp:TextBox>
+														<asp:TextBox runat="server" ID="expenditureActivityCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "ActivityCode") %>' data-required="true"></asp:TextBox>
 													</td>
 													<td style="vertical-align: middle">
-														<asp:TextBox runat="server" ID="expenditureObjectCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "ObjectCode") %>' required="true"></asp:TextBox>
+														<asp:TextBox runat="server" ID="expenditureObjectCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "ObjectCode") %>' data-required="true"></asp:TextBox>
 													</td>
 													<td class="position-relative" style="vertical-align: middle">
 														<asp:TextBox runat="server" ID="expenditureAmount" CssClass="form-control" TextMode="SingleLine" data-type="currency" placeholder="$0.00" AutoCompleteType="Disabled" Text='<%# (Convert.ToInt32(DataBinder.Eval(Container.DataItem, "Amount")) >= 0)?DataBinder.Eval(Container.DataItem, "Amount"):string.Empty%>'></asp:TextBox>
@@ -493,7 +509,8 @@
 							<div class="col-md-12">
 								<div class="form-group">
 									<label for="staffAnalysis">Staff Analysis</label>
-									<asp:TextBox runat="server" ID="staffAnalysis" CssClass="form-control" TextMode="Multiline" Rows="18" AutoCompleteType="Disabled" required="true"></asp:TextBox>
+									<asp:TextBox runat="server" ID="staffAnalysis" CssClass="form-control" TextMode="Multiline" Rows="18" AutoCompleteType="Disabled" data-required="true"></asp:TextBox>
+									<asp:RequiredFieldValidator runat="server" ID="staffAnalysisValid" ControlToValidate="staffAnalysis" ErrorMessage="Please Enter an Analysis" ValidationGroup="factSheetMain" SetFocusOnError="true" Display="Dynamic" CssClass="text-danger invalid-feedback ps-2"></asp:RequiredFieldValidator>
 								</div>
 							</div>
 						</div>
@@ -529,13 +546,55 @@
 						</div>
 					</div>
 
+					<%-- TENTH SECTION --%>
+					<div runat="server" id="signatureSection" class="form-section">
+						<%-- FIRST ROW --%>
+						<div runat="server" id="emailListDiv" class="row mb-3">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label for="emailListContainer">Director/Supervisor Email(s)</label>
+									<div id="emailListContainer" class="card mb-3 bg-body-secondary" style="min-height: 100px !important;">
+										<div class="card-body" >
+											<asp:Repeater runat="server" ID="rpEmailList" OnItemCommand="rpEmailList_ItemCommand" OnItemCreated="rpEmailList_ItemCreated">
+												<ItemTemplate>
+													<div class="badge rounded-pill text-bg-secondary m-1" style="font-size: .95rem">
+														<%# Container.DataItem %>
+														<asp:LinkButton runat="server" ID="removeBtn" CssClass="text-danger" style="margin-left: 10px;" CommandName="remove" CommandArgument='<%# Container.DataItem %>'><span class="fa-solid fa-xmark"></span></asp:LinkButton>
+													</div>
+												</ItemTemplate>
+											</asp:Repeater>
+										</div>
+										<div class="card-footer bg-body-tertiary">
+											<div class="row">
+												<div class="col-md-12">
+													<div class="input-group">
+														<span class="input-group-text fas fa-address-book"></span>
+														<asp:TextBox runat="server" ID="signatureEmailAddress" CssClass="form-control" TextMode="Email" AutoCompleteType="Email" placeholder="john.doe@corporate.com" ></asp:TextBox>
+														<asp:Button runat="server" ID="AddRequestEmailAddress" UseSubmitBehavior="false" CssClass="btn btn-success fas-btn" OnClick="AddRequestEmailAddress_Click" disabled="disabled" Text=''/>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<asp:TextBox runat="server" ID="directorSupervisorEmailAddresses" hidden="true"></asp:TextBox>
+									<asp:RequiredFieldValidator runat="server" ID="directorSupervisorEmailAddressesValid" ControlToValidate="directorSupervisorEmailAddresses" ErrorMessage="Please Enter an Email" ValidationGroup="directorSupervisorValidGroup" SetFocusOnError="true" Display="Dynamic" CssClass="text-danger invalid-feedback ps-2"></asp:RequiredFieldValidator>
+
+								</div>
+							</div>
+						</div>
+					</div>
+
 					<%-- SUBMIT SECTION --%>
 					<div class="form-section">
 						<%-- FIRST ROW --%>
 						<div class="row mt-3 mb-3 text-center">
 							<%-- SUBMIT BUTTON --%>
-							<div class="col-md-12">
-								<asp:Button runat="server" ID="SubmitFactSheet" UseSubmitBehavior="true" CssClass="btn btn-primary" Width="25%" Text="Submit" OnClick="SubmitForm_Click" OnClientClick="submitFactSheet();" />
+							<div class="col-md-6">
+								<asp:Button runat="server" ID="SubmitFactSheet" UseSubmitBehavior="true" CssClass="btn btn-success float-end" Width="50%" Text="Submit" OnClick="SubmitForm_Click"  CommandName="submit" OnClientClick="if(!Page_ClientValidate('factSheetMain,directorSupervisorValidGroup')) { submitFactSheet(false);} else { submitFactSheet(true); }" CausesValidation="true" />
+							</div>
+							<%-- DELETE BUTTON --%>
+							<div class="col-md-6">
+								<asp:Button runat="server" ID="SaveFactSheet" UseSubmitBehavior="true" CssClass="btn btn-primary float-start" Width="50%" Text="Save Draft" OnClick="SubmitForm_Click" CommandName="save" OnClientClick="if(!Page_ClientValidate('factSheetMain')) { submitFactSheet(false);} else { submitFactSheet(true); }" CausesValidation="true" />
 							</div>
 						</div>
 					</div>
@@ -550,6 +609,7 @@
 	<script>
 		DisableDDInitialOption();
 		cancelFilePick();
+		addSignatureEmails();
 
 		var prm = Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
 			GetToastStatus();
@@ -557,6 +617,7 @@
 			DisableDDInitialOption();
 			CurrencyFormatting();
 			cancelFilePick();
+			addSignatureEmails();
 		});
 
 		function SetUploadActive() {
@@ -610,13 +671,15 @@
 			});
 		}
 
-		function submitFactSheet() {
+		function submitFactSheet(valid) {
+			console.log(valid);
 			var form = document.getElementById('formMain');
 			var invalidList = form.querySelectorAll(':invalid');
-			if (invalidList.length < 1) {
+			if (valid) {
 				$('#<%= SubmitFactSheet.ClientID %>').prop('readonly', true);
 				ShowSubmitToast();
 			}
+			
 		}
 
 		function showFileWaiting() {
@@ -626,6 +689,40 @@
 			$('#<%= supportingDocumentation.ClientID %>').on('cancel', function () {
 				$('#fileWaiting').prop('hidden', true);
 			});
+		}
+		function addSignatureEmails() {
+			$('#<%= signatureEmailAddress.ClientID %>').on('change keyup', function () {
+				var validEmail = $('#<%= signatureEmailAddress.ClientID %>').val().indexOf("@cwlp.com") > 1 || $('#<%= signatureEmailAddress.ClientID %>').val().indexOf("@springfield.il.us") > 1;
+				if (validEmail && $('#<%= signatureEmailAddress.ClientID %>').val().length > 0) {
+					$('#<%= AddRequestEmailAddress.ClientID %>').prop('disabled', false);
+				}
+				else {
+					$('#<%= AddRequestEmailAddress.ClientID %>').prop('disabled', true);
+				}
+			});
+		}
+	</script>
+
+	<script type="text/javascript">
+		window["IsValidationGroupMatch"] = function (control, validationGroup) {
+			if ((typeof (validationGroup) == "undefined") || (validationGroup == null)) {
+				return true;
+			}
+			var controlGroup = "";
+			var isGroupContained = false;
+			if (typeof (control.validationGroup) == "string") {
+				controlGroup = control.validationGroup;
+				var controlGroupArray = [];
+				if (validationGroup.indexOf(",") > -1) {
+					controlGroupArray = validationGroup.split(",");
+				}
+				for (var i = 0; i < controlGroupArray.length; i++) {
+					if (controlGroupArray[i].trim() == controlGroup.trim()) {
+						isGroupContained = true;
+					}
+				}
+			}
+			return (controlGroup == validationGroup || isGroupContained);
 		}
 	</script>
 </asp:Content>

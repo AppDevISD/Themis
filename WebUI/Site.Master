@@ -44,7 +44,7 @@
 
 	</head>
 	<body runat="server" class="bg-body-secondary">
-		<form id="formMain" runat="server">
+		<form id="formMain" runat="server" class="needs-validation" novalidate>
 			<asp:ScriptManager runat="server" />
 			
 			<div class="page">

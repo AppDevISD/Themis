@@ -60,15 +60,6 @@ namespace WebUI
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl formTableDiv;
 
         /// <summary>
-        /// sortID control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton sortID;
-
-        /// <summary>
         /// sortDate control.
         /// </summary>
         /// <remarks>
@@ -103,6 +94,15 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblNoItems;
+
+        /// <summary>
+        /// lblNoItemsTxt control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblNoItemsTxt;
 
         /// <summary>
         /// pnlPagingP control.
@@ -220,15 +220,6 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl factSheetPane;
-
-        /// <summary>
-        /// lblOrdID control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblOrdID;
 
         /// <summary>
         /// backBtn control.
@@ -753,48 +744,12 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.Button btnDelete;
 
         /// <summary>
-        /// signatureEmailModal control.
+        /// hdnDeleteID control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl signatureEmailModal;
-
-        /// <summary>
-        /// pnlSigEmail control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel pnlSigEmail;
-
-        /// <summary>
-        /// sigBtnTarget control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputHidden sigBtnTarget;
-
-        /// <summary>
-        /// sigBtnLabel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputHidden sigBtnLabel;
-
-        /// <summary>
-        /// sigBtnType control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputHidden sigBtnType;
+        protected global::System.Web.UI.WebControls.HiddenField hdnDeleteID;
     }
 }

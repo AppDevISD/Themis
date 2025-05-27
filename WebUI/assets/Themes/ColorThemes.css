@@ -887,10 +887,6 @@ button[readonly=readonly] {
   max-width: 0;
 }
 
-.form-select:has([data-item=first]:selected) {
-  color: blue;
-}
-
 /* --------------- Prism Code Blocks --------------- */
 [data-bs-theme=dark] pre[class*=language-] {
   background: var(--bs-body-bg) !important;
