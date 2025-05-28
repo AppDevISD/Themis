@@ -48,7 +48,7 @@
 								<div class="form-group">
 									<label for="requestDepartment">Requesting Department</label>
 									<asp:DropDownList ID="requestDepartment" runat="server" AutoPostBack="true" CssClass="form-select" data-required="true" ValidateRequestMode="Enabled" OnSelectedIndexChanged="requestDepartment_SelectedIndexChanged"></asp:DropDownList>				
-									<asp:RequiredFieldValidator runat="server" ID="requestDepartmentValid" ControlToValidate="requestDepartment" ErrorMessage="Please Select a Department" ValidationGroup="factSheetMain" SetFocusOnError="true" Display="Dynamic" CssClass="text-danger invalid-feedback ps-2"></asp:RequiredFieldValidator>
+									<asp:RequiredFieldValidator runat="server" ID="requestDepartmentValid" ControlToValidate="requestDepartment" ErrorMessage="Please Select a Department" ValidationGroup="factSheetMain" SetFocusOnError="true" Display="None" CssClass="text-danger invalid-feedback ps-2"></asp:RequiredFieldValidator>
 								</div>
 							</div>
 
@@ -57,7 +57,7 @@
 								<div class="form-group">
 									<label for="requestDivision">Requesting Division</label>
 									<asp:DropDownList ID="requestDivision" runat="server" AutoPostBack="true" CssClass="form-select" data-required="true" ValidateRequestMode="Enabled"></asp:DropDownList>
-									<asp:RequiredFieldValidator runat="server" ID="requestDivisionValid" ControlToValidate="requestDivision" ErrorMessage="Please Select a Division" ValidationGroup="factSheetMain" SetFocusOnError="true" Display="Dynamic" CssClass="text-danger invalid-feedback ps-2"></asp:RequiredFieldValidator>
+									<asp:RequiredFieldValidator runat="server" ID="requestDivisionValid" ControlToValidate="requestDivision" ErrorMessage="Please Select a Division" ValidationGroup="factSheetMain" SetFocusOnError="true" Display="None" CssClass="text-danger invalid-feedback ps-2"></asp:RequiredFieldValidator>
 								</div>
 							</div>
 
@@ -66,7 +66,7 @@
 								<div class="form-group">
 									<label for="firstReadDate">Date of 1<sup>st</sup> Reading</label>
 									<asp:TextBox runat="server" ID="firstReadDate" CssClass="form-control" TextMode="Date" data-required="true"></asp:TextBox>
-									<asp:RequiredFieldValidator runat="server" ID="readDateValid" ControlToValidate="firstReadDate" ErrorMessage="Please Select a Date" ValidationGroup="factSheetMain" SetFocusOnError="true" Display="Dynamic" CssClass="text-danger invalid-feedback ps-2"></asp:RequiredFieldValidator>
+									<asp:RequiredFieldValidator runat="server" ID="firstReadDateValid" ControlToValidate="firstReadDate" ErrorMessage="Please Select a Date" ValidationGroup="factSheetMain" SetFocusOnError="true" Display="None" CssClass="text-danger invalid-feedback ps-2"></asp:RequiredFieldValidator>
 								</div>
 							</div>
 						</div>
@@ -78,7 +78,7 @@
 								<div class="form-group">
 									<label for="requestContact">Requesting Contact</label>
 									<asp:TextBox runat="server" ID="requestContact" CssClass="form-control" TextMode="SingleLine" placeholder="John Doe" AutoCompleteType="DisplayName" data-required="true"></asp:TextBox>
-									<asp:RequiredFieldValidator runat="server" ID="requestContactValid" ControlToValidate="requestContact" ErrorMessage="Please Enter a Name" ValidationGroup="factSheetMain" SetFocusOnError="true" Display="Dynamic" CssClass="text-danger invalid-feedback ps-2"></asp:RequiredFieldValidator>
+									<asp:RequiredFieldValidator runat="server" ID="requestContactValid" ControlToValidate="requestContact" ErrorMessage="Please Enter a Name" ValidationGroup="factSheetMain" SetFocusOnError="true" Display="None" CssClass="text-danger invalid-feedback ps-2"></asp:RequiredFieldValidator>
 								</div>
 							</div>
 
@@ -87,7 +87,7 @@
 								<div class="form-group">
 									<label for="requestEmail">Email</label>
 									<asp:TextBox runat="server" ID="requestEmail" CssClass="form-control" TextMode="Email" AutoCompleteType="Email" placeholder="john.doe@corporate.com" data-required="true"></asp:TextBox>
-									<asp:RequiredFieldValidator runat="server" ID="requestEmailValid" ControlToValidate="requestEmail" ErrorMessage="Please Enter an Email" ValidationGroup="factSheetMain" SetFocusOnError="true" Display="Dynamic" CssClass="text-danger invalid-feedback ps-2"></asp:RequiredFieldValidator>
+									<asp:RequiredFieldValidator runat="server" ID="requestEmailValid" ControlToValidate="requestEmail" ErrorMessage="Please Enter an Email" ValidationGroup="factSheetMain" SetFocusOnError="true" Display="None" CssClass="text-danger invalid-feedback ps-2"></asp:RequiredFieldValidator>
 								</div>
 							</div>
 
@@ -108,8 +108,8 @@
 									<asp:TextBox runat="server" ID="requestExt" CssClass="form-control ext-split" TextMode="SingleLine" data-type="extension" placeholder="x1234" AutoCompleteType="Disabled" data-required="true"></asp:TextBox>
 								</div>
 								<div class="d-flex justify-content-between">
-									<asp:RequiredFieldValidator runat="server" ID="requestPhoneValid" ControlToValidate="requestPhone" ErrorMessage="Please Enter a Phone Number" ValidationGroup="factSheetMain" SetFocusOnError="true" Display="Dynamic" CssClass="text-danger invalid-feedback ps-2"></asp:RequiredFieldValidator>
-									<asp:RequiredFieldValidator runat="server" ID="requestExtValid" ControlToValidate="requestExt" ErrorMessage="Please Enter an Extension" ValidationGroup="factSheetMain" SetFocusOnError="true" Display="Dynamic" CssClass="text-danger invalid-feedback text-end"></asp:RequiredFieldValidator>
+									<asp:RequiredFieldValidator runat="server" ID="requestPhoneValid" ControlToValidate="requestPhone" ErrorMessage="Please Enter a Phone Number" ValidationGroup="factSheetMain" SetFocusOnError="true" Display="None" CssClass="text-danger invalid-feedback ps-2"></asp:RequiredFieldValidator>
+									<asp:RequiredFieldValidator runat="server" ID="requestExtValid" ControlToValidate="requestExt" ErrorMessage="Please Enter an Extension" ValidationGroup="factSheetMain" SetFocusOnError="true" Display="None" CssClass="text-danger invalid-feedback text-end"></asp:RequiredFieldValidator>
 								</div>
 							</div>
 						</div>
@@ -147,7 +147,7 @@
 								<div class="form-group">
 									<label for="epJustification">If Yes, Explain Justification - See Attached Document</label>
 									<asp:TextBox runat="server" ID="epJustification" CssClass="form-control" TextMode="Multiline" Rows="4" AutoCompleteType="Disabled"></asp:TextBox>
-									<asp:RequiredFieldValidator runat="server" ID="epJustificationValid" ControlToValidate="epJustification" ErrorMessage="Please Explain Justification" ValidationGroup="factSheetMain" SetFocusOnError="true" Display="Dynamic" CssClass="text-danger invalid-feedback ps-2"></asp:RequiredFieldValidator>
+									<asp:RequiredFieldValidator runat="server" ID="epJustificationValid" ControlToValidate="epJustification" ErrorMessage="Please Explain Justification" ValidationGroup="factSheetMain" SetFocusOnError="true" Display="None" CssClass="text-danger invalid-feedback ps-2"></asp:RequiredFieldValidator>
 								</div>
 							</div>
 						</div>
@@ -172,7 +172,7 @@
 							<div class="col-md-12">
 								<label for="suggestedTitle">Suggested Title</label>
 								<asp:TextBox runat="server" ID="suggestedTitle" CssClass="form-control" TextMode="Multiline" Rows="4" AutoCompleteType="Disabled" data-required="true"></asp:TextBox>
-								<asp:RequiredFieldValidator runat="server" ID="suggestedTitleValid" ControlToValidate="suggestedTitle" ErrorMessage="Please Enter a Title" ValidationGroup="factSheetMain" SetFocusOnError="true" Display="Dynamic" CssClass="text-danger invalid-feedback ps-2" ></asp:RequiredFieldValidator>
+								<asp:RequiredFieldValidator runat="server" ID="suggestedTitleValid" ControlToValidate="suggestedTitle" ErrorMessage="Please Enter a Title" ValidationGroup="factSheetMain" SetFocusOnError="true" Display="None" CssClass="text-danger invalid-feedback ps-2" ></asp:RequiredFieldValidator>
 							</div>
 						</div>
 					</div>
@@ -267,7 +267,7 @@
 							<div class="col-md-4">
 								<label for="changeOrderNumber">Change Order Number</label>
 								<asp:TextBox runat="server" ID="changeOrderNumber" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled"></asp:TextBox>
-								<asp:RequiredFieldValidator runat="server" ID="changeOrderNumberValid" ControlToValidate="changeOrderNumber" ErrorMessage="Please Enter a Change Order Number" ValidationGroup="factSheetMain" SetFocusOnError="true" Display="Dynamic" CssClass="text-danger invalid-feedback ps-2"></asp:RequiredFieldValidator>
+								<asp:RequiredFieldValidator runat="server" ID="changeOrderNumberValid" ControlToValidate="changeOrderNumber" ErrorMessage="Please Enter a Change Order Number" ValidationGroup="factSheetMain" SetFocusOnError="true" Display="None" CssClass="text-danger invalid-feedback ps-2"></asp:RequiredFieldValidator>
 							</div>
 
 							<%-- ADDITIONAL AMOUNT --%>
@@ -275,7 +275,7 @@
 								<div class="form-group">
 									<label for="additionalAmount">Additional Amount</label>
 									<asp:TextBox runat="server" ID="additionalAmount" CssClass="form-control" TextMode="SingleLine" data-type="currency" AutoCompleteType="Disabled"></asp:TextBox>
-									<asp:RequiredFieldValidator runat="server" ID="additionalAmountValid" ControlToValidate="additionalAmount" ErrorMessage="Please Enter an Amount" ValidationGroup="factSheetMain" SetFocusOnError="true" Display="Dynamic" CssClass="text-danger invalid-feedback ps-2"></asp:RequiredFieldValidator>
+									<asp:RequiredFieldValidator runat="server" ID="additionalAmountValid" ControlToValidate="additionalAmount" ErrorMessage="Please Enter an Amount" ValidationGroup="factSheetMain" SetFocusOnError="true" Display="None" CssClass="text-danger invalid-feedback ps-2"></asp:RequiredFieldValidator>
 								</div>
 							</div>
 						</div>
@@ -290,7 +290,7 @@
 								<div class="form-group">
 									<label for="purchaseMethod">Method of Purchase</label>
 									<asp:DropDownList ID="purchaseMethod" runat="server" OnSelectedIndexChanged="PurchaseMethodSelectedIndexChanged" AutoPostBack="true" CssClass="form-select" data-required="true"></asp:DropDownList>
-									<asp:RequiredFieldValidator runat="server" ID="purchaseMethodValid" ControlToValidate="purchaseMethod" ErrorMessage="Please Select a Method" ValidationGroup="factSheetMain" SetFocusOnError="true" Display="Dynamic" CssClass="text-danger invalid-feedback ps-2"></asp:RequiredFieldValidator>
+									<asp:RequiredFieldValidator runat="server" ID="purchaseMethodValid" ControlToValidate="purchaseMethod" ErrorMessage="Please Select a Method" ValidationGroup="factSheetMain" SetFocusOnError="true" Display="None" CssClass="text-danger invalid-feedback ps-2"></asp:RequiredFieldValidator>
 								</div>
 							</div>
 
@@ -299,7 +299,7 @@
 								<div id="otherExceptionDiv" class="form-group">
 									<label for="otherException">Other/Exception</label>
 									<asp:TextBox runat="server" ID="otherException" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled"></asp:TextBox>
-									<asp:RequiredFieldValidator runat="server" ID="otherExceptionValid" ControlToValidate="otherException" ErrorMessage="Please Enter a Method" ValidationGroup="factSheetMain" SetFocusOnError="true" Display="Dynamic" CssClass="text-danger invalid-feedback ps-2"></asp:RequiredFieldValidator>
+									<asp:RequiredFieldValidator runat="server" ID="otherExceptionValid" ControlToValidate="otherException" ErrorMessage="Please Enter a Method" ValidationGroup="factSheetMain" SetFocusOnError="true" Display="None" CssClass="text-danger invalid-feedback ps-2"></asp:RequiredFieldValidator>
 								</div>
 							</div>
 						</div>
@@ -510,7 +510,7 @@
 								<div class="form-group">
 									<label for="staffAnalysis">Staff Analysis</label>
 									<asp:TextBox runat="server" ID="staffAnalysis" CssClass="form-control" TextMode="Multiline" Rows="18" AutoCompleteType="Disabled" data-required="true"></asp:TextBox>
-									<asp:RequiredFieldValidator runat="server" ID="staffAnalysisValid" ControlToValidate="staffAnalysis" ErrorMessage="Please Enter an Analysis" ValidationGroup="factSheetMain" SetFocusOnError="true" Display="Dynamic" CssClass="text-danger invalid-feedback ps-2"></asp:RequiredFieldValidator>
+									<asp:RequiredFieldValidator runat="server" ID="staffAnalysisValid" ControlToValidate="staffAnalysis" ErrorMessage="Please Enter an Analysis" ValidationGroup="factSheetMain" SetFocusOnError="true" Display="None" CssClass="text-danger invalid-feedback ps-2"></asp:RequiredFieldValidator>
 								</div>
 							</div>
 						</div>
@@ -552,7 +552,7 @@
 						<div runat="server" id="emailListDiv" class="row mb-3">
 							<div class="col-md-6">
 								<div class="form-group">
-									<label for="emailListContainer">Director/Supervisor Email(s)</label>
+									<label for="emailListContainer">Director/Supervisor Email(s) <span class="text-warning">* <span style="font-size: 11px;">Required if Submitting</span></span></label>
 									<div id="emailListContainer" class="card mb-3 bg-body-secondary" style="min-height: 100px !important;">
 										<div class="card-body" >
 											<asp:Repeater runat="server" ID="rpEmailList" OnItemCommand="rpEmailList_ItemCommand" OnItemCreated="rpEmailList_ItemCreated">
@@ -577,7 +577,7 @@
 										</div>
 									</div>
 									<asp:TextBox runat="server" ID="directorSupervisorEmailAddresses" hidden="true"></asp:TextBox>
-									<asp:RequiredFieldValidator runat="server" ID="directorSupervisorEmailAddressesValid" ControlToValidate="directorSupervisorEmailAddresses" ErrorMessage="Please Enter an Email" ValidationGroup="directorSupervisorValidGroup" SetFocusOnError="true" Display="Dynamic" CssClass="text-danger invalid-feedback ps-2"></asp:RequiredFieldValidator>
+									<asp:RequiredFieldValidator runat="server" ID="emailListContainerValid" ControlToValidate="directorSupervisorEmailAddresses" ErrorMessage="Please Enter an Email" ValidationGroup="directorSupervisorValidGroup" SetFocusOnError="true" Display="None" CssClass="text-danger invalid-feedback ps-2"></asp:RequiredFieldValidator>
 
 								</div>
 							</div>
@@ -590,11 +590,11 @@
 						<div class="row mt-3 mb-3 text-center">
 							<%-- SUBMIT BUTTON --%>
 							<div class="col-md-6">
-								<asp:Button runat="server" ID="SubmitFactSheet" UseSubmitBehavior="true" CssClass="btn btn-success float-end" Width="50%" Text="Submit" OnClick="SubmitForm_Click"  CommandName="submit" OnClientClick="if(!Page_ClientValidate('factSheetMain,directorSupervisorValidGroup')) { submitFactSheet(false);} else { submitFactSheet(true); }" CausesValidation="true" />
+								<asp:Button runat="server" ID="SubmitFactSheet" UseSubmitBehavior="false" CssClass="btn btn-success float-end" Width="50%" Text="Submit" OnClick="SubmitForm_Click" CommandName="submit" OnClientClick="validateFactSheet('factSheetMain,directorSupervisorValidGroup');" CausesValidation="true" />
 							</div>
-							<%-- DELETE BUTTON --%>
+							<%-- SAVE BUTTON --%>
 							<div class="col-md-6">
-								<asp:Button runat="server" ID="SaveFactSheet" UseSubmitBehavior="true" CssClass="btn btn-primary float-start" Width="50%" Text="Save Draft" OnClick="SubmitForm_Click" CommandName="save" OnClientClick="if(!Page_ClientValidate('factSheetMain')) { submitFactSheet(false);} else { submitFactSheet(true); }" CausesValidation="true" />
+								<asp:Button runat="server" ID="SaveFactSheet" UseSubmitBehavior="false" CssClass="btn btn-primary float-start" Width="50%" Text="Save Draft" OnClick="SubmitForm_Click" CommandName="save" OnClientClick="validateFactSheet('factSheetMain');" CausesValidation="true" />
 							</div>
 						</div>
 					</div>
@@ -610,6 +610,8 @@
 		DisableDDInitialOption();
 		cancelFilePick();
 		addSignatureEmails();
+		multiValidation();
+		var invalidArray = [];
 
 		var prm = Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
 			GetToastStatus();
@@ -618,6 +620,10 @@
 			CurrencyFormatting();
 			cancelFilePick();
 			addSignatureEmails();
+			multiValidation();
+			if (invalidArray.length > 0) {
+				ValidationFormatting(invalidArray);
+			}
 		});
 
 		function SetUploadActive() {
@@ -671,15 +677,35 @@
 			});
 		}
 
-		function submitFactSheet(valid) {
-			console.log(valid);
-			var form = document.getElementById('formMain');
-			var invalidList = form.querySelectorAll(':invalid');
-			if (valid) {
+		function validateFactSheet(validationGroups) {
+			validGroups = validationGroups;
+			if (Page_ClientValidate(validationGroups)) {
 				$('#<%= SubmitFactSheet.ClientID %>').prop('readonly', true);
 				ShowSubmitToast();
 			}
-			
+			else {
+				ValidationFormatting(Page_Validators);
+			}
+		}
+
+		function ValidationFormatting(Validators) {
+			$(Validators).each(function () {
+				var validator = this;
+				var id = $(validator).attr('id').replace('Valid', '');
+				var control = $(`#${id}`);
+				var label = $(`[for=${id}]`);
+				if (!validator.isvalid) {
+					control.addClass('invalid-border');
+					label.addClass('required-field');
+					invalidArray.push(validator);
+					control.on('change', function () {
+						control.removeClass('invalid-border');
+						label.removeClass('required-field');
+						var i = invalidArray.indexOf(validator);
+						invalidArray.splice(i, 1);
+					});
+				}
+			});
 		}
 
 		function showFileWaiting() {
@@ -700,29 +726,6 @@
 					$('#<%= AddRequestEmailAddress.ClientID %>').prop('disabled', true);
 				}
 			});
-		}
-	</script>
-
-	<script type="text/javascript">
-		window["IsValidationGroupMatch"] = function (control, validationGroup) {
-			if ((typeof (validationGroup) == "undefined") || (validationGroup == null)) {
-				return true;
-			}
-			var controlGroup = "";
-			var isGroupContained = false;
-			if (typeof (control.validationGroup) == "string") {
-				controlGroup = control.validationGroup;
-				var controlGroupArray = [];
-				if (validationGroup.indexOf(",") > -1) {
-					controlGroupArray = validationGroup.split(",");
-				}
-				for (var i = 0; i < controlGroupArray.length; i++) {
-					if (controlGroupArray[i].trim() == controlGroup.trim()) {
-						isGroupContained = true;
-					}
-				}
-			}
-			return (controlGroup == validationGroup || isGroupContained);
 		}
 	</script>
 </asp:Content>

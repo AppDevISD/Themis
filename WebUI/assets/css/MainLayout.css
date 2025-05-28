@@ -483,6 +483,10 @@ option:not([selected]):not(:disabled) {
 	text-transform: uppercase;
 }
 
+.invalid-border {
+	border: 2px solid var(--bs-danger) !important;
+}
+
 
 
 /* --------------- SECTIONS, CONTAINERS, CARDS, & TABS --------------- */

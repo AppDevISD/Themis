@@ -187,7 +187,7 @@
 					</div>
 				</div>
 
-				<div runat="server" id="ordView" readonly="false" class="readonly-color custom-tab-div w-100">
+				<div runat="server" id="ordView" readonly="false" class="readonly-color custom-tab-div w-100" data-form="true">
 					<asp:HiddenField runat="server" ID="hdnOrdID" />
 					<asp:HiddenField runat="server" ID="hdnEffectiveDate" />
 					<asp:HiddenField runat="server" ID="hdnEmail" />

@@ -2,7 +2,7 @@
 	var requiredFields = document.querySelectorAll('[data-required="true"]');
 	var readonly;
 	try {
-		var readonlyDiv = document.getElementById('ordView');
+		var readonlyDiv = document.querySelector('[data-form="true"]');
 		if (readonlyDiv.getAttribute("readonly") == "true") {
 			readonly = true;
 		}
@@ -14,7 +14,7 @@
 	}
 	if (requiredFields.length > 0 && !readonly) {
 		var alreadyLabeled = false;
-		for (const field of requiredFields) {
+		for (const field of requiredFields) {			
 			const parent = field.parentElement;
 			const id = parent.id;
 			if (parent.tagName == 'TD') {

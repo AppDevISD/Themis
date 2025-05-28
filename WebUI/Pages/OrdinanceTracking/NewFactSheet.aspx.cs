@@ -699,13 +699,13 @@ namespace WebUI
                     epYes.Checked = true;
                     epNo.Checked = false;
                     epJustificationGroup.Visible = true;
-                    epJustification.Attributes.Add("required", "true");
+                    epJustification.Attributes.Add("data-required", "true");
                     break;
                 case false:
                     epYes.Checked = false;
                     epNo.Checked = true;
                     epJustificationGroup.Visible = false;
-                    epJustification.Attributes.Remove("required");
+                    epJustification.Attributes.Remove("data-required");
                     break;
             }
             epJustification.Text = ord.EmergencyPassageReason;
@@ -727,16 +727,16 @@ namespace WebUI
                     scNo.Checked = false;
                     changeOrderNumber.Enabled = true;
                     additionalAmount.Enabled = true;
-                    changeOrderNumber.Attributes.Add("required", "true");
-                    additionalAmount.Attributes.Add("required", "true");
+                    changeOrderNumber.Attributes.Add("data-required", "true");
+                    additionalAmount.Attributes.Add("data-required", "true");
                         break;
                 case false:
                     scYes.Checked = false;
                     scNo.Checked = true;
                         changeOrderNumber.Enabled = false;
                         additionalAmount.Enabled = false;
-                        changeOrderNumber.Attributes.Remove("required");
-                        additionalAmount.Attributes.Remove("required");
+                        changeOrderNumber.Attributes.Remove("data-required");
+                        additionalAmount.Attributes.Remove("data-required");
                         break;
             }
             changeOrderNumber.Text = ord.ChangeOrderNumber;
@@ -749,12 +749,12 @@ namespace WebUI
                 default:
                     otherException.Enabled = false;
                     otherException.Text = string.Empty;
-                    otherException.Attributes.Remove("required");
+                    otherException.Attributes.Remove("data-required");
                     break;
                 case "Other":
                 case "Exception":
                     otherException.Enabled = true;
-                    otherException.Attributes.Add("required", "true");
+                    otherException.Attributes.Add("data-required", "true");
                     break;
             }
             otherException.Text = ord.OtherException;
@@ -901,7 +901,6 @@ namespace WebUI
             }
             signatureEmailAddress.Text = string.Empty;
         }
-
         protected void rpEmailList_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
             switch (e.CommandName)

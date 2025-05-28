@@ -100,14 +100,11 @@ namespace WebUI
             foreach (RepeaterItem item in rpDraftsTable.Items)
             {
                 LinkButton editButton = item.FindControl("editOrd") as LinkButton;
-                LinkButton tableDeleteButton = item.FindControl("deleteOrd") as LinkButton;
-                ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(editButton);
-                ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(tableDeleteButton);
+                ScriptManager.GetCurrent(Page).RegisterPostBackControl(editButton);
             }
 
             if (ScriptManager.GetCurrent(Page).IsInAsyncPostBack)
             {
-
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "HideLoading", "hideLoadingModal();", true);
             }
             GetUploadedDocs();
@@ -164,7 +161,6 @@ namespace WebUI
             draftsTable.Visible = true;
             ordView.Visible = false;
             lblNoItems.Visible = false;
-
         }
         protected void SetPagination(Repeater rpTable, Dictionary<string, LinkButton> pageBtns, Panel pnlPaging, Label lblPage, int ItemsPerPage, bool GetViewState = false)
         {
@@ -178,18 +174,20 @@ namespace WebUI
         public void GetStartupData()
         {
             List<Ordinance> ord_list = new List<Ordinance>();
-            ord_list = Factory.Instance.GetFilteredOrdinances(-1, string.Empty, string.Empty, string.Empty, _user.Login.ToLower()).OrderByDescending(i => i.LastUpdateDate).ToList();
+            ord_list = Factory.Instance.GetFilteredOrdinances(-1, string.Empty, string.Empty, string.Empty, _user.Login.ToLower());
             if (ord_list.Count > 0)
             {
                 foreach (Ordinance ord in ord_list)
                 {
                     OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
                     ord.StatusDescription = ordStatus.StatusDescription;
-                }
+                }                
                 BindDataRepeaterPagination("yes", ord_list);
             }
+            Dictionary<string, object> sortRet = new Dictionary<string, object>();
+            sortRet = GetCurrentSort(ord_list, Session["curCmd"].ToString(), Session["sortDir"].ToString());
 
-            Session["ord_list"] = ord_list;
+            Session["ord_list"] = sortRet["list"];
             Session["noFilterOrdList"] = ord_list;
             if (ord_list.Count > 0)
             {
@@ -367,12 +365,12 @@ namespace WebUI
                 default:
                     otherException.Enabled = false;
                     otherException.Text = string.Empty;
-                    otherException.Attributes.Remove("required");
+                    otherException.Attributes.Remove("data-required");
                     break;
                 case "Other":
                 case "Exception":
                     otherException.Enabled = true;
-                    otherException.Attributes.Add("required", "true");
+                    otherException.Attributes.Add("data-required", "true");
                     break;
             }
         }
@@ -382,12 +380,12 @@ namespace WebUI
             {
                 case true:
                     epJustificationGroup.Visible = true;
-                    epJustification.Attributes.Add("required", "true");
+                    epJustification.Attributes.Add("data-required", "true");
                     break;
 
                 case false:
                     epJustificationGroup.Visible = false;
-                    epJustification.Attributes.Remove("required");
+                    epJustification.Attributes.Remove("data-required");
                     break;
             }
         }
@@ -398,18 +396,18 @@ namespace WebUI
                 case true:
                     changeOrderNumber.Enabled = true;
                     additionalAmount.Enabled = true;
-                    changeOrderNumber.Attributes.Add("required", "true");
+                    changeOrderNumber.Attributes.Add("data-required", "true");
                     changeOrderNumber.Attributes.Add("placeholder", "0123456789");
-                    additionalAmount.Attributes.Add("required", "true");
+                    additionalAmount.Attributes.Add("data-required", "true");
                     additionalAmount.Attributes.Add("placeholder", "$0.00");
                     break;
 
                 case false:
                     changeOrderNumber.Enabled = false;
                     additionalAmount.Enabled = false;
-                    changeOrderNumber.Attributes.Remove("required");
+                    changeOrderNumber.Attributes.Remove("data-required");
                     changeOrderNumber.Attributes.Remove("placeholder");
-                    additionalAmount.Attributes.Remove("required");
+                    additionalAmount.Attributes.Remove("data-required");
                     additionalAmount.Attributes.Remove("placeholder");
                     break;
             }
@@ -455,317 +453,329 @@ namespace WebUI
         // REPEATER COMMANDS //        
         protected void rpDraftsTable_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
-            switch (e.CommandName)
+            ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(backBtn);
+
+            Session.Remove("OriginalOrdinance");
+            Session.Remove("OriginalStatus");
+            Session.Remove("OriginalRevTable");
+            Session.Remove("OriginalExpTable");
+            Session.Remove("SigRequestEmails");
+
+
+            Session.Remove("ordRevTable");
+            Session.Remove("ordExpTable");
+            Session.Remove("insertSigList");
+
+            int ordID = Convert.ToInt32(e.CommandArgument);
+            Ordinance ord = Factory.Instance.GetByID<Ordinance>(ordID, "sp_GetOrdinanceByOrdinanceID", "OrdinanceID");
+            hdnOrdID.Value = ordID.ToString();
+            hdnEffectiveDate.Value = ord.EffectiveDate.ToString();
+
+            requestDepartment.SelectedValue = DepartmentsList()[ord.RequestDepartment];
+
+            requestDivision.Enabled = true;
+            GetAllDivisions(requestDivision, requestDepartment.SelectedValue);
+            requestDivision.SelectedValue = GetDivisionsByDept(Convert.ToInt32(requestDepartment.SelectedValue)).First(i => i.DivisionName.Equals(ord.RequestDivision)).DivisionCode.ToString();
+
+            firstReadDate.Text = ord.FirstReadDate.ToString("yyyy-MM-dd");
+            requestContact.Text = ord.RequestContact;
+            requestEmail.Text = ord.RequestEmail;
+            requestPhone.Text = ord.RequestPhone.SubstringUpToFirst('x');
+            requestExt.Text = ord.RequestPhone.Substring(14);
+
+            hdnEmail.Value = ord.RequestEmail;
+
+            switch (ord.EmergencyPassage)
             {
-                case "edit":
-                    ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(backBtn);
-
-                    Session.Remove("OriginalOrdinance");
-                    Session.Remove("OriginalStatus");
-                    Session.Remove("OriginalRevTable");
-                    Session.Remove("OriginalExpTable");
-                    Session.Remove("SigRequestEmails");
-
-
-                    Session.Remove("ordRevTable");
-                    Session.Remove("ordExpTable");
-                    Session.Remove("insertSigList");
-
-                    int ordID = Convert.ToInt32(e.CommandArgument);
-                    Ordinance ord = Factory.Instance.GetByID<Ordinance>(ordID, "sp_GetOrdinanceByOrdinanceID", "OrdinanceID");
-                    hdnOrdID.Value = ordID.ToString();
-                    hdnEffectiveDate.Value = ord.EffectiveDate.ToString();
-
-                    requestDepartment.SelectedValue = DepartmentsList()[ord.RequestDepartment];
-
-                    requestDivision.Enabled = true;
-                    GetAllDivisions(requestDivision, requestDepartment.SelectedValue);
-                    requestDivision.SelectedValue = GetDivisionsByDept(Convert.ToInt32(requestDepartment.SelectedValue)).First(i => i.DivisionName.Equals(ord.RequestDivision)).DivisionCode.ToString();
-
-                    firstReadDate.Text = ord.FirstReadDate.ToString("yyyy-MM-dd");
-                    requestContact.Text = ord.RequestContact;
-                    requestEmail.Text = ord.RequestEmail;
-                    requestPhone.Text = ord.RequestPhone.SubstringUpToFirst('x');
-                    requestExt.Text = ord.RequestPhone.Substring(14);
-
-                    hdnEmail.Value = ord.RequestEmail;
-
-                    switch (ord.EmergencyPassage)
-                    {
-                        case true:
-                            epYes.Checked = true;
-                            epNo.Checked = false;
-                            epJustificationGroup.Visible = true;
-                            break;
-                        case false:
-                            epYes.Checked = false;
-                            epNo.Checked = true;
-                            epJustificationGroup.Visible = false;
-                            break;
-                    }
-                    epJustification.Text = ord.EmergencyPassageReason;
-
-                    fiscalImpact.Text = NotApplicable(ord.OrdinanceFiscalImpact.ToString());
-                    suggestedTitle.Text = ord.OrdinanceTitle;
-
-                    vendorName.Text = ord.ContractVendorName;
-                    vendorNumber.Text = ord.ContractVendorNumber;
-                    contractStartDate.Text = ord.ContractStartDate;
-                    contractEndDate.Text = ord.ContractEndDate;
-                    contractTerm.Value = ord.ContractTerm;
-                    contractAmount.Text = NotApplicable(ord.ContractAmount.ToString());
-
-                    switch (ord.ScopeChange)
-                    {
-                        case true:
-                            scYes.Checked = true;
-                            scNo.Checked = false;
-                            scopeChangeOptions.Visible = true;
-                            break;
-                        case false:
-                            scYes.Checked = false;
-                            scNo.Checked = true;
-                            scopeChangeOptions.Visible = false;
-                            break;
-                    }
-                    changeOrderNumber.Text = ord.ChangeOrderNumber;
-                    additionalAmount.Text = NotApplicable(ord.AdditionalAmount.ToString());
-
-
-                    purchaseMethod.SelectedValue = ord.ContractMethod;
-                    switch (purchaseMethod.SelectedValue)
-                    {
-                        default:
-                            otherExceptionDiv.Visible = false;
-                            break;
-                        case "Other":
-                        case "Exception":
-                            otherExceptionDiv.Visible = true;
-                            break;
-                    }
-                    otherException.Text = ord.OtherException;
-                    prevOrdinanceNums.Text = ord.PreviousOrdinanceNumbers;
-                    codeProvision.Text = ord.CodeProvision;
-
-                    switch (ord.PAApprovalRequired)
-                    {
-                        case true:
-                            paApprovalRequiredYes.Checked = true;
-                            paApprovalRequiredNo.Checked = false;
-                            break;
-                        case false:
-                            paApprovalRequiredYes.Checked = false;
-                            paApprovalRequiredNo.Checked = true;
-                            break;
-                    }
-                    switch (ord.PAApprovalIncluded)
-                    {
-                        case true:
-                            paApprovalAttachedYes.Checked = true;
-                            paApprovalAttachedNo.Checked = false;
-                            break;
-                        case false:
-                            paApprovalAttachedYes.Checked = false;
-                            paApprovalAttachedNo.Checked = true;
-                            break;
-                    }
-
-                    List<OrdinanceAccounting> ordAcc = Factory.Instance.GetAllLookup<OrdinanceAccounting>(ordID, "sp_GetOrdinanceAccountingByOrdinanceID", "OrdinanceID");
-                    List<OrdinanceAccounting> revItems = new List<OrdinanceAccounting>();
-                    List<OrdinanceAccounting> expItems = new List<OrdinanceAccounting>();
-                    if (ordAcc.Count > 0)
-                    {
-                        foreach (OrdinanceAccounting item in ordAcc)
-                        {
-                            switch (item.AccountingDesc)
-                            {
-                                case "revenue":
-                                    revItems.Add(item);
-                                    break;
-                                case "expenditure":
-                                    expItems.Add(item);
-                                    break;
-                            }
-                        }
-
-                        if (revItems.Count > 0)
-                        {
-                            Session["ordRevTable"] = revItems;
-                            Session["OriginalRevTable"] = revItems;
-                            rpRevenueTable.DataSource = revItems.OrderBy(i => i.OrdinanceAccountingID);
-                            rpRevenueTable.DataBind();
-                        }
-                        else
-                        {
-                            Session.Remove("ordRevTable");
-                            rpRevenueTable.DataSource = null;
-                            rpRevenueTable.DataBind();
-                        }
-                        if (expItems.Count > 0)
-                        {
-                            Session["ordExpTable"] = expItems;
-                            Session["OriginalExpTable"] = expItems;
-                            rpExpenditureTable.DataSource = expItems.OrderBy(i => i.OrdinanceAccountingID);
-                            rpExpenditureTable.DataBind();
-                        }
-                        else
-                        {
-                            Session.Remove("ordExpTable");
-                            rpExpenditureTable.DataSource = null;
-                            rpExpenditureTable.DataBind();
-                        }
-                    }
-                    else
-                    {
-                        Session.Remove("ordRevTable");
-                        Session.Remove("ordExpTable");
-                        rpRevenueTable.DataSource = null;
-                        rpExpenditureTable.DataSource = null;
-                        rpRevenueTable.DataBind();
-                        rpExpenditureTable.DataBind();
-                    }
-
-                    List<OrdinanceDocument> ordDocs = Factory.Instance.GetAllLookup<OrdinanceDocument>(ordID, "sp_GetOrdinanceDocumentsByOrdinanceID", "OrdinanceID");
-                    if (ordDocs.Count > 0)
-                    {
-                        supportingDocumentationDiv.Visible = true;
-                        Session["ordDocs"] = ordDocs;
-                        rpSupportingDocumentation.DataSource = ordDocs.OrderBy(i => i.DocumentID);
-                        rpSupportingDocumentation.DataBind();
-
-                        foreach (RepeaterItem item in rpSupportingDocumentation.Items)
-                        {
-                            LinkButton downloadFile = item.FindControl("supportingDocDownload") as LinkButton;
-                            ScriptManager.GetCurrent(Page).RegisterPostBackControl(downloadFile);
-                        }
-                    }
-                    else
-                    {
-                        Session.Remove("ordDocs");
-                        rpSupportingDocumentation.DataSource = null;
-                        rpSupportingDocumentation.DataBind();
-                        supportingDocumentationDiv.Visible = false;
-                    }
-
-                    staffAnalysis.Text = ord.OrdinanceAnalysis;
-
-                    List<OrdinanceSignature> ordSigs = Factory.Instance.GetAllLookup<OrdinanceSignature>(ordID, "sp_GetOrdinanceSignatureByOrdinanceID", "OrdinanceID");
-
-                    SignatureRequest signatureRequest = Factory.Instance.GetByID<SignatureRequest>(Convert.ToInt32(hdnOrdID.Value), "sp_GetOrdinanceSignatureRequestByOrdinanceID", "OrdinanceID");
-                    PropertyInfo sigType = (PropertyInfo)typeof(SignatureRequest).GetProperties().First(i => i.Name.Equals("DirectorSupervisor")); ;
-                    string[] emails = sigType.GetValue(signatureRequest).ToString().Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
-                    if (emails.Length > 0)
-                    {
-                        rpEmailList.DataSource = emails;
-                        rpEmailList.DataBind();
-                    }
-                    else
-                    {
-                        rpEmailList.DataSource = null;
-                        rpEmailList.DataBind();
-                    }
-                    Session["SigRequestEmails"] = signatureRequest;
-
-                    OrdinanceStatus ordStatus = new OrdinanceStatus();
-                    ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
-                    ordView.Attributes["readonly"] = "false";
-                    bool adminUser = (userInfo.IsAdmin || !userInfo.UserView) ? true : false;
-                    hdnStatusID.Value = ordStatus.StatusID.ToString();
-                    hdnOrdStatusID.Value = ordStatus.OrdinanceStatusID.ToString();
-                    requiredFieldDescriptor.Visible = true;
-                    fiscalImpact.Attributes["placeholder"] = "$0.00";
-                    vendorNumber.Attributes["placeholder"] = "0123456789";
-                    contractTerm.Attributes["placeholder"] = "Calculating Term...";
-                    contractAmount.Attributes["placeholder"] = "$0.00";
-                    prevOrdinanceNums.Attributes["placeholder"] = "123-45-6789";
-                    codeProvision.Attributes["placeholder"] = "0123456789";
-                    contractStartDate.TextMode = TextBoxMode.Date;
-                    contractEndDate.TextMode = TextBoxMode.Date;
-                    newRevenueRowDiv.Visible = true;
-                    newExpenditureRowDiv.Visible = true;
-                    supportingDocumentationDiv.Visible = true;
-                    supportingDocumentation.Visible = true;
-                    UploadDocBtn.Visible = true;
-                    Session.Remove("RemoveAccs");
-                    Session.Remove("RemoveOrdAccs");
-                    Session.Remove("RemoveDocs");
-                    submitSection.Visible = true;
-                    if (rpRevenueTable.Items.Count > 0)
-                    {
-                        foreach (RepeaterItem item in rpRevenueTable.Items)
-                        {
-                            HtmlGenericControl removeRevRowDiv = item.FindControl("removeRevRowDiv") as HtmlGenericControl;
-                            Button removeRevRow = item.FindControl("removeRevenueRow") as Button;
-                            TextBox revAmount = item.FindControl("revenueAmount") as TextBox;
-                            removeRevRow.Visible = true;
-                            revAmount.Attributes["placeholder"] = "$0.00";
-                            ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(removeRevRow);
-                        }
-                    }
-                    if (rpExpenditureTable.Items.Count > 0)
-                    {
-                        foreach (RepeaterItem item in rpExpenditureTable.Items)
-                        {
-                            HtmlGenericControl removeExpRowDiv = item.FindControl("removeExpRowDiv") as HtmlGenericControl;
-                            Button removeExpRow = item.FindControl("removeExpenditureRow") as Button;
-                            TextBox expAmount = item.FindControl("expenditureAmount") as TextBox;
-                            removeExpRow.Visible = true;
-                            expAmount.Attributes["placeholder"] = "$0.00";
-                            ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(removeExpRow);
-                        }
-                    }
-                    foreach (RepeaterItem item in rpSupportingDocumentation.Items)
-                    {
-                        LinkButton deleteFile = item.FindControl("deleteFile") as LinkButton;
-                        deleteFile.Visible = true;
-                        ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(deleteFile);
-                    }
-
-                    switch (scYes.Checked)
-                    {
-                        case true:
-                            changeOrderNumber.Enabled = true;
-                            additionalAmount.Enabled = true;
-                            changeOrderNumber.Attributes.Add("required", "true");
-                            changeOrderNumber.Attributes.Add("placeholder", "0123456789");
-                            additionalAmount.Attributes.Add("required", "true");
-                            additionalAmount.Attributes.Add("placeholder", "$0.00");
-                            break;
-
-                        case false:
-                            changeOrderNumber.Enabled = false;
-                            additionalAmount.Enabled = false;
-                            changeOrderNumber.Attributes.Remove("required");
-                            changeOrderNumber.Attributes.Remove("placeholder");
-                            additionalAmount.Attributes.Remove("required");
-                            additionalAmount.Attributes.Remove("placeholder");
-                            break;
-                    }
-                    switch (purchaseMethod.SelectedItem.Value)
-                    {
-                        default:
-                            otherException.Enabled = false;
-                            otherException.Text = string.Empty;
-                            otherException.Attributes.Remove("required");
-                            break;
-                        case "Other":
-                        case "Exception":
-                            otherException.Enabled = true;
-                            otherException.Attributes.Add("required", "true");
-                            break;
-                    }
-                    scopeChangeOptions.Visible = true;
-                    otherExceptionDiv.Visible = true;
-
-                    Session["OriginalOrdinance"] = ord;
-                    Session["OriginalStatus"] = ordStatus;
-
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "CurrencyFormatting", "CurrencyFormatting();", true);
-
-                    ordView.Visible = true;
-                    draftsTable.Visible = false;
+                case true:
+                    epYes.Checked = true;
+                    epNo.Checked = false;
+                    epJustificationGroup.Visible = true;
+                    epJustificationValid.Enabled = true;
+                    break;
+                case false:
+                    epYes.Checked = false;
+                    epNo.Checked = true;
+                    epJustificationGroup.Visible = false;
+                    epJustificationValid.Enabled = false;
                     break;
             }
+            epJustification.Text = ord.EmergencyPassageReason;
+
+            fiscalImpact.Text = NotApplicable(ord.OrdinanceFiscalImpact.ToString());
+            suggestedTitle.Text = ord.OrdinanceTitle;
+
+            vendorName.Text = ord.ContractVendorName;
+            vendorNumber.Text = ord.ContractVendorNumber;
+            contractStartDate.Text = ord.ContractStartDate;
+            contractEndDate.Text = ord.ContractEndDate;
+            contractTerm.Value = ord.ContractTerm;
+            contractAmount.Text = NotApplicable(ord.ContractAmount.ToString());
+
+            switch (ord.ScopeChange)
+            {
+                case true:
+                    scYes.Checked = true;
+                    scNo.Checked = false;
+                    changeOrderNumberValid.Enabled = true;
+                    additionalAmountValid.Enabled = true;
+                    break;
+                case false:
+                    scYes.Checked = false;
+                    scNo.Checked = true;
+                    changeOrderNumberValid.Enabled = false;
+                    additionalAmountValid.Enabled = false;
+                    break;
+            }
+            changeOrderNumber.Text = ord.ChangeOrderNumber;
+            additionalAmount.Text = NotApplicable(ord.AdditionalAmount.ToString());
+
+
+            purchaseMethod.SelectedValue = ord.ContractMethod;
+            switch (purchaseMethod.SelectedValue)
+            {
+                default:
+                    otherExceptionDiv.Visible = false;
+                    otherExceptionValid.Enabled = false;
+                    break;
+                case "Other":
+                case "Exception":
+                    otherExceptionDiv.Visible = true;
+                    otherExceptionValid.Enabled = true;
+                    break;
+            }
+            otherException.Text = ord.OtherException;
+            prevOrdinanceNums.Text = ord.PreviousOrdinanceNumbers;
+            codeProvision.Text = ord.CodeProvision;
+
+            switch (ord.PAApprovalRequired)
+            {
+                case true:
+                    paApprovalRequiredYes.Checked = true;
+                    paApprovalRequiredNo.Checked = false;
+                    break;
+                case false:
+                    paApprovalRequiredYes.Checked = false;
+                    paApprovalRequiredNo.Checked = true;
+                    break;
+            }
+            switch (ord.PAApprovalIncluded)
+            {
+                case true:
+                    paApprovalAttachedYes.Checked = true;
+                    paApprovalAttachedNo.Checked = false;
+                    break;
+                case false:
+                    paApprovalAttachedYes.Checked = false;
+                    paApprovalAttachedNo.Checked = true;
+                    break;
+            }
+
+            List<OrdinanceAccounting> ordAcc = Factory.Instance.GetAllLookup<OrdinanceAccounting>(ordID, "sp_GetOrdinanceAccountingByOrdinanceID", "OrdinanceID");
+            List<OrdinanceAccounting> revItems = new List<OrdinanceAccounting>();
+            List<OrdinanceAccounting> expItems = new List<OrdinanceAccounting>();
+            if (ordAcc.Count > 0)
+            {
+                foreach (OrdinanceAccounting item in ordAcc)
+                {
+                    switch (item.AccountingDesc)
+                    {
+                        case "revenue":
+                            revItems.Add(item);
+                            break;
+                        case "expenditure":
+                            expItems.Add(item);
+                            break;
+                    }
+                }
+
+                if (revItems.Count > 0)
+                {
+                    Session["ordRevTable"] = revItems;
+                    Session["OriginalRevTable"] = revItems;
+                    rpRevenueTable.DataSource = revItems.OrderBy(i => i.OrdinanceAccountingID);
+                    rpRevenueTable.DataBind();
+                }
+                else
+                {
+                    Session.Remove("ordRevTable");
+                    rpRevenueTable.DataSource = null;
+                    rpRevenueTable.DataBind();
+                }
+                if (expItems.Count > 0)
+                {
+                    Session["ordExpTable"] = expItems;
+                    Session["OriginalExpTable"] = expItems;
+                    rpExpenditureTable.DataSource = expItems.OrderBy(i => i.OrdinanceAccountingID);
+                    rpExpenditureTable.DataBind();
+                }
+                else
+                {
+                    Session.Remove("ordExpTable");
+                    rpExpenditureTable.DataSource = null;
+                    rpExpenditureTable.DataBind();
+                }
+            }
+            else
+            {
+                Session.Remove("ordRevTable");
+                Session.Remove("ordExpTable");
+                rpRevenueTable.DataSource = null;
+                rpExpenditureTable.DataSource = null;
+                rpRevenueTable.DataBind();
+                rpExpenditureTable.DataBind();
+            }
+
+            List<OrdinanceDocument> ordDocs = Factory.Instance.GetAllLookup<OrdinanceDocument>(ordID, "sp_GetOrdinanceDocumentsByOrdinanceID", "OrdinanceID");
+            if (ordDocs.Count > 0)
+            {
+                supportingDocumentationDiv.Visible = true;
+                Session["ordDocs"] = ordDocs;
+                rpSupportingDocumentation.DataSource = ordDocs.OrderBy(i => i.DocumentID);
+                rpSupportingDocumentation.DataBind();
+
+                foreach (RepeaterItem item in rpSupportingDocumentation.Items)
+                {
+                    LinkButton downloadFile = item.FindControl("supportingDocDownload") as LinkButton;
+                    ScriptManager.GetCurrent(Page).RegisterPostBackControl(downloadFile);
+                }
+            }
+            else
+            {
+                Session.Remove("ordDocs");
+                rpSupportingDocumentation.DataSource = null;
+                rpSupportingDocumentation.DataBind();
+                supportingDocumentationDiv.Visible = false;
+            }
+
+            staffAnalysis.Text = ord.OrdinanceAnalysis;
+
+            List<OrdinanceSignature> ordSigs = Factory.Instance.GetAllLookup<OrdinanceSignature>(ordID, "sp_GetOrdinanceSignatureByOrdinanceID", "OrdinanceID");
+
+            SignatureRequest signatureRequest = Factory.Instance.GetByID<SignatureRequest>(Convert.ToInt32(hdnOrdID.Value), "sp_GetOrdinanceSignatureRequestByOrdinanceID", "OrdinanceID");
+            PropertyInfo sigType = (PropertyInfo)typeof(SignatureRequest).GetProperties().First(i => i.Name.Equals("DirectorSupervisor")); ;
+            string[] emails = sigType.GetValue(signatureRequest).ToString().Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
+            if (emails.Length > 0)
+            {
+                directorSupervisorEmailAddresses.Text = signatureRequest.DirectorSupervisor;
+                rpEmailList.DataSource = emails;
+                rpEmailList.DataBind();
+            }
+            else
+            {
+                rpEmailList.DataSource = null;
+                rpEmailList.DataBind();
+            }
+            Session["SigRequestEmails"] = signatureRequest;
+
+            OrdinanceStatus ordStatus = new OrdinanceStatus();
+            ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
+            ordView.Attributes["readonly"] = "false";
+            bool adminUser = (userInfo.IsAdmin || !userInfo.UserView) ? true : false;
+            hdnStatusID.Value = ordStatus.StatusID.ToString();
+            hdnOrdStatusID.Value = ordStatus.OrdinanceStatusID.ToString();
+            requiredFieldDescriptor.Visible = true;
+            fiscalImpact.Attributes["placeholder"] = "$0.00";
+            vendorNumber.Attributes["placeholder"] = "0123456789";
+            contractTerm.Attributes["placeholder"] = "Calculating Term...";
+            contractAmount.Attributes["placeholder"] = "$0.00";
+            prevOrdinanceNums.Attributes["placeholder"] = "123-45-6789";
+            codeProvision.Attributes["placeholder"] = "0123456789";
+            contractStartDate.TextMode = TextBoxMode.Date;
+            contractEndDate.TextMode = TextBoxMode.Date;
+            newRevenueRowDiv.Visible = true;
+            newExpenditureRowDiv.Visible = true;
+            supportingDocumentationDiv.Visible = true;
+            supportingDocumentation.Visible = true;
+            UploadDocBtn.Visible = true;
+            Session.Remove("RemoveAccs");
+            Session.Remove("RemoveOrdAccs");
+            Session.Remove("RemoveDocs");
+            submitSection.Visible = true;
+            if (rpRevenueTable.Items.Count > 0)
+            {
+                foreach (RepeaterItem item in rpRevenueTable.Items)
+                {
+                    HtmlGenericControl removeRevRowDiv = item.FindControl("removeRevRowDiv") as HtmlGenericControl;
+                    Button removeRevRow = item.FindControl("removeRevenueRow") as Button;
+                    TextBox revAmount = item.FindControl("revenueAmount") as TextBox;
+                    removeRevRow.Visible = true;
+                    revAmount.Attributes["placeholder"] = "$0.00";
+                    ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(removeRevRow);
+                }
+            }
+            if (rpExpenditureTable.Items.Count > 0)
+            {
+                foreach (RepeaterItem item in rpExpenditureTable.Items)
+                {
+                    HtmlGenericControl removeExpRowDiv = item.FindControl("removeExpRowDiv") as HtmlGenericControl;
+                    Button removeExpRow = item.FindControl("removeExpenditureRow") as Button;
+                    TextBox expAmount = item.FindControl("expenditureAmount") as TextBox;
+                    removeExpRow.Visible = true;
+                    expAmount.Attributes["placeholder"] = "$0.00";
+                    ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(removeExpRow);
+                }
+            }
+            foreach (RepeaterItem item in rpSupportingDocumentation.Items)
+            {
+                LinkButton deleteFile = item.FindControl("deleteFile") as LinkButton;
+                deleteFile.Visible = true;
+                ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(deleteFile);
+            }
+
+
+            switch (epYes.Checked)
+            {
+                case true:
+                    epJustification.Attributes.Add("data-required", "true");
+                    break;
+                case false:
+                    epJustification.Attributes.Remove("data-required");
+                    break;
+            }
+            switch (scYes.Checked)
+            {
+                case true:
+                    changeOrderNumber.Enabled = true;
+                    additionalAmount.Enabled = true;
+                    changeOrderNumber.Attributes.Add("data-required", "true");
+                    changeOrderNumber.Attributes.Add("placeholder", "0123456789");
+                    additionalAmount.Attributes.Add("data-required", "true");
+                    additionalAmount.Attributes.Add("placeholder", "$0.00");
+                    break;
+
+                case false:
+                    changeOrderNumber.Enabled = false;
+                    additionalAmount.Enabled = false;
+                    changeOrderNumber.Attributes.Remove("data-required");
+                    changeOrderNumber.Attributes.Remove("placeholder");
+                    additionalAmount.Attributes.Remove("data-required");
+                    additionalAmount.Attributes.Remove("placeholder");
+                    break;
+            }
+            switch (purchaseMethod.SelectedItem.Value)
+            {
+                default:
+                    otherException.Enabled = false;
+                    otherException.Text = string.Empty;
+                    otherException.Attributes.Remove("data-required");
+                    break;
+                case "Other":
+                case "Exception":
+                    otherException.Enabled = true;
+                    otherException.Attributes.Add("data-required", "true");
+                    break;
+            }
+            scopeChangeOptions.Visible = true;
+            otherExceptionDiv.Visible = true;
+
+            Session["OriginalOrdinance"] = ord;
+            Session["OriginalStatus"] = ordStatus;
+
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "CurrencyFormatting", "CurrencyFormatting();", true);
+
+            ordView.Visible = true;
+            draftsTable.Visible = false;
         }
         protected void rpAccountingTable_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
@@ -1165,189 +1175,78 @@ namespace WebUI
         // SUBMITS //
         protected void SaveFactSheet_Click(object sender, EventArgs e)
         {
-            Ordinance ordinance = new Ordinance();
-
-            ordinance.OrdinanceID = Convert.ToInt32(hdnOrdID.Value);
-            ordinance.OrdinanceNumber = string.Empty;
-            ordinance.AgendaNumber = string.Empty;
-            ordinance.RequestDepartment = requestDepartment.SelectedItem.Text;
-            ordinance.RequestDivision = requestDivision.SelectedItem.Text;
-            ordinance.RequestContact = requestContact.Text;
-            ordinance.RequestPhone = $"{requestPhone.Text}{requestExt.Text}";
-            ordinance.RequestEmail = requestEmail.Text.ToLower();
-            ordinance.FirstReadDate = Convert.ToDateTime(firstReadDate.Text);
-            ordinance.EmergencyPassage = epYes.Checked;
-            ordinance.EmergencyPassageReason = epJustification.Text ?? string.Empty;
-            ordinance.OrdinanceFiscalImpact = CurrencyToDecimal(fiscalImpact.Text);
-            ordinance.OrdinanceTitle = suggestedTitle.Text;
-            ordinance.ContractVendorName = vendorName.Text;
-            ordinance.ContractVendorNumber = vendorNumber.Text;
-            ordinance.ContractStartDate = contractStartDate.Text;
-            ordinance.ContractEndDate = contractEndDate.Text;
-            ordinance.ContractTerm = contractTerm.Value;
-            ordinance.ContractAmount = CurrencyToDecimal(contractAmount.Text);
-            ordinance.ScopeChange = scYes.Checked;
-            ordinance.ChangeOrderNumber = changeOrderNumber.Text ?? string.Empty;
-            if (scYes.Checked)
+            if (Page.IsValid)
             {
-                ordinance.AdditionalAmount = CurrencyToDecimal(additionalAmount.Text);
-            }
-            else
-            {
-                ordinance.AdditionalAmount = CurrencyToDecimal("-1");
-            }
-            ordinance.ContractMethod = purchaseMethod.SelectedValue;
-            ordinance.OtherException = otherException.Text ?? string.Empty;
-            ordinance.PreviousOrdinanceNumbers = prevOrdinanceNums.Text;
-            ordinance.CodeProvision = codeProvision.Text;
-            ordinance.PAApprovalRequired = paApprovalRequiredYes.Checked;
-            ordinance.PAApprovalIncluded = paApprovalAttachedYes.Checked;
-            ordinance.OrdinanceAnalysis = staffAnalysis.Text;
-            ordinance.LastUpdateBy = _user.Login;
-            ordinance.LastUpdateDate = DateTime.Now;
-            ordinance.EffectiveDate = Convert.ToDateTime(hdnEffectiveDate.Value);
-            ordinance.ExpirationDate = DateTime.MaxValue;
+                Ordinance ordinance = new Ordinance();
 
-            int retVal = Factory.Instance.Update(ordinance, "sp_UpdateOrdinance", Skips(key: "ordUpdate"));
-
-            OrdinanceStatus ordStatus = new OrdinanceStatus();
-            ordStatus.OrdinanceStatusID = Convert.ToInt32(hdnOrdStatusID.Value);
-            ordStatus.OrdinanceID = Convert.ToInt32(hdnOrdID.Value);
-            ordStatus.StatusID = 9;
-            ordStatus.LastUpdateBy = _user.Login;
-            ordStatus.LastUpdateDate = DateTime.Now;
-            ordStatus.EffectiveDate = Convert.ToDateTime(hdnEffectiveDate.Value);
-            ordStatus.ExpirationDate = DateTime.MaxValue;
-            int statusVal = Factory.Instance.Update(ordStatus, "sp_UpdateOrdinance_Status", Skips("ordStatusUpdate"));
-
-            int addDocsVal = new int();
-            int addUploadedDocsVal = new int();
-            List<OrdinanceDocument> ordDocs = Session["addOrdDocs"] as List<OrdinanceDocument>;
-            List<string> addDocNames = new List<string>();
-            if (Session["addOrdDocs"] != null)
-            {
-                foreach (OrdinanceDocument ordDoc in ordDocs)
+                ordinance.OrdinanceID = Convert.ToInt32(hdnOrdID.Value);
+                ordinance.OrdinanceNumber = string.Empty;
+                ordinance.AgendaNumber = string.Empty;
+                ordinance.RequestDepartment = requestDepartment.SelectedItem.Text;
+                ordinance.RequestDivision = requestDivision.SelectedItem.Text;
+                ordinance.RequestContact = requestContact.Text;
+                ordinance.RequestPhone = $"{requestPhone.Text}{requestExt.Text}";
+                ordinance.RequestEmail = requestEmail.Text.ToLower();
+                ordinance.FirstReadDate = Convert.ToDateTime(firstReadDate.Text);
+                ordinance.EmergencyPassage = epYes.Checked;
+                ordinance.EmergencyPassageReason = epJustification.Text ?? string.Empty;
+                ordinance.OrdinanceFiscalImpact = CurrencyToDecimal(fiscalImpact.Text);
+                ordinance.OrdinanceTitle = suggestedTitle.Text;
+                ordinance.ContractVendorName = vendorName.Text;
+                ordinance.ContractVendorNumber = vendorNumber.Text;
+                ordinance.ContractStartDate = contractStartDate.Text;
+                ordinance.ContractEndDate = contractEndDate.Text;
+                ordinance.ContractTerm = contractTerm.Value;
+                ordinance.ContractAmount = CurrencyToDecimal(contractAmount.Text);
+                ordinance.ScopeChange = scYes.Checked;
+                ordinance.ChangeOrderNumber = changeOrderNumber.Text ?? string.Empty;
+                if (scYes.Checked)
                 {
-                    ordDoc.OrdinanceID = Convert.ToInt32(hdnOrdID.Value);
-                    addUploadedDocsVal = Factory.Instance.Insert(ordDoc, "sp_InsertOrdinance_Document", Skips("ordDocumentInsert"));
-                    if (addUploadedDocsVal > 0)
-                    {
-                        addDocNames.Add(ordDoc.DocumentName);
-                    }
-                    else if (addUploadedDocsVal < 1)
-                    {
-                        break;
-                    }
+                    ordinance.AdditionalAmount = CurrencyToDecimal(additionalAmount.Text);
                 }
-            }
-            else
-            {
-                addUploadedDocsVal = 1;
-            }
-            if (supportingDocumentation.HasFiles)
-            {
-                for (int i = 0; i < supportingDocumentation.PostedFiles.Count; i++)
+                else
                 {
-                    OrdinanceDocument ordDoc = new OrdinanceDocument();
-                    ordDoc.OrdinanceID = Convert.ToInt32(hdnOrdID.Value);
-                    ordDoc.DocumentName = supportingDocumentation.PostedFiles[i].FileName;
-                    Stream stream = supportingDocumentation.PostedFiles[i].InputStream;
-                    using (var fileBytes = new BinaryReader(stream))
-                    {
-                        ordDoc.DocumentData = fileBytes.ReadBytes((int)stream.Length);
-                    }
-                    ordDoc.LastUpdateBy = _user.Login;
-                    ordDoc.LastUpdateDate = DateTime.Now;
-                    ordDoc.EffectiveDate = DateTime.Now;
-                    ordDoc.ExpirationDate = DateTime.MaxValue;
-                    addDocsVal = Factory.Instance.Insert(ordDoc, "sp_InsertOrdinance_Document", Skips("ordDocumentInsert"));
-                    if (addDocsVal > 0)
-                    {
-                        addDocNames.Add(ordDoc.DocumentName);
-                    }
-                    else if (addDocsVal < 1)
-                    {
-                        break;
-                    }
+                    ordinance.AdditionalAmount = CurrencyToDecimal("-1");
                 }
-            }
-            else
-            {
-                addDocsVal = 1;
-            }
+                ordinance.ContractMethod = purchaseMethod.SelectedValue;
+                ordinance.OtherException = otherException.Text ?? string.Empty;
+                ordinance.PreviousOrdinanceNumbers = prevOrdinanceNums.Text;
+                ordinance.CodeProvision = codeProvision.Text;
+                ordinance.PAApprovalRequired = paApprovalRequiredYes.Checked;
+                ordinance.PAApprovalIncluded = paApprovalAttachedYes.Checked;
+                ordinance.OrdinanceAnalysis = staffAnalysis.Text;
+                ordinance.LastUpdateBy = _user.Login;
+                ordinance.LastUpdateDate = DateTime.Now;
+                ordinance.EffectiveDate = Convert.ToDateTime(hdnEffectiveDate.Value);
+                ordinance.ExpirationDate = DateTime.MaxValue;
 
-            int removeDocVal = new int();
-            List<OrdinanceDocument> removeDocs = new List<OrdinanceDocument>();
-            List<string> removeDocNames = new List<string>();
-            if (Session["RemoveDocs"] != null)
-            {
-                removeDocs = Session["RemoveDocs"] as List<OrdinanceDocument>;
-            }
-            if (removeDocs.Count > 0)
-            {
-                foreach (OrdinanceDocument item in removeDocs)
-                {
-                    removeDocVal = Factory.Instance.Expire(item, "sp_UpdateOrdinance_Document");
-                    if (removeDocVal > 0)
-                    {
-                        removeDocNames.Add(item.DocumentName);
-                    }
-                    else if (removeDocVal < 1)
-                    {
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                removeDocVal = 1;
-            }
+                int retVal = Factory.Instance.Update(ordinance, "sp_UpdateOrdinance", Skips(key: "ordUpdate"));
 
-            int removeOrdAccsVal = new int();
-            List<OrdinanceAccounting> removeOrdAccs = new List<OrdinanceAccounting>();
-            if (Session["RemoveOrdAccs"] != null)
-            {
-                removeOrdAccs = Session["RemoveOrdAccs"] as List<OrdinanceAccounting>;
-            }
-            if (removeOrdAccs.Count > 0)
-            {
-                foreach (OrdinanceAccounting item in removeOrdAccs)
-                {
-                    item.LastUpdateBy = _user.Login;
-                    item.LastUpdateDate = DateTime.Now;
-                    item.EffectiveDate = DateTime.Now;
-                    removeOrdAccsVal = Factory.Instance.Expire(item, "sp_UpdateOrdinance_Accounting");
-                    if (removeOrdAccsVal < 1)
-                    {
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                removeOrdAccsVal = 1;
-            }
+                OrdinanceStatus ordStatus = new OrdinanceStatus();
+                ordStatus.OrdinanceStatusID = Convert.ToInt32(hdnOrdStatusID.Value);
+                ordStatus.OrdinanceID = Convert.ToInt32(hdnOrdID.Value);
+                ordStatus.StatusID = 9;
+                ordStatus.LastUpdateBy = _user.Login;
+                ordStatus.LastUpdateDate = DateTime.Now;
+                ordStatus.EffectiveDate = Convert.ToDateTime(hdnEffectiveDate.Value);
+                ordStatus.ExpirationDate = DateTime.MaxValue;
+                int statusVal = Factory.Instance.Update(ordStatus, "sp_UpdateOrdinance_Status", Skips("ordStatusUpdate"));
 
-            int updateRevAccsVal = new int();
-            int updateExpAccsVal = new int();
-            if (removeOrdAccsVal > 0)
-            {
-                if (rpRevenueTable.Items.Count > 0)
+                int addDocsVal = new int();
+                int addUploadedDocsVal = new int();
+                List<OrdinanceDocument> ordDocs = Session["addOrdDocs"] as List<OrdinanceDocument>;
+                List<string> addDocNames = new List<string>();
+                if (Session["addOrdDocs"] != null)
                 {
-                    for (int i = 0; i < rpRevenueTable.Items.Count; i++)
+                    foreach (OrdinanceDocument ordDoc in ordDocs)
                     {
-                        OrdinanceAccounting accountingItem = GetAccountingItem("revenue", i);
-                        if (accountingItem.OrdinanceAccountingID > 0)
+                        ordDoc.OrdinanceID = Convert.ToInt32(hdnOrdID.Value);
+                        addUploadedDocsVal = Factory.Instance.Insert(ordDoc, "sp_InsertOrdinance_Document", Skips("ordDocumentInsert"));
+                        if (addUploadedDocsVal > 0)
                         {
-                            updateRevAccsVal = Factory.Instance.Update(accountingItem, "sp_UpdateOrdinance_Accounting");
-                            List<OrdinanceAccounting> originalRevList = Session["OriginalRevTable"] as List<OrdinanceAccounting>;
-                            OrdinanceAccounting originalRevItem = originalRevList.First(r => r.OrdinanceAccountingID.Equals(accountingItem.OrdinanceAccountingID));
+                            addDocNames.Add(ordDoc.DocumentName);
                         }
-                        else
-                        {
-                            updateRevAccsVal = Factory.Instance.Insert(accountingItem, "sp_InsertOrdinance_Accounting", Skips("accountingInsert"));
-                        }
-                        if (updateRevAccsVal < 1)
+                        else if (addUploadedDocsVal < 1)
                         {
                             break;
                         }
@@ -1355,25 +1254,30 @@ namespace WebUI
                 }
                 else
                 {
-                    updateRevAccsVal = 1;
+                    addUploadedDocsVal = 1;
                 }
-
-                if (rpExpenditureTable.Items.Count > 0)
+                if (supportingDocumentation.HasFiles)
                 {
-                    for (int i = 0; i < rpExpenditureTable.Items.Count; i++)
+                    for (int i = 0; i < supportingDocumentation.PostedFiles.Count; i++)
                     {
-                        OrdinanceAccounting accountingItem = GetAccountingItem("expenditure", i);
-                        if (accountingItem.OrdinanceAccountingID > 0)
+                        OrdinanceDocument ordDoc = new OrdinanceDocument();
+                        ordDoc.OrdinanceID = Convert.ToInt32(hdnOrdID.Value);
+                        ordDoc.DocumentName = supportingDocumentation.PostedFiles[i].FileName;
+                        Stream stream = supportingDocumentation.PostedFiles[i].InputStream;
+                        using (var fileBytes = new BinaryReader(stream))
                         {
-                            updateExpAccsVal = Factory.Instance.Update(accountingItem, "sp_UpdateOrdinance_Accounting");
-                            List<OrdinanceAccounting> originalExpList = Session["OriginalExpTable"] as List<OrdinanceAccounting>;
-                            OrdinanceAccounting originalExpItem = originalExpList.First(r => r.OrdinanceAccountingID.Equals(accountingItem.OrdinanceAccountingID));
+                            ordDoc.DocumentData = fileBytes.ReadBytes((int)stream.Length);
                         }
-                        else
+                        ordDoc.LastUpdateBy = _user.Login;
+                        ordDoc.LastUpdateDate = DateTime.Now;
+                        ordDoc.EffectiveDate = DateTime.Now;
+                        ordDoc.ExpirationDate = DateTime.MaxValue;
+                        addDocsVal = Factory.Instance.Insert(ordDoc, "sp_InsertOrdinance_Document", Skips("ordDocumentInsert"));
+                        if (addDocsVal > 0)
                         {
-                            updateExpAccsVal = Factory.Instance.Insert(accountingItem, "sp_InsertOrdinance_Accounting", Skips("accountingInsert"));
+                            addDocNames.Add(ordDoc.DocumentName);
                         }
-                        if (updateExpAccsVal < 1)
+                        else if (addDocsVal < 1)
                         {
                             break;
                         }
@@ -1381,13 +1285,121 @@ namespace WebUI
                 }
                 else
                 {
-                    updateExpAccsVal = 1;
+                    addDocsVal = 1;
                 }
-            }
+
+                int removeDocVal = new int();
+                List<OrdinanceDocument> removeDocs = new List<OrdinanceDocument>();
+                List<string> removeDocNames = new List<string>();
+                if (Session["RemoveDocs"] != null)
+                {
+                    removeDocs = Session["RemoveDocs"] as List<OrdinanceDocument>;
+                }
+                if (removeDocs.Count > 0)
+                {
+                    foreach (OrdinanceDocument item in removeDocs)
+                    {
+                        removeDocVal = Factory.Instance.Expire(item, "sp_UpdateOrdinance_Document");
+                        if (removeDocVal > 0)
+                        {
+                            removeDocNames.Add(item.DocumentName);
+                        }
+                        else if (removeDocVal < 1)
+                        {
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    removeDocVal = 1;
+                }
+
+                int removeOrdAccsVal = new int();
+                List<OrdinanceAccounting> removeOrdAccs = new List<OrdinanceAccounting>();
+                if (Session["RemoveOrdAccs"] != null)
+                {
+                    removeOrdAccs = Session["RemoveOrdAccs"] as List<OrdinanceAccounting>;
+                }
+                if (removeOrdAccs.Count > 0)
+                {
+                    foreach (OrdinanceAccounting item in removeOrdAccs)
+                    {
+                        item.LastUpdateBy = _user.Login;
+                        item.LastUpdateDate = DateTime.Now;
+                        item.EffectiveDate = DateTime.Now;
+                        removeOrdAccsVal = Factory.Instance.Expire(item, "sp_UpdateOrdinance_Accounting");
+                        if (removeOrdAccsVal < 1)
+                        {
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    removeOrdAccsVal = 1;
+                }
+
+                int updateRevAccsVal = new int();
+                int updateExpAccsVal = new int();
+                if (removeOrdAccsVal > 0)
+                {
+                    if (rpRevenueTable.Items.Count > 0)
+                    {
+                        for (int i = 0; i < rpRevenueTable.Items.Count; i++)
+                        {
+                            OrdinanceAccounting accountingItem = GetAccountingItem("revenue", i);
+                            if (accountingItem.OrdinanceAccountingID > 0)
+                            {
+                                updateRevAccsVal = Factory.Instance.Update(accountingItem, "sp_UpdateOrdinance_Accounting");
+                                List<OrdinanceAccounting> originalRevList = Session["OriginalRevTable"] as List<OrdinanceAccounting>;
+                                OrdinanceAccounting originalRevItem = originalRevList.First(r => r.OrdinanceAccountingID.Equals(accountingItem.OrdinanceAccountingID));
+                            }
+                            else
+                            {
+                                updateRevAccsVal = Factory.Instance.Insert(accountingItem, "sp_InsertOrdinance_Accounting", Skips("accountingInsert"));
+                            }
+                            if (updateRevAccsVal < 1)
+                            {
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        updateRevAccsVal = 1;
+                    }
+
+                    if (rpExpenditureTable.Items.Count > 0)
+                    {
+                        for (int i = 0; i < rpExpenditureTable.Items.Count; i++)
+                        {
+                            OrdinanceAccounting accountingItem = GetAccountingItem("expenditure", i);
+                            if (accountingItem.OrdinanceAccountingID > 0)
+                            {
+                                updateExpAccsVal = Factory.Instance.Update(accountingItem, "sp_UpdateOrdinance_Accounting");
+                                List<OrdinanceAccounting> originalExpList = Session["OriginalExpTable"] as List<OrdinanceAccounting>;
+                                OrdinanceAccounting originalExpItem = originalExpList.First(r => r.OrdinanceAccountingID.Equals(accountingItem.OrdinanceAccountingID));
+                            }
+                            else
+                            {
+                                updateExpAccsVal = Factory.Instance.Insert(accountingItem, "sp_InsertOrdinance_Accounting", Skips("accountingInsert"));
+                            }
+                            if (updateExpAccsVal < 1)
+                            {
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        updateExpAccsVal = 1;
+                    }
+                }
 
 
-            List<int> submitVals = new List<int>(new int[]
-            {
+                List<int> submitVals = new List<int>(new int[]
+                {
                 retVal,
                 statusVal,
                 removeDocVal,
@@ -1396,21 +1408,22 @@ namespace WebUI
                 removeOrdAccsVal,
                 updateRevAccsVal,
                 updateExpAccsVal,
-            });
+                });
 
-            if (submitVals.All(i => i > 0))
-            {
-                Session["SubmitStatus"] = "success";
-                Session["ToastColor"] = "text-bg-success";
-                Session["ToastMessage"] = "Form Saved!";
-                //Email.Instance.SendEmail(newEmail, emailList);
-                Response.Redirect("./FactSheetDrafts");
-            }
-            else
-            {
-                Session["SubmitStatus"] = "error";
-                Session["ToastColor"] = "text-bg-danger";
-                Session["ToastMessage"] = "Something went wrong while saving!";
+                if (submitVals.All(i => i > 0))
+                {
+                    Session["SubmitStatus"] = "success";
+                    Session["ToastColor"] = "text-bg-success";
+                    Session["ToastMessage"] = "Form Saved!";
+                    //Email.Instance.SendEmail(newEmail, emailList);
+                    Response.Redirect("./FactSheetDrafts");
+                }
+                else
+                {
+                    Session["SubmitStatus"] = "error";
+                    Session["ToastColor"] = "text-bg-danger";
+                    Session["ToastMessage"] = "Something went wrong while saving!";
+                }
             }
         }
         protected void mdlDeleteSubmit_ServerClick(object sender, EventArgs e)
@@ -1489,6 +1502,7 @@ namespace WebUI
             sigType.SetValue(sigRequests, string.Join(";", emails.OrderBy(i => i)));
             if (emails.Count > 0)
             {
+                directorSupervisorEmailAddresses.Text = signatureEmailAddress.Text;
                 emailListDiv.Visible = true;
                 rpEmailList.DataSource = emails.OrderBy(i => i);
                 rpEmailList.DataBind();
@@ -1520,11 +1534,13 @@ namespace WebUI
                     sigType.SetValue(sigRequests, string.Join(";", emails.OrderBy(i => i)));
                     if (emails.Count > 0)
                     {
+                        directorSupervisorEmailAddresses.Text = sigRequests.DirectorSupervisor;
                         rpEmailList.DataSource = emails.OrderBy(i => i);
                         rpEmailList.DataBind();
                     }
                     else
                     {
+                        directorSupervisorEmailAddresses.Text = string.Empty;
                         rpEmailList.DataSource = null;
                         rpEmailList.DataBind();
                     }

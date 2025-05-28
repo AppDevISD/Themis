@@ -44,8 +44,8 @@
 
 	</head>
 	<body runat="server" class="bg-body-secondary">
-		<form id="formMain" runat="server" class="needs-validation" novalidate>
-			<asp:ScriptManager runat="server" />
+		<form id="formMain" runat="server" class="needs-validation">
+			<asp:ScriptManager runat="server" EnablePartialRendering="true" />
 			
 			<div class="page">
 				<%-- NAV MENU --%>
@@ -170,6 +170,8 @@
 				<script type="text/javascript" src="./Scripts/Helpers/JS/FormFormatting.js"></script>
 				<script type="text/javascript" src="./Scripts/Helpers/JS/SubmitToast.js"></script>
 				<script type="text/javascript" src="./Scripts/Helpers/JS/ChartHelpers.js"></script>
+				<%-- MULTI VALIDATION GROUP --%>
+				<script type="text/javascript" src="./Scripts/Helpers/JS/MultiValidationGroup.js"></script>
 				<script type="text/javascript" src="./assets/js/Site.js"></script>
 
 				<%-- MAIN CONTENT --%>
@@ -258,9 +260,12 @@
 					</div>
 				</ContentTemplate>
 			</asp:UpdatePanel>
+			
 		</form>
 		
-		<%-- REQUIRED FIELDS INDICATOR / ACTIVE PAGE HELPER --%>
+		
+
+		<%-- REQUIRED FIELDS INDICATOR / ACTIVE PAGE HELPER / LOADING BUTTONS --%>
 		<script type="text/javascript" src="./Scripts/Helpers/JS/RequiredFieldsAndActivePage.js"></script>
 
 		<%-- LIGHT/DARK MODE SWITCHER --%>

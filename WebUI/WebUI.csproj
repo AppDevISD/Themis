@@ -156,6 +156,7 @@
     <Content Include="Global.asax" />
     <Content Include="Scripts\Helpers\JS\InactiveTimer.js" />
     <Content Include="Scripts\Helpers\JS\LoadingBtn.js" />
+    <Content Include="Scripts\Helpers\JS\MultiValidationGroup.js" />
     <Content Include="Scripts\Helpers\JS\RequiredFieldsAndActivePage.js" />
     <Content Include="Scripts\Helpers\JS\Settings.js" />
     <Content Include="Scripts\Helpers\JS\SubmitToast.js" />

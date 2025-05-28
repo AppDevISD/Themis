@@ -78,13 +78,13 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.TextBox firstReadDate;
 
         /// <summary>
-        /// readDateValid control.
+        /// firstReadDateValid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator readDateValid;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator firstReadDateValid;
 
         /// <summary>
         /// requestContact control.
@@ -564,13 +564,13 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.TextBox directorSupervisorEmailAddresses;
 
         /// <summary>
-        /// directorSupervisorEmailAddressesValid control.
+        /// emailListContainerValid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator directorSupervisorEmailAddressesValid;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator emailListContainerValid;
 
         /// <summary>
         /// SubmitFactSheet control.
