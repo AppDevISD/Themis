@@ -100,7 +100,7 @@ namespace WebUI
             foreach (RepeaterItem item in rpDraftsTable.Items)
             {
                 LinkButton editButton = item.FindControl("editOrd") as LinkButton;
-                ScriptManager.GetCurrent(Page).RegisterPostBackControl(editButton);
+                ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(editButton);
             }
 
             if (ScriptManager.GetCurrent(Page).IsInAsyncPostBack)
@@ -674,7 +674,6 @@ namespace WebUI
             bool adminUser = (userInfo.IsAdmin || !userInfo.UserView) ? true : false;
             hdnStatusID.Value = ordStatus.StatusID.ToString();
             hdnOrdStatusID.Value = ordStatus.OrdinanceStatusID.ToString();
-            requiredFieldDescriptor.Visible = true;
             fiscalImpact.Attributes["placeholder"] = "$0.00";
             vendorNumber.Attributes["placeholder"] = "0123456789";
             contractTerm.Attributes["placeholder"] = "Calculating Term...";
@@ -1177,6 +1176,7 @@ namespace WebUI
         {
             if (Page.IsValid)
             {
+                Button btn = (Button)sender;
                 Ordinance ordinance = new Ordinance();
 
                 ordinance.OrdinanceID = Convert.ToInt32(hdnOrdID.Value);
@@ -1225,7 +1225,15 @@ namespace WebUI
                 OrdinanceStatus ordStatus = new OrdinanceStatus();
                 ordStatus.OrdinanceStatusID = Convert.ToInt32(hdnOrdStatusID.Value);
                 ordStatus.OrdinanceID = Convert.ToInt32(hdnOrdID.Value);
-                ordStatus.StatusID = 9;
+                switch (btn.CommandName)
+                {
+                    case "submit":
+                        ordStatus.StatusID = 1;
+                        break;
+                    case "save":
+                        ordStatus.StatusID = 9;
+                        break; 
+                }
                 ordStatus.LastUpdateBy = _user.Login;
                 ordStatus.LastUpdateDate = DateTime.Now;
                 ordStatus.EffectiveDate = Convert.ToDateTime(hdnEffectiveDate.Value);
@@ -1414,15 +1422,31 @@ namespace WebUI
                 {
                     Session["SubmitStatus"] = "success";
                     Session["ToastColor"] = "text-bg-success";
-                    Session["ToastMessage"] = "Form Saved!";
-                    //Email.Instance.SendEmail(newEmail, emailList);
+                    switch (btn.CommandName)
+                    {
+                        case "submit":
+                            Session["ToastMessage"] = "Form Submitted!";
+                            //Email.Instance.SendEmail(newEmail, emailList);
+                            break;
+                        case "save":
+                            Session["ToastMessage"] = "Form Saved!";
+                            break;
+                    }                    
                     Response.Redirect("./FactSheetDrafts");
                 }
                 else
                 {
                     Session["SubmitStatus"] = "error";
                     Session["ToastColor"] = "text-bg-danger";
-                    Session["ToastMessage"] = "Something went wrong while saving!";
+                    switch (btn.CommandName)
+                    {
+                        case "submit":
+                            Session["ToastMessage"] = "Something went wrong while submitting!";
+                            break;
+                        case "save":
+                            Session["ToastMessage"] = "Something went wrong while saving!";
+                            break;
+                    }
                 }
             }
         }
@@ -1559,5 +1583,33 @@ namespace WebUI
             ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(btn);
         }
 
+        protected void rpRevenueTable_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            RepeaterItem rpItem = (RepeaterItem)e.Item;
+            List<TextBox> textBoxes = new List<TextBox>()
+            {
+                (TextBox)e.Item.FindControl("revenueFundCode"),
+                (TextBox)e.Item.FindControl("revenueAgencyCode"),
+                (TextBox)e.Item.FindControl("revenueOrgCode"),
+                (TextBox)e.Item.FindControl("revenueActivityCode"),
+                (TextBox)e.Item.FindControl("revenueObjectCode")
+            };
+
+            foreach (TextBox box in textBoxes)
+            {
+                Debug.WriteLine($"{box.UniqueID}-{rpItem.ItemIndex}");
+                box.Attributes.Add("data-validate", $"{box.ID}-{rpItem.ItemIndex}");
+                RequiredFieldValidator rfv = new RequiredFieldValidator()
+                {
+                    ID = $"{box.ID}Valid-{rpItem.ItemIndex}",
+                    ControlToValidate = box.ID,
+                    ValidationGroup = "factSheetMain",
+                    SetFocusOnError = false,
+                    Display = ValidatorDisplay.None
+                };
+                rfv.Attributes.Add("data-table-validator", "true");
+                box.Parent.Controls.Add(rfv);
+            }            
+        }
     }
 }

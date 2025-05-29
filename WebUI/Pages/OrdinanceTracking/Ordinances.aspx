@@ -1096,8 +1096,8 @@
 								<div class="col-md-2">
 									<div class="btn-group">
 										<%-- DON'T CHANGE THE TEXT VALUES HERE!!!! THEY ARE UNICODE FOR THE ICONS!!! --%>
-										<asp:Button runat="server" ID="AddRequestEmailAddress" UseSubmitBehavior="false" CssClass="btn btn-success fas-btn" OnClick="AddRequestEmailAddress_Click" disabled="disabled" Text=''/>
-										<asp:Button ID="btnSendSigEmail" runat="server" CssClass="btn btn-primary fas-btn" CausesValidation="false" UseSubmitBehavior="false" Visible="true" OnClick="btnSendSigEmail_Click" OnClientClick="ShowEmailToast();" Text="" />
+										<asp:Button runat="server" ID="AddRequestEmailAddress" UseSubmitBehavior="false" CssClass="btn btn-success fas-btn" OnClick="AddRequestEmailAddress_Click" disabled="disabled" Text='&#xf055;'/>
+										<asp:Button ID="btnSendSigEmail" runat="server" CssClass="btn btn-primary fas-btn" CausesValidation="false" UseSubmitBehavior="false" Visible="true" OnClick="btnSendSigEmail_Click" OnClientClick="ShowEmailToast();" Text="&#xf1d8;" />
 									</div>
 								</div>
 							</div>

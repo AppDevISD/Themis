@@ -72,7 +72,7 @@
 										<tr>
 											<td class="align-middle">
 												<asp:HiddenField runat="server" ID="hdnID" Value='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' />
-												<asp:Label ID="draftsTableDate" Text='<%# DataBinder.Eval(Container.DataItem, "LastUpdateDate", "{0:MM/dd/yyyy - h:MM:ss tt}") %>' runat="server" />
+												<asp:Label ID="draftsTableDate" Text='<%# DataBinder.Eval(Container.DataItem, "LastUpdateDate", "{0:MM/dd/yyyy - h:mm:ss tt}") %>' runat="server" />
 											</td>
 											<td class="align-middle text-start mw-0 text-truncate" data-overflow-tooltip="true" data-placement="top" title='<%# DataBinder.Eval(Container.DataItem, "OrdinanceTitle") %>'>
 												<asp:Label ID="draftsTableTitle" Text='<%# DataBinder.Eval(Container.DataItem, "OrdinanceTitle") %>' runat="server" />
@@ -142,9 +142,7 @@
 
 							<div class="px-2 py-4">
 								<%-- REQUIRED FIELD DESCRIPTOR --%>
-								<div class="row">
-									<p runat="server" id="requiredFieldDescriptor" class="text-justify" style="color: gray;"><i class="fa-solid fa-asterisk"></i>&nbsp;= Required Field</p>
-								</div>
+								<p class="text-justify" style="color: gray;"><i class="fa-solid fa-asterisk"></i>&nbsp;= Required Field</p>
 
 								<%-- FIRST SECTION --%>
 								<div class="form-section">
@@ -499,29 +497,25 @@
 												<%-- TABLE BODY --%>
 												<tbody>
 													<%-- REVENUE TABLE REPEATER --%>
-													<asp:Repeater runat="server" ID="rpRevenueTable" OnItemCommand="rpAccountingTable_ItemCommand">
+													<asp:Repeater runat="server" ID="rpRevenueTable" OnItemCommand="rpAccountingTable_ItemCommand" OnItemCreated="rpRevenueTable_ItemDataBound">
 														<ItemTemplate>
 															<tr class="upperCaseField">
-																<td style="vertical-align: middle">
+																<td runat="server" id="revenueFundCodeCell" style="vertical-align: middle">
 																	<asp:HiddenField runat="server" ID="hdnRevID" Value='<%# DataBinder.Eval(Container.DataItem, "OrdinanceAccountingID") %>' />
 																	<asp:HiddenField runat="server" ID="hdnRevIndex" Value='<%# Container.ItemIndex %>' />
-																	<asp:TextBox runat="server" ID="revenueFundCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "FundCode") %>' data-required="true"></asp:TextBox>
+																	<asp:TextBox runat="server" ID="revenueFundCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "FundCode") %>' data-required="true" ClientIDMode="AutoID"></asp:TextBox>
 																</td>
-																<td style="vertical-align: middle">
-																	<%--<asp:DropDownList ID="revenueAgencyCode" runat="server" CssClass="form-select" data-required="true" DataSource='<%# agencyCodes %>' SelectedValue='<%# DataBinder.Eval(Container.DataItem, "DepartmentCode") %>'></asp:DropDownList>--%>
-																	<asp:TextBox runat="server" ID="revenueAgencyCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "DepartmentCode") %>' data-required="true"></asp:TextBox>
+																<td runat="server" id="revenueAgencyCodeCell" style="vertical-align: middle">
+																	<asp:TextBox runat="server" ID="revenueAgencyCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "DepartmentCode") %>' data-required="true" ClientIDMode="AutoID"></asp:TextBox>
 																</td>
-																<td style="vertical-align: middle">
-																	<%--<asp:DropDownList ID="revenueOrgCode" runat="server" CssClass="form-select" data-required="true" DataSource='<%# orgCodes %>' SelectedValue='<%# DataBinder.Eval(Container.DataItem, "UnitCode") %>'></asp:DropDownList>--%>
-																	<asp:TextBox runat="server" ID="revenueOrgCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "UnitCode") %>' data-required="true"></asp:TextBox>
+																<td runat="server" id="revenueOrgCodeCell" style="vertical-align: middle">
+																	<asp:TextBox runat="server" ID="revenueOrgCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "UnitCode") %>' data-required="true" ClientIDMode="AutoID"></asp:TextBox>
 																</td>
-																<td style="vertical-align: middle">
-																	<%--<asp:DropDownList ID="revenueActivityCode" runat="server" CssClass="form-select" data-required="true" DataSource='<%# activityCodes %>' SelectedValue='<%# DataBinder.Eval(Container.DataItem, "ActivityCode") %>'></asp:DropDownList>--%>
-																	<asp:TextBox runat="server" ID="revenueActivityCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "ActivityCode") %>' data-required="true"></asp:TextBox>
+																<td runat="server" id="revenueActivityCodeCell" style="vertical-align: middle">
+																	<asp:TextBox runat="server" ID="revenueActivityCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "ActivityCode") %>' data-required="true" ClientIDMode="AutoID"></asp:TextBox>
 																</td>
-																<td style="vertical-align: middle">
-																	<%--<asp:DropDownList ID="revenueObjectCode" runat="server" CssClass="form-select" data-required="true" DataSource='<%# objectCodes %>' SelectedValue='<%# DataBinder.Eval(Container.DataItem, "ObjectCode") %>'></asp:DropDownList>--%>
-																	<asp:TextBox runat="server" ID="revenueObjectCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "ObjectCode") %>' data-required="true"></asp:TextBox>
+																<td runat="server" id="revenueObjectCodeCell" style="vertical-align: middle">
+																	<asp:TextBox runat="server" ID="revenueObjectCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "ObjectCode") %>' data-required="true" ClientIDMode="AutoID"></asp:TextBox>
 																</td>
 																<td class="position-relative" style="vertical-align: middle">
 																	<asp:TextBox runat="server" ID="revenueAmount" CssClass="form-control" TextMode="SingleLine" data-type="currency" placeholder="$0.00" AutoCompleteType="Disabled" Text='<%# (Convert.ToInt32(DataBinder.Eval(Container.DataItem, "Amount")) >= 0)?DataBinder.Eval(Container.DataItem, "Amount"):string.Empty%>'></asp:TextBox>
@@ -685,7 +679,7 @@
 																<div class="input-group">
 																	<span class="input-group-text fas fa-address-book"></span>
 																	<asp:TextBox runat="server" ID="signatureEmailAddress" CssClass="form-control" TextMode="Email" AutoCompleteType="Email" placeholder="john.doe@corporate.com" ></asp:TextBox>
-																	<asp:Button runat="server" ID="AddRequestEmailAddress" UseSubmitBehavior="false" CssClass="btn btn-success fas-btn" OnClick="AddRequestEmailAddress_Click" disabled="disabled" Text=''/>
+																	<asp:Button runat="server" ID="AddRequestEmailAddress" UseSubmitBehavior="false" CssClass="btn btn-success fas-btn" OnClick="AddRequestEmailAddress_Click" disabled="disabled" Text='&#xf055;'/>
 																</div>
 															</div>
 														</div>
@@ -704,11 +698,13 @@
 									<div class="row mt-3 mb-3 text-center">
 										<%-- SUBMIT BUTTON --%>
 										<div class="col-md-6">
-											<asp:Button runat="server" ID="SubmitFactSheet" UseSubmitBehavior="false" CssClass="btn btn-success float-end" Width="50%" Text="Submit" OnClick="SaveFactSheet_Click"  CommandName="submit" OnClientClick="validateFactSheetDraft('factSheetMain,directorSupervisorValidGroup');" CausesValidation="true" />
+											<button id="submitBtn" class="btn btn-success float-end w-50" onclick="validateFactSheetDraft('submitBtn', 'factSheetMain,directorSupervisorValidGroup');" type="button" data-disable-btn="submit"><span>Submit</span></button>
+											<asp:Button runat="server" ID="SubmitFactSheet" UseSubmitBehavior="false" OnClick="SaveFactSheet_Click" CommandName="submit" hidden="true" />
 										</div>
 										<%-- SAVE BUTTON --%>
 										<div class="col-md-6">
-											<asp:Button runat="server" ID="SaveFactSheet" UseSubmitBehavior="false" CssClass="btn btn-primary float-start" Width="50%" Text="Save Draft" OnClick="SaveFactSheet_Click" CommandName="save" OnClientClick="validateFactSheetDraft('factSheetMain');" CausesValidation="true" />
+											<button id="saveBtn" class="btn btn-primary float-start w-50" onclick="validateFactSheetDraft('saveBtn', 'factSheetMain');" type="button" data-disable-btn="save">Save Draft</button>
+											<asp:Button runat="server" ID="SaveFactSheet" UseSubmitBehavior="false" OnClick="SaveFactSheet_Click" CommandName="save" hidden="true" />
 										</div>
 									</div>
 
@@ -759,13 +755,11 @@
 		FilterFirstItem();
 		addSignatureEmails();
 		multiValidation();
-		var invalidArray = [];
+		var currentValidation = [];
+		var isValid = true;
 		
 
-		var prm = Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
-			//for (var i = 0; i < Page_Validators.length; i++) {
-			//	ValidatorValidate(Page_Validators[i]);
-			//}
+		var prm = Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {			
 			multiValidation();
 			ToastAnimationHelper();
 			GetToastStatus();
@@ -779,8 +773,8 @@
 			searchBtn();
 			FilterFirstItem();
 			addSignatureEmails();
-			if (invalidArray.length > 0) {
-				ValidationFormatting(invalidArray);
+			if (!isValid) {
+				ValidationFormatting(Page_Validators);
 			}
 		});
 
@@ -851,37 +845,82 @@
 			});
 		}
 
-		function validateFactSheetDraft(validationGroups) {
-			validGroups = validationGroups;
+		function validateFactSheetDraft(btnID, validationGroups) {
 			if (Page_ClientValidate(validationGroups)) {
-				$('#<%= SubmitFactSheet.ClientID %>').prop('readonly', true);
+				isValid = true;
+				var btn;
+				switch (btnID) {
+					case "submitBtn":
+						btn = document.getElementById('<%= SubmitFactSheet.ClientID %>');
+						break;
+					case "saveBtn":
+						btn = document.getElementById('<%= SaveFactSheet.ClientID %>');
+						break;
+				}
+				btn.click();
 				ShowSubmitToast();
-				return true;
 			}
 			else {
+				isValid = false;
+				Page_BlockSubmit = false;
 				ValidationFormatting(Page_Validators);
+				currentValidation = validationGroups.split(",");
+				$('#submitToast').removeClass('text-bg-danger');
+				$('#submitToast').removeClass('text-bg-success');
+				$('#submitToast').addClass('text-bg-danger');
+				$('#toastMessage').html('Complete all required fields to proceed!');
+				$('#submitToast').toast('show');
 				return false;
 			}
+			return true;
 		}
 
 		function ValidationFormatting(Validators) {
-			$(Validators).each(function () {
+			window.invalidArray = [];
+			$(Validators).each(function () {				
 				var validator = this;
 				var id = $(validator).attr('id').replace('Valid', '');
-				
-				var control = $(`#${id}`);
+				var control;
+				switch (validator.hasAttribute('data-table-validator')) {
+					case true:
+						control = $(`[data-validate=${id}]`);
+						break;
+					case false:
+						control = $(`#${id}`);
+						break;
+				}
 				var label = $(`[for=${id}]`);
-				if (!validator.isvalid) {
-					control.addClass('invalid-border');
-					label.addClass('required-field');
-					invalidArray.push(validator);
-					control.on('change', function () {
+
+				if (currentValidation.includes(validator.validationGroup)) {
+					ValidatorValidate(validator);
+				}
+				switch (validator.isvalid) {
+
+					case true:
 						control.removeClass('invalid-border');
 						label.removeClass('required-field');
-						var i = invalidArray.indexOf(validator);
-						invalidArray.splice(i, 1);
-					});
+						break;
+					case false:
+						control.addClass('invalid-border');
+						label.addClass('required-field');
+						break;
 				}
+				control.on('change', function () {
+					
+					ValidatorValidate(validator);
+					switch (validator.isvalid) {
+
+						case true:
+							control.removeClass('invalid-border');
+							label.removeClass('required-field');
+							break;
+						case false:
+							control.addClass('invalid-border');
+							label.addClass('required-field');
+							break;
+					}
+				});
+				
 			});
 		}
 
@@ -925,21 +964,19 @@
 		}
 
 		function showLoadingButtons() {
-			$('[data-load-btn="true"]').each(function () {
+			$('[data-disable-btn]').each(function () {
+				var type = $(this).attr('data-disable-btn');
 				$(this).on('click', function () {
-					const id = $(this).attr('id');
-					if (id == "SaveFactSheet") {
-						var form = document.getElementById('formMain');
-						var invalidList = form.querySelectorAll(':invalid');
-						if (invalidList.length < 1) {
-							$(this).hide();
-							$(`#${id}Loading`).prop('hidden', false);
-							ShowSubmitToast();
+					if (isValid) {
+						$(this).attr('disabled', true);
+						switch (type) {
+							case "submit":
+								$(this).html('<span class="fa-fade">Submitting...</span>');
+								break;
+							case "save":
+								$(this).html('<span class="fa-fade"><span class="fas fa-floppy-disk fa-bounce"></span>&nbsp;Saving...</span>');
+								break;
 						}
-					}
-					else {
-						$(this).hide();
-						$(`#${id}Loading`).prop('hidden', false);
 					}
 				});
 			});
@@ -966,6 +1003,5 @@
 					$('#<%= AddRequestEmailAddress.ClientID %>').prop('disabled', true);
 				}
 			});
-		}
-	</script>
+		}</script>
 </asp:Content>

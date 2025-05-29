@@ -850,7 +850,7 @@ input[type=file]:hover::-webkit-file-upload-button {
   background-color: rgb(1.5532786885, 76.887295082, 187.9467213115) !important;
 }
 
-a.aspNetDisabled, [type=submit][readonly] {
+a.aspNetDisabled, [type=submit][readonly], [type=button][readonly], [type=button].aspNetDisabled {
   background-color: var(--bs-secondary-bg);
   opacity: 1;
   pointer-events: none !important;
@@ -858,7 +858,7 @@ a.aspNetDisabled, [type=submit][readonly] {
   border-color: var(--bs-secondary-bg);
 }
 
-button[readonly=readonly] {
+button[readonly=readonly], button[readonly=true] {
   background-color: var(--bs-secondary-bg);
   opacity: 1;
   pointer-events: none !important;

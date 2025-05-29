@@ -375,7 +375,7 @@ input[type="file"]:hover::-webkit-file-upload-button {
 	background-color: darken($primary, 15%) !important;
 }
 
-a.aspNetDisabled, [type="submit"][readonly] {
+a.aspNetDisabled, [type="submit"][readonly], [type="button"][readonly], [type="button"].aspNetDisabled {
 	background-color: var(--bs-secondary-bg);
 	opacity: 1;
 	pointer-events: none !important;
@@ -383,7 +383,7 @@ a.aspNetDisabled, [type="submit"][readonly] {
 	border-color: var(--bs-secondary-bg);
 }
 
-button[readonly="readonly"] {
+button[readonly="readonly"], button[readonly="true"] {
 	background-color: var(--bs-secondary-bg);
 	opacity: 1;
 	pointer-events: none !important;
