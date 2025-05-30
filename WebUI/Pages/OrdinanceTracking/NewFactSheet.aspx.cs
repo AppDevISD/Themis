@@ -60,7 +60,7 @@ namespace WebUI
             requestPhone.Text = _user.Telephone;
             requestExt.Text = _user.IPPhone;
 
-            GetAllDivisions(requestDepartment.SelectedValue);
+            GetAllDivisions(requestDivision, requestDepartment.SelectedValue);
 
             if (!requestDepartment.SelectedValue.IsNullOrWhiteSpace())
             {
@@ -83,15 +83,15 @@ namespace WebUI
                 requestDepartment.Items.Add(newItem);
             }
         }
-        protected void GetAllDivisions(string deptCode)
+        protected void GetAllDivisions(DropDownList dd, string deptCode)
         {
-            requestDivision.Items.Clear();
-            requestDivision.Items.Add(new ListItem() { Text = "Select Division...", Value = "" });
+            dd.Items.Clear();
+            dd.Items.Add(new ListItem() { Text = "Select Division...", Value = "" });
             List<Division> divisionList = GetDivisionsByDept(Convert.ToInt32(deptCode));
             foreach (Division item in divisionList)
             {
                 ListItem newItem = new ListItem(item.DivisionName, item.DivisionCode.ToString());
-                requestDivision.Items.Add(newItem);
+                dd.Items.Add(newItem);
             }
         }
         protected void GetAllPurchaseMethods()
@@ -177,11 +177,13 @@ namespace WebUI
             switch (tableDesc)
             {
                 case "revenue":
-                    if (Session["ordRevTable"] != null)
+                    if (Session["revenue"] != null)
                     {
                         for (int i = 0; i < rpRevenueTable.Items.Count; i++)
-                        {
+                        {          
+                            
                             OrdinanceAccounting accountingItem = GetAccountingItem("revenue", i);
+
                             prvList.Add(accountingItem);
                         }
                         Session[tableDesc] = prvList;
@@ -247,12 +249,12 @@ namespace WebUI
                                 prvList.Add(accountingItem);
                             }
                             Session[tableDesc] = prvList;
-                            HiddenField revHdnID = (HiddenField)e.Item.FindControl("hdnRevID");
+                            HiddenField revHdnIndex = (HiddenField)e.Item.FindControl("hdnRevIndex");
                             if (Session[tableDesc] != null)
                             {
                                 accountingList = (List<Accounting>)Session[tableDesc];
                             }
-                            accountingList.RemoveAt(Convert.ToInt32(revHdnID.Value));
+                            accountingList.RemoveAt(Convert.ToInt32(revHdnIndex.Value));
                             Session[tableDesc] = accountingList;
                             rpRevenueTable.DataSource = accountingList;
                             rpRevenueTable.DataBind();
@@ -278,12 +280,12 @@ namespace WebUI
                                 prvList.Add(accountingItem);
                             }
                             Session[tableDesc] = prvList;
-                            HiddenField expHdnID = (HiddenField)e.Item.FindControl("hdnExpID");
+                            HiddenField expHdnIndex = (HiddenField)e.Item.FindControl("hdnExpIndex");
                             if (Session[tableDesc] != null)
                             {
                                 accountingList = (List<Accounting>)Session[tableDesc];
                             }
-                            accountingList.RemoveAt(Convert.ToInt32(expHdnID.Value));
+                            accountingList.RemoveAt(Convert.ToInt32(expHdnIndex.Value));
                             Session[tableDesc] = accountingList;
                             rpExpenditureTable.DataSource = accountingList;
                             rpExpenditureTable.DataBind();
@@ -859,8 +861,7 @@ namespace WebUI
             if (!requestDepartment.SelectedValue.IsNullOrWhiteSpace())
             {
                 requestDivision.Enabled = true;
-                GetAllDivisions(requestDepartment.SelectedValue);
-                requestDivision.SelectedValue = userInfo.UserDivision.DivisionCode.ToString();
+                GetAllDivisions(requestDivision, requestDepartment.SelectedValue);
             }
             else
             {
@@ -900,6 +901,8 @@ namespace WebUI
                 rpEmailList.DataBind();
             }
             signatureEmailAddress.Text = string.Empty;
+
+            Session["SigRequestEmails"] = sigRequests;
         }
         protected void rpEmailList_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
@@ -914,11 +917,13 @@ namespace WebUI
                     sigType.SetValue(sigRequests, string.Join(";", emails.OrderBy(i => i)));
                     if (emails.Count > 0)
                     {
+                        directorSupervisorEmailAddresses.Text = sigRequests.DirectorSupervisor;
                         rpEmailList.DataSource = emails.OrderBy(i => i);
                         rpEmailList.DataBind();
                     }
                     else
                     {
+                        directorSupervisorEmailAddresses.Text = string.Empty;
                         rpEmailList.DataSource = null;
                         rpEmailList.DataBind();
                     }
@@ -935,6 +940,44 @@ namespace WebUI
         {
             LinkButton btn = (LinkButton)e.Item.FindControl("removeBtn");
             ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(btn);
+        }
+        protected void rpRevExpTable_ItemCreated(object sender, RepeaterItemEventArgs e)
+        {
+            Repeater rpTable = (Repeater)sender;
+            string rpType = string.Empty;
+            switch (rpTable.ClientID)
+            {
+                case "rpRevenueTable":
+                    rpType = "revenue";
+                    break;
+                case "rpExpenditureTable":
+                    rpType = "expenditure";
+                    break;
+            }
+            RepeaterItem rpItem = (RepeaterItem)e.Item;
+            List<TextBox> textBoxes = new List<TextBox>()
+            {
+                (TextBox)e.Item.FindControl($"{rpType}FundCode"),
+                (TextBox)e.Item.FindControl($"{rpType}AgencyCode"),
+                (TextBox)e.Item.FindControl($"{rpType}OrgCode"),
+                (TextBox)e.Item.FindControl($"{rpType}ActivityCode"),
+                (TextBox)e.Item.FindControl($"{rpType}ObjectCode")
+            };
+
+            foreach (TextBox box in textBoxes)
+            {
+                box.Attributes.Add("data-validate", $"{box.ID}r{rpItem.ItemIndex}");
+                RequiredFieldValidator rfv = new RequiredFieldValidator()
+                {
+                    ID = $"{box.ID}Validr{rpItem.ItemIndex}",
+                    ControlToValidate = box.ID,
+                    ValidationGroup = "factSheetMain",
+                    SetFocusOnError = false,
+                    Display = ValidatorDisplay.None
+                };
+                rfv.Attributes.Add("data-table-validator", "true");
+                box.Parent.Controls.Add(rfv);
+            }
         }
     }
 }

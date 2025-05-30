@@ -375,12 +375,24 @@ input[type="file"]:hover::-webkit-file-upload-button {
 	background-color: darken($primary, 15%) !important;
 }
 
-a.aspNetDisabled, [type="submit"][readonly], [type="button"][readonly], [type="button"].aspNetDisabled {
+[type="submit"][readonly], [type="button"][readonly], [type="button"].aspNetDisabled {
 	background-color: var(--bs-secondary-bg);
 	opacity: 1;
 	pointer-events: none !important;
 	--bs-form-select-bg-img: none !important;
 	border-color: var(--bs-secondary-bg);
+}
+
+a.aspNetDisabled, a[disabled], a[disabled='disabled'] {
+	color: rgb(from var(--bs-btn-color) r g b / 50% );
+	background-color: rgb(from var(--bs-btn-bg) r g b / 50% );
+	border-color: transparent !important;
+	pointer-events: none !important;
+}
+
+.row-delete[disabled] {
+	color: rgb(from white r g b / 50% );
+	background-color: rgb(from var(--bs-danger) r g b / 50% );
 }
 
 button[readonly="readonly"], button[readonly="true"] {

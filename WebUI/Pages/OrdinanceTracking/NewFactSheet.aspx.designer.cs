@@ -429,6 +429,15 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.RadioButton paApprovalAttachedNo;
 
         /// <summary>
+        /// revTableHTML control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl revTableHTML;
+
+        /// <summary>
         /// rpRevenueTable control.
         /// </summary>
         /// <remarks>
@@ -436,6 +445,15 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater rpRevenueTable;
+
+        /// <summary>
+        /// newRevenueRowDiv control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl newRevenueRowDiv;
 
         /// <summary>
         /// newRevenueRow control.
@@ -454,6 +472,15 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater rpExpenditureTable;
+
+        /// <summary>
+        /// newExpenditureRowDiv control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl newExpenditureRowDiv;
 
         /// <summary>
         /// newExpenditureRow control.

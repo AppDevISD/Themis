@@ -731,7 +731,7 @@
 														</asp:Repeater>
 													</ul>
 													<div id="supportingDocumentationGroup" class="d-flex mb-2">
-														<asp:FileUpload runat="server" ID="supportingDocumentation" CssClass="form-control mt-3" AllowMultiple="true" onchange="SetUploadActive();" onfocus="showFileWaiting();" />
+														<asp:FileUpload runat="server" ID="supportingDocumentation" CssClass="form-control mt-3" AllowMultiple="true" onchange="SetUploadActive(this.id, 'UploadDocBtn');" onfocus="showFileWaiting();" />
 														<asp:Button runat="server" ID="UploadDocBtn" UseSubmitBehavior="false" CssClass="btn btn-success mt-3 ms-3 text-nowrap" Width="25%" Text="Upload" OnClick="UploadDocBtn_Click" data-load-btn="true" data-load-text="Uploading" data-load-icon="fa-upload" data-prevent-type="disabled" disabled="disabled" />
 													</div>
 													<div id="fileWaiting" class="mt-2" hidden>
@@ -1193,7 +1193,11 @@
 		showLoadingButtons();
 		cancelFilePick();
 		searchBtn();
-		DisableDDInitialOption();
+		DisableDDInitialOption([
+			{ id: '<%= requestDepartment.ClientID %>', opacity: "75" },
+			{ id: '<%= requestDivision.ClientID %>', opacity: "35" },
+			{ id: '<%= purchaseMethod.ClientID %>', opacity: "75" },
+		]);
 		FilterFirstItem();
 
 		var prm = Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
@@ -1202,124 +1206,21 @@
 			FormatForms();
 			CurrencyFormatting();
 			SetTooltips();
-			DisableDDInitialOption();
+			DisableDDInitialOption([
+				{ id: '<%= ddStatus.ClientID %>', opacity: "75" },
+				{ id: '<%= requestDepartment.ClientID %>', opacity: "75" },
+				{ id: '<%= requestDivision.ClientID %>', opacity: "35" },
+				{ id: '<%= purchaseMethod.ClientID %>', opacity: "75" },
+			]);
 			scrollToElement();
 			HideAllTooltips();
 			showLoadingButtons();
 			cancelFilePick();
 			searchBtn();
 			FilterFirstItem();
-			$('#<%= signatureEmailAddress.ClientID %>').on('change keyup', function () {
-				var validEmail = $('#<%= signatureEmailAddress.ClientID %>').val().indexOf("@cwlp.com") > 1 || $('#<%= signatureEmailAddress.ClientID %>').val().indexOf("@springfield.il.us") > 1;
-				if (validEmail && $('#<%= signatureEmailAddress.ClientID %>').val().length > 0) {
-					console.log("Working");
-					$('#<%= AddRequestEmailAddress.ClientID %>').prop('disabled', false);
-				}
-				else {
-					$('#<%= AddRequestEmailAddress.ClientID %>').prop('disabled', true);
-				}
-			});
+			addSignatureEmails('<%= signatureEmailAddress.ClientID %>', '<%= AddRequestEmailAddress.ClientID %>');
 		});
-
-		function DisableDDInitialOption() {
-			var ddStatus = document.getElementById('<%= ddStatus.ClientID %>');
-			var ddDepartment = document.getElementById('<%= requestDepartment.ClientID %>');
-			var ddDivision = document.getElementById('<%= requestDivision.ClientID %>');
-			var ddMethod = document.getElementById('<%= purchaseMethod.ClientID %>');
-			if (ddStatus != null) {
-				if (ddStatus.options[0].selected) {
-					ddStatus.style.color = "rgb(from var(--bs-body-color) r g b / 75%)";
-				}
-				else {
-					ddStatus.style.color = "unset";
-				}
-				ddStatus.options[0].disabled = true;
-			}
-			if (ddDepartment != null) {
-				if (ddDepartment.options[0].selected) {
-					ddDepartment.style.color = "rgb(from var(--bs-body-color) r g b / 75%)";
-				}
-				else {
-					ddDepartment.style.color = "unset";
-				}
-				ddDepartment.options[0].disabled = true;
-			}
-			if (ddDivision != null) {
-				if (ddDivision.options[0].selected) {
-					ddDivision.style.color = "rgb(from var(--bs-body-color) r g b / 35%)";
-				}
-				else {
-					ddDivision.style.color = "unset";
-				}
-				ddDivision.options[0].disabled = true;
-			}
-			if (ddMethod != null) {
-				if (ddMethod.options[0].selected) {
-					ddMethod.style.color = "rgb(from var(--bs-body-color) r g b / 75%)";
-				}
-				else {
-					ddMethod.style.color = "unset";
-				}
-				ddMethod.options[0].disabled = true;
-			}
-		}
-
-		function FilterFirstItem() {
-			$('[data-filter="true"]').each(function () {
-				if ($(this).prop('selectedIndex') === 0 && !$(this).prop('disabled')) {
-					$(this).css('color', 'rgb(from var(--bs-body-color) r g b / 75%)');
-				}
-				else if ($(this).prop('selectedIndex') === 0 && $(this).prop('disabled')) {
-					$(this).css('color', 'rgb(from var(--bs-body-color) r g b / 35%)');
-				}
-				else {
-					$(this).removeAttr('style');
-				}
-			});
-		}
-
-		function SetTooltips() {
-			var tooltipTitles = $('[data-overflow-tooltip="true"]');
-			$(tooltipTitles).each(function (i) {
-				if (this.scrollWidth > this.offsetWidth) {
-					$(this).tooltip();
-				}				
-			});
-			$('[data-action-tooltip="true"]').tooltip();
-		}
-
-		function HideAllTooltips() {
-			$('.tooltip.show').tooltip('hide');
-		}
-
-		function CurrencyFormatting() {
-			$("[data-type='currency']").each(function () {
-				formatCurrency($(this), "blur");
-			});
-		}
-
-		function SetUploadActive() {
-			$('#fileWaiting').prop('hidden', true);
-			const supportingDocumentation = document.getElementById('<%= supportingDocumentation.ClientID %>')
-			var UploadDocBtn = document.getElementById('<%= UploadDocBtn.ClientID %>')
-			if (supportingDocumentation.files.length > 0) {
-				UploadDocBtn.disabled = false;
-			}
-			else {
-				UploadDocBtn.disabled = true;
-			}
-			
-		}
-
-		function showFileWaiting() {
-			$('#fileWaiting').prop('hidden', false);
-		}
-
-		function cancelFilePick() {
-			$('#<%= supportingDocumentation.ClientID %>').on('cancel', function () {
-				$('#fileWaiting').prop('hidden', true);
-			});
-		}
+		
 
 		function setEmailModal(btnID, btnLabel, sigType) {
 			const sigBtnTarget = $('#<%= sigBtnTarget.ClientID %>');

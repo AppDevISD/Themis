@@ -168,9 +168,9 @@
 				<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/toolbar/prism-toolbar.min.js"></script>
 				<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
 				<script type="text/javascript" src="./Scripts/Helpers/JS/FormFormatting.js"></script>
+				<script type="text/javascript" src="./Scripts/Helpers/JS/FormActions.js"></script>
 				<script type="text/javascript" src="./Scripts/Helpers/JS/SubmitToast.js"></script>
 				<script type="text/javascript" src="./Scripts/Helpers/JS/ChartHelpers.js"></script>
-				<%-- MULTI VALIDATION GROUP --%>
 				<script type="text/javascript" src="./Scripts/Helpers/JS/MultiValidationGroup.js"></script>
 				<script type="text/javascript" src="./assets/js/Site.js"></script>
 
@@ -261,9 +261,7 @@
 				</ContentTemplate>
 			</asp:UpdatePanel>
 			
-		</form>
-		
-		
+		</form>				
 
 		<%-- REQUIRED FIELDS INDICATOR / ACTIVE PAGE HELPER / LOADING BUTTONS --%>
 		<script type="text/javascript" src="./Scripts/Helpers/JS/RequiredFieldsAndActivePage.js"></script>

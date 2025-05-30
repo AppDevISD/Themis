@@ -115,7 +115,11 @@ function FormatForms() {
         }
     }
 }
-
+function CurrencyFormatting() {
+    $("[data-type='currency']").each(function () {
+        formatCurrency($(this), "blur");
+    });
+}
 function formatNumber(n) {
     return n.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 }
@@ -146,7 +150,6 @@ function formatCurrency(input, blur) {
     }
     input.val(input_val);
 }
-
 function formatCurrencyDecimal(input, blur) {
     var input_val = input[0].innerHTML;
     if (input_val === "") { return; }
@@ -174,9 +177,51 @@ function formatCurrencyDecimal(input, blur) {
     }
     input[0].innerHTML = input_val;
 }
+function ValidationFormatting(Validators) {
+    window.invalidArray = [];
+    $(Validators).each(function () {
+        var validator = this;
+        var id = $(validator).attr('id').replace('Valid', '');
+        var control;
+        switch (validator.hasAttribute('data-table-validator')) {
+            case true:
+                control = $(`[data-validate=${id}]`);
+                break;
+            case false:
+                control = $(`#${id}`);
+                break;
+        }
+        var label = $(`[for=${id}]`);
 
-//function OrdTableFadeOut() {
-//    console.log("Working");
-//    $('#ordTable').fadeOut(1000);
-//    $('#ordView').fadeIn(1000);
-//}
+        if (currentValidation.includes(validator.validationGroup)) {
+            ValidatorValidate(validator);
+        }
+        switch (validator.isvalid) {
+
+            case true:
+                control.removeClass('invalid-border');
+                label.removeClass('required-field');
+                break;
+            case false:
+                control.addClass('invalid-border');
+                label.addClass('required-field');
+                break;
+        }
+        control.on('change', function () {
+
+            ValidatorValidate(validator);
+            switch (validator.isvalid) {
+
+                case true:
+                    control.removeClass('invalid-border');
+                    label.removeClass('required-field');
+                    break;
+                case false:
+                    control.addClass('invalid-border');
+                    label.addClass('required-field');
+                    break;
+            }
+        });
+
+    });
+}

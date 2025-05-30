@@ -142,6 +142,7 @@
     <Content Include="Scripts\Helpers\JS\ChartHelpers.js" />
     <Content Include="Scripts\Helpers\JS\ChartPrism.js" />
     <Content Include="Scripts\Helpers\JS\ColorTheme.js" />
+    <Content Include="Scripts\Helpers\JS\FormActions.js" />
     <Content Include="Scripts\Helpers\JS\FormFormatting.js" />
     <Content Include="assets\Themes\ColorThemes.css">
       <DependentUpon>ColorThemes.scss</DependentUpon>
@@ -158,7 +159,6 @@
     <Content Include="Scripts\Helpers\JS\LoadingBtn.js" />
     <Content Include="Scripts\Helpers\JS\MultiValidationGroup.js" />
     <Content Include="Scripts\Helpers\JS\RequiredFieldsAndActivePage.js" />
-    <Content Include="Scripts\Helpers\JS\Settings.js" />
     <Content Include="Scripts\Helpers\JS\SubmitToast.js" />
     <Content Include="Scripts\WebForms\DetailsView.js" />
     <Content Include="Scripts\WebForms\Focus.js" />

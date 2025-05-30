@@ -217,14 +217,6 @@
 	color: rgb(from var(--bs-body-color) r g b / 35%);
 }
 
-a[disabled='disabled'] {
-	background-color: var(--bs-secondary-bg);
-	opacity: 1;
-	pointer-events: none !important;
-	--bs-form-select-bg-img: none !important;
-	border-color: var(--bs-secondary-bg);
-}
-
 .fas-btn {
 	position: relative;
 	font-family: "Font Awesome 6 Pro";

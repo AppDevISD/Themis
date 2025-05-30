@@ -14,8 +14,18 @@ $(document).ready(function () {
 	}
 	ToastAnimationHelper();
 });
+
 function ShowSubmitToast() {
 	localStorage.setItem('showToast', 'show');
+}
+
+function ShowEmailToast() {
+	$('#submitToast').removeClass("text-bg-danger");
+	$('#submitToast').addClass("text-bg-success");
+
+	$('#toastMessage').html("Email Sent!");
+	ShowSubmitToast();
+	GetToastStatus();
 }
 
 function GetToastStatus() {

@@ -50,8 +50,8 @@ namespace WebUI
             if (!Page.IsPostBack && !Response.IsRequestBeingRedirected)
             {
                 Session.Remove("ord_list");
-                Session.Remove("ordRevTable");
-                Session.Remove("ordExpTable");
+                Session.Remove("revenue");
+                Session.Remove("expenditure");
                 Session.Remove("ordDocs");
                 Session.Remove("addOrdDocs");
                 Session["sortBtn"] = "sortDate";
@@ -76,8 +76,8 @@ namespace WebUI
             if (Page.IsPostBack && Page.Request.Params.Get("__EVENTTARGET").Contains("adminSwitch"))
             {
                 userInfo = ((SiteMaster)Page.Master).UserView();
-                Session.Remove("ordRevTable");
-                Session.Remove("ordExpTable");
+                Session.Remove("revenue");
+                Session.Remove("expenditure");
                 Session.Remove("ordDocs");
                 Session.Remove("addOrdDocs");
                 Session["sortBtn"] = "sortDate";
@@ -462,8 +462,8 @@ namespace WebUI
             Session.Remove("SigRequestEmails");
 
 
-            Session.Remove("ordRevTable");
-            Session.Remove("ordExpTable");
+            Session.Remove("revenue");
+            Session.Remove("expenditure");
             Session.Remove("insertSigList");
 
             int ordID = Convert.ToInt32(e.CommandArgument);
@@ -591,35 +591,35 @@ namespace WebUI
 
                 if (revItems.Count > 0)
                 {
-                    Session["ordRevTable"] = revItems;
+                    Session["revenue"] = revItems;
                     Session["OriginalRevTable"] = revItems;
                     rpRevenueTable.DataSource = revItems.OrderBy(i => i.OrdinanceAccountingID);
                     rpRevenueTable.DataBind();
                 }
                 else
                 {
-                    Session.Remove("ordRevTable");
+                    Session.Remove("revenue");
                     rpRevenueTable.DataSource = null;
                     rpRevenueTable.DataBind();
                 }
                 if (expItems.Count > 0)
                 {
-                    Session["ordExpTable"] = expItems;
+                    Session["expenditure"] = expItems;
                     Session["OriginalExpTable"] = expItems;
                     rpExpenditureTable.DataSource = expItems.OrderBy(i => i.OrdinanceAccountingID);
                     rpExpenditureTable.DataBind();
                 }
                 else
                 {
-                    Session.Remove("ordExpTable");
+                    Session.Remove("expenditure");
                     rpExpenditureTable.DataSource = null;
                     rpExpenditureTable.DataBind();
                 }
             }
             else
             {
-                Session.Remove("ordRevTable");
-                Session.Remove("ordExpTable");
+                Session.Remove("revenue");
+                Session.Remove("expenditure");
                 rpRevenueTable.DataSource = null;
                 rpExpenditureTable.DataSource = null;
                 rpRevenueTable.DataBind();
@@ -789,7 +789,7 @@ namespace WebUI
                 case "delete":
                     switch (tableDesc)
                     {
-                        case "ordRevTable":
+                        case "revenue":
                             for (int i = 0; i < rpRevenueTable.Items.Count; i++)
                             {
                                 OrdinanceAccounting accountingItem = new OrdinanceAccounting();
@@ -839,7 +839,7 @@ namespace WebUI
                             rpRevenueTable.DataSource = accountingList;
                             rpRevenueTable.DataBind();
                             break;
-                        case "ordExpTable":
+                        case "expenditure":
                             for (int i = 0; i < rpExpenditureTable.Items.Count; i++)
                             {
                                 OrdinanceAccounting accountingItem = new OrdinanceAccounting();
@@ -908,7 +908,7 @@ namespace WebUI
                     Response.ClearHeaders();
                     Response.AddHeader("Content-Length", ordDocItem.DocumentData.Length.ToString());
                     Response.AddHeader("Content-type", MimeMapping.GetMimeMapping(ordDocItem.DocumentName));
-                    Response.AddHeader("Content-Disposition", $"{delivery}; filename=" + ordDocItem.DocumentName);
+                    Response.AddHeader("Content-Disposition", $"{delivery}; filename={ordDocItem.DocumentName}");
                     Response.BinaryWrite(ordDocItem.DocumentData);
                     Response.Flush();
                     Response.End();
@@ -1075,7 +1075,7 @@ namespace WebUI
 
             switch (tableDesc)
             {
-                case "ordRevTable":
+                case "revenue":
                     if (Session[tableDesc] != null)
                     {
                         for (int i = 0; i < rpRevenueTable.Items.Count; i++)
@@ -1091,7 +1091,7 @@ namespace WebUI
                     rpRevenueTable.DataSource = accountingList;
                     rpRevenueTable.DataBind();
                     break;
-                case "ordExpTable":
+                case "expenditure":
                     if (Session[tableDesc] != null)
                     {
                         for (int i = 0; i < rpExpenditureTable.Items.Count; i++)
@@ -1307,7 +1307,7 @@ namespace WebUI
                 {
                     foreach (OrdinanceDocument item in removeDocs)
                     {
-                        removeDocVal = Factory.Instance.Expire(item, "sp_UpdateOrdinance_Document");
+                        removeDocVal = Factory.Instance.Delete<OrdinanceDocument>(item.DocumentID, "OrdinanceDocument");
                         if (removeDocVal > 0)
                         {
                             removeDocNames.Add(item.DocumentName);
@@ -1583,21 +1583,31 @@ namespace WebUI
             ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(btn);
         }
 
-        protected void rpRevenueTable_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        protected void rpRevExpTable_ItemCreated(object sender, RepeaterItemEventArgs e)
         {
+            Repeater rpTable = (Repeater)sender;
+            string rpType = string.Empty;
+            switch (rpTable.ClientID)
+            {
+                case "rpRevenueTable":
+                    rpType = "revenue";
+                    break;
+                case "rpExpenditureTable":
+                    rpType = "expenditure";
+                    break;
+            }
             RepeaterItem rpItem = (RepeaterItem)e.Item;
             List<TextBox> textBoxes = new List<TextBox>()
             {
-                (TextBox)e.Item.FindControl("revenueFundCode"),
-                (TextBox)e.Item.FindControl("revenueAgencyCode"),
-                (TextBox)e.Item.FindControl("revenueOrgCode"),
-                (TextBox)e.Item.FindControl("revenueActivityCode"),
-                (TextBox)e.Item.FindControl("revenueObjectCode")
+                (TextBox)e.Item.FindControl($"{rpType}FundCode"),
+                (TextBox)e.Item.FindControl($"{rpType}AgencyCode"),
+                (TextBox)e.Item.FindControl($"{rpType}OrgCode"),
+                (TextBox)e.Item.FindControl($"{rpType}ActivityCode"),
+                (TextBox)e.Item.FindControl($"{rpType}ObjectCode")
             };
 
             foreach (TextBox box in textBoxes)
             {
-                Debug.WriteLine($"{box.UniqueID}-{rpItem.ItemIndex}");
                 box.Attributes.Add("data-validate", $"{box.ID}-{rpItem.ItemIndex}");
                 RequiredFieldValidator rfv = new RequiredFieldValidator()
                 {

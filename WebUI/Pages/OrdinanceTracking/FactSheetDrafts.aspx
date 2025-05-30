@@ -22,6 +22,8 @@
 				<asp:AsyncPostBackTrigger ControlID="scYes" EventName="CheckedChanged" />
 				<asp:AsyncPostBackTrigger ControlID="scNo" EventName="CheckedChanged" />
 
+				<asp:AsyncPostBackTrigger ControlID="requestDepartment" EventName="SelectedIndexChanged" />
+				<asp:AsyncPostBackTrigger ControlID="requestDivision" EventName="SelectedIndexChanged" />
 				<asp:AsyncPostBackTrigger ControlID="purchaseMethod" EventName="SelectedIndexChanged" />
 				<asp:AsyncPostBackTrigger ControlID="signatureEmailAddress" EventName="TextChanged" />
 
@@ -49,8 +51,8 @@
 								<div class="form-group">
 									<label for="filterSearchTitleGroup">Search Title</label>
 									<div id="filterSearchTitleGroup" class="input-group">
-										<asp:TextBox runat="server" ID="filterSearchTitle" CssClass="form-control" TextMode="SingleLine" placeholder="Search..." AutoCompleteType="Disabled"></asp:TextBox>
-										<asp:LinkButton runat="server" ID="btnFilterSearchTitle" CssClass="btn input-group-text" OnClick="Filter_SelectedIndexChanged" OnClientClick="showLoadingModal();"><span class="fas fa-magnifying-glass" data-search="true"></span></asp:LinkButton>
+										<asp:TextBox runat="server" ID="filterSearchTitle" CssClass="form-control" TextMode="SingleLine" placeholder="Search..." AutoCompleteType="Disabled" data-enter-btn="btnFilterSearchTitle"></asp:TextBox>
+										<asp:LinkButton runat="server" ID="btnFilterSearchTitle" CssClass="btn input-group-text" OnClick="Filter_SelectedIndexChanged" OnClientClick="showLoadingModal();"><span class="fas fa-magnifying-glass"></span></asp:LinkButton>
 									</div>
 								</div>
 							</div>
@@ -497,7 +499,7 @@
 												<%-- TABLE BODY --%>
 												<tbody>
 													<%-- REVENUE TABLE REPEATER --%>
-													<asp:Repeater runat="server" ID="rpRevenueTable" OnItemCommand="rpAccountingTable_ItemCommand" OnItemCreated="rpRevenueTable_ItemDataBound">
+													<asp:Repeater runat="server" ID="rpRevenueTable" OnItemCommand="rpAccountingTable_ItemCommand" OnItemCreated="rpRevExpTable_ItemCreated">
 														<ItemTemplate>
 															<tr class="upperCaseField">
 																<td runat="server" id="revenueFundCodeCell" style="vertical-align: middle">
@@ -521,7 +523,7 @@
 																	<asp:TextBox runat="server" ID="revenueAmount" CssClass="form-control" TextMode="SingleLine" data-type="currency" placeholder="$0.00" AutoCompleteType="Disabled" Text='<%# (Convert.ToInt32(DataBinder.Eval(Container.DataItem, "Amount")) >= 0)?DataBinder.Eval(Container.DataItem, "Amount"):string.Empty%>'></asp:TextBox>
 
 																	<div runat="server" id="removeRevRowDiv">
-																		<asp:Button runat="server" ID="removeRevenueRow" CssClass="btn row-delete" UseSubmitBehavior="false" CommandName="delete" CommandArgument="ordRevTable" Text="&#xf068;" />
+																		<asp:Button runat="server" ID="removeRevenueRow" CssClass="btn row-delete" UseSubmitBehavior="false" CommandName="delete" CommandArgument="revenue" Text="&#xf068;" data-disable-btn="aspIconBtn" />
 																	</div>
 																</td>
 															</tr>
@@ -532,7 +534,7 @@
 
 											<%-- ADD REVENUE ROW BUTTON --%>
 											<div runat="server" id="newRevenueRowDiv" class="text-center w-100">
-												<asp:Button runat="server" ID="newRevenueRow" CssClass="btn btn-success w-100 row-add" OnClick="newAccountingRow_ServerClick" UseSubmitBehavior="false" CommandName="ordRevTable" Text="Add Row" />
+												<asp:Button runat="server" ID="newRevenueRow" CssClass="btn btn-success w-100 row-add" OnClick="newAccountingRow_ServerClick" UseSubmitBehavior="false" CommandName="revenue" Text="Add Row" data-disable-btn="aspBtn" data-disable-btn-text="Adding Row" />
 											</div>
 										</div>
 
@@ -559,36 +561,31 @@
 												<%-- TABLE BODY --%>
 												<tbody>
 													<%-- EXPENDITURE TABLE REPEATER --%>
-													<asp:Repeater runat="server" ID="rpExpenditureTable" OnItemCommand="rpAccountingTable_ItemCommand">
+													<asp:Repeater runat="server" ID="rpExpenditureTable" OnItemCommand="rpAccountingTable_ItemCommand" OnItemCreated="rpRevExpTable_ItemCreated">
 														<ItemTemplate>
 															<tr class="upperCaseField">
-																<td style="vertical-align: middle">
+																<td runat="server" id="expenditureFundCodeCell" style="vertical-align: middle">
 																	<asp:HiddenField runat="server" ID="hdnExpID" Value='<%# DataBinder.Eval(Container.DataItem, "OrdinanceAccountingID") %>' />
 																	<asp:HiddenField runat="server" ID="hdnExpIndex" Value='<%# Container.ItemIndex %>' />
-																	<%--<asp:DropDownList ID="expenditureFundCode" runat="server" CssClass="form-select" data-required="true" DataSource='<%# fundCodes %>' SelectedValue='<%# DataBinder.Eval(Container.DataItem, "FundCode") %>'></asp:DropDownList>--%>
-																	<asp:TextBox runat="server" ID="expenditureFundCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "FundCode") %>' data-required="true"></asp:TextBox>
+																	<asp:TextBox runat="server" ID="expenditureFundCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "FundCode") %>' data-required="true" ClientIDMode="AutoID"></asp:TextBox>
 																</td>
-																<td style="vertical-align: middle">
-																	<%--<asp:DropDownList ID="expenditureAgencyCode" runat="server" CssClass="form-select" data-required="true" DataSource='<%# agencyCodes %>' SelectedValue='<%# DataBinder.Eval(Container.DataItem, "DepartmentCode") %>'></asp:DropDownList>--%>
-																	<asp:TextBox runat="server" ID="expenditureAgencyCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "DepartmentCode") %>' data-required="true"></asp:TextBox>
+																<td runat="server" id="expenditureAgencyCodeCell" style="vertical-align: middle">
+																	<asp:TextBox runat="server" ID="expenditureAgencyCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "DepartmentCode") %>' data-required="true" ClientIDMode="AutoID"></asp:TextBox>
 																</td>
-																<td style="vertical-align: middle">
-																	<%--<asp:DropDownList ID="expenditureOrgCode" runat="server" CssClass="form-select" data-required="true" DataSource='<%# orgCodes %>' SelectedValue='<%# DataBinder.Eval(Container.DataItem, "UnitCode") %>'></asp:DropDownList>--%>
-																	<asp:TextBox runat="server" ID="expenditureOrgCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "UnitCode") %>' data-required="true"></asp:TextBox>
+																<td runat="server" id="expenditureOrgCodeCell" style="vertical-align: middle">
+																	<asp:TextBox runat="server" ID="expenditureOrgCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "UnitCode") %>' data-required="true" ClientIDMode="AutoID"></asp:TextBox>
 																</td>
-																<td style="vertical-align: middle">
-																	<%--<asp:DropDownList ID="expenditureActivityCode" runat="server" CssClass="form-select" data-required="true" DataSource='<%# activityCodes %>' SelectedValue='<%# DataBinder.Eval(Container.DataItem, "ActivityCode") %>'></asp:DropDownList>--%>
-																	<asp:TextBox runat="server" ID="expenditureActivityCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "ActivityCode") %>' data-required="true"></asp:TextBox>
+																<td runat="server" id="expenditureActivityCodeCell" style="vertical-align: middle">
+																	<asp:TextBox runat="server" ID="expenditureActivityCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "ActivityCode") %>' data-required="true" ClientIDMode="AutoID"></asp:TextBox>
 																</td>
-																<td style="vertical-align: middle">
-																	<%--<asp:DropDownList ID="expenditureObjectCode" runat="server" CssClass="form-select" data-required="true" DataSource='<%# objectCodes %>' SelectedValue='<%# DataBinder.Eval(Container.DataItem, "ObjectCode") %>'></asp:DropDownList>--%>
-																	<asp:TextBox runat="server" ID="expenditureObjectCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "ObjectCode") %>' data-required="true"></asp:TextBox>
+																<td runat="server" id="expenditureObjectCodeCell" style="vertical-align: middle">
+																	<asp:TextBox runat="server" ID="expenditureObjectCode" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" Text='<%# DataBinder.Eval(Container.DataItem, "ObjectCode") %>' data-required="true" ClientIDMode="AutoID"></asp:TextBox>
 																</td>
 																<td class="position-relative" style="vertical-align: middle">
 																	<asp:TextBox runat="server" ID="expenditureAmount" CssClass="form-control" TextMode="SingleLine" data-type="currency" placeholder="$0.00" AutoCompleteType="Disabled" Text='<%# (Convert.ToInt32(DataBinder.Eval(Container.DataItem, "Amount")) >= 0)?DataBinder.Eval(Container.DataItem, "Amount"):string.Empty%>'></asp:TextBox>
 
 																	<div runat="server" id="removeExpRowDiv">
-																		<asp:Button runat="server" ID="removeExpenditureRow" CssClass="btn row-delete" UseSubmitBehavior="false" CommandName="delete" CommandArgument="ordExpTable" Text="&#xf068;" />
+																		<asp:Button runat="server" ID="removeExpenditureRow" CssClass="btn row-delete" UseSubmitBehavior="false" CommandName="delete" CommandArgument="expenditure" Text="&#xf068;" data-disable-btn="aspIconBtn" />
 																	</div>
 																</td>
 															</tr>
@@ -599,7 +596,7 @@
 
 											<%-- ADD EXPENDITURE ROW BUTTON --%>
 											<div runat="server" id="newExpenditureRowDiv" class="text-center w-100">
-												<asp:Button runat="server" ID="newExpenditureRow" CssClass="btn btn-success w-100 row-add" OnClick="newAccountingRow_ServerClick" UseSubmitBehavior="false" CommandName="ordExpTable" Text="Add Row" />
+												<asp:Button runat="server" ID="newExpenditureRow" CssClass="btn btn-success w-100 row-add" OnClick="newAccountingRow_ServerClick" UseSubmitBehavior="false" CommandName="expenditure" Text="Add Row" data-disable-btn="aspBtn" data-disable-btn-text="Adding Row" />
 											</div>
 										</div>
 
@@ -625,7 +622,7 @@
 									<%-- SECOND ROW --%>
 									<div runat="server" id="supportingDocumentationDiv" class="row mb-3">
 										<%-- SUPPORTING DOCUMENTATION --%>
-										<div class="col-md-6">
+										<div class="col-md-8">
 											<div class="form-group">
 												<label for="supportingDocumentationGroup">Supporting Documentation (Ex: Contract, Agreement, Change Order, Bid Book)</label>
 												<ul class="list-group mt-1">
@@ -637,15 +634,16 @@
 																<%# DataBinder.Eval(Container.DataItem, "DocumentName") %>
 																<div class="d-flex float-end">
 																	<asp:LinkButton runat="server" ID="supportingDocDownload" CssClass="btn btn-primary" CommandName="download" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "DocumentName") %>' Style="margin-right: 5px;"><span class="fas fa-download"></span></asp:LinkButton>
-																	<asp:LinkButton runat="server" ID="deleteFile" CssClass="btn btn-danger" CommandName="delete" Style="margin-left: 5px;"><span class="fas fa-trash-can"></span></asp:LinkButton>
+																	<asp:LinkButton runat="server" ID="deleteFile" CssClass="btn btn-danger" CommandName="delete" Style="margin-left: 5px;" data-disable-btn="aspIconBtn"><span class="fas fa-trash-can"></span></asp:LinkButton>
 																</div>
 															</li>
 														</ItemTemplate>
 													</asp:Repeater>
 												</ul>
 												<div id="supportingDocumentationGroup" class="d-flex mb-2">
-													<asp:FileUpload runat="server" ID="supportingDocumentation" CssClass="form-control mt-3" AllowMultiple="true" onchange="SetUploadActive();" onfocus="showFileWaiting();" />
-													<asp:Button runat="server" ID="UploadDocBtn" UseSubmitBehavior="false" CssClass="btn btn-success mt-3 ms-3 text-nowrap" Width="25%" Text="Upload" OnClick="UploadDocBtn_Click" data-load-btn="true" data-load-text="Uploading" data-load-icon="fa-upload" data-prevent-type="disabled" disabled="disabled" />
+													<asp:FileUpload runat="server" ID="supportingDocumentation" CssClass="form-control mt-3" AllowMultiple="true" onchange="SetUploadActive(this.id, 'uploadBtn');" onfocus="showFileWaiting();" />
+													<button id="uploadBtn" class="btn btn-success mt-3 ms-3 w-25" onclick="clickAspBtn('UploadDocBtn');" type="button" data-disable-btn="htmlIconBtn" data-disable-btn-icon="fa-upload" data-disable-btn-text="Uploading" disabled><span>Upload</span></button>
+													<asp:Button runat="server" ID="UploadDocBtn" UseSubmitBehavior="false" Width="25%" OnClick="UploadDocBtn_Click" hidden="hidden" />
 												</div>
 												<div id="fileWaiting" class="mt-2" hidden>
 													<strong class="text-warning fa-fade"><span class="fa-solid fa-hourglass-end fa-flip"></span>&nbsp;Waiting for file...</strong>
@@ -668,7 +666,7 @@
 															<ItemTemplate>
 																<div class="badge rounded-pill text-bg-secondary m-1" style="font-size: .95rem">
 																	<%# Container.DataItem %>
-																	<asp:LinkButton runat="server" ID="removeBtn" CssClass="text-danger" style="margin-left: 10px;" CommandName="remove" CommandArgument='<%# Container.DataItem %>'><span class="fa-solid fa-xmark"></span></asp:LinkButton>
+																	<asp:LinkButton runat="server" ID="removeBtn" CssClass="text-danger" style="margin-left: 10px;" CommandName="remove" CommandArgument='<%# Container.DataItem %>'><span class="fa-solid fa-xmark" data-disable-btn="aspIconBtn"></span></asp:LinkButton>
 																</div>
 															</ItemTemplate>
 														</asp:Repeater>
@@ -678,8 +676,8 @@
 															<div class="col-md-12">
 																<div class="input-group">
 																	<span class="input-group-text fas fa-address-book"></span>
-																	<asp:TextBox runat="server" ID="signatureEmailAddress" CssClass="form-control" TextMode="Email" AutoCompleteType="Email" placeholder="john.doe@corporate.com" ></asp:TextBox>
-																	<asp:Button runat="server" ID="AddRequestEmailAddress" UseSubmitBehavior="false" CssClass="btn btn-success fas-btn" OnClick="AddRequestEmailAddress_Click" disabled="disabled" Text='&#xf055;'/>
+																	<asp:TextBox runat="server" ID="signatureEmailAddress" CssClass="form-control" TextMode="Email" AutoCompleteType="Email" placeholder="john.doe@corporate.com" data-enter-btn="AddRequestEmailAddress"></asp:TextBox>
+																	<asp:Button runat="server" ID="AddRequestEmailAddress" UseSubmitBehavior="false" CssClass="btn btn-success fas-btn" OnClick="AddRequestEmailAddress_Click" disabled="disabled" Text='&#xf055;' data-disable-btn="aspIconBtn"/>
 																</div>
 															</div>
 														</div>
@@ -698,12 +696,12 @@
 									<div class="row mt-3 mb-3 text-center">
 										<%-- SUBMIT BUTTON --%>
 										<div class="col-md-6">
-											<button id="submitBtn" class="btn btn-success float-end w-50" onclick="validateFactSheetDraft('submitBtn', 'factSheetMain,directorSupervisorValidGroup');" type="button" data-disable-btn="submit"><span>Submit</span></button>
+											<button id="submitBtn" class="btn btn-success float-end w-50" onclick="validateFactSheetDraft('submitBtn', 'factSheetMain,directorSupervisorValidGroup');" type="button" data-disable-btn="htmlBtn" data-disable-btn-text="Submitting"><span>Submit</span></button>
 											<asp:Button runat="server" ID="SubmitFactSheet" UseSubmitBehavior="false" OnClick="SaveFactSheet_Click" CommandName="submit" hidden="true" />
 										</div>
 										<%-- SAVE BUTTON --%>
 										<div class="col-md-6">
-											<button id="saveBtn" class="btn btn-primary float-start w-50" onclick="validateFactSheetDraft('saveBtn', 'factSheetMain');" type="button" data-disable-btn="save">Save Draft</button>
+											<button id="saveBtn" class="btn btn-primary float-start w-50" onclick="validateFactSheetDraft('saveBtn', 'factSheetMain');" type="button" data-disable-btn="htmlIconBtn" data-disable-btn-icon="fa-floppy-disk" data-disable-btn-text="Saving">Save Draft</button>
 											<asp:Button runat="server" ID="SaveFactSheet" UseSubmitBehavior="false" OnClick="SaveFactSheet_Click" CommandName="save" hidden="true" />
 										</div>
 									</div>
@@ -736,7 +734,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-					<asp:Button ID="btnDelete" runat="server" Text="Delete" CssClass="btn btn-danger" CausesValidation="false" UseSubmitBehavior="false" Visible="true" OnClick="mdlDeleteSubmit_ServerClick" OnClientClick="ShowSubmitToast();" />
+					<asp:Button ID="btnDelete" runat="server" Text="Delete" CssClass="btn btn-danger" CausesValidation="false" UseSubmitBehavior="false" Visible="true" OnClick="mdlDeleteSubmit_ServerClick" OnClientClick="ShowSubmitToast();" data-disable-btn="delete" />
 					<asp:HiddenField runat="server" ID="hdnDeleteID" />
 				</div>
 			</div>
@@ -746,104 +744,46 @@
 
 	<%-- JAVASCRIPT --%>
 	<script>
-		FormatForms();
-		SetTooltips();
-		showLoadingButtons();
-		cancelFilePick();
-		searchBtn();
-		DisableDDInitialOption();
-		FilterFirstItem();
-		addSignatureEmails();
-		multiValidation();
+		InitialLoad();
 		var currentValidation = [];
 		var isValid = true;
-		
 
-		var prm = Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {			
-			multiValidation();
-			ToastAnimationHelper();
-			GetToastStatus();
+		function InitialLoad() {
 			FormatForms();
-			CurrencyFormatting();
 			SetTooltips();
-			DisableDDInitialOption();
+			disableSubmitBtns();
+			cancelFilePick('<%= supportingDocumentation.ClientID %>');
+			enterBtn();
+			addSignatureEmails('<%= signatureEmailAddress.ClientID %>', '<%= AddRequestEmailAddress.ClientID %>');
+			multiValidation();
+			DisableDDInitialOption([
+				{ id: '<%= requestDepartment.ClientID %>', opacity: "75" },
+				{ id: '<%= requestDivision.ClientID %>', opacity: "35" },
+				{ id: '<%= purchaseMethod.ClientID %>', opacity: "75" },
+			]);
+		}
+
+		Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
+			FormatForms();
+			SetTooltips();
+			disableSubmitBtns();
+			cancelFilePick('<%= supportingDocumentation.ClientID %>');
+			enterBtn();
+			addSignatureEmails('<%= signatureEmailAddress.ClientID %>', '<%= AddRequestEmailAddress.ClientID %>');
+			multiValidation();
+			DisableDDInitialOption([
+				{ id: '<%= requestDepartment.ClientID %>', opacity: "75" },
+				{ id: '<%= requestDivision.ClientID %>', opacity: "35" },
+				{ id: '<%= purchaseMethod.ClientID %>', opacity: "75" },
+			]);
+			GetToastStatus();
+			ToastAnimationHelper();
+			CurrencyFormatting();
 			HideAllTooltips();
-			showLoadingButtons();
-			cancelFilePick();
-			searchBtn();
-			FilterFirstItem();
-			addSignatureEmails();
 			if (!isValid) {
 				ValidationFormatting(Page_Validators);
 			}
 		});
-
-		function DisableDDInitialOption() {
-			var ddDepartment = document.getElementById('<%= requestDepartment.ClientID %>');
-			var ddDivision = document.getElementById('<%= requestDivision.ClientID %>');
-			var ddMethod = document.getElementById('<%= purchaseMethod.ClientID %>');
-			if (ddDepartment != null) {
-				if (ddDepartment.options[0].selected) {
-					ddDepartment.style.color = "rgb(from var(--bs-body-color) r g b / 75%)";
-				}
-				else {
-					ddDepartment.style.color = "unset";
-				}
-				ddDepartment.options[0].disabled = true;
-			}
-			if (ddDivision != null) {
-				if (ddDivision.options[0].selected) {
-					ddDivision.style.color = "rgb(from var(--bs-body-color) r g b / 35%)";
-				}
-				else {
-					ddDivision.style.color = "unset";
-				}
-				ddDivision.options[0].disabled = true;
-			}
-			if (ddMethod != null) {
-				if (ddMethod.options[0].selected) {
-					ddMethod.style.color = "rgb(from var(--bs-body-color) r g b / 75%)";
-				}
-				else {
-					ddMethod.style.color = "unset";
-				}
-				ddMethod.options[0].disabled = true;
-			}
-		}
-
-		function FilterFirstItem() {
-			$('[data-filter="true"]').each(function () {
-				if ($(this).prop('selectedIndex') === 0 && !$(this).prop('disabled')) {
-					$(this).css('color', 'rgb(from var(--bs-body-color) r g b / 75%)');
-				}
-				else if ($(this).prop('selectedIndex') === 0 && $(this).prop('disabled')) {
-					$(this).css('color', 'rgb(from var(--bs-body-color) r g b / 35%)');
-				}
-				else {
-					$(this).removeAttr('style');
-				}
-			});
-		}
-
-		function SetTooltips() {
-			var tooltipTitles = $('[data-overflow-tooltip="true"]');
-			$(tooltipTitles).each(function (i) {
-				if (this.scrollWidth > this.offsetWidth) {
-					$(this).tooltip();
-				}				
-			});
-			$('[data-action-tooltip="true"]').tooltip();
-		}
-
-		function HideAllTooltips() {
-			$('.tooltip.show').tooltip('hide');
-		}
-
-		function CurrencyFormatting() {
-			$("[data-type='currency']").each(function () {
-				formatCurrency($(this), "blur");
-			});
-		}
 
 		function validateFactSheetDraft(btnID, validationGroups) {
 			if (Page_ClientValidate(validationGroups)) {
@@ -874,134 +814,5 @@
 			}
 			return true;
 		}
-
-		function ValidationFormatting(Validators) {
-			window.invalidArray = [];
-			$(Validators).each(function () {				
-				var validator = this;
-				var id = $(validator).attr('id').replace('Valid', '');
-				var control;
-				switch (validator.hasAttribute('data-table-validator')) {
-					case true:
-						control = $(`[data-validate=${id}]`);
-						break;
-					case false:
-						control = $(`#${id}`);
-						break;
-				}
-				var label = $(`[for=${id}]`);
-
-				if (currentValidation.includes(validator.validationGroup)) {
-					ValidatorValidate(validator);
-				}
-				switch (validator.isvalid) {
-
-					case true:
-						control.removeClass('invalid-border');
-						label.removeClass('required-field');
-						break;
-					case false:
-						control.addClass('invalid-border');
-						label.addClass('required-field');
-						break;
-				}
-				control.on('change', function () {
-					
-					ValidatorValidate(validator);
-					switch (validator.isvalid) {
-
-						case true:
-							control.removeClass('invalid-border');
-							label.removeClass('required-field');
-							break;
-						case false:
-							control.addClass('invalid-border');
-							label.addClass('required-field');
-							break;
-					}
-				});
-				
-			});
-		}
-
-		function SetUploadActive() {
-			$('#fileWaiting').prop('hidden', true);
-			const supportingDocumentation = document.getElementById('<%= supportingDocumentation.ClientID %>')
-			var UploadDocBtn = document.getElementById('<%= UploadDocBtn.ClientID %>')
-			if (supportingDocumentation.files.length > 0) {
-				UploadDocBtn.disabled = false;
-			}
-			else {
-				UploadDocBtn.disabled = true;
-			}
-			
-		}
-
-		function showFileWaiting() {
-			$('#fileWaiting').prop('hidden', false);
-		}
-
-		function cancelFilePick() {
-			$('#<%= supportingDocumentation.ClientID %>').on('cancel', function () {
-				$('#fileWaiting').prop('hidden', true);
-			});
-		}
-
-		function SetDeleteModal(ordID) {
-			const hdnDeleteID = $('#<%= hdnDeleteID.ClientID %>');
-			$(hdnDeleteID).attr("value", ordID);
-			$('#deleteModal').modal('show');
-			
-		}
-
-		function ShowEmailToast() {
-			$('#submitToast').removeClass("text-bg-danger");
-			$('#submitToast').addClass("text-bg-success");
-
-			$('#toastMessage').html("Email Sent!");
-			ShowSubmitToast();
-			GetToastStatus();
-		}
-
-		function showLoadingButtons() {
-			$('[data-disable-btn]').each(function () {
-				var type = $(this).attr('data-disable-btn');
-				$(this).on('click', function () {
-					if (isValid) {
-						$(this).attr('disabled', true);
-						switch (type) {
-							case "submit":
-								$(this).html('<span class="fa-fade">Submitting...</span>');
-								break;
-							case "save":
-								$(this).html('<span class="fa-fade"><span class="fas fa-floppy-disk fa-bounce"></span>&nbsp;Saving...</span>');
-								break;
-						}
-					}
-				});
-			});
-		}
-
-		function searchBtn() {
-			$('#<%= filterSearchTitle.ClientID %>').on('keydown', function (event) {
-				if (event.key === 'Enter') {
-					const searchBtn = document.querySelector('[data-search="true"]');
-					searchBtn.click();
-					showLoadingModal();
-				}
-			});
-		}
-
-		function addSignatureEmails() {
-			$('#<%= signatureEmailAddress.ClientID %>').on('change keyup', function () {
-				console.log("Working");
-				var validEmail = $('#<%= signatureEmailAddress.ClientID %>').val().indexOf("@cwlp.com") > 1 || $('#<%= signatureEmailAddress.ClientID %>').val().indexOf("@springfield.il.us") > 1;
-				if (validEmail && $('#<%= signatureEmailAddress.ClientID %>').val().length > 0) {
-					$('#<%= AddRequestEmailAddress.ClientID %>').prop('disabled', false);
-				}
-				else {
-					$('#<%= AddRequestEmailAddress.ClientID %>').prop('disabled', true);
-				}
-			});
-		}</script>
+	</script>
 </asp:Content>
