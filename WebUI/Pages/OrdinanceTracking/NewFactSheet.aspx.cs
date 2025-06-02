@@ -574,15 +574,23 @@ namespace WebUI
                     }
 
 
-                    Email.Instance.AddEmailAddress(emailList, _user.Email);
-                    string formType = "Ordinance Fact Sheet";
-                    string href = $"apptest/Themis/Ordinances?id={retVal}&v=view";
+                    Email sigRequestEmail = new Email();
+                    Email submittedEmail = new Email();
+                    if (btn.CommandName.Equals("submit"))
+                    {
+                        string formType = "Ordinance Fact Sheet";
 
-                    Email newEmail = new Email();
+                        string sigHref = $"apptest/Themis/Ordinances?id={retVal}&v=edit&f=directorSupervisorBtn";
+                        sigRequestEmail.EmailSubject = $"THΣMIS Signature Requested";
+                        sigRequestEmail.EmailTitle = $"THΣMIS Signature Requested";
+                        sigRequestEmail.EmailText = $"<p style='margin: 0;'><span style='font-size:36.0pt;font-family:\"Times New Roman\",serif;color:#2D71D5;font-weight:bold'>THΣMIS</span></p><div align=center style='text-align:center'><span><hr size='2' width='100%' align='center' style='margin-top: 0;'></span></div><p><span>You are receiving this message because an Ordinance Fact Sheet has been SUBMITTED by <b>{_user.FirstName} {_user.LastName}</b> and your signature is required in the role of <b>Director/Supervisor</b> for Ordinance ID #{retVal} on THΣMIS.</span></p><p><span>Please click the button below to review and sign the document</span></p><table border='0' cellpadding='0' cellspacing='0' style='border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;'><tr><td style='font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #198754; border-radius: 5px; text-align: center;' valign='top' bgcolor='#198754' align='center'><a href='{sigHref}' target='_blank' style='display: inline-block; color: #ffffff; background-color: #198754; border: solid 1px #198754; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 15px 25px; text-transform: capitalize; border-color: #198754; '>Sign Ordinance</a></td></tr></table><br /><p><span>Thank you for your prompt attention to this matter.</span></p>";
 
-                    newEmail.EmailSubject = $"{formType} SUBMITTED";
-                    newEmail.EmailTitle = $"{formType} SUBMITTED";
-                    newEmail.EmailText = $"<p style='margin: 0;'><span style='font-size:36.0pt;font-family:\"Times New Roman\",serif;color:#2D71D5;font-weight:bold'>THΣMIS</span></p><div align=center style='text-align:center'><span><hr size='2' width='100%' align='center' style='margin-top: 0;'></span></div><p><span>An <b>{formType}</b> has been SUBMITTED by <b>{_user.FirstName} {_user.LastName}</b>.</span></p><br /><p style='margin: 0; line-height: 1.5;'><span>ID: {retVal}</span></p><p style='margin: 0; line-height: 1.5;'><span>Date: {DateTime.Now}</span></p><p style='margin: 0; line-height: 1.5;'><span>Department: {requestDepartment.SelectedItem.Text}</span></p><p style='margin: 0; line-height: 1.5;'><span>Contact: {requestContact.Text}</span></p><p style='margin: 0; line-height: 1.5;'><span>Phone: {ordinance.RequestPhone}</span></p><br /><p><span>Please click the button below to review the document:</span></p><table border='0' cellpadding='0' cellspacing='0' style='border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;'><tr><td style='font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #0d6efd; border-radius: 5px; text-align: center;' valign='top' bgcolor='#0d6efd' align='center'><a href='{href}' target='_blank' style='display: inline-block; color: #ffffff; background-color: #0d6efd; border: solid 1px #0d6efd; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 15px 25px; text-transform: capitalize; border-color: #0d6efd; '>View Ordinance</a></td></tr></table>";
+
+                        string submitHref = $"apptest/Themis/Ordinances?id={retVal}&v=view";
+                        submittedEmail.EmailSubject = $"{formType} SUBMITTED";
+                        submittedEmail.EmailTitle = $"{formType} SUBMITTED";
+                        submittedEmail.EmailText = $"<p style='margin: 0;'><span style='font-size:36.0pt;font-family:\"Times New Roman\",serif;color:#2D71D5;font-weight:bold'>THΣMIS</span></p><div align=center style='text-align:center'><span><hr size='2' width='100%' align='center' style='margin-top: 0;'></span></div><p><span>An <b>{formType}</b> has been SUBMITTED by <b>{_user.FirstName} {_user.LastName}</b>.</span></p><br /><p style='margin: 0; line-height: 1.5;'><span>ID: {retVal}</span></p><p style='margin: 0; line-height: 1.5;'><span>Date: {DateTime.Now}</span></p><p style='margin: 0; line-height: 1.5;'><span>Department: {requestDepartment.SelectedItem.Text}</span></p><p style='margin: 0; line-height: 1.5;'><span>Contact: {requestContact.Text}</span></p><p style='margin: 0; line-height: 1.5;'><span>Phone: {ordinance.RequestPhone}</span></p><br /><p><span>Please click the button below to review the document:</span></p><table border='0' cellpadding='0' cellspacing='0' style='border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;'><tr><td style='font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #0d6efd; border-radius: 5px; text-align: center;' valign='top' bgcolor='#0d6efd' align='center'><a href='{submitHref}' target='_blank' style='display: inline-block; color: #ffffff; background-color: #0d6efd; border: solid 1px #0d6efd; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 15px 25px; text-transform: capitalize; border-color: #0d6efd; '>View Ordinance</a></td></tr></table>";
+                    }
 
                     switch (btn.CommandName)
                     {
@@ -593,7 +601,8 @@ namespace WebUI
                                     Session["SubmitStatus"] = "success";
                                     Session["ToastColor"] = "text-bg-success";
                                     Session["ToastMessage"] = "Form Submitted!";
-                                    Email.Instance.SendEmail(newEmail, emailList);
+                                    Email.Instance.SendEmail(sigRequestEmail, directorSupervisorEmailAddresses.Text.Replace(";", ","));
+                                    Email.Instance.SendEmail(submittedEmail, _user.Email);
                                     Response.Redirect("./NewFactSheet", false);
                                     break;
                                 case false:

@@ -225,5 +225,16 @@ namespace WebUI
             Response.Redirect(Request.RawUrl);
         }
 
+        protected void DeleteOrd_Click(object sender, EventArgs e)
+        {
+            int ret = Factory.Instance.Delete<Ordinance>(Convert.ToInt32(txtOrdID.Text), "Ordinance");
+            if (ret > 0)
+            {
+                Session["SubmitStatus"] = "success";
+                Session["ToastColor"] = "text-bg-success";
+                Session["ToastMessage"] = "Entry Deleted!";
+                Response.Redirect(Request.RawUrl);
+            }
+        }
     }
 }

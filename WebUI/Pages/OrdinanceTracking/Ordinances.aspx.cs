@@ -48,8 +48,8 @@ namespace WebUI
 
             if (!Page.IsPostBack && !Response.IsRequestBeingRedirected)
             {
-                Session.Remove("ordRevTable");
-                Session.Remove("ordExpTable");
+                Session.Remove("revenue");
+                Session.Remove("expenditure");
                 Session.Remove("ordDocs");
                 Session.Remove("addOrdDocs");
                 Session["sortBtn"] = "sortDate";
@@ -75,8 +75,8 @@ namespace WebUI
             if (Page.IsPostBack && Page.Request.Params.Get("__EVENTTARGET").Contains("adminSwitch"))
             {
                 userInfo = ((SiteMaster)Page.Master).UserView();
-                Session.Remove("ordRevTable");
-                Session.Remove("ordExpTable");
+                Session.Remove("revenue");
+                Session.Remove("expenditure");
                 Session.Remove("ordDocs");
                 Session.Remove("addOrdDocs");
                 Session["sortBtn"] = "sortDate";
@@ -204,11 +204,15 @@ namespace WebUI
             lblNoItems.Visible = false;
             ddDeptDivision.SelectedValue = "RequestDepartment";
             filterDepartmentDiv.Visible = !userInfo.IsAdmin || userInfo.UserView ? false : true;
-            filterDivisionDiv.Visible = !userInfo.IsAdmin || userInfo.UserView ? false : true;
-            if (!filterDepartment.SelectedValue.IsNullOrWhiteSpace())
+            if (!userInfo.IsAdmin || userInfo.UserView)
             {
                 filterDivision.Enabled = true;
-                GetAllDivisions(filterDepartment, filterDepartment.SelectedValue);
+                GetAllDivisions(filterDivision, userInfo.UserDepartment.DepartmentCode.ToString());
+            }
+            else if (!filterDepartment.SelectedValue.IsNullOrWhiteSpace())
+            {
+                filterDivision.Enabled = true;
+                GetAllDivisions(filterDivision, filterDepartment.SelectedValue);
             }
             else
             {
@@ -247,10 +251,11 @@ namespace WebUI
                     OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
                     ord.StatusDescription = ordStatus.StatusDescription;
                 }
-                BindDataRepeaterPagination("yes", ord_list);
             }
+            Dictionary<string, object> sortRet = new Dictionary<string, object>();
+            sortRet = GetCurrentSort(ord_list, Session["curCmd"].ToString(), Session["sortDir"].ToString());
 
-            Session["ord_list"] = ord_list;
+            Session["ord_list"] = sortRet["list"];
             Session["noFilterOrdList"] = ord_list;
             if (ord_list.Count > 0)
             {
@@ -509,6 +514,99 @@ namespace WebUI
             }
             Session["ViewState"] = ViewState;
         }
+        protected void ddDeptDivision_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            sortDepartmentDivision.Attributes.Remove("data-command");
+            sortDepartmentDivision.Attributes.Remove("data-text");
+
+            List<Label> departmentLabels = new List<Label>();
+            List<Label> divisionLabels = new List<Label>();
+
+            foreach (RepeaterItem item in rpOrdinanceTable.Items)
+            {
+                Label deptLabel = (Label)item.FindControl("ordTableDepartment");
+                Label divLabel = (Label)item.FindControl("ordTableDivision");
+                departmentLabels.Add(deptLabel);
+                divisionLabels.Add(divLabel);
+            }
+            sortDepartmentDivision.Text = "<strong><span runat='server' class='float-end lh-1p5'></span></strong>";
+            if (Session["sortBtn"].Equals("sortDepartmentDivision"))
+            {
+                Session["sortDir"] = "asc";
+            }
+            switch (ddDeptDivision.SelectedValue)
+            {
+                case "RequestDepartment":
+                    foreach (Label item in departmentLabels)
+                    {
+                        item.Visible = true;
+                    }
+                    foreach (Label item in divisionLabels)
+                    {
+                        item.Visible = false;
+                    }
+                    break;
+                case "RequestDivision":
+                    foreach (Label item in departmentLabels)
+                    {
+                        item.Visible = false;
+                    }
+                    foreach (Label item in divisionLabels)
+                    {
+                        item.Visible = true;
+                    }
+                    break;
+            }
+            sortDepartmentDivision.Attributes.Add("data-command", ddDeptDivision.SelectedValue);
+            sortDepartmentDivision.Attributes.Add("data-text", ddDeptDivision.SelectedItem.Text);
+            Session["DeptDivColumn"] = ddDeptDivision.SelectedItem.Text.ToLower();
+        }
+        protected void btnDeptDivColumn_Click(object sender, EventArgs e)
+        {
+            sortDepartmentDivision.Attributes.Remove("data-command");
+            sortDepartmentDivision.Attributes.Remove("data-text");
+            List<Label> departmentLabels = new List<Label>();
+            List<Label> divisionLabels = new List<Label>();
+
+            foreach (RepeaterItem item in rpOrdinanceTable.Items)
+            {
+                Label deptLabel = (Label)item.FindControl("ordTableDepartment");
+                Label divLabel = (Label)item.FindControl("ordTableDivision");
+                departmentLabels.Add(deptLabel);
+                divisionLabels.Add(divLabel);
+            }
+
+            Button btn = (Button)sender;
+            switch (btn.CommandName)
+            {
+                case "department":
+                    sortDepartmentDivision.Attributes.Add("data-command", "RequestDepartment");
+                    sortDepartmentDivision.Attributes.Add("data-text", "Department");
+                    foreach (Label item in departmentLabels)
+                    {
+                        item.Visible = true;
+                    }
+                    foreach (Label item in divisionLabels)
+                    {
+                        item.Visible = false;
+                    }
+                    Session["DeptDivColumn"] = "department";
+                    break;
+                case "division":
+                    sortDepartmentDivision.Attributes.Add("data-command", "RequestDivision");
+                    sortDepartmentDivision.Attributes.Add("data-text", "Division");
+                    foreach (Label item in departmentLabels)
+                    {
+                        item.Visible = false;
+                    }
+                    foreach (Label item in divisionLabels)
+                    {
+                        item.Visible = true;
+                    }
+                    Session["DeptDivColumn"] = "division";
+                    break;
+            }
+        }
         protected void paginationBtn_Click(object sender, EventArgs e)
         {
             LinkButton button = (LinkButton)sender;
@@ -552,6 +650,30 @@ namespace WebUI
                     break;
             }
         }
+        public bool adminUnlockedOrd(string status)
+        {
+            bool unlock = false;
+            if (userInfo.IsAdmin && !userInfo.UserView)
+            {
+                if (status.Equals("Deleted"))
+                {
+                    unlock = false;
+                }
+                else
+                {
+                    unlock = true;
+                }
+            }
+            else if (lockedStatus.Any(i => i.Equals(status)))
+            {
+                unlock = false;
+            }
+            else
+            {
+                unlock = true;
+            }
+            return unlock;
+        }
         protected void ddStatus_SelectedIndexChanged(object sender, EventArgs e)
         {
             signatureSection.Visible = true;
@@ -573,34 +695,20 @@ namespace WebUI
                 requestDivision.Items.Add(new ListItem() { Text = "Select Division...", Value = "" });
             }
         }
-        protected void PurchaseMethodSelectedIndexChanged(object sender, EventArgs e)
-        {
-            switch (purchaseMethod.SelectedItem.Value)
-            {
-                default:
-                    otherException.Enabled = false;
-                    otherException.Text = string.Empty;
-                    otherException.Attributes.Remove("required");
-                    break;
-                case "Other":
-                case "Exception":
-                    otherException.Enabled = true;
-                    otherException.Attributes.Add("required", "true");
-                    break;
-            }
-        }
         protected void EPCheckedChanged(object sender, EventArgs e)
         {
             switch (epYes.Checked)
             {
                 case true:
                     epJustificationGroup.Visible = true;
-                    epJustification.Attributes.Add("required", "true");
+                    epJustification.Attributes.Add("data-required", "true");
+                    epJustificationValid.Enabled = true;
                     break;
 
                 case false:
                     epJustificationGroup.Visible = false;
-                    epJustification.Attributes.Remove("required");
+                    epJustification.Attributes.Remove("data-required");
+                    epJustificationValid.Enabled = false;
                     break;
             }
         }
@@ -610,20 +718,42 @@ namespace WebUI
             {
                 case true:
                     changeOrderNumber.Enabled = true;
+                    changeOrderNumberValid.Enabled = true;
                     additionalAmount.Enabled = true;
-                    changeOrderNumber.Attributes.Add("required", "true");
+                    additionalAmountValid.Enabled = true;
+                    changeOrderNumber.Attributes.Add("data-required", "true");
                     changeOrderNumber.Attributes.Add("placeholder", "0123456789");
-                    additionalAmount.Attributes.Add("required", "true");
+                    additionalAmount.Attributes.Add("data-required", "true");
                     additionalAmount.Attributes.Add("placeholder", "$0.00");
                     break;
 
                 case false:
                     changeOrderNumber.Enabled = false;
+                    changeOrderNumberValid.Enabled = false;
                     additionalAmount.Enabled = false;
-                    changeOrderNumber.Attributes.Remove("required");
+                    additionalAmountValid.Enabled = false;
+                    changeOrderNumber.Attributes.Remove("data-required");
                     changeOrderNumber.Attributes.Remove("placeholder");
-                    additionalAmount.Attributes.Remove("required");
+                    additionalAmount.Attributes.Remove("data-required");
                     additionalAmount.Attributes.Remove("placeholder");
+                    break;
+            }
+        }
+        protected void PurchaseMethodSelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (purchaseMethod.SelectedItem.Value)
+            {
+                default:
+                    otherException.Enabled = false;
+                    otherExceptionValid.Enabled = false;
+                    otherException.Text = string.Empty;
+                    otherException.Attributes.Remove("data-required");
+                    break;
+                case "Other":
+                case "Exception":
+                    otherException.Enabled = true;
+                    otherExceptionValid.Enabled = true;
+                    otherException.Attributes.Add("data-required", "true");
                     break;
             }
         }
@@ -662,85 +792,63 @@ namespace WebUI
             rpSupportingDocumentation.DataSource = originalOrdDocList;
             rpSupportingDocumentation.DataBind();
         }
-        protected void btnSendSigEmail_Click(object sender, EventArgs e)
+        protected void signatureEmailBtn_Click(object sender, EventArgs e)
+        {
+            LinkButton btn = (LinkButton)sender;
+            string[] args = btn.CommandArgument.Split(';');
+            SignatureRequest sigRequests = Session["SigRequestEmails"] as SignatureRequest;
+            PropertyInfo sigType = (PropertyInfo)typeof(SignatureRequest).GetProperties().First(i => i.Name.Equals(btn.CommandName)); ;
+            string[] emails = sigType.GetValue(sigRequests).ToString().Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
+            if (emails.Length > 0)
+            {
+                emailListDiv.Visible = true;
+                btnSendSigEmail.Enabled = true;
+                rpEmailList.DataSource = emails;
+                rpEmailList.DataBind();
+            }
+            else
+            {
+                emailListDiv.Visible = false;
+                btnSendSigEmail.Enabled = false;
+                rpEmailList.DataSource = null;
+                rpEmailList.DataBind();
+            }
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "OpenSigEmailModal", $"setEmailModal('{args[0]}', '{args[1]}', '{btn.CommandName}');", true);
+        }
+        protected void AddRequestEmailAddress_Click(object sender, EventArgs e)
         {
             SignatureRequest sigRequests = Session["SigRequestEmails"] as SignatureRequest;
             PropertyInfo sigType = (PropertyInfo)typeof(SignatureRequest).GetProperties().First(i => i.Name.Equals(sigBtnType.Value));
 
             List<string> emails = sigType.GetValue(sigRequests).ToString().Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToList();
-
-            foreach (string item in emails)
+            string[] newEmailAddresses = signatureEmailAddress.Text.Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
+            foreach (string item in newEmailAddresses)
             {
-                Email.Instance.AddEmailAddress("SingleEmail", item);
+                emails.Add(item);
+            }
+            sigType.SetValue(sigRequests, string.Join(";", emails.OrderBy(i => i)));
+            if (emails.Count > 0)
+            {
+                emailListDiv.Visible = true;
+                btnSendSigEmail.Enabled = true;
+                rpEmailList.DataSource = emails.OrderBy(i => i);
+                rpEmailList.DataBind();
+            }
+            else
+            {
+                emailListDiv.Visible = false;
+                btnSendSigEmail.Enabled = false;
+                rpEmailList.DataSource = null;
+                rpEmailList.DataBind();
             }
 
-            string href = $"apptest/Themis/Ordinances?id={hdnOrdID.Value.ToString()}&v=edit&f={sigBtnTarget.Value.ToString()}";
-            string formType = "THΣMIS";
-
-            Email newEmail = new Email();
-
-            newEmail.EmailSubject = $"{formType} Signature Requested";
-            newEmail.EmailTitle = $"{formType} Signature Requested";
-            newEmail.EmailText = $"<p style='margin: 0;'><span style='font-size:36.0pt;font-family:\"Times New Roman\",serif;color:#2D71D5;font-weight:bold'>THΣMIS</span></p><div align=center style='text-align:center'><span><hr size='2' width='100%' align='center' style='margin-top: 0;'></span></div><p><span>You are receiving this message because your signature is required in the role of <b>{sigBtnLabel.Value.ToString()}</b> for Ordinance ID #{hdnOrdID.Value.ToString()} on THΣMIS.</span></p><p><span>Please click the button below to review and sign the document</span></p><table border='0' cellpadding='0' cellspacing='0' style='border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;'><tr><td style='font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #198754; border-radius: 5px; text-align: center;' valign='top' bgcolor='#198754' align='center'><a href='{href}' target='_blank' style='display: inline-block; color: #ffffff; background-color: #198754; border: solid 1px #198754; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 15px 25px; text-transform: capitalize; border-color: #198754; '>Sign Ordinance</a></td></tr></table><br /><p><span>Thank you for your prompt attention to this matter.</span></p>";
-
-            Email.Instance.SendEmail(newEmail, "SingleEmail");
-        }
-        protected void btnSignDoc_Click(object sender, EventArgs e)
-        {
-            switch (sigType.Value)
+            int updateSigRequest = Factory.Instance.Update(sigRequests, "sp_UpdateOrdinance_SignatureRequest");
+            if (updateSigRequest > 0)
             {
-                case "fundsCheckBy":
-                    fundsCheckByBtnDiv.Visible = false;
-                    fundsCheckByInputGroup.Visible = true;
-                    fundsCheckEmailBtn.Visible = false;
-                    fundsCheckBySig.Text = sigName.Text;
-                    fundsCheckByDate.Text = sigDate.Text;
-                    break;
-                case "directorSupervisor":
-                    directorSupervisorBtnDiv.Visible = false;
-                    directorSupervisorInputGroup.Visible = true;
-                    directorSupervisorEmailBtn.Visible = false;
-                    directorSupervisorSig.Text = sigName.Text;
-                    directorSupervisorDate.Text = sigDate.Text;
-                    break;
-                case "cPA":
-                    cPABtnDiv.Visible = false;
-                    cPAInputGroup.Visible = true;
-                    cPAEmailBtn.Visible = false;
-                    cPASig.Text = sigName.Text;
-                    cPADate.Text = sigDate.Text;
-                    break;
-                case "obmDirector":
-                    obmDirectorBtnDiv.Visible = false;
-                    obmDirectorInputGroup.Visible = true;
-                    obmDirectorEmailBtn.Visible = false;
-                    obmDirectorSig.Text = sigName.Text;
-                    obmDirectorDate.Text = sigDate.Text;
-                    break;
-                case "mayor":
-                    mayorBtnDiv.Visible = false;
-                    mayorInputGroup.Visible = true;
-                    mayorEmailBtn.Visible = false;
-                    mayorSig.Text = sigName.Text;
-                    mayorDate.Text = sigDate.Text;
-                    break;
+                signatureEmailAddress.Text = string.Empty;
             }
-
-            OrdinanceSignature signature = new OrdinanceSignature();
-            signature.OrdinanceID = Convert.ToInt32(hdnOrdID.Value);
-            signature.SignatureType = sigType.Value;
-            signature.Signature = sigName.Text;
-            signature.DateSigned = Convert.ToDateTime(sigDate.Text);
-            signature.SignatureCertified = certifySig.Checked;
-            signature.LastUpdateBy = _user.Login;
-            signature.LastUpdateDate = DateTime.Now;
-
-            List<OrdinanceSignature> insertSigList = (List<OrdinanceSignature>)Session["insertSigList"] ?? new List<OrdinanceSignature>();
-            insertSigList.Add(signature);
-            Session["insertSigList"] = insertSigList;
-            SaveFactSheet.CssClass += " emphasize";
         }
-
+      
 
 
         // REPEATER COMMANDS //        
@@ -755,8 +863,8 @@ namespace WebUI
             Session.Remove("SigRequestEmails");
 
 
-            Session.Remove("ordRevTable");
-            Session.Remove("ordExpTable");
+            Session.Remove("revenue");
+            Session.Remove("expenditure");
             Session.Remove("insertSigList");            
 
             List<TextBox> sigTextBoxes = new List<TextBox>()
@@ -782,6 +890,14 @@ namespace WebUI
                 cPABtn,
                 obmDirectorBtn,
                 mayorBtn
+            };
+            List<HtmlGenericControl> sigRows = new List<HtmlGenericControl>()
+            {
+                fundsCheckRow,
+                directorSupervisorRow,
+                cPARow,
+                obmDirectorRow,
+                mayorRow
             };
 
             int ordID = Convert.ToInt32(e.CommandArgument);
@@ -812,11 +928,13 @@ namespace WebUI
                     epYes.Checked = true;
                     epNo.Checked = false;
                     epJustificationGroup.Visible = true;
+                    epJustificationValid.Enabled = true;
                     break;
                 case false:
                     epYes.Checked = false;
                     epNo.Checked = true;
                     epJustificationGroup.Visible = false;
+                    epJustificationValid.Enabled = false;
                     break;
             }
             epJustification.Text = ord.EmergencyPassageReason;
@@ -837,11 +955,15 @@ namespace WebUI
                     scYes.Checked = true;
                     scNo.Checked = false;
                     scopeChangeOptions.Visible = true;
+                    changeOrderNumberValid.Enabled = true;
+                    additionalAmountValid.Enabled = true;
                     break;
                 case false:
                     scYes.Checked = false;
                     scNo.Checked = true;
                     scopeChangeOptions.Visible = false;
+                    changeOrderNumberValid.Enabled = false;
+                    additionalAmountValid.Enabled = false;
                     break;
             }
             changeOrderNumber.Text = ord.ChangeOrderNumber;
@@ -853,10 +975,12 @@ namespace WebUI
             {
                 default:
                     otherExceptionDiv.Visible = false;
+                    otherExceptionValid.Enabled = false;
                     break;
                 case "Other":
                 case "Exception":
                     otherExceptionDiv.Visible = true;
+                    otherExceptionValid.Enabled = true;
                     break;
             }
             otherException.Text = ord.OtherException;
@@ -906,35 +1030,35 @@ namespace WebUI
 
                 if (revItems.Count > 0)
                 {
-                    Session["ordRevTable"] = revItems;
+                    Session["revenue"] = revItems;
                     Session["OriginalRevTable"] = revItems;
                     rpRevenueTable.DataSource = revItems.OrderBy(i => i.OrdinanceAccountingID);
                     rpRevenueTable.DataBind();
                 }
                 else
                 {
-                    Session.Remove("ordRevTable");
+                    Session.Remove("revenue");
                     rpRevenueTable.DataSource = null;
                     rpRevenueTable.DataBind();
                 }
                 if (expItems.Count > 0)
                 {
-                    Session["ordExpTable"] = expItems;
+                    Session["expenditure"] = expItems;
                     Session["OriginalExpTable"] = expItems;
                     rpExpenditureTable.DataSource = expItems.OrderBy(i => i.OrdinanceAccountingID);
                     rpExpenditureTable.DataBind();
                 }
                 else
                 {
-                    Session.Remove("ordExpTable");
+                    Session.Remove("expenditure");
                     rpExpenditureTable.DataSource = null;
                     rpExpenditureTable.DataBind();
                 }
             }
             else
             {
-                Session.Remove("ordRevTable");
-                Session.Remove("ordExpTable");
+                Session.Remove("revenue");
+                Session.Remove("expenditure");
                 rpRevenueTable.DataSource = null;
                 rpExpenditureTable.DataSource = null;
                 rpRevenueTable.DataBind();
@@ -1076,41 +1200,74 @@ namespace WebUI
                             statusLabel.Attributes["class"] = "text-primary";
                             copyOrd.Visible = false;
                             ordinanceNumberDiv.Visible = false;
+                            foreach (HtmlGenericControl row in sigRows)
+                            {
+                                row.Visible = false;
+                            }
+                            directorSupervisorRow.Visible = true;
                             break;
                         case "Pending":
                             statusIcon.Attributes["class"] = "fas fa-hourglass-clock text-warning-light";
                             statusLabel.Attributes["class"] = "text-warning-light";
                             ordinanceNumberDiv.Visible = true;
+                            foreach (HtmlGenericControl row in sigRows)
+                            {
+                                row.Visible = true;
+                            }
                             break;
                         case "Under Review":
                             statusIcon.Attributes["class"] = "fa-kit fa-solid-memo-magnifying-glass text-info";
                             statusLabel.Attributes["class"] = "text-info";
                             ordinanceNumberDiv.Visible = true;
+                            foreach (HtmlGenericControl row in sigRows)
+                            {
+                                row.Visible = true;
+                            }
                             break;
                         case "Being Held":
                             statusIcon.Attributes["class"] = "fas fa-triangle-exclamation text-hazard";
                             statusLabel.Attributes["class"] = "text-hazard";
                             ordinanceNumberDiv.Visible = true;
+                            foreach (HtmlGenericControl row in sigRows)
+                            {
+                                row.Visible = true;
+                            }
                             break;
                         case "Drafted":
                             statusIcon.Attributes["class"] = "fa-kit fa-solid-file-contract-circle-check text-drafted";
                             statusLabel.Attributes["class"] = "text-drafted";
                             ordinanceNumberDiv.Visible = true;
+                            foreach (HtmlGenericControl row in sigRows)
+                            {
+                                row.Visible = true;
+                            }
                             break;
                         case "Approved":
                             statusIcon.Attributes["class"] = "fas fa-badge-check text-success";
                             statusLabel.Attributes["class"] = "text-success";
                             ordinanceNumberDiv.Visible = true;
+                            foreach (HtmlGenericControl row in sigRows)
+                            {
+                                row.Visible = true;
+                            }
                             break;
                         case "Rejected":
                             statusIcon.Attributes["class"] = "fas fa-ban text-danger";
                             statusLabel.Attributes["class"] = "text-danger";
                             ordinanceNumberDiv.Visible = true;
+                            foreach (HtmlGenericControl row in sigRows)
+                            {
+                                row.Visible = true;
+                            }
                             break;
                         case "Deleted":
                             statusIcon.Attributes["class"] = "fas fa-trash-xmark text-danger";
                             statusLabel.Attributes["class"] = "text-danger";
                             ordinanceNumberDiv.Visible = true;
+                            foreach (HtmlGenericControl row in sigRows)
+                            {
+                                row.Visible = true;
+                            }
                             break;
                     }
 
@@ -1180,19 +1337,21 @@ namespace WebUI
                 case "edit":
                     ordView.Attributes["readonly"] = "false";
                     ordinanceTabs.Visible = false;
-                    copyOrd.Visible = false;
-                    ddStatusDiv.Visible = !userInfo.IsAdmin || userInfo.UserView ? false : true;
+                    copyOrd.Visible = false;                    
                     ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
                     ord.StatusDescription = ordStatus.StatusDescription;
                     bool adminUser = (userInfo.IsAdmin || !userInfo.UserView) ? true : false;
                     hdnStatusID.Value = ordStatus.StatusID.ToString();
-                    if (ordStatus.StatusDescription != "New" && adminUser)
+                    if (!adminUser || ord.StatusDescription.Equals("New"))
                     {
-                        ddStatus.SelectedValue = ordStatus.StatusID.ToString();
+                        ddStatusDiv.Visible = false;
+                        statusDiv.Visible = true;
                     }
                     else
                     {
-                        ddStatus.SelectedIndex = 0;
+                        ddStatus.SelectedValue = ordStatus.StatusID.ToString();
+                        ddStatusDiv.Visible = true;
+                        statusDiv.Visible = false;
                     }
                     statusLabel.InnerHtml = ord.StatusDescription;
                     switch (ord.StatusDescription)
@@ -1200,41 +1359,69 @@ namespace WebUI
                         case "New":
                             statusIcon.Attributes["class"] = "fas fa-sparkles text-primary";
                             statusLabel.Attributes["class"] = "text-primary";
-                            signatureSection.Visible = false;
+                            signatureSection.Visible = true;
+                            foreach (HtmlGenericControl row in sigRows)
+                            {
+                                row.Visible = false;
+                            }
+                            directorSupervisorRow.Visible = true;
                             break;
                         case "Pending":
                             statusIcon.Attributes["class"] = "fas fa-hourglass-clock text-warning-light";
                             statusLabel.Attributes["class"] = "text-warning-light";
                             signatureSection.Visible = true;
+                            foreach (HtmlGenericControl row in sigRows)
+                            {
+                                row.Visible = true;
+                            }
                             break;
                         case "Under Review":
                             statusIcon.Attributes["class"] = "fas fa-memo-circle-info text-info";
                             statusLabel.Attributes["class"] = "text-info";
                             signatureSection.Visible = true;
+                            foreach (HtmlGenericControl row in sigRows)
+                            {
+                                row.Visible = true;
+                            }
                             break;
                         case "Being Held":
                             statusIcon.Attributes["class"] = "fas fa-triangle-exclamation text-hazard";
                             statusLabel.Attributes["class"] = "text-hazard";
                             signatureSection.Visible = true;
+                            foreach (HtmlGenericControl row in sigRows)
+                            {
+                                row.Visible = true;
+                            }
                             break;
                         case "Drafted":
                             statusIcon.Attributes["class"] = "fas fa-badge-check text-success";
                             statusLabel.Attributes["class"] = "text-success";
                             signatureSection.Visible = true;
+                            foreach (HtmlGenericControl row in sigRows)
+                            {
+                                row.Visible = true;
+                            }
                             break;
                         case "Rejected":
                             statusIcon.Attributes["class"] = "fas fa-ban text-danger";
                             statusLabel.Attributes["class"] = "text-danger";
                             signatureSection.Visible = true;
+                            foreach (HtmlGenericControl row in sigRows)
+                            {
+                                row.Visible = true;
+                            }
                             break;
                         case "Deleted":
                             statusIcon.Attributes["class"] = "fas fa-trash-xmark text-danger";
                             statusLabel.Attributes["class"] = "text-danger";
                             signatureSection.Visible = true;
+                            foreach (HtmlGenericControl row in sigRows)
+                            {
+                                row.Visible = true;
+                            }
                             break;
                     }
                     hdnOrdStatusID.Value = ordStatus.OrdinanceStatusID.ToString();
-                    statusDiv.Visible = !userInfo.IsAdmin || userInfo.UserView ? true : false;
                     requiredFieldDescriptor.Visible = true;
                     ordinanceNumber.Attributes["placeholder"] = "123-45-6789";
                     agendaNumber.Attributes["placeholder"] = "123456789";
@@ -1286,23 +1473,32 @@ namespace WebUI
                         ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(deleteFile);
                     }
 
+                    switch (epYes.Checked)
+                    {
+                        case true:
+                            epJustification.Attributes.Add("data-required", "true");
+                            break;
+                        case false:
+                            epJustification.Attributes.Remove("data-required");
+                            break;
+                    }
                     switch (scYes.Checked)
                     {
                         case true:
                             changeOrderNumber.Enabled = true;
                             additionalAmount.Enabled = true;
-                            changeOrderNumber.Attributes.Add("required", "true");
+                            changeOrderNumber.Attributes.Add("data-required", "true");
                             changeOrderNumber.Attributes.Add("placeholder", "0123456789");
-                            additionalAmount.Attributes.Add("required", "true");
+                            additionalAmount.Attributes.Add("data-required", "true");
                             additionalAmount.Attributes.Add("placeholder", "$0.00");
                             break;
 
                         case false:
                             changeOrderNumber.Enabled = false;
                             additionalAmount.Enabled = false;
-                            changeOrderNumber.Attributes.Remove("required");
+                            changeOrderNumber.Attributes.Remove("data-required");
                             changeOrderNumber.Attributes.Remove("placeholder");
-                            additionalAmount.Attributes.Remove("required");
+                            additionalAmount.Attributes.Remove("data-required");
                             additionalAmount.Attributes.Remove("placeholder");
                             break;
                     }
@@ -1311,12 +1507,12 @@ namespace WebUI
                         default:
                             otherException.Enabled = false;
                             otherException.Text = string.Empty;
-                            otherException.Attributes.Remove("required");
+                            otherException.Attributes.Remove("data-required");
                             break;
                         case "Other":
                         case "Exception":
                             otherException.Enabled = true;
-                            otherException.Attributes.Add("required", "true");
+                            otherException.Attributes.Add("data-required", "true");
                             break;
                     }
                     scopeChangeOptions.Visible = true;
@@ -1597,7 +1793,7 @@ namespace WebUI
                 case "delete":
                     switch (tableDesc)
                     {
-                        case "ordRevTable":
+                        case "revenue":
                             for (int i = 0; i < rpRevenueTable.Items.Count; i++)
                             {
                                 OrdinanceAccounting accountingItem = new OrdinanceAccounting();
@@ -1647,7 +1843,7 @@ namespace WebUI
                             rpRevenueTable.DataSource = accountingList;
                             rpRevenueTable.DataBind();
                             break;
-                        case "ordExpTable":
+                        case "expenditure":
                             for (int i = 0; i < rpExpenditureTable.Items.Count; i++)
                             {
                                 OrdinanceAccounting accountingItem = new OrdinanceAccounting();
@@ -1701,6 +1897,44 @@ namespace WebUI
                     break;
             }
         }
+        protected void rpRevExpTable_ItemCreated(object sender, RepeaterItemEventArgs e)
+        {
+            Repeater rpTable = (Repeater)sender;
+            string rpType = string.Empty;
+            switch (rpTable.ClientID)
+            {
+                case "rpRevenueTable":
+                    rpType = "revenue";
+                    break;
+                case "rpExpenditureTable":
+                    rpType = "expenditure";
+                    break;
+            }
+            RepeaterItem rpItem = (RepeaterItem)e.Item;
+            List<TextBox> textBoxes = new List<TextBox>()
+            {
+                (TextBox)e.Item.FindControl($"{rpType}FundCode"),
+                (TextBox)e.Item.FindControl($"{rpType}AgencyCode"),
+                (TextBox)e.Item.FindControl($"{rpType}OrgCode"),
+                (TextBox)e.Item.FindControl($"{rpType}ActivityCode"),
+                (TextBox)e.Item.FindControl($"{rpType}ObjectCode")
+            };
+
+            foreach (TextBox box in textBoxes)
+            {
+                box.Attributes.Add("data-validate", $"{box.ID}r{rpItem.ItemIndex}");
+                RequiredFieldValidator rfv = new RequiredFieldValidator()
+                {
+                    ID = $"{box.ID}Validr{rpItem.ItemIndex}",
+                    ControlToValidate = box.ID,
+                    ValidationGroup = "factSheetMain",
+                    SetFocusOnError = false,
+                    Display = ValidatorDisplay.None
+                };
+                rfv.Attributes.Add("data-table-validator", "true");
+                box.Parent.Controls.Add(rfv);
+            }
+        }
         protected void rpSupportingDocumentation_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
             HiddenField hdnDocID = (HiddenField)e.Item.FindControl("hdnDocID");
@@ -1735,6 +1969,45 @@ namespace WebUI
                     rpSupportingDocumentation.DataBind();
                     break;
             }
+        }
+        protected void rpEmailList_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            switch (e.CommandName)
+            {
+                case "remove":
+                    SignatureRequest sigRequests = Session["SigRequestEmails"] as SignatureRequest;
+                    PropertyInfo sigType = (PropertyInfo)typeof(SignatureRequest).GetProperties().First(i => i.Name.Equals(sigBtnType.Value));
+
+                    List<string> emails = sigType.GetValue(sigRequests).ToString().Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToList();
+                    emails.Remove(e.CommandArgument.ToString());
+                    sigType.SetValue(sigRequests, string.Join(";", emails.OrderBy(i => i)));
+                    if (emails.Count > 0)
+                    {
+                        emailListDiv.Visible = true;
+                        btnSendSigEmail.Enabled = true;
+                        rpEmailList.DataSource = emails.OrderBy(i => i);
+                        rpEmailList.DataBind();
+                    }
+                    else
+                    {
+                        emailListDiv.Visible = false;
+                        btnSendSigEmail.Enabled = false;
+                        rpEmailList.DataSource = null;
+                        rpEmailList.DataBind();
+                    }
+
+                    int updateSigRequest = Factory.Instance.Update(sigRequests, "sp_UpdateOrdinance_SignatureRequest");
+                    if (updateSigRequest > 0)
+                    {
+                        signatureEmailAddress.Text = string.Empty;
+                    }
+                    break;
+            }
+        }
+        protected void rpEmailList_ItemCreated(object sender, RepeaterItemEventArgs e)
+        {
+            LinkButton btn = (LinkButton)e.Item.FindControl("removeBtn");
+            ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(btn);
         }
         protected void rpAudit_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
@@ -1883,7 +2156,7 @@ namespace WebUI
 
             switch (tableDesc)
             {
-                case "ordRevTable":
+                case "revenue":
                     if (Session[tableDesc] != null)
                     {
                         for (int i = 0; i < rpRevenueTable.Items.Count; i++)
@@ -1899,7 +2172,7 @@ namespace WebUI
                     rpRevenueTable.DataSource = accountingList;
                     rpRevenueTable.DataBind();
                     break;
-                case "ordExpTable":
+                case "expenditure":
                     if (Session[tableDesc] != null)
                     {
                         for (int i = 0; i < rpExpenditureTable.Items.Count; i++)
@@ -2002,7 +2275,8 @@ namespace WebUI
             Ordinance ordinance = new Ordinance();
 
             ordinance.OrdinanceID = Convert.ToInt32(hdnOrdID.Value);
-            ordinance.OrdinanceNumber = ordinanceNumber.Text;
+            ordinance.OrdinanceNumber = ordinanceNumber.Text ?? string.Empty;
+            ordinance.AgendaNumber = agendaNumber.Text ?? string.Empty;
             ordinance.RequestDepartment = requestDepartment.SelectedItem.Text;
             ordinance.RequestDivision = requestDivision.SelectedItem.Text;
             ordinance.RequestContact = requestContact.Text;
@@ -2058,9 +2332,17 @@ namespace WebUI
             ordStatus.LastUpdateDate = DateTime.Now;
             ordStatus.EffectiveDate = Convert.ToDateTime(hdnEffectiveDate.Value);
             ordStatus.ExpirationDate = DateTime.MaxValue;
-            ordStatus.StatusDescription = ddStatus.SelectedItem.ToString();
-            ordinance.StatusDescription = ddStatus.SelectedItem.ToString();
-            int statusVal = Factory.Instance.Update(ordStatus, "sp_UpdateOrdinance_Status", Skips("ordStatusUpdate"));
+            if (ddStatus.SelectedItem.ToString().ToLower().Contains("select"))
+            {
+                ordinance.StatusDescription = "New";
+                ordStatus.StatusDescription = "New";
+            }
+            else
+            {
+                ordinance.StatusDescription = ddStatus.SelectedItem.ToString();
+                ordStatus.StatusDescription = ddStatus.SelectedItem.ToString();
+            }
+            
 
             int addDocsVal = new int();
             int addUploadedDocsVal = new int();
@@ -2146,331 +2428,110 @@ namespace WebUI
             }
 
             List<AccountingAudit> accAuditList = new List<AccountingAudit>();
+            List<AccountingAudit> revAccAuditList = new List<AccountingAudit>();
+            List<AccountingAudit> expAccAuditList = new List<AccountingAudit>();
+            int updateRevAccsVal = new int();
+            int updateExpAccsVal = new int();
 
-            int removeOrdAccsVal = new int();
-            List<OrdinanceAccounting> removeOrdAccs = new List<OrdinanceAccounting>();
-            if (Session["RemoveOrdAccs"] != null)
+            PropertyInfo[] accProperties = typeof(OrdinanceAccounting).GetProperties();
+            List<OrdinanceAccounting> originalExpList = Session["OriginalExpTable"] as List<OrdinanceAccounting>;
+            List<OrdinanceAccounting> originalRevList = Session["OriginalRevTable"] as List<OrdinanceAccounting>;
+
+            if (rpExpenditureTable.Items.Count > 0)
             {
-                removeOrdAccs = Session["RemoveOrdAccs"] as List<OrdinanceAccounting>;
-            }
-            if (removeOrdAccs.Count > 0)
-            {
-                foreach (OrdinanceAccounting item in removeOrdAccs)
+                for (int i = 0; i < rpExpenditureTable.Items.Count; i++)
                 {
-                    item.LastUpdateBy = _user.Login;
-                    item.LastUpdateDate = DateTime.Now;
-                    item.EffectiveDate = DateTime.Now;
-                    removeOrdAccsVal = Factory.Instance.Expire(item, "sp_UpdateOrdinance_Accounting");
-                    if (removeOrdAccsVal > 0)
+                    OrdinanceAccounting accountingItem = GetAccountingItem("expenditure", i);
+                    OrdinanceAccounting originalItem = originalExpList.FirstOrDefault(r => r.OrdinanceAccountingID == accountingItem.OrdinanceAccountingID);
+                    bool isExisting = accountingItem.OrdinanceAccountingID > 0;
+                    bool hasChanges = isExisting && originalItem != null &&
+                                      accProperties.Any(p => !Equals(p.GetValue(originalItem), p.GetValue(accountingItem)));
+
+                    if (hasChanges)
                     {
-                        string getAmount = string.Empty;
-                        if (item.Amount.ToString().Equals("-1.00") || item.Amount.ToString().Equals("-1"))
+                        updateExpAccsVal = Factory.Instance.Update(accountingItem, "sp_UpdateOrdinance_Accounting");
+
+                        if (updateExpAccsVal > 0)
+                            expAccAuditList.Add(BuildAccAudit(accountingItem, originalItem, accProperties, baseData));
+                    }
+                    else if (!isExisting)
+                    {
+                        updateExpAccsVal = Factory.Instance.Insert(accountingItem, "sp_InsertOrdinance_Accounting", Skips("accountingInsert"));
+
+                        if (updateExpAccsVal > 0)
                         {
-                            getAmount = $"<span>{AuditSymbol("remove")} <span data-type='String'>N/A</span></span>";
+                            var audit = BuildAccAudit(accountingItem, null, accProperties, baseData);
+                            audit.OrdinanceAccountingID = updateExpAccsVal;
+                            expAccAuditList.Add(audit);
                         }
                         else
                         {
-                            getAmount = $"<span>{AuditSymbol("remove")} <span data-type='Decimal'>{item.Amount}</span></span>";
+                            updateExpAccsVal = 0;
+                            break;
                         }
-                        AccountingAudit accAudit = new AccountingAudit()
-                        {
-                            AccountingDesc = item.AccountingDesc,
-                            OrdinanceAccountingID = item.OrdinanceAccountingID,
-                            FundCode = $"<span>{AuditSymbol("remove")} <span data-type='String'>{item.FundCode}</span></span>",
-                            DepartmentCode = $"<span>{AuditSymbol("remove")} <span data-type='String'>{item.DepartmentCode}</span></span>",
-                            UnitCode = $"<span>{AuditSymbol("remove")} <span data-type='String'>{item.UnitCode}</span></span>",
-                            ActivityCode = $"<span>{AuditSymbol("remove")} <span data-type='String'>{item.ActivityCode}</span></span>",
-                            ObjectCode = $"<span>{AuditSymbol("remove")} <span data-type='String'>{item.ObjectCode}</span></span>",
-                            Amount = getAmount,
-                        };
-                        accAuditList.Add(accAudit);
                     }
-                    if (removeOrdAccsVal < 1)
-                    {
+
+                    if (updateExpAccsVal < 1)
                         break;
-                    }
                 }
             }
             else
             {
-                removeOrdAccsVal = 1;
+                updateExpAccsVal = 1;
             }
 
-            int updateRevAccsVal = new int();
-            int updateExpAccsVal = new int();
-            if (removeOrdAccsVal > 0)
+            if (rpRevenueTable.Items.Count > 0)
             {
-                if (rpRevenueTable.Items.Count > 0)
+                for (int i = 0; i < rpRevenueTable.Items.Count; i++)
                 {
-                    for (int i = 0; i < rpRevenueTable.Items.Count; i++)
-                    {
-                        OrdinanceAccounting accountingItem = GetAccountingItem("revenue", i);
-                        if (accountingItem.OrdinanceAccountingID > 0)
-                        {
-                            updateRevAccsVal = Factory.Instance.Update(accountingItem, "sp_UpdateOrdinance_Accounting");
-                            List<OrdinanceAccounting> originalRevList = Session["OriginalRevTable"] as List<OrdinanceAccounting>;
-                            OrdinanceAccounting originalRevItem = originalRevList.First(r => r.OrdinanceAccountingID.Equals(accountingItem.OrdinanceAccountingID));
-                            PropertyInfo[] properties = typeof(OrdinanceAccounting).GetProperties();
-                            if (accAuditList.Count > 0 || (properties.Any(p => !p.GetValue(accountingItem).Equals(p.GetValue(originalRevItem)) && !baseData.Any(b => b.Contains(p.Name)))))
-                            {
-                                AccountingAudit accAudit = new AccountingAudit()
-                                {
-                                    AccountingDesc = accountingItem.AccountingDesc,
-                                    OrdinanceAccountingID = accountingItem.OrdinanceAccountingID,
-                                };
-                                foreach (PropertyInfo property in properties.Where(p => !baseData.Any(b => b.Contains(p.Name))))
-                                {
-                                    if (!property.GetValue(originalRevItem).Equals(property.GetValue(accountingItem)))
-                                    {
-                                        switch (property.Name)
-                                        {
-                                            case "FundCode":
-                                                accAudit.FundCode = $"<span><span data-type='String'>{originalRevItem.FundCode}</span> {AuditSymbol("update")} <span data-type='String'>{accountingItem.FundCode}</span></span>";
-                                                break;
-                                            case "DepartmentCode":
-                                                accAudit.DepartmentCode = $"<span><span data-type='String'>{originalRevItem.DepartmentCode}</span> {AuditSymbol("update")} <span data-type='String'>{accountingItem.DepartmentCode}</span></span>";
-                                                break;
-                                            case "UnitCode":
-                                                accAudit.UnitCode = $"<span><span data-type='String'>{originalRevItem.UnitCode}</span> {AuditSymbol("update")} <span data-type='String'>{accountingItem.UnitCode}</span></span>";
-                                                break;
-                                            case "ActivityCode":
-                                                accAudit.ActivityCode = $"<span><span data-type='String'>{originalRevItem.ActivityCode}</span> {AuditSymbol("update")} <span data-type='String'>{accountingItem.ActivityCode}</span></span>";
-                                                break;
-                                            case "ObjectCode":
-                                                accAudit.ObjectCode = $"<span><span data-type='String'>{originalRevItem.ObjectCode}</span> {AuditSymbol("update")} <span data-type='String'>{accountingItem.ObjectCode}</span></span>";
-                                                break;
-                                            case "Amount":
-                                                if (originalRevItem.Amount.ToString().Equals("-1.00") || originalRevItem.Amount.ToString().Equals("-1"))
-                                                {
-                                                    accAudit.Amount = $"<span>{AuditSymbol("add")} <span data-type='Decimal'>{accountingItem.Amount}</span></span>";
-                                                }
-                                                else if (accountingItem.Amount.ToString().Equals("-1.00") || accountingItem.Amount.ToString().Equals("-1"))
-                                                {
-                                                    accAudit.Amount = $"<span>{AuditSymbol("remove")} <span data-type='Decimal'>{originalRevItem.Amount}</span></span>";
-                                                }
-                                                else
-                                                {
-                                                    accAudit.Amount = $"<span><span data-type='Decimal'>{originalRevItem.Amount}</span> {AuditSymbol("update")} <span data-type='Decimal'>{accountingItem.Amount}</span></span>";
-                                                }
-                                                break;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        switch (property.Name)
-                                        {
-                                            case "FundCode":
-                                                accAudit.FundCode = $"<span data-type='String'>{accountingItem.FundCode}</span>";
-                                                break;
-                                            case "DepartmentCode":
-                                                accAudit.DepartmentCode = $"<span data-type='String'>{accountingItem.DepartmentCode}</span>";
-                                                break;
-                                            case "UnitCode":
-                                                accAudit.UnitCode = $"<span data-type='String'>{accountingItem.UnitCode}</span>";
-                                                break;
-                                            case "ActivityCode":
-                                                accAudit.ActivityCode = $"<span data-type='String'>{accountingItem.ActivityCode}</span>";
-                                                break;
-                                            case "ObjectCode":
-                                                accAudit.ObjectCode = $"<span data-type='String'>{accountingItem.ObjectCode}</span>";
-                                                break;
-                                            case "Amount":
-                                                if (accountingItem.Amount.ToString().Equals("-1.00") || accountingItem.Amount.ToString().Equals("-1"))
-                                                {
-                                                    accAudit.Amount = $"<span data-type='String'>N/A</span>";
-                                                }
-                                                else
-                                                {
-                                                    accAudit.Amount = $"<span data-type='Decimal'>{accountingItem.Amount}</span>";
-                                                }
-                                                break;
-                                        }
-                                    }
-                                }
-                                accAuditList.Add(accAudit);
-                            }
-                        }
-                        else
-                        {
-                            updateRevAccsVal = Factory.Instance.Insert(accountingItem, "sp_InsertOrdinance_Accounting", Skips("accountingInsert"));
-                            string getAmount = string.Empty;
-                            if (accountingItem.Amount.ToString().Equals("-1.00") || accountingItem.Amount.ToString().Equals("-1"))
-                            {
-                                getAmount = $"<span>{AuditSymbol("add")} <span data-type='String'>N/A</span></span>";
-                            }
-                            else
-                            {
-                                getAmount = $"<span>{AuditSymbol("add")} <span data-type='Decimal'>{accountingItem.Amount}</span></span>";
-                            }
-                            if (updateRevAccsVal > 0)
-                            {
-                                AccountingAudit accAudit = new AccountingAudit()
-                                {
-                                    AccountingDesc = accountingItem.AccountingDesc,
-                                    OrdinanceAccountingID = updateRevAccsVal,
-                                    FundCode = $"<span>{AuditSymbol("add")} <span data-type='String'>{accountingItem.FundCode}</span></span>",
-                                    DepartmentCode = $"<span>{AuditSymbol("add")} <span data-type='String'>{accountingItem.DepartmentCode}</span></span>",
-                                    UnitCode = $"<span>{AuditSymbol("add")} <span data-type='String'>{accountingItem.UnitCode}</span></span>",
-                                    ActivityCode = $"<span>{AuditSymbol("add")} <span data-type='String'>{accountingItem.ActivityCode}</span></span>",
-                                    ObjectCode = $"<span>{AuditSymbol("add")} <span data-type='String'>{accountingItem.ObjectCode}</span></span>",
-                                    Amount = getAmount,
-                                };
-                                accAuditList.Add(accAudit);
-                            }
-                            else
-                            {
-                                updateRevAccsVal = 0;
-                                break;
-                            }
-                        }
-                        if (updateRevAccsVal < 1)
-                        {
-                            break;
-                        }
-                    }
-                }
-                else
-                {
-                    updateRevAccsVal = 1;
-                }
+                    OrdinanceAccounting accountingItem = GetAccountingItem("revenue", i);
+                    OrdinanceAccounting originalItem = originalRevList.FirstOrDefault(r => r.OrdinanceAccountingID == accountingItem.OrdinanceAccountingID);
+                    bool isExisting = accountingItem.OrdinanceAccountingID > 0;
+                    bool hasChanges = isExisting && originalItem != null &&
+                                      accProperties.Any(p => !Equals(p.GetValue(originalItem), p.GetValue(accountingItem)));
 
-                if (rpExpenditureTable.Items.Count > 0)
-                {
-                    for (int i = 0; i < rpExpenditureTable.Items.Count; i++)
+                    if (hasChanges)
                     {
-                        OrdinanceAccounting accountingItem = GetAccountingItem("expenditure", i);
-                        if (accountingItem.OrdinanceAccountingID > 0)
+                        updateRevAccsVal = Factory.Instance.Update(accountingItem, "sp_UpdateOrdinance_Accounting");
+
+                        if (updateRevAccsVal > 0)
+                            revAccAuditList.Add(BuildAccAudit(accountingItem, originalItem, accProperties, baseData));
+                    }
+                    else if (!isExisting)
+                    {
+                        updateRevAccsVal = Factory.Instance.Insert(accountingItem, "sp_InsertOrdinance_Accounting", Skips("accountingInsert"));
+
+                        if (updateRevAccsVal > 0)
                         {
-                            updateExpAccsVal = Factory.Instance.Update(accountingItem, "sp_UpdateOrdinance_Accounting");
-                            List<OrdinanceAccounting> originalExpList = Session["OriginalExpTable"] as List<OrdinanceAccounting>;
-                            OrdinanceAccounting originalExpItem = originalExpList.First(r => r.OrdinanceAccountingID.Equals(accountingItem.OrdinanceAccountingID));
-                            PropertyInfo[] properties = typeof(OrdinanceAccounting).GetProperties();
-                            if (accAuditList.Count > 0 || (properties.Any(p => !p.GetValue(accountingItem).Equals(p.GetValue(originalExpItem)) && !baseData.Any(b => b.Contains(p.Name)))))
-                            {
-                                AccountingAudit accAudit = new AccountingAudit()
-                                {
-                                    AccountingDesc = accountingItem.AccountingDesc,
-                                    OrdinanceAccountingID = accountingItem.OrdinanceAccountingID,
-                                };
-                                foreach (PropertyInfo property in properties.Where(p => !baseData.Any(b => b.Contains(p.Name))))
-                                {
-                                    if (!property.GetValue(originalExpItem).Equals(property.GetValue(accountingItem)))
-                                    {
-                                        switch (property.Name)
-                                        {
-                                            case "FundCode":
-                                                accAudit.FundCode = $"<span><span data-type='String'>{originalExpItem.FundCode}</span> {AuditSymbol("update")} <span data-type='String'>{accountingItem.FundCode}</span></span>";
-                                                break;
-                                            case "DepartmentCode":
-                                                accAudit.DepartmentCode = $"<span><span data-type='String'>{originalExpItem.DepartmentCode}</span> {AuditSymbol("update")} <span data-type='String'>{accountingItem.DepartmentCode}</span></span>";
-                                                break;
-                                            case "UnitCode":
-                                                accAudit.UnitCode = $"<span><span data-type='String'>{originalExpItem.UnitCode}</span> {AuditSymbol("update")} <span data-type='String'>{accountingItem.UnitCode}</span></span>";
-                                                break;
-                                            case "ActivityCode":
-                                                accAudit.ActivityCode = $"<span><span data-type='String'>{originalExpItem.ActivityCode}</span> {AuditSymbol("update")} <span data-type='String'>{accountingItem.ActivityCode}</span></span>";
-                                                break;
-                                            case "ObjectCode":
-                                                accAudit.ObjectCode = $"<span><span data-type='String'>{originalExpItem.ObjectCode}</span> {AuditSymbol("update")} <span data-type='String'>{accountingItem.ObjectCode}</span></span>";
-                                                break;
-                                            case "Amount":
-                                                if (originalExpItem.Amount.ToString().Equals("-1.00") || originalExpItem.Amount.ToString().Equals("-1"))
-                                                {
-                                                    accAudit.Amount = $"<span>{AuditSymbol("add")} <span data-type='Decimal'>{accountingItem.Amount}</span></span>";
-                                                }
-                                                else if (accountingItem.Amount.ToString().Equals("-1.00") || accountingItem.Amount.ToString().Equals("-1"))
-                                                {
-                                                    accAudit.Amount = $"<span>{AuditSymbol("remove")} <span data-type='Decimal'>{originalExpItem.Amount}</span></span>";
-                                                }
-                                                else
-                                                {
-                                                    accAudit.Amount = $"<span><span data-type='Decimal'>{originalExpItem.Amount}</span> {AuditSymbol("update")} <span data-type='Decimal'>{accountingItem.Amount}</span></span>";
-                                                }
-                                                break;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        switch (property.Name)
-                                        {
-                                            case "FundCode":
-                                                accAudit.FundCode = $"<span data-type='String'>{accountingItem.FundCode}</span>";
-                                                break;
-                                            case "DepartmentCode":
-                                                accAudit.DepartmentCode = $"<span data-type='String'>{accountingItem.DepartmentCode}</span>";
-                                                break;
-                                            case "UnitCode":
-                                                accAudit.UnitCode = $"<span data-type='String'>{accountingItem.UnitCode}</span>";
-                                                break;
-                                            case "ActivityCode":
-                                                accAudit.ActivityCode = $"<span data-type='String'>{accountingItem.ActivityCode}</span>";
-                                                break;
-                                            case "ObjectCode":
-                                                accAudit.ObjectCode = $"<span data-type='String'>{accountingItem.ObjectCode}</span>";
-                                                break;
-                                            case "Amount":
-                                                if (accountingItem.Amount.ToString().Equals("-1.00") || accountingItem.Amount.ToString().Equals("-1"))
-                                                {
-                                                    accAudit.Amount = $"<span data-type='String'>N/A</span>";
-                                                }
-                                                else
-                                                {
-                                                    accAudit.Amount = $"<span data-type='Decimal'>{accountingItem.Amount}</span>";
-                                                }
-                                                break;
-                                        }
-                                    }
-                                }
-                                accAuditList.Add(accAudit);
-                            }
+                            var audit = BuildAccAudit(accountingItem, null, accProperties, baseData);
+                            audit.OrdinanceAccountingID = updateRevAccsVal;
+                            revAccAuditList.Add(audit);
                         }
                         else
                         {
-                            updateExpAccsVal = Factory.Instance.Insert(accountingItem, "sp_InsertOrdinance_Accounting", Skips("accountingInsert"));
-                            string getAmount = string.Empty;
-                            if (accountingItem.Amount.ToString().Equals("-1.00") || accountingItem.Amount.ToString().Equals("-1"))
-                            {
-                                getAmount = $"<span>{AuditSymbol("add")} <span data-type='String'>N/A</span></span>";
-                            }
-                            else
-                            {
-                                getAmount = $"<span>{AuditSymbol("add")} <span data-type='Decimal'>{accountingItem.Amount}</span></span>";
-                            }
-                            if (updateExpAccsVal > 0)
-                            {
-                                AccountingAudit accAudit = new AccountingAudit()
-                                {
-                                    AccountingDesc = accountingItem.AccountingDesc,
-                                    OrdinanceAccountingID = updateExpAccsVal,
-                                    FundCode = $"<span>{AuditSymbol("add")} <span data-type='String'>{accountingItem.FundCode}</span></span>",
-                                    DepartmentCode = $"<span>{AuditSymbol("add")} <span data-type='String'>{accountingItem.DepartmentCode}</span></span>",
-                                    UnitCode = $"<span>{AuditSymbol("add")} <span data-type='String'>{accountingItem.UnitCode}</span></span>",
-                                    ActivityCode = $"<span>{AuditSymbol("add")} <span data-type='String'>{accountingItem.ActivityCode}</span></span>",
-                                    ObjectCode = $"<span>{AuditSymbol("add")} <span data-type='String'>{accountingItem.ObjectCode}</span></span>",
-                                    Amount = getAmount,
-                                };
-                                accAuditList.Add(accAudit);
-                            }
-                            else
-                            {
-                                updateExpAccsVal = 0;
-                                break;
-                            }
-                        }
-                        if (updateExpAccsVal < 1)
-                        {
+                            updateRevAccsVal = 0;
                             break;
                         }
                     }
-                }
-                else
-                {
-                    updateExpAccsVal = 1;
+
+                    if (updateRevAccsVal < 1)
+                        break;
                 }
             }
+            else
+            {
+                updateRevAccsVal = 1;
+            }
+
+            if (revAccAuditList.Count > 0)
+                accAuditList.AddRange(revAccAuditList);
+            if (expAccAuditList.Count > 0)
+                accAuditList.AddRange(expAccAuditList);
+
 
             int insertSignatureVal = new int();
             int sigAuditVal = new int();
+            bool isPending = false;
             if (Session["insertSigList"] != null)
             {
                 List<OrdinanceSignature> insertSigList = (List<OrdinanceSignature>)Session["insertSigList"];
@@ -2480,6 +2541,13 @@ namespace WebUI
 
                     if (insertSignatureVal > 0)
                     {
+                        if (ordinance.StatusDescription.Equals("New") && item.SignatureType.Equals("directorSupervisor"))
+                        {
+                            ordStatus.StatusID = 2;
+                            ordStatus.StatusDescription = "Pending";
+                            ordinance.StatusDescription = "Pending";
+                            isPending = true;
+                        }
                         OrdinanceAudit sigAudit = new OrdinanceAudit()
                         {
                             OrdinanceID = Convert.ToInt32(hdnOrdID.Value),
@@ -2496,6 +2564,8 @@ namespace WebUI
                 insertSignatureVal = 1;
                 sigAuditVal = 1;
             }
+
+            int statusVal = Factory.Instance.Update(ordStatus, "sp_UpdateOrdinance_Status", Skips("ordStatusUpdate"));
 
             List<string> addEmailList = new List<string>()
             {
@@ -2861,7 +2931,7 @@ namespace WebUI
                         Session["SubmitStatus"] = "success";
                         Session["ToastColor"] = "text-bg-success";
                         Session["ToastMessage"] = "Entry Deleted!";
-                        Email.Instance.SendEmail(newEmail, emailList);
+                        Email.Instance.SendEmail(newEmail, emailList, true);
                         Response.Redirect("./Ordinances");
                     }
                     else
@@ -2932,7 +3002,84 @@ namespace WebUI
         {
             Response.Redirect($"./NewFactSheet?id={hdnOrdID.Value}");
         }
+        protected void btnSendSigEmail_Click(object sender, EventArgs e)
+        {
+            SignatureRequest sigRequests = Session["SigRequestEmails"] as SignatureRequest;
+            PropertyInfo sigType = (PropertyInfo)typeof(SignatureRequest).GetProperties().First(i => i.Name.Equals(sigBtnType.Value));
 
+            List<string> emails = sigType.GetValue(sigRequests).ToString().Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToList();
+
+            foreach (string item in emails)
+            {
+                Email.Instance.AddEmailAddress("SingleEmail", item);
+            }
+
+            string href = $"apptest/Themis/Ordinances?id={hdnOrdID.Value.ToString()}&v=edit&f={sigBtnTarget.Value.ToString()}";
+            string formType = "THΣMIS";
+
+            Email newEmail = new Email();
+
+            newEmail.EmailSubject = $"{formType} Signature Requested";
+            newEmail.EmailTitle = $"{formType} Signature Requested";
+            newEmail.EmailText = $"<p style='margin: 0;'><span style='font-size:36.0pt;font-family:\"Times New Roman\",serif;color:#2D71D5;font-weight:bold'>THΣMIS</span></p><div align=center style='text-align:center'><span><hr size='2' width='100%' align='center' style='margin-top: 0;'></span></div><p><span>You are receiving this message because your signature is required in the role of <b>{sigBtnLabel.Value.ToString()}</b> for Ordinance ID #{hdnOrdID.Value.ToString()} on THΣMIS.</span></p><p><span>Please click the button below to review and sign the document</span></p><table border='0' cellpadding='0' cellspacing='0' style='border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;'><tr><td style='font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #198754; border-radius: 5px; text-align: center;' valign='top' bgcolor='#198754' align='center'><a href='{href}' target='_blank' style='display: inline-block; color: #ffffff; background-color: #198754; border: solid 1px #198754; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 15px 25px; text-transform: capitalize; border-color: #198754; '>Sign Ordinance</a></td></tr></table><br /><p><span>Thank you for your prompt attention to this matter.</span></p>";
+
+            Email.Instance.SendEmail(newEmail, "SingleEmail");
+        }
+        protected void btnSignDoc_Click(object sender, EventArgs e)
+        {
+            switch (sigType.Value)
+            {
+                case "fundsCheckBy":
+                    fundsCheckByBtnDiv.Visible = false;
+                    fundsCheckByInputGroup.Visible = true;
+                    fundsCheckEmailBtn.Visible = false;
+                    fundsCheckBySig.Text = sigName.Text;
+                    fundsCheckByDate.Text = sigDate.Text;
+                    break;
+                case "directorSupervisor":
+                    directorSupervisorBtnDiv.Visible = false;
+                    directorSupervisorInputGroup.Visible = true;
+                    directorSupervisorEmailBtn.Visible = false;
+                    directorSupervisorSig.Text = sigName.Text;
+                    directorSupervisorDate.Text = sigDate.Text;
+                    break;
+                case "cPA":
+                    cPABtnDiv.Visible = false;
+                    cPAInputGroup.Visible = true;
+                    cPAEmailBtn.Visible = false;
+                    cPASig.Text = sigName.Text;
+                    cPADate.Text = sigDate.Text;
+                    break;
+                case "obmDirector":
+                    obmDirectorBtnDiv.Visible = false;
+                    obmDirectorInputGroup.Visible = true;
+                    obmDirectorEmailBtn.Visible = false;
+                    obmDirectorSig.Text = sigName.Text;
+                    obmDirectorDate.Text = sigDate.Text;
+                    break;
+                case "mayor":
+                    mayorBtnDiv.Visible = false;
+                    mayorInputGroup.Visible = true;
+                    mayorEmailBtn.Visible = false;
+                    mayorSig.Text = sigName.Text;
+                    mayorDate.Text = sigDate.Text;
+                    break;
+            }
+
+            OrdinanceSignature signature = new OrdinanceSignature();
+            signature.OrdinanceID = Convert.ToInt32(hdnOrdID.Value);
+            signature.SignatureType = sigType.Value;
+            signature.Signature = sigName.Text;
+            signature.DateSigned = Convert.ToDateTime(sigDate.Text);
+            signature.SignatureCertified = certifySig.Checked;
+            signature.LastUpdateBy = _user.Login;
+            signature.LastUpdateDate = DateTime.Now;
+
+            List<OrdinanceSignature> insertSigList = (List<OrdinanceSignature>)Session["insertSigList"] ?? new List<OrdinanceSignature>();
+            insertSigList.Add(signature);
+            Session["insertSigList"] = insertSigList;
+            SaveFactSheet.CssClass += " emphasize";
+        }
         protected void sendRejection_Click(object sender, EventArgs e)
         {
             List<string> addEmailList = new List<string>()
@@ -2988,225 +3135,6 @@ namespace WebUI
         protected void cancelRejection_Click(object sender, EventArgs e)
         {
             ddStatus.SelectedValue = hdnStatusID.Value;
-        }
-
-        public bool adminUnlockedOrd(string status)
-        {
-            bool unlock = false;
-            if (userInfo.IsAdmin && !userInfo.UserView)
-            {
-                if (status.Equals("Deleted"))
-                {
-                    unlock = false;
-                }
-                else
-                {
-                    unlock = true;
-                }
-            }
-            else if (lockedStatus.Any(i => i.Equals(status)))
-            {
-                unlock = false;
-            }
-            else
-            {
-                unlock = true;
-            }
-            return unlock;
-        }
-
-        protected void signatureEmailBtn_Click(object sender, EventArgs e)
-        {
-            LinkButton btn = (LinkButton)sender;
-            string[] args = btn.CommandArgument.Split(';');
-            SignatureRequest sigRequests = Session["SigRequestEmails"] as SignatureRequest;
-            PropertyInfo sigType = (PropertyInfo)typeof(SignatureRequest).GetProperties().First(i => i.Name.Equals(btn.CommandName));;
-            string[] emails = sigType.GetValue(sigRequests).ToString().Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
-            if (emails.Length > 0)
-            {
-                emailListDiv.Visible = true;
-                btnSendSigEmail.Enabled = true;
-                rpEmailList.DataSource = emails;
-                rpEmailList.DataBind();
-            }
-            else
-            {
-                emailListDiv.Visible = false;
-                btnSendSigEmail.Enabled = false;
-                rpEmailList.DataSource = null;
-                rpEmailList.DataBind();
-            }
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "OpenSigEmailModal", $"setEmailModal('{args[0]}', '{args[1]}', '{btn.CommandName}');", true);
-        }
-
-        protected void AddRequestEmailAddress_Click(object sender, EventArgs e)
-        {
-            SignatureRequest sigRequests = Session["SigRequestEmails"] as SignatureRequest;            
-            PropertyInfo sigType = (PropertyInfo)typeof(SignatureRequest).GetProperties().First(i => i.Name.Equals(sigBtnType.Value));
-
-            List<string> emails = sigType.GetValue(sigRequests).ToString().Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToList();
-            string[] newEmailAddresses = signatureEmailAddress.Text.Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
-            foreach (string item in newEmailAddresses)
-            {
-                emails.Add(item);
-            }
-            sigType.SetValue(sigRequests, string.Join(";", emails.OrderBy(i => i)));
-            if (emails.Count > 0)
-            {
-                emailListDiv.Visible = true;
-                btnSendSigEmail.Enabled = true;
-                rpEmailList.DataSource = emails.OrderBy(i => i);
-                rpEmailList.DataBind();
-            }
-            else
-            {
-                emailListDiv.Visible = false;
-                btnSendSigEmail.Enabled = false;
-                rpEmailList.DataSource = null;
-                rpEmailList.DataBind();
-            }
-
-            int updateSigRequest = Factory.Instance.Update(sigRequests, "sp_UpdateOrdinance_SignatureRequest");
-            if (updateSigRequest > 0)
-            {
-                signatureEmailAddress.Text = string.Empty;
-            }
-        }
-
-        protected void rpEmailList_ItemCommand(object source, RepeaterCommandEventArgs e)
-        {
-            switch (e.CommandName)
-            {
-                case "remove":
-                    SignatureRequest sigRequests = Session["SigRequestEmails"] as SignatureRequest;
-                    PropertyInfo sigType = (PropertyInfo)typeof(SignatureRequest).GetProperties().First(i => i.Name.Equals(sigBtnType.Value));
-
-                    List<string> emails = sigType.GetValue(sigRequests).ToString().Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToList();
-                    emails.Remove(e.CommandArgument.ToString());
-                    sigType.SetValue(sigRequests, string.Join(";", emails.OrderBy(i => i)));
-                    if (emails.Count > 0)
-                    {
-                        emailListDiv.Visible = true;
-                        btnSendSigEmail.Enabled = true;
-                        rpEmailList.DataSource = emails.OrderBy(i => i);
-                        rpEmailList.DataBind();
-                    }
-                    else
-                    {
-                        emailListDiv.Visible = false;
-                        btnSendSigEmail.Enabled = false;
-                        rpEmailList.DataSource = null;
-                        rpEmailList.DataBind();
-                    }
-
-                    int updateSigRequest = Factory.Instance.Update(sigRequests, "sp_UpdateOrdinance_SignatureRequest");
-                    if (updateSigRequest > 0)
-                    {
-                        signatureEmailAddress.Text = string.Empty;
-                    }
-                    break;
-            }
-        }
-
-        protected void rpEmailList_ItemCreated(object sender, RepeaterItemEventArgs e)
-        {
-            LinkButton btn = (LinkButton)e.Item.FindControl("removeBtn");
-            ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(btn);            
-        }
-
-        protected void ddDeptDivision_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            sortDepartmentDivision.Attributes.Remove("data-command");
-            sortDepartmentDivision.Attributes.Remove("data-text");
-
-            List<Label> departmentLabels = new List<Label>();
-            List<Label> divisionLabels = new List<Label>();
-
-            foreach (RepeaterItem item in rpOrdinanceTable.Items)
-            {
-                Label deptLabel = (Label)item.FindControl("ordTableDepartment");
-                Label divLabel = (Label)item.FindControl("ordTableDivision");
-                departmentLabels.Add(deptLabel);
-                divisionLabels.Add(divLabel);
-            }
-            sortDepartmentDivision.Text = "<strong><span runat='server' class='float-end lh-1p5'></span></strong>";
-            if (Session["sortBtn"].Equals("sortDepartmentDivision"))
-            {
-                Session["sortDir"] = "asc";
-            }
-            switch (ddDeptDivision.SelectedValue)
-            {
-                case "RequestDepartment":
-                    foreach (Label item in departmentLabels)
-                    {
-                        item.Visible = true;
-                    }
-                    foreach (Label item in divisionLabels)
-                    {
-                        item.Visible = false;
-                    }
-                    break;
-                case "RequestDivision":
-                    foreach (Label item in departmentLabels)
-                    {
-                        item.Visible = false;
-                    }
-                    foreach (Label item in divisionLabels)
-                    {
-                        item.Visible = true;
-                    }
-                    break;
-            }
-            sortDepartmentDivision.Attributes.Add("data-command", ddDeptDivision.SelectedValue);
-            sortDepartmentDivision.Attributes.Add("data-text", ddDeptDivision.SelectedItem.Text);
-            Session["DeptDivColumn"] = ddDeptDivision.SelectedItem.Text.ToLower();
-        }
-
-        protected void btnDeptDivColumn_Click(object sender, EventArgs e)
-        {
-            sortDepartmentDivision.Attributes.Remove("data-command");
-            sortDepartmentDivision.Attributes.Remove("data-text");
-            List<Label> departmentLabels = new List<Label>();
-            List<Label> divisionLabels = new List<Label>();
-
-            foreach (RepeaterItem item in rpOrdinanceTable.Items)
-            {
-                Label deptLabel = (Label)item.FindControl("ordTableDepartment");
-                Label divLabel = (Label)item.FindControl("ordTableDivision");
-                departmentLabels.Add(deptLabel);
-                divisionLabels.Add(divLabel);
-            }
-
-            Button btn = (Button)sender;
-            switch (btn.CommandName)
-            {
-                case "department":
-                    sortDepartmentDivision.Attributes.Add("data-command", "RequestDepartment");
-                    sortDepartmentDivision.Attributes.Add("data-text", "Department");
-                    foreach (Label item in departmentLabels)
-                    {
-                        item.Visible = true;
-                    }
-                    foreach (Label item in divisionLabels)
-                    {
-                        item.Visible = false;
-                    }
-                    Session["DeptDivColumn"] = "department";
-                    break;
-                case "division":
-                    sortDepartmentDivision.Attributes.Add("data-command", "RequestDivision");
-                    sortDepartmentDivision.Attributes.Add("data-text", "Division");
-                    foreach (Label item in departmentLabels)
-                    {
-                        item.Visible = false;
-                    }
-                    foreach (Label item in divisionLabels)
-                    {
-                        item.Visible = true;
-                    }
-                    Session["DeptDivColumn"] = "division";
-                    break;
-            }
         }
 
     }

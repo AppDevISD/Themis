@@ -146,6 +146,10 @@
 									<span class="fas fa-triangle-exclamation"></span>
 									<p class="m-0 fs-6 noto-sans-semi-bold">Trigger Error</p>
 								</asp:LinkButton>
+								<asp:LinkButton runat="server" ID="DeleteOrdinance" class='nav-link' data-toggle="modal" data-target="#deleteOrdinanceModal">
+									<span class="fa-kit fa-solid-book-section-slash"></span>
+									<p class="m-0 fs-6 noto-sans-semi-bold">Delete Ordinance</p>
+								</asp:LinkButton>
 							</div>
 							<a class="btn-accordion nav-link collapsed" href="javascript:void(0);" data-toggle="collapse" data-target="#AppDevToolsMenu">
 								<span class="fas fa-bug"></span>
@@ -210,7 +214,6 @@
 				</div>
 			</div>
 
-
 			<!-- TRIGGER ERROR MODAL -->
 			<div class="modal fade" id="triggerErrorModal" role="dialog" aria-labelledby="triggerErrorModalLabel">
 				<div class="modal-dialog modal-sm" role="document">
@@ -231,6 +234,31 @@
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 							<asp:Button ID="btnTriggerError" runat="server" Text="Trigger" CssClass="btn btn-danger" CausesValidation="false" UseSubmitBehavior="false" Visible="true" OnClick="TriggerError_Click" OnClientClick="appDevModalClick('#triggerErrorModal');" />
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- DELETE ORDINANCE MODAL -->
+			<div class="modal fade" id="deleteOrdinanceModal" role="dialog" aria-labelledby="deleteOrdinanceModalLabel">
+				<div class="modal-dialog modal-sm" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4 class="modal-title" id="deleteOrdinanceModalLabel">Delete Ordinance</h4>
+						</div>
+						<div class="modal-body bg-body-tertiary">
+							<div class="row mb-2">
+								<div class="col-md-12">
+									<div class="form-group">
+										<label for="txtOrdID">Ordinance ID</label>
+										<asp:TextBox runat="server" ID="txtOrdID" TextMode="Number" CssClass="form-control"></asp:TextBox>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+							<asp:Button ID="DeleteOrd" runat="server" Text="Delete" CssClass="btn btn-danger" CausesValidation="false" UseSubmitBehavior="false" Visible="true" OnClick="DeleteOrd_Click" OnClientClick="appDevModalClick('#deleteOrdinanceModal');" />
 						</div>
 					</div>
 				</div>

@@ -177,6 +177,11 @@ function formatCurrencyDecimal(input, blur) {
     }
     input[0].innerHTML = input_val;
 }
+function FormatAudit() {
+    $("[data-type='Decimal']").each(function () {
+        formatCurrencyDecimal($(this), "blur");
+    });
+}
 function ValidationFormatting(Validators) {
     window.invalidArray = [];
     $(Validators).each(function () {

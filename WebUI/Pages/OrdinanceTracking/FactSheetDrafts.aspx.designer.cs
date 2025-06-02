@@ -303,6 +303,15 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.TextBox requestContact;
 
         /// <summary>
+        /// requestContactValid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator requestContactValid;
+
+        /// <summary>
         /// requestEmail control.
         /// </summary>
         /// <remarks>
@@ -310,6 +319,15 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox requestEmail;
+
+        /// <summary>
+        /// requestEmailValid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator requestEmailValid;
 
         /// <summary>
         /// requestPhone control.
@@ -328,6 +346,24 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox requestExt;
+
+        /// <summary>
+        /// requestPhoneValid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator requestPhoneValid;
+
+        /// <summary>
+        /// requestExtValid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator requestExtValid;
 
         /// <summary>
         /// epYes control.

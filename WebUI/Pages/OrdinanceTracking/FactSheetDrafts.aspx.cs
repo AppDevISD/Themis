@@ -358,22 +358,6 @@ namespace WebUI
                 requestDivision.Items.Add(new ListItem() { Text = "Select Division...", Value = "" });
             }
         }
-        protected void PurchaseMethodSelectedIndexChanged(object sender, EventArgs e)
-        {
-            switch (purchaseMethod.SelectedItem.Value)
-            {
-                default:
-                    otherException.Enabled = false;
-                    otherException.Text = string.Empty;
-                    otherException.Attributes.Remove("data-required");
-                    break;
-                case "Other":
-                case "Exception":
-                    otherException.Enabled = true;
-                    otherException.Attributes.Add("data-required", "true");
-                    break;
-            }
-        }
         protected void EPCheckedChanged(object sender, EventArgs e)
         {
             switch (epYes.Checked)
@@ -381,11 +365,13 @@ namespace WebUI
                 case true:
                     epJustificationGroup.Visible = true;
                     epJustification.Attributes.Add("data-required", "true");
+                    epJustificationValid.Enabled = true;
                     break;
 
                 case false:
                     epJustificationGroup.Visible = false;
                     epJustification.Attributes.Remove("data-required");
+                    epJustificationValid.Enabled = false;
                     break;
             }
         }
@@ -395,7 +381,9 @@ namespace WebUI
             {
                 case true:
                     changeOrderNumber.Enabled = true;
+                    changeOrderNumberValid.Enabled = true;
                     additionalAmount.Enabled = true;
+                    additionalAmountValid.Enabled = true;
                     changeOrderNumber.Attributes.Add("data-required", "true");
                     changeOrderNumber.Attributes.Add("placeholder", "0123456789");
                     additionalAmount.Attributes.Add("data-required", "true");
@@ -404,11 +392,31 @@ namespace WebUI
 
                 case false:
                     changeOrderNumber.Enabled = false;
+                    changeOrderNumberValid.Enabled = false;
                     additionalAmount.Enabled = false;
+                    additionalAmountValid.Enabled = false;
                     changeOrderNumber.Attributes.Remove("data-required");
                     changeOrderNumber.Attributes.Remove("placeholder");
                     additionalAmount.Attributes.Remove("data-required");
                     additionalAmount.Attributes.Remove("placeholder");
+                    break;
+            }
+        }
+        protected void PurchaseMethodSelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (purchaseMethod.SelectedItem.Value)
+            {
+                default:
+                    otherException.Enabled = false;
+                    otherExceptionValid.Enabled = false;
+                    otherException.Text = string.Empty;
+                    otherException.Attributes.Remove("data-required");
+                    break;
+                case "Other":
+                case "Exception":
+                    otherException.Enabled = true;
+                    otherExceptionValid.Enabled = true;
+                    otherException.Attributes.Add("data-required", "true");
                     break;
             }
         }
@@ -1200,14 +1208,7 @@ namespace WebUI
                 ordinance.ContractAmount = CurrencyToDecimal(contractAmount.Text);
                 ordinance.ScopeChange = scYes.Checked;
                 ordinance.ChangeOrderNumber = changeOrderNumber.Text ?? string.Empty;
-                if (scYes.Checked)
-                {
-                    ordinance.AdditionalAmount = CurrencyToDecimal(additionalAmount.Text);
-                }
-                else
-                {
-                    ordinance.AdditionalAmount = CurrencyToDecimal("-1");
-                }
+                ordinance.AdditionalAmount = CurrencyToDecimal(additionalAmount.Text);
                 ordinance.ContractMethod = purchaseMethod.SelectedValue;
                 ordinance.OtherException = otherException.Text ?? string.Empty;
                 ordinance.PreviousOrdinanceNumbers = prevOrdinanceNums.Text;
@@ -1217,7 +1218,7 @@ namespace WebUI
                 ordinance.OrdinanceAnalysis = staffAnalysis.Text;
                 ordinance.LastUpdateBy = _user.Login;
                 ordinance.LastUpdateDate = DateTime.Now;
-                ordinance.EffectiveDate = Convert.ToDateTime(hdnEffectiveDate.Value);
+                ordinance.EffectiveDate = btn.CommandName.Equals("save") ? Convert.ToDateTime(hdnEffectiveDate.Value) : DateTime.Now;
                 ordinance.ExpirationDate = DateTime.MaxValue;
 
                 int retVal = Factory.Instance.Update(ordinance, "sp_UpdateOrdinance", Skips(key: "ordUpdate"));
@@ -1405,6 +1406,24 @@ namespace WebUI
                     }
                 }
 
+                Email sigRequestEmail = new Email();
+                Email submittedEmail = new Email();
+                if (btn.CommandName.Equals("submit"))
+                {
+                    string formType = "Ordinance Fact Sheet";
+
+                    string sigHref = $"apptest/Themis/Ordinances?id={hdnOrdID.Value.ToString()}&v=edit&f=directorSupervisorBtn";
+                    sigRequestEmail.EmailSubject = $"THΣMIS Signature Requested";
+                    sigRequestEmail.EmailTitle = $"THΣMIS Signature Requested";
+                    sigRequestEmail.EmailText = $"<p style='margin: 0;'><span style='font-size:36.0pt;font-family:\"Times New Roman\",serif;color:#2D71D5;font-weight:bold'>THΣMIS</span></p><div align=center style='text-align:center'><span><hr size='2' width='100%' align='center' style='margin-top: 0;'></span></div><p><span>You are receiving this message because an Ordinance Fact Sheet has been SUBMITTED by <b>{_user.FirstName} {_user.LastName}</b> and your signature is required in the role of <b>Director/Supervisor</b> for Ordinance ID #{hdnOrdID.Value.ToString()} on THΣMIS.</span></p><p><span>Please click the button below to review and sign the document</span></p><table border='0' cellpadding='0' cellspacing='0' style='border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;'><tr><td style='font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #198754; border-radius: 5px; text-align: center;' valign='top' bgcolor='#198754' align='center'><a href='{sigHref}' target='_blank' style='display: inline-block; color: #ffffff; background-color: #198754; border: solid 1px #198754; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 15px 25px; text-transform: capitalize; border-color: #198754; '>Sign Ordinance</a></td></tr></table><br /><p><span>Thank you for your prompt attention to this matter.</span></p>";
+
+
+                    string submitHref = $"apptest/Themis/Ordinances?id={hdnOrdID.Value.ToString()}&v=view";
+                    submittedEmail.EmailSubject = $"{formType} SUBMITTED";
+                    submittedEmail.EmailTitle = $"{formType} SUBMITTED";
+                    submittedEmail.EmailText = $"<p style='margin: 0;'><span style='font-size:36.0pt;font-family:\"Times New Roman\",serif;color:#2D71D5;font-weight:bold'>THΣMIS</span></p><div align=center style='text-align:center'><span><hr size='2' width='100%' align='center' style='margin-top: 0;'></span></div><p><span>An <b>{formType}</b> has been SUBMITTED by <b>{_user.FirstName} {_user.LastName}</b>.</span></p><br /><p style='margin: 0; line-height: 1.5;'><span>ID: {hdnOrdID.Value.ToString()}</span></p><p style='margin: 0; line-height: 1.5;'><span>Date: {DateTime.Now}</span></p><p style='margin: 0; line-height: 1.5;'><span>Department: {requestDepartment.SelectedItem.Text}</span></p><p style='margin: 0; line-height: 1.5;'><span>Contact: {requestContact.Text}</span></p><p style='margin: 0; line-height: 1.5;'><span>Phone: {ordinance.RequestPhone}</span></p><br /><p><span>Please click the button below to review the document:</span></p><table border='0' cellpadding='0' cellspacing='0' style='border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;'><tr><td style='font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #0d6efd; border-radius: 5px; text-align: center;' valign='top' bgcolor='#0d6efd' align='center'><a href='{submitHref}' target='_blank' style='display: inline-block; color: #ffffff; background-color: #0d6efd; border: solid 1px #0d6efd; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 15px 25px; text-transform: capitalize; border-color: #0d6efd; '>View Ordinance</a></td></tr></table>";
+                }
+
 
                 List<int> submitVals = new List<int>(new int[]
                 {
@@ -1426,7 +1445,8 @@ namespace WebUI
                     {
                         case "submit":
                             Session["ToastMessage"] = "Form Submitted!";
-                            //Email.Instance.SendEmail(newEmail, emailList);
+                            Email.Instance.SendEmail(sigRequestEmail, directorSupervisorEmailAddresses.Text.Replace(";", ","));
+                            Email.Instance.SendEmail(submittedEmail, _user.Email);
                             break;
                         case "save":
                             Session["ToastMessage"] = "Form Saved!";

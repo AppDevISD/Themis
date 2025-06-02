@@ -62,12 +62,13 @@ namespace DataLibrary
             return null;
         }
 
-        public string SendEmail(Email pEmail, string emailList)
+        public string SendEmail(Email pEmail, string emailList, bool useAppSettings = false)
         {
             string retVal = "";
             HttpContext _context = HttpContext.Current;
 
-            MailMessage NewEmail = new MailMessage("THΣMIS Application NoReply@cwlp.com", Properties.Settings.Default[emailList].ToString());
+            string emailAddress = useAppSettings ? Properties.Settings.Default[emailList].ToString() : emailList;
+            MailMessage NewEmail = new MailMessage("THΣMIS Application NoReply@cwlp.com", emailAddress);
             NewEmail.IsBodyHtml = true;
             NewEmail.Body = pEmail.EmailText;
             NewEmail.Subject = pEmail.EmailSubject.ToString();

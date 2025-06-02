@@ -185,6 +185,7 @@
 											<div class="form-group">
 												<label for="requestContact">Requesting Contact</label>
 												<asp:TextBox runat="server" ID="requestContact" CssClass="form-control" TextMode="SingleLine" placeholder="John Doe" AutoCompleteType="DisplayName" data-required="true"></asp:TextBox>
+												<asp:RequiredFieldValidator runat="server" ID="requestContactValid" ControlToValidate="requestContact" ErrorMessage="Please Enter a Name" ValidationGroup="factSheetMain" SetFocusOnError="false" Display="None" CssClass="text-danger invalid-feedback ps-2"></asp:RequiredFieldValidator>
 											</div>
 										</div>
 
@@ -193,6 +194,7 @@
 											<div class="form-group">
 												<label for="requestEmail">Email</label>
 												<asp:TextBox runat="server" ID="requestEmail" CssClass="form-control" TextMode="Email" AutoCompleteType="Email" placeholder="john.doe@corporate.com" data-required="true"></asp:TextBox>
+												<asp:RequiredFieldValidator runat="server" ID="requestEmailValid" ControlToValidate="requestEmail" ErrorMessage="Please Enter an Email" ValidationGroup="factSheetMain" SetFocusOnError="false" Display="None" CssClass="text-danger invalid-feedback ps-2"></asp:RequiredFieldValidator>
 											</div>
 										</div>
 
@@ -211,6 +213,10 @@
 
 												<%-- EXTENSION --%>
 												<asp:TextBox runat="server" ID="requestExt" CssClass="form-control ext-split" TextMode="SingleLine" data-type="extension" placeholder="x1234" AutoCompleteType="Disabled" data-required="true"></asp:TextBox>
+											</div>
+											<div class="d-flex justify-content-between">
+												<asp:RequiredFieldValidator runat="server" ID="requestPhoneValid" ControlToValidate="requestPhone" ErrorMessage="Please Enter a Phone Number" ValidationGroup="factSheetMain" SetFocusOnError="false" Display="None" CssClass="text-danger invalid-feedback ps-2"></asp:RequiredFieldValidator>
+												<asp:RequiredFieldValidator runat="server" ID="requestExtValid" ControlToValidate="requestExt" ErrorMessage="Please Enter an Extension" ValidationGroup="factSheetMain" SetFocusOnError="false" Display="None" CssClass="text-danger invalid-feedback text-end"></asp:RequiredFieldValidator>
 											</div>
 										</div>
 									</div>
@@ -734,7 +740,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-					<asp:Button ID="btnDelete" runat="server" Text="Delete" CssClass="btn btn-danger" CausesValidation="false" UseSubmitBehavior="false" Visible="true" OnClick="mdlDeleteSubmit_ServerClick" OnClientClick="ShowSubmitToast();" data-disable-btn="delete" />
+					<asp:Button ID="btnDelete" runat="server" Text="Delete" CssClass="btn btn-danger" CausesValidation="false" UseSubmitBehavior="false" Visible="true" OnClick="mdlDeleteSubmit_ServerClick" OnClientClick="ShowSubmitToast();" data-disable-btn="htmlBtn" data-disable-btn-text="Deleting" />
 					<asp:HiddenField runat="server" ID="hdnDeleteID" />
 				</div>
 			</div>

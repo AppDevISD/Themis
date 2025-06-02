@@ -2,16 +2,17 @@
 using ISD.ActiveDirectory;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.UI.WebControls;
-using System.Runtime.InteropServices;
-using System.Diagnostics;
 
 namespace DataLibrary
 {
@@ -433,5 +434,64 @@ namespace DataLibrary
             string log = string.Format(string.Format(scriptTag, function), message);
             HttpContext.Current.Response.Write(log);
         }
+
+        public static AccountingAudit BuildAccAudit(OrdinanceAccounting current, OrdinanceAccounting original, PropertyInfo[] properties, List<string> baseData)
+        {
+            var accAudit = new AccountingAudit
+            {
+                AccountingDesc = current.AccountingDesc,
+                OrdinanceAccountingID = current.OrdinanceAccountingID
+            };
+
+            foreach (var property in properties.Where(p => !baseData.Any(b => b.Contains(p.Name))))
+            {
+                object newValue = current == null ? null : property.GetValue(current);
+                object oldValue = original == null ? null : property.GetValue(original);
+
+
+                string dataType = property.PropertyType == typeof(decimal) ? "Decimal" : "String";
+                string name = property.Name;
+
+                string change = string.Empty;
+
+                if (original == null)
+                {
+                    // Insert
+                    change = $"<span>{AuditSymbol("add")} <span data-type='{dataType}'>{(newValue?.ToString() ?? "N/A")}</span></span>";
+                }
+                else if (!Equals(oldValue, newValue))
+                {
+                    // Update
+                    if (name == "Amount" && (oldValue?.ToString() == "-1" || oldValue?.ToString() == "-1.00"))
+                        change = $"<span>{AuditSymbol("add")} <span data-type='Decimal'>{newValue}</span></span>";
+                    else if (name == "Amount" && (newValue?.ToString() == "-1" || newValue?.ToString() == "-1.00"))
+                        change = $"<span>{AuditSymbol("remove")} <span data-type='Decimal'>{oldValue}</span></span>";
+                    else
+                        change = $"<span><span data-type='{dataType}'>{oldValue}</span> {AuditSymbol("update")} <span data-type='{dataType}'>{newValue}</span></span>";
+                }
+                else
+                {
+                    // No change
+                    if (name == "Amount" && (newValue?.ToString() == "-1" || newValue?.ToString() == "-1.00"))
+                        change = $"<span data-type='String'>N/A</span>";
+                    else
+                        change = $"<span data-type='{dataType}'>{newValue}</span>";
+                }
+
+                // Assign to correct property on audit
+                var auditProp = typeof(AccountingAudit).GetProperty(name);
+                if (auditProp != null && auditProp.PropertyType == typeof(string))
+                {
+                    auditProp.SetValue(accAudit, change);
+                }
+                else
+                {
+                    // optionally skip, or log warning
+                }
+            }
+
+            return accAudit;
+        }
+
     }
 }
