@@ -1228,7 +1228,7 @@
 		}
 		
 
-		var prm = Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
+		Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
 			FormatForms();
 			SetTooltips();
 			disableSubmitBtns();
