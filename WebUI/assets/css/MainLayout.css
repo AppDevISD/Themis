@@ -152,7 +152,7 @@ main {
 	display: flex;
 	font-size: 1.5rem;
 	margin: 0 !important;
-	align-items: center;
+	align-items: flex-end;
 	color: var(--color-theme-text);
 	text-decoration: none !important;
 }
@@ -236,6 +236,7 @@ main {
 	color: var(--color-theme-text);
 }
 
+
 .accordion-border {
 	position: relative;
 	border-top: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
@@ -294,6 +295,7 @@ main {
 #appDevToolsParent .btn-accordion:not(.collapsed) {
 	border-top: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
 }
+
 #appDevToolsParent .accordion-border::before {
 	content: "";
 	display: block;
@@ -310,7 +312,8 @@ main {
 /* --------------- Home Page --------------- */
 .welcome-text {
 	font-size: 55px;
-	margin-top: 30px
+	margin-top: 30px;
+	color: var(--color-theme-text);
 }
 
 
@@ -372,6 +375,7 @@ span.form-check-input:has(input[type=radio]), .form-check-inline input[type=radi
 
 	.form-header h1 {
 		font-size: 4rem;
+		color: var(--color-theme-text) !important;
 	}
 
 .form-page {
@@ -578,6 +582,7 @@ option:not([selected]):not(:disabled) {
 
 	.card-header h3 {
 		margin: 0;
+		color: var(--color-theme-text) !important;
 	}
 
 .card-body {

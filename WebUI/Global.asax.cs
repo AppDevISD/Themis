@@ -14,28 +14,28 @@ namespace WebUI
             // Code that runs on application startup
             RouteConfig.RegisterRoutes(RouteTable.Routes);            
         }
-        //protected void Application_Error(object sender, EventArgs e)
-        //{
-        //    try
-        //    {
-        //        Exception exception = Server.GetLastError();
-        //        HttpException httpException = exception as HttpException;
-        //        StackTrace trace = new StackTrace(httpException.GetBaseException(), true);
-        //        Session["Error"] = httpException;
-        //        StackFrame frame = trace.GetFrame(0);
-        //        int httpCode = httpException?.GetHttpCode() ?? 500;
+        protected void Application_Error(object sender, EventArgs e)
+        {
+            try
+            {
+                Exception exception = Server.GetLastError();
+                HttpException httpException = exception as HttpException;
+                StackTrace trace = new StackTrace(httpException.GetBaseException(), true);
+                Session["Error"] = httpException;
+                StackFrame frame = trace.GetFrame(0);
+                int httpCode = httpException?.GetHttpCode() ?? 500;
 
-        //        Response.Redirect(httpCode != 403 ? $"./GenericError?err={httpCode}" : $"./AccessDenied?err={httpCode}");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Exception exception = ex as HttpException;
-        //        HttpException httpException = exception as HttpException;
-        //        Session["Error"] = httpException;
-        //        int httpCode = httpException?.GetHttpCode() ?? 500;
-        //        Response.Redirect(httpCode != 403 ? $"./GenericError?err={httpCode}" : $"./AccessDenied?err={httpCode}");
-        //    }
-        //    Server.ClearError();
-        //}
+                Response.Redirect(httpCode != 403 ? $"./GenericError?err={httpCode}" : $"./AccessDenied?err={httpCode}");
+            }
+            catch (Exception ex)
+            {
+                Exception exception = ex as HttpException;
+                HttpException httpException = exception as HttpException;
+                Session["Error"] = httpException;
+                int httpCode = httpException?.GetHttpCode() ?? 500;
+                Response.Redirect(httpCode != 403 ? $"./GenericError?err={httpCode}" : $"./AccessDenied?err={httpCode}");
+            }
+            Server.ClearError();
+        }
     }
 }

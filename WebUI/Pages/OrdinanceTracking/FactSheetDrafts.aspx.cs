@@ -102,6 +102,20 @@ namespace WebUI
                 LinkButton editButton = item.FindControl("editOrd") as LinkButton;
                 ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(editButton);
             }
+            if (!Page.IsPostBack && Request.QueryString["id"] != null)
+            {
+                string id = Request.QueryString["id"];
+                Ordinance checkOrd = Factory.Instance.GetByID<Ordinance>(Convert.ToInt32(id), "sp_GetOrdinanceByOrdinanceID", "OrdinanceID");
+                switch (checkOrd.LastUpdateBy.ToLower().Equals(_user.Login.ToLower()))
+                {
+                    case true:
+                        GetByID(id.ToString());
+                        break;
+                    case false:
+                        Response.Redirect("./AccessDenied");
+                        break;
+                }
+            }
 
             if (ScriptManager.GetCurrent(Page).IsInAsyncPostBack)
             {
@@ -213,9 +227,9 @@ namespace WebUI
                 rpSupportingDocumentation.DataBind();
             }
         }
-        protected void GetByID(string id, string cmd)
+        protected void GetByID(string id)
         {
-            CommandEventArgs eventArgs = new CommandEventArgs(cmd, id);
+            CommandEventArgs eventArgs = new CommandEventArgs("edit", id);
             RepeaterItem rpItem = new RepeaterItem(0, ListItemType.Item);
             RepeaterCommandEventArgs args = new RepeaterCommandEventArgs(rpItem, rpDraftsTable, eventArgs);
             rpDraftsTable_ItemCommand(rpDraftsTable, args);
@@ -678,7 +692,6 @@ namespace WebUI
 
             OrdinanceStatus ordStatus = new OrdinanceStatus();
             ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
-            ordView.Attributes["readonly"] = "false";
             bool adminUser = (userInfo.IsAdmin || !userInfo.UserView) ? true : false;
             hdnStatusID.Value = ordStatus.StatusID.ToString();
             hdnOrdStatusID.Value = ordStatus.OrdinanceStatusID.ToString();
@@ -1491,21 +1504,28 @@ namespace WebUI
         }
         protected void backBtn_Click(object sender, EventArgs e)
         {
-            draftsTable.Visible = true;
+            if (Request.QueryString["id"] != null)
+            {
+                Response.Redirect("./FactSheetDrafts");
+            }
+            else
+            {
+                draftsTable.Visible = true;
 
-            ordView.Visible = false;
+                ordView.Visible = false;
 
-            Dictionary<string, LinkButton> pageBtns = new Dictionary<string, LinkButton>()
+                Dictionary<string, LinkButton> pageBtns = new Dictionary<string, LinkButton>()
                 {
                     { "firstBtn", lnkFirstSearchP },
                     { "previousBtn", lnkPreviousSearchP },
                     { "nextBtn", lnkNextSearchP },
                     { "lastBtn", lnkLastSearchP },
                 };
-            SetPagination(rpDraftsTable, pageBtns, pnlPagingP, lblCurrentPageBottomSearchP, 10, true);
-            List<Ordinance> ord_list = new List<Ordinance>();
-            ord_list = (List<Ordinance>)Session["ord_list"];
-            BindDataRepeaterPagination("no", ord_list);
+                SetPagination(rpDraftsTable, pageBtns, pnlPagingP, lblCurrentPageBottomSearchP, 10, true);
+                List<Ordinance> ord_list = new List<Ordinance>();
+                ord_list = (List<Ordinance>)Session["ord_list"];
+                BindDataRepeaterPagination("no", ord_list);
+            }
         }    
 
         public bool adminUnlockedOrd(string status)

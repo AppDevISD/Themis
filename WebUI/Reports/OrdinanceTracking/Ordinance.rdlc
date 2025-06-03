@@ -4962,8 +4962,12 @@
         <CommandText>/* Local Query */</CommandText>
       </Query>
       <Fields>
-        <Field Name="AccountingID">
-          <DataField>AccountingID</DataField>
+        <Field Name="OrdinanceAccountingID">
+          <DataField>OrdinanceAccountingID</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="OrdinanceID">
+          <DataField>OrdinanceID</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
         <Field Name="AccountingDesc">
@@ -4994,14 +4998,6 @@
           <DataField>Amount</DataField>
           <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
-        <Field Name="LastUpdateBy">
-          <DataField>LastUpdateBy</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="LastUpdateDate">
-          <DataField>LastUpdateDate</DataField>
-          <rd:TypeName>System.DateTime</rd:TypeName>
-        </Field>
         <Field Name="EffectiveDate">
           <DataField>EffectiveDate</DataField>
           <rd:TypeName>System.DateTime</rd:TypeName>
@@ -5010,11 +5006,19 @@
           <DataField>ExpirationDate</DataField>
           <rd:TypeName>System.DateTime</rd:TypeName>
         </Field>
+        <Field Name="LastUpdateBy">
+          <DataField>LastUpdateBy</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="LastUpdateDate">
+          <DataField>LastUpdateDate</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>OrdinanceData</rd:DataSetName>
         <rd:SchemaPath>C:\Users\kbolinger\Documents\Repos\Themis\WebUI\Reports\OrdinanceTracking\OrdinanceData.xsd</rd:SchemaPath>
-        <rd:TableName>lkAccounting</rd:TableName>
+        <rd:TableName>Ordinance_Accounting</rd:TableName>
         <rd:TableAdapterFillMethod />
         <rd:TableAdapterGetDataMethod />
         <rd:TableAdapterName />
@@ -5026,8 +5030,12 @@
         <CommandText>/* Local Query */</CommandText>
       </Query>
       <Fields>
-        <Field Name="AccountingID">
-          <DataField>AccountingID</DataField>
+        <Field Name="OrdinanceAccountingID">
+          <DataField>OrdinanceAccountingID</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="OrdinanceID">
+          <DataField>OrdinanceID</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
         <Field Name="AccountingDesc">
@@ -5058,14 +5066,6 @@
           <DataField>Amount</DataField>
           <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
-        <Field Name="LastUpdateBy">
-          <DataField>LastUpdateBy</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="LastUpdateDate">
-          <DataField>LastUpdateDate</DataField>
-          <rd:TypeName>System.DateTime</rd:TypeName>
-        </Field>
         <Field Name="EffectiveDate">
           <DataField>EffectiveDate</DataField>
           <rd:TypeName>System.DateTime</rd:TypeName>
@@ -5074,11 +5074,19 @@
           <DataField>ExpirationDate</DataField>
           <rd:TypeName>System.DateTime</rd:TypeName>
         </Field>
+        <Field Name="LastUpdateBy">
+          <DataField>LastUpdateBy</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="LastUpdateDate">
+          <DataField>LastUpdateDate</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
+        </Field>
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>OrdinanceData</rd:DataSetName>
         <rd:SchemaPath>C:\Users\kbolinger\Documents\Repos\Themis\WebUI\Reports\OrdinanceTracking\OrdinanceData.xsd</rd:SchemaPath>
-        <rd:TableName>lkAccounting</rd:TableName>
+        <rd:TableName>Ordinance_Accounting</rd:TableName>
         <rd:TableAdapterFillMethod />
         <rd:TableAdapterGetDataMethod />
         <rd:TableAdapterName />

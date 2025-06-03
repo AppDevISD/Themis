@@ -418,6 +418,7 @@
 														<%-- START --%>
 														<asp:TextBox runat="server" ID="contractStartDate" CssClass="form-control" TextMode="Date" data-type="datePeriodStart"></asp:TextBox>
 														<button runat="server" id="contractStartDatePicker" type="button" class="btn input-group-text" data-calendar-btn="contractStartDate" tabindex="-1"><span class="fas fa-calendar-days"></span></button>
+
 														<%-- SEPARATOR --%>
 														<div class="input-group-append">
 															<span class="input-group-text date-period-separator"><i class="fas fa-minus"></i></span>
@@ -1203,7 +1204,6 @@
 			scrollToElement();
 			SetSignEnabled();			
 			FormatAudit();
-			showDatePicker()
 		}
 		
 
@@ -1222,7 +1222,6 @@
 			FormatAudit();			
 			scrollToElement();
 			HideAllTooltips();
-			showDatePicker();
 		});
 
 		function validateFactSheetDraft(validationGroups) {

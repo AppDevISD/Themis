@@ -1,12 +1,13 @@
 ﻿.themis-logo {
-	background: url('../images/icons/favicon/web-app-manifest-512x512.png') no-repeat;
+	background: url('../images/icons/favicon/favicon.svg') no-repeat;
 	background-size: contain;
 	width: 200px;
 	height: 200px;
 }
 
 .site-title {
-	font-size: 45px;
+	font-size: 3.5rem;
+	line-height: 1;
 }
 
 .ordID {

@@ -285,6 +285,15 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.TextBox firstReadDate;
 
         /// <summary>
+        /// firstReadDatePicker control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton firstReadDatePicker;
+
+        /// <summary>
         /// firstReadDateValid control.
         /// </summary>
         /// <remarks>
@@ -465,6 +474,15 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.TextBox contractStartDate;
 
         /// <summary>
+        /// contractStartDatePicker control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton contractStartDatePicker;
+
+        /// <summary>
         /// contractEndDate control.
         /// </summary>
         /// <remarks>
@@ -472,6 +490,15 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox contractEndDate;
+
+        /// <summary>
+        /// contractEndDatePicker control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton contractEndDatePicker;
 
         /// <summary>
         /// contractTerm control.
@@ -652,15 +679,6 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButton paApprovalAttachedNo;
-
-        /// <summary>
-        /// revTableHTML control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl revTableHTML;
 
         /// <summary>
         /// rpRevenueTable control.

@@ -55,8 +55,9 @@
 						<div class="container-fluid ps-0">
 							<%-- SITE BRANDING --%>
 							<a class="navbar-brand" href="./" tabindex="-1">
-								<img class="site-logo" src="./assets/images/icons/favicon/web-app-manifest-192x192.png" alt="Favicon">
-								<asp:Label CssClass="site-title gfs-neohellenic-bold" Text="&nbsp;&nbsp;THΣMIS" runat="server" />
+								<img class="site-logo" src="./assets/images/icons/favicon/favicon.svg" alt="Favicon">
+
+								<asp:Label CssClass="site-title gfs-neohellenic-bold" Text="&nbsp;THΣMIS" runat="server" />
 							</a>
 
 							<%-- MOBILE NAV TOGGLER --%>
@@ -310,12 +311,14 @@
 				disableSubmitBtns();
 				enterBtn();
 				multiValidation();
+				showDatePicker();
 			}
 			Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
 				FormatForms();
 				disableSubmitBtns();
 				enterBtn();
 				multiValidation();
+				showDatePicker();
 				GetToastStatus();
 				ToastAnimationHelper();
 				CurrencyFormatting();

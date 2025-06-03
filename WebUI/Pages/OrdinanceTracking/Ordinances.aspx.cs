@@ -109,8 +109,18 @@ namespace WebUI
             {
                 string id = Request.QueryString["id"];
                 string cmd = Request.QueryString["v"] ?? "view";
-                
-                GetByID(id.ToString(), cmd.ToString());
+
+                OrdinanceStatus checkOrd = Factory.Instance.GetByID<OrdinanceStatus>(Convert.ToInt32(id), "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
+
+                switch (!checkOrd.StatusID.Equals(9))
+                {
+                    case true:
+                        GetByID(id.ToString(), cmd.ToString());
+                        break;
+                    case false:
+                        Response.Redirect($"./FactSheetDrafts?id={id}");
+                        break;
+                }
                 if (Request.QueryString["f"] != null)
                 {
                     string ctrl = Request.QueryString["f"];
