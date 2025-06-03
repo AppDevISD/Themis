@@ -615,19 +615,12 @@
 	</div>
 
 	<%-- JAVASCRIPT --%>
-	<script type="text/javascript" src="./assets/js/FileUploadSaving.js"></script>
 	<script>
 		InitialLoad();
-		var currentValidation = [];
-		var isValid = true;
 
 		function InitialLoad() {
-			FormatForms();
-			disableSubmitBtns();
 			cancelFilePick('<%= supportingDocumentation.ClientID %>');
-			enterBtn();
 			addSignatureEmails('<%= signatureEmailAddress.ClientID %>', '<%= AddRequestEmailAddress.ClientID %>');
-			multiValidation();
 			DisableDDInitialOption([
 				{ id: '<%= requestDepartment.ClientID %>', opacity: "75" },
 				{ id: '<%= requestDivision.ClientID %>', opacity: "35" },
@@ -636,23 +629,13 @@
 		}
 
 		Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
-			FormatForms();
-			disableSubmitBtns();
 			cancelFilePick('<%= supportingDocumentation.ClientID %>');
-			enterBtn();
-			addSignatureEmails('<%= signatureEmailAddress.ClientID %>', '<%= AddRequestEmailAddress.ClientID %>');
-			multiValidation();			
+			addSignatureEmails('<%= signatureEmailAddress.ClientID %>', '<%= AddRequestEmailAddress.ClientID %>');	
 			DisableDDInitialOption([
 				{ id: '<%= requestDepartment.ClientID %>', opacity: "75" },
 				{ id: '<%= requestDivision.ClientID %>', opacity: "35" },
 				{ id: '<%= purchaseMethod.ClientID %>', opacity: "75" },
 			]);
-			GetToastStatus();
-			ToastAnimationHelper();
-			CurrencyFormatting();
-			if (!isValid) {
-				ValidationFormatting(Page_Validators);
-			}
 		});
 
 		function validateFactSheetDraft(btnID, validationGroups) {

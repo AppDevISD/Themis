@@ -88,7 +88,7 @@
 									<label for="filterSearchTitleGroup">Search Title</label>
 									<div id="filterSearchTitleGroup" class="input-group">
 										<asp:TextBox runat="server" ID="filterSearchTitle" CssClass="form-control" TextMode="SingleLine" placeholder="Search..." AutoCompleteType="Disabled" data-enter-btn="btnFilterSearchTitle"></asp:TextBox>
-										<asp:LinkButton runat="server" ID="btnFilterSearchTitle" CssClass="btn input-group-text" OnClick="Filter_SelectedIndexChanged" OnClientClick="showLoadingModal();"><span class="fas fa-magnifying-glass" data-search="true"></span></asp:LinkButton>
+										<asp:LinkButton runat="server" ID="btnFilterSearchTitle" CssClass="btn input-group-text" OnClick="Filter_SelectedIndexChanged" OnClientClick="showLoadingModal();" TabIndex="-1"><span class="fas fa-magnifying-glass"></span></asp:LinkButton>
 									</div>
 								</div>
 							</div>
@@ -99,21 +99,21 @@
 							<table id="FormTable" class="table table-bordered table-striped table-hover text-center" style="padding: 0px; margin: 0px">
 								<thead>
 									<tr>
-										<th style="width: 4%; text-align: center"><asp:LinkButton runat="server" ID="sortID" data-command="OrdinanceID" data-text="ID" OnClick="SortBtn_Click" class="btn btn-sort"><strong>ID<span runat="server" class='float-end lh-1p5'></span></strong></asp:LinkButton></th>
-										<th style="width: 6%; text-align: center"><asp:LinkButton runat="server" ID="sortDate" data-command="EffectiveDate" data-text="Date" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Date<span runat="server" class='float-end lh-1p5 fas fa-arrow-down'></span></strong></asp:LinkButton></th>
-										<th style="width: 34%; text-align: center"><asp:LinkButton runat="server" ID="sortTitle" data-command="OrdinanceTitle" data-text="Title" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Title<span class="float-end lh-1p5 me-1"></span></strong></asp:LinkButton></th>
+										<th style="width: 4%; text-align: center"><asp:LinkButton runat="server" ID="sortID" data-command="OrdinanceID" data-text="ID" OnClick="SortBtn_Click" class="btn btn-sort" TabIndex="-1"><strong>ID<span runat="server" class='float-end lh-1p5'></span></strong></asp:LinkButton></th>
+										<th style="width: 6%; text-align: center"><asp:LinkButton runat="server" ID="sortDate" data-command="EffectiveDate" data-text="Date" OnClick="SortBtn_Click" class="btn btn-sort" TabIndex="-1"><strong>Date<span runat="server" class='float-end lh-1p5 fas fa-arrow-down'></span></strong></asp:LinkButton></th>
+										<th style="width: 34%; text-align: center"><asp:LinkButton runat="server" ID="sortTitle" data-command="OrdinanceTitle" data-text="Title" OnClick="SortBtn_Click" class="btn btn-sort" TabIndex="-1"><strong>Title<span class="float-end lh-1p5 me-1"></span></strong></asp:LinkButton></th>
 										<th style="width: 25%; text-align: center">
 											<div style="position: relative;">
-												<asp:LinkButton runat="server" ID="sortDepartmentDivision" data-command="RequestDepartment" data-text="Department" OnClick="SortBtn_Click" class="btn-sort btn-dd-sort"><strong><span class="float-end lh-1p5"></span></strong></span></asp:LinkButton>
-												<asp:DropDownList runat="server" ID="ddDeptDivision" CssClass="form-select dd-sort" OnSelectedIndexChanged="ddDeptDivision_SelectedIndexChanged" AutoPostBack="true" >
+												<asp:LinkButton runat="server" ID="sortDepartmentDivision" data-command="RequestDepartment" data-text="Department" OnClick="SortBtn_Click" class="btn-sort btn-dd-sort" TabIndex="-1"><strong><span class="float-end lh-1p5"></span></strong></span></asp:LinkButton>
+												<asp:DropDownList runat="server" ID="ddDeptDivision" CssClass="form-select dd-sort" OnSelectedIndexChanged="ddDeptDivision_SelectedIndexChanged" AutoPostBack="true" TabIndex="-1" >
 													<asp:ListItem Text="Department" Value="RequestDepartment"></asp:ListItem>
 													<asp:ListItem Text="Division" Value="RequestDivision"></asp:ListItem>
 												</asp:DropDownList>
 											</div>
 										</th>
 										
-										<th style="width: 15%; text-align: center"><asp:LinkButton runat="server" ID="sortContact" data-command="RequestContact" data-text="Contact" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Contact<span class="float-end lh-1p5"></span></strong></asp:LinkButton></th>
-										<th style="width: 10%; text-align: center"><asp:LinkButton runat="server" ID="sortStatus" data-command="StatusDescription" data-text="Status" OnClick="SortBtn_Click" class="btn btn-sort"><strong>Status<span class="float-end lh-1p5"></span></strong></asp:LinkButton></th>
+										<th style="width: 15%; text-align: center"><asp:LinkButton runat="server" ID="sortContact" data-command="RequestContact" data-text="Contact" OnClick="SortBtn_Click" class="btn btn-sort" TabIndex="-1"><strong>Contact<span class="float-end lh-1p5"></span></strong></asp:LinkButton></th>
+										<th style="width: 10%; text-align: center"><asp:LinkButton runat="server" ID="sortStatus" data-command="StatusDescription" data-text="Status" OnClick="SortBtn_Click" class="btn btn-sort" TabIndex="-1"><strong>Status<span class="float-end lh-1p5"></span></strong></asp:LinkButton></th>
 										<th style="width: 6%; text-align: center"><strong>Action</strong></th>
 									</tr>
 								</thead>
@@ -142,9 +142,9 @@
 												<asp:Label ID="ordTableStatus" Text='<%# DataBinder.Eval(Container.DataItem, "StatusDescription") %>' runat="server" />
 											</td>
 											<td class="align-middle d-flex justify-content-center px-0">
-												<asp:LinkButton runat="server" ID="editOrd" CommandName="edit" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' CssClass="ordActionBtn border-end px-2" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="Edit" Visible='<%# adminUnlockedOrd(DataBinder.Eval(Container.DataItem, "StatusDescription").ToString()) %>' OnClientClick="showLoadingModal();"><i class="fas fa-pen-to-square text-warning-light"></i></asp:LinkButton>
-												<asp:LinkButton runat="server" ID="viewOrd" CommandName="view" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' CssClass="ordActionBtn border-end px-2" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="View" OnClientClick="showLoadingModal();"><i class="fas fa-magnifying-glass text-info"></i></asp:LinkButton>
-												<asp:LinkButton runat="server" ID="downloadOrd" CommandName="download" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' CssClass="ordActionBtn px-2" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="Download"><i class="fas fa-download text-primary"></i></asp:LinkButton>
+												<asp:LinkButton runat="server" ID="editOrd" CommandName="edit" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' CssClass="ordActionBtn border-end px-2" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="Edit" Visible='<%# adminUnlockedOrd(DataBinder.Eval(Container.DataItem, "StatusDescription").ToString()) %>' OnClientClick="showLoadingModal();" TabIndex="-1"><i class="fas fa-pen-to-square text-warning-light"></i></asp:LinkButton>
+												<asp:LinkButton runat="server" ID="viewOrd" CommandName="view" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' CssClass="ordActionBtn border-end px-2" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="View" OnClientClick="showLoadingModal();" TabIndex="-1"><i class="fas fa-magnifying-glass text-info"></i></asp:LinkButton>
+												<asp:LinkButton runat="server" ID="downloadOrd" CommandName="download" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' CssClass="ordActionBtn px-2" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="Download" TabIndex="-1"><i class="fas fa-download text-primary"></i></asp:LinkButton>
 											</td>
 										</tr>
 									</ItemTemplate>
@@ -165,10 +165,10 @@
 							<table class="table m-0" runat="server">
 								<tr>
 									<td class="text-left">
-										<asp:LinkButton ID="lnkFirstSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="first" data-list="ordTable" style="width: 150px;" CausesValidation="false" OnClientClick="showLoadingModal();"><i class="fas fa-angles-left"></i>&nbsp;First</asp:LinkButton>
+										<asp:LinkButton ID="lnkFirstSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="first" data-list="ordTable" style="width: 150px;" CausesValidation="false" OnClientClick="showLoadingModal();" TabIndex="-1"><i class="fas fa-angles-left"></i>&nbsp;First</asp:LinkButton>
 									</td>
 									<td class="text-center">
-										<asp:LinkButton ID="lnkPreviousSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="previous" data-list="ordTable" style="width: 150px;" CausesValidation="false" OnClientClick="showLoadingModal();"><i class="fas fa-angle-left"></i>&nbsp;Previous</asp:LinkButton>
+										<asp:LinkButton ID="lnkPreviousSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="previous" data-list="ordTable" style="width: 150px;" CausesValidation="false" OnClientClick="showLoadingModal();" TabIndex="-1"><i class="fas fa-angle-left"></i>&nbsp;Previous</asp:LinkButton>
 									</td>
 									<td class="text-center">
 										<div style="margin-top: 5px">
@@ -176,10 +176,10 @@
 										</div>
 									</td>
 									<td class="text-center">
-										<asp:LinkButton ID="lnkNextSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="next" data-list="ordTable" style="width: 150px;" CausesValidation="false" OnClientClick="showLoadingModal();">Next&nbsp;<i class="fas fa-angle-right"></i></asp:LinkButton>
+										<asp:LinkButton ID="lnkNextSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="next" data-list="ordTable" style="width: 150px;" CausesValidation="false" OnClientClick="showLoadingModal();" TabIndex="-1">Next&nbsp;<i class="fas fa-angle-right"></i></asp:LinkButton>
 									</td>
 									<td class="text-end">
-										<asp:LinkButton ID="lnkLastSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="last" data-list="ordTable" style="width: 150px;" CausesValidation="false" OnClientClick="showLoadingModal();">Last&nbsp;<i class="fas fa-angles-right"></i></asp:LinkButton>
+										<asp:LinkButton ID="lnkLastSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="last" data-list="ordTable" style="width: 150px;" CausesValidation="false" OnClientClick="showLoadingModal();" TabIndex="-1">Last&nbsp;<i class="fas fa-angles-right"></i></asp:LinkButton>
 									</td>
 								</tr>
 							</table>
@@ -187,13 +187,13 @@
 					</div>
 				</div>
 
-				<div runat="server" id="ordView" readonly="false" class="readonly-color custom-tab-div w-100" data-form="true">
+				<div runat="server" id="ordView" class="readonly-color custom-tab-div w-100" data-form="true">
 					<asp:HiddenField runat="server" ID="hdnOrdID" />
 					<asp:HiddenField runat="server" ID="hdnEffectiveDate" />
 					<asp:HiddenField runat="server" ID="hdnEmail" />
 					<div runat="server" id="ordinanceTabs" class="nav nav-tabs" role="tablist">
-						<button runat="server" id="factSheetTab" class="nav-link ordTabs active" data-toggle="tab" data-target="#factSheetPane" type="button" role="tab">Fact Sheet</button>
-						<button runat="server" id="auditTab" class="nav-link ordTabs" data-toggle="tab" data-target="#auditPane" type="button" role="tab" onclick="FormatAudit();">History</button>
+						<button runat="server" id="factSheetTab" class="nav-link ordTabs active" data-toggle="tab" data-target="#factSheetPane" type="button" role="tab" tabindex="-1">Fact Sheet</button>
+						<button runat="server" id="auditTab" class="nav-link ordTabs" data-toggle="tab" data-target="#auditPane" type="button" role="tab" onclick="FormatAudit();" tabindex="-1">History</button>
 					</div>
 
 					<div id="ordinanceTabsContent" class="tab-content p-0 border-0">
@@ -204,8 +204,8 @@
 									<h1><span class="fas fa-book-section"></span>&nbsp;Ordinance</h1>
 								</div>
 								<asp:Label runat="server" ID="lblOrdID" CssClass="text-primary-emphasis ordID">ID:</asp:Label>
-								<asp:LinkButton runat="server" ID="backBtn" CssClass="btn bg-danger backBtn" OnClick="backBtn_Click" OnClientClick="showLoadingModal();"><span class="fas fa-xmark text-light"></span></asp:LinkButton>
-								<asp:LinkButton runat="server" ID="copyOrd" CssClass="btn btn-primary copyBtn" OnClick="copyOrd_Click" OnClientClick="showLoadingModal();"><span class="fas fa-copy"></span>&nbsp;Copy</asp:LinkButton>
+								<asp:LinkButton runat="server" ID="backBtn" CssClass="btn bg-danger backBtn" OnClick="backBtn_Click" OnClientClick="showLoadingModal();" TabIndex="-1"><span class="fas fa-xmark text-light"></span></asp:LinkButton>
+								<asp:LinkButton runat="server" ID="copyOrd" CssClass="btn btn-primary copyBtn" OnClick="copyOrd_Click" OnClientClick="showLoadingModal();" TabIndex="-1"><span class="fas fa-copy"></span>&nbsp;Copy</asp:LinkButton>
 
 								<div class="statusDropDown text-start">
 									<div runat="server" id="ddStatusDiv" class="form-group text-start w-75 me-auto">
@@ -272,7 +272,10 @@
 											<div class="col-md-2">
 												<div class="form-group">
 													<label for="firstReadDate">Date of 1<sup>st</sup> Reading</label>
-													<asp:TextBox runat="server" ID="firstReadDate" CssClass="form-control" TextMode="Date" data-required="true"></asp:TextBox>
+													<div class="input-group">
+														<asp:TextBox runat="server" ID="firstReadDate" CssClass="form-control" TextMode="Date" data-required="true"></asp:TextBox>
+														<button runat="server" id="firstReadDatePicker" type="button" class="btn input-group-text" data-calendar-btn="firstReadDate" tabindex="-1"><span class="fas fa-calendar-days"></span></button>
+													</div>
 													<asp:RequiredFieldValidator runat="server" ID="firstReadDateValid" ControlToValidate="firstReadDate" ErrorMessage="Please Select a Date" ValidationGroup="factSheetMain" SetFocusOnError="false" Display="None" CssClass="text-danger invalid-feedback ps-2"></asp:RequiredFieldValidator>
 												</div>
 											</div>
@@ -334,13 +337,13 @@
 														<%-- YES --%>
 														<div class="form-check form-check-inline">
 															<label for="epYes">Yes</label>
-															<asp:RadioButton runat="server" ID="epYes" CssClass="form-check-input" GroupName="epList" OnCheckedChanged="EPCheckedChanged" AutoPostBack="true" />
+															<asp:RadioButton runat="server" ID="epYes" CssClass="form-check-input" GroupName="epList" OnCheckedChanged="EPCheckedChanged" AutoPostBack="true" TabIndex="-1" />
 														</div>
 
 														<%-- NO --%>
 														<div class="form-check form-check-inline">
 															<label for="epNo">No</label>
-															<asp:RadioButton runat="server" ID="epNo" CssClass="form-check-input" GroupName="epList" OnCheckedChanged="EPCheckedChanged" AutoPostBack="true" />
+															<asp:RadioButton runat="server" ID="epNo" CssClass="form-check-input" GroupName="epList" OnCheckedChanged="EPCheckedChanged" AutoPostBack="true" TabIndex="-1" />
 														</div>
 													</div>
 												</div>
@@ -414,7 +417,7 @@
 													<div id="datePeriod" class="input-group">
 														<%-- START --%>
 														<asp:TextBox runat="server" ID="contractStartDate" CssClass="form-control" TextMode="Date" data-type="datePeriodStart"></asp:TextBox>
-
+														<button runat="server" id="contractStartDatePicker" type="button" class="btn input-group-text" data-calendar-btn="contractStartDate" tabindex="-1"><span class="fas fa-calendar-days"></span></button>
 														<%-- SEPARATOR --%>
 														<div class="input-group-append">
 															<span class="input-group-text date-period-separator"><i class="fas fa-minus"></i></span>
@@ -422,6 +425,7 @@
 
 														<%-- END --%>
 														<asp:TextBox runat="server" ID="contractEndDate" CssClass="form-control" TextMode="Date" data-type="datePeriodEnd"></asp:TextBox>
+														<button runat="server" id="contractEndDatePicker" type="button" class="btn input-group-text" data-calendar-btn="contractEndDate" tabindex="-1"><span class="fas fa-calendar-days"></span></button>
 													</div>
 												</div>
 											</div>
@@ -430,7 +434,7 @@
 											<div class="col-md-3">
 												<div class="form-group">
 													<label for="dateTerm">Date Term</label>
-													<input runat="server" id="contractTerm" type="text" data-type="dateTerm" class="form-control locked-field" autocomplete="off" readonly="readonly" value="" placeholder="Calculating Term..." required>
+													<input runat="server" id="contractTerm" type="text" data-type="dateTerm" class="form-control locked-field" autocomplete="off" readonly="readonly" value="" placeholder="Calculating Term..." required tabindex="-1">
 												</div>
 											</div>
 
@@ -456,13 +460,13 @@
 														<%-- YES --%>
 														<div class="form-check form-check-inline">
 															<label for="scYes">Yes</label>
-															<asp:RadioButton runat="server" ID="scYes" CssClass="form-check-input" GroupName="scopeChangeList" OnCheckedChanged="SCCheckedChanged" AutoPostBack="true" />
+															<asp:RadioButton runat="server" ID="scYes" CssClass="form-check-input" GroupName="scopeChangeList" OnCheckedChanged="SCCheckedChanged" AutoPostBack="true" TabIndex="-1" />
 														</div>
 
 														<%-- NO --%>
 														<div class="form-check form-check-inline">
 															<label for="scNo">No</label>
-															<asp:RadioButton runat="server" ID="scNo" CssClass="form-check-input" GroupName="scopeChangeList" OnCheckedChanged="SCCheckedChanged" AutoPostBack="true" />
+															<asp:RadioButton runat="server" ID="scNo" CssClass="form-check-input" GroupName="scopeChangeList" OnCheckedChanged="SCCheckedChanged" AutoPostBack="true" TabIndex="-1" />
 														</div>
 													</div>
 												</div>
@@ -544,13 +548,13 @@
 														<%-- YES --%>
 														<div class="form-check form-check-inline">
 															<label for="paApprovalRequiredYes">Yes</label>
-															<asp:RadioButton runat="server" ID="paApprovalRequiredYes" CssClass="form-check-input" GroupName="paApprovalRequiredList" />
+															<asp:RadioButton runat="server" ID="paApprovalRequiredYes" CssClass="form-check-input" GroupName="paApprovalRequiredList" TabIndex="-1" />
 														</div>
 
 														<%-- NO --%>
 														<div class="form-check form-check-inline">
 															<label for="paApprovalRequiredNo">No</label>
-															<asp:RadioButton runat="server" ID="paApprovalRequiredNo" CssClass="form-check-input" GroupName="paApprovalRequiredList" />
+															<asp:RadioButton runat="server" ID="paApprovalRequiredNo" CssClass="form-check-input" GroupName="paApprovalRequiredList" TabIndex="-1" />
 														</div>
 													</div>
 												</div>
@@ -567,13 +571,13 @@
 														<%-- YES --%>
 														<div class="form-check form-check-inline">
 															<label for="paApprovalAttachedYes">Yes</label>
-															<asp:RadioButton runat="server" ID="paApprovalAttachedYes" CssClass="form-check-input" GroupName="paApprovalAttachedList" />
+															<asp:RadioButton runat="server" ID="paApprovalAttachedYes" CssClass="form-check-input" GroupName="paApprovalAttachedList" TabIndex="-1" />
 														</div>
 
 														<%-- NO --%>
 														<div class="form-check form-check-inline">
 															<label for="paApprovalAttachedNo">No</label>
-															<asp:RadioButton runat="server" ID="paApprovalAttachedNo" CssClass="form-check-input" GroupName="paApprovalAttachedList" />
+															<asp:RadioButton runat="server" ID="paApprovalAttachedNo" CssClass="form-check-input" GroupName="paApprovalAttachedList" TabIndex="-1" />
 														</div>
 													</div>
 												</div>
@@ -629,7 +633,7 @@
 																		<asp:TextBox runat="server" ID="revenueAmount" CssClass="form-control" TextMode="SingleLine" data-type="currency" placeholder="$0.00" AutoCompleteType="Disabled" Text='<%# (Convert.ToInt32(DataBinder.Eval(Container.DataItem, "Amount")) >= 0)?DataBinder.Eval(Container.DataItem, "Amount"):string.Empty%>'></asp:TextBox>
 
 																		<div runat="server" id="removeRevRowDiv">
-																			<asp:Button runat="server" ID="removeRevenueRow" CssClass="btn row-delete" UseSubmitBehavior="false" CommandName="delete" CommandArgument="revenue" Text="&#xf068;" data-disable-btn="aspIconBtn" />
+																			<asp:Button runat="server" ID="removeRevenueRow" CssClass="btn row-delete" UseSubmitBehavior="false" CommandName="delete" CommandArgument="revenue" Text="&#xf068;" data-disable-btn="aspIconBtn" TabIndex="-1" />
 																		</div>
 																	</td>
 																</tr>
@@ -640,7 +644,7 @@
 
 												<%-- ADD REVENUE ROW BUTTON --%>
 												<div runat="server" id="newRevenueRowDiv" class="text-center w-100">
-													<asp:Button runat="server" ID="newRevenueRow" CssClass="btn btn-success w-100 row-add" OnClick="newAccountingRow_ServerClick" UseSubmitBehavior="false" CommandName="revenue" Text="Add Row" data-disable-btn="aspBtn" data-disable-btn-text="Adding Row" />
+													<asp:Button runat="server" ID="newRevenueRow" CssClass="btn btn-success w-100 row-add" OnClick="newAccountingRow_ServerClick" UseSubmitBehavior="false" CommandName="revenue" Text="Add Row" data-disable-btn="aspBtn" data-disable-btn-text="Adding Row" TabIndex="-1" />
 												</div>
 											</div>
 
@@ -691,7 +695,7 @@
 																		<asp:TextBox runat="server" ID="expenditureAmount" CssClass="form-control" TextMode="SingleLine" data-type="currency" placeholder="$0.00" AutoCompleteType="Disabled" Text='<%# (Convert.ToInt32(DataBinder.Eval(Container.DataItem, "Amount")) >= 0)?DataBinder.Eval(Container.DataItem, "Amount"):string.Empty%>'></asp:TextBox>
 
 																		<div runat="server" id="removeExpRowDiv">
-																			<asp:Button runat="server" ID="removeExpenditureRow" CssClass="btn row-delete" UseSubmitBehavior="false" CommandName="delete" CommandArgument="expenditure" Text="&#xf068;" data-disable-btn="aspIconBtn" />
+																			<asp:Button runat="server" ID="removeExpenditureRow" CssClass="btn row-delete" UseSubmitBehavior="false" CommandName="delete" CommandArgument="expenditure" Text="&#xf068;" data-disable-btn="aspIconBtn" TabIndex="-1" />
 																		</div>
 																	</td>
 																</tr>
@@ -702,7 +706,7 @@
 
 												<%-- ADD EXPENDITURE ROW BUTTON --%>
 												<div runat="server" id="newExpenditureRowDiv" class="text-center w-100">
-													<asp:Button runat="server" ID="newExpenditureRow" CssClass="btn btn-success w-100 row-add" OnClick="newAccountingRow_ServerClick" UseSubmitBehavior="false" CommandName="expenditure" Text="Add Row" data-disable-btn="aspBtn" data-disable-btn-text="Adding Row" />
+													<asp:Button runat="server" ID="newExpenditureRow" CssClass="btn btn-success w-100 row-add" OnClick="newAccountingRow_ServerClick" UseSubmitBehavior="false" CommandName="expenditure" Text="Add Row" data-disable-btn="aspBtn" data-disable-btn-text="Adding Row" TabIndex="-1" />
 												</div>
 											</div>
 
@@ -739,17 +743,17 @@
 																	<asp:HiddenField runat="server" ID="hdnDocIndex" Value='<%# Container.ItemIndex %>' />
 																	<%# DataBinder.Eval(Container.DataItem, "DocumentName") %>
 																	<div class="d-flex float-end">
-																		<asp:LinkButton runat="server" ID="supportingDocDownload" CssClass="btn btn-primary" CommandName="download" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "DocumentName") %>' Style="margin-right: 5px;"><span class="fas fa-download"></span></asp:LinkButton>
-																		<asp:LinkButton runat="server" ID="deleteFile" CssClass="btn btn-danger" CommandName="delete" Style="margin-left: 5px;" data-disable-btn="aspIconBtn"><span class="fas fa-trash-can"></span></asp:LinkButton>
+																		<asp:LinkButton runat="server" ID="supportingDocDownload" CssClass="btn btn-primary" CommandName="download" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "DocumentName") %>' Style="margin-right: 5px;" TabIndex="-1"><span class="fas fa-download"></span></asp:LinkButton>
+																		<asp:LinkButton runat="server" ID="deleteFile" CssClass="btn btn-danger" CommandName="delete" Style="margin-left: 5px;" data-disable-btn="aspIconBtn" TabIndex="-1"><span class="fas fa-trash-can"></span></asp:LinkButton>
 																	</div>
 																</li>
 															</ItemTemplate>
 														</asp:Repeater>
 													</ul>
 													<div id="supportingDocumentationGroup" class="d-flex mb-2">
-														<asp:FileUpload runat="server" ID="supportingDocumentation" CssClass="form-control mt-3" AllowMultiple="true" onchange="SetUploadActive(this.id, 'uploadBtn');" onfocus="showFileWaiting();" />
-														<button id="uploadBtn" class="btn btn-success mt-3 ms-3 w-25" onclick="clickAspBtn('UploadDocBtn');" type="button" data-disable-btn="htmlIconBtn" data-disable-btn-icon="fa-upload" data-disable-btn-text="Uploading" disabled><span>Upload</span></button>
-														<asp:Button runat="server" ID="UploadDocBtn" UseSubmitBehavior="false" Width="25%" OnClick="UploadDocBtn_Click" hidden="hidden" />
+														<asp:FileUpload runat="server" ID="supportingDocumentation" CssClass="form-control mt-3" AllowMultiple="true" onchange="SetUploadActive(this.id, 'uploadBtn');" onfocus="showFileWaiting();" TabIndex="-1" />
+														<button runat="server" id="uploadBtn" class="btn btn-success mt-3 ms-3 w-25" onclick="clickAspBtn('UploadDocBtn');" type="button" data-disable-btn="htmlIconBtn" data-disable-btn-icon="fa-upload" data-disable-btn-text="Uploading" disabled TabIndex="-1"><span>Upload</span></button>
+														<asp:Button runat="server" ID="UploadDocBtn" UseSubmitBehavior="false" Width="25%" OnClick="UploadDocBtn_Click" hidden="hidden" TabIndex="-1" />
 													</div>
 													<div id="fileWaiting" class="mt-2" hidden>
 														<strong class="text-warning fa-fade"><span class="fa-solid fa-hourglass-end fa-flip"></span>&nbsp;Waiting for file...</strong>
@@ -766,25 +770,25 @@
 											<%-- FUNDS CHECK BY --%>
 											<div class="col-md-12">
 												<div class="form-group">
-													<label for="fundsCheckByGroup" class="mb-1">Funds Check By <asp:LinkButton runat="server" ID="fundsCheckEmailBtn" CssClass="text-primary fs-7 text-decoration-none ms-2" OnClick="signatureEmailBtn_Click" CommandArgument="fundsCheckByBtn;Funds Check By" CommandName="FundsCheckBy"><span class="fa-kit fa-solid-signature-circle-user"></span>&nbsp;Assign Signature</asp:LinkButton></label>
+													<label for="fundsCheckByGroup" class="mb-1">Funds Check By <asp:LinkButton runat="server" ID="fundsCheckEmailBtn" CssClass="text-primary fs-7 text-decoration-none ms-2" OnClick="signatureEmailBtn_Click" CommandArgument="fundsCheckByBtn;Funds Check By" CommandName="FundsCheckBy" TabIndex="-1"><span class="fa-kit fa-solid-signature-circle-user"></span>&nbsp;Assign Signature</asp:LinkButton></label>
 													<div id="fundsCheckByGroup">
 														<div runat="server" id="fundsCheckByBtnDiv" class="row readonly-color">
 															<%-- SIGN BUTTON --%>
 															<div class="col-md-6">
-																<asp:Button runat="server" ID="fundsCheckByBtn" UseSubmitBehavior="false" CssClass="btn btn-success float-start" Width="50%" Text="Sign" data-toggle="modal" data-target="#signatureModal" OnClientClick="setSigModal('fundsCheckBy');" />
+																<asp:Button runat="server" ID="fundsCheckByBtn" UseSubmitBehavior="false" CssClass="btn btn-success float-start" Width="50%" Text="Sign" data-toggle="modal" data-target="#signatureModal" OnClientClick="setSigModal('fundsCheckBy');" TabIndex="-1" />
 															</div>
 														</div>
 														<div runat="server" id="fundsCheckByInputGroup" class="row">
 															<div class="col-md-4">
 																<div class="input-group">
 																	<span class="input-group-text fas fa-signature"></span>
-																	<asp:TextBox runat="server" ID="fundsCheckBySig" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" data-required="true" ReadOnly="true"></asp:TextBox>
+																	<asp:TextBox runat="server" ID="fundsCheckBySig" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" data-required="true" ReadOnly="true" TabIndex="-1"></asp:TextBox>
 																</div>
 															</div>
 															<div class="col-md-2">
 																<div class="input-group">
 																	<span class="input-group-text fas fa-calendar-days"></span>
-																	<asp:TextBox runat="server" ID="fundsCheckByDate" CssClass="form-control" TextMode="Date" ReadOnly="true"></asp:TextBox>
+																	<asp:TextBox runat="server" ID="fundsCheckByDate" CssClass="form-control" TextMode="Date" ReadOnly="true" TabIndex="-1"></asp:TextBox>
 																</div>
 															</div>
 															<div class="col-md-6 d-flex align-items-center">
@@ -801,25 +805,25 @@
 											<%-- DIRECTOR/SUPERVISOR --%>
 											<div class="col-md-12">
 												<div class="form-group">
-													<label for="directorSupervisorGroup">Director/Supervisor <asp:LinkButton runat="server" ID="directorSupervisorEmailBtn" CssClass="text-primary fs-7 text-decoration-none ms-2" OnClick="signatureEmailBtn_Click" CommandArgument="directorSupervisorBtn;Director/Supervisor" CommandName="DirectorSupervisor"><span class="fa-kit fa-solid-signature-circle-user"></span>&nbsp;Assign Signature</asp:LinkButton></label>
+													<label for="directorSupervisorGroup">Director/Supervisor <asp:LinkButton runat="server" ID="directorSupervisorEmailBtn" CssClass="text-primary fs-7 text-decoration-none ms-2" OnClick="signatureEmailBtn_Click" CommandArgument="directorSupervisorBtn;Director/Supervisor" CommandName="DirectorSupervisor" TabIndex="-1"><span class="fa-kit fa-solid-signature-circle-user"></span>&nbsp;Assign Signature</asp:LinkButton></label>
 													<div id="directorSupervisorGroup">
 														<div runat="server" id="directorSupervisorBtnDiv" class="row readonly-color">
 															<%-- SIGN BUTTON --%>
 															<div class="col-md-6">
-																<asp:Button runat="server" ID="directorSupervisorBtn" UseSubmitBehavior="false" CssClass="btn btn-success float-start" Width="50%" Text="Sign" data-toggle="modal" data-target="#signatureModal" OnClientClick="setSigModal('directorSupervisor');" />
+																<asp:Button runat="server" ID="directorSupervisorBtn" UseSubmitBehavior="false" CssClass="btn btn-success float-start" Width="50%" Text="Sign" data-toggle="modal" data-target="#signatureModal" OnClientClick="setSigModal('directorSupervisor');" TabIndex="-1" />
 															</div>
 														</div>
 														<div runat="server" id="directorSupervisorInputGroup" class="row">
 															<div class="col-md-4">
 																<div class="input-group">
 																	<span class="input-group-text fas fa-signature"></span>
-																	<asp:TextBox runat="server" ID="directorSupervisorSig" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" data-required="true" ReadOnly="true"></asp:TextBox>
+																	<asp:TextBox runat="server" ID="directorSupervisorSig" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" data-required="true" ReadOnly="true" TabIndex="-1"></asp:TextBox>
 																</div>
 															</div>
 															<div class="col-md-2">
 																<div class="input-group">
 																	<span class="input-group-text fas fa-calendar-days"></span>
-																	<asp:TextBox runat="server" ID="directorSupervisorDate" CssClass="form-control" TextMode="Date" ReadOnly="true"></asp:TextBox>
+																	<asp:TextBox runat="server" ID="directorSupervisorDate" CssClass="form-control" TextMode="Date" ReadOnly="true" TabIndex="-1"></asp:TextBox>
 																</div>
 															</div>
 															<div class="col-md-6 d-flex align-items-center">
@@ -836,25 +840,25 @@
 											<%-- CITY PURCHASING AGENT --%>
 											<div class="col-md-12">
 												<div class="form-group">
-													<label for="cPAGroup">City Purchasing Agent <asp:LinkButton runat="server" ID="cPAEmailBtn" CssClass="text-primary fs-7 text-decoration-none ms-2" OnClick="signatureEmailBtn_Click" CommandArgument="cPABtn;City Purchasing Agent" CommandName="CityPurchasingAgent"><span class="fa-kit fa-solid-signature-circle-user"></span>&nbsp;Assign Signature</asp:LinkButton></label>
+													<label for="cPAGroup">City Purchasing Agent <asp:LinkButton runat="server" ID="cPAEmailBtn" CssClass="text-primary fs-7 text-decoration-none ms-2" OnClick="signatureEmailBtn_Click" CommandArgument="cPABtn;City Purchasing Agent" CommandName="CityPurchasingAgent" TabIndex="-1"><span class="fa-kit fa-solid-signature-circle-user"></span>&nbsp;Assign Signature</asp:LinkButton></label>
 													<div id="cPAGroup">
 														<div runat="server" id="cPABtnDiv" class="row readonly-color">
 															<%-- SIGN BUTTON --%>
 															<div class="col-md-6">
-																<asp:Button runat="server" ID="cPABtn" UseSubmitBehavior="false" CssClass="btn btn-success float-start" Width="50%" Text="Sign" data-toggle="modal" data-target="#signatureModal" OnClientClick="setSigModal('cPA');" />
+																<asp:Button runat="server" ID="cPABtn" UseSubmitBehavior="false" CssClass="btn btn-success float-start" Width="50%" Text="Sign" data-toggle="modal" data-target="#signatureModal" OnClientClick="setSigModal('cPA');" TabIndex="-1" />
 															</div>
 														</div>
 														<div runat="server" id="cPAInputGroup" class="row">
 															<div class="col-md-4">
 																<div class="input-group">
 																	<span class="input-group-text fas fa-signature"></span>
-																	<asp:TextBox runat="server" ID="cPASig" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" data-required="true" ReadOnly="true"></asp:TextBox>
+																	<asp:TextBox runat="server" ID="cPASig" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" data-required="true" ReadOnly="true" TabIndex="-1"></asp:TextBox>
 																</div>
 															</div>
 															<div class="col-md-2">
 																<div class="input-group">
 																	<span class="input-group-text fas fa-calendar-days"></span>
-																	<asp:TextBox runat="server" ID="cPADate" CssClass="form-control" TextMode="Date" ReadOnly="true"></asp:TextBox>
+																	<asp:TextBox runat="server" ID="cPADate" CssClass="form-control" TextMode="Date" ReadOnly="true" TabIndex="-1"></asp:TextBox>
 																</div>
 															</div>
 															<div class="col-md-6 d-flex align-items-center">
@@ -871,25 +875,25 @@
 											<%-- OBM DIRECTOR --%>
 											<div class="col-md-12">
 												<div class="form-group">
-													<label for="obmDirectorGroup">OBM Director <asp:LinkButton runat="server" ID="obmDirectorEmailBtn" CssClass="text-primary fs-7 text-decoration-none ms-2" OnClick="signatureEmailBtn_Click" CommandArgument="obmDirectorBtn;OBM Director" CommandName="OBMDirector"><span class="fa-kit fa-solid-signature-circle-user"></span>&nbsp;Assign Signature</asp:LinkButton></label>
+													<label for="obmDirectorGroup">OBM Director <asp:LinkButton runat="server" ID="obmDirectorEmailBtn" CssClass="text-primary fs-7 text-decoration-none ms-2" OnClick="signatureEmailBtn_Click" CommandArgument="obmDirectorBtn;OBM Director" CommandName="OBMDirector" TabIndex="-1"><span class="fa-kit fa-solid-signature-circle-user"></span>&nbsp;Assign Signature</asp:LinkButton></label>
 													<div id="obmDirectorGroup">
 														<div runat="server" id="obmDirectorBtnDiv" class="row readonly-color">
 															<%-- SIGN BUTTON --%>
 															<div class="col-md-6">
-																<asp:Button runat="server" ID="obmDirectorBtn" UseSubmitBehavior="false" CssClass="btn btn-success float-start" Width="50%" Text="Sign" data-toggle="modal" data-target="#signatureModal" OnClientClick="setSigModal('obmDirector');" />
+																<asp:Button runat="server" ID="obmDirectorBtn" UseSubmitBehavior="false" CssClass="btn btn-success float-start" Width="50%" Text="Sign" data-toggle="modal" data-target="#signatureModal" OnClientClick="setSigModal('obmDirector');" TabIndex="-1" />
 															</div>
 														</div>
 														<div runat="server" id="obmDirectorInputGroup" class="row">
 															<div class="col-md-4">
 																<div class="input-group">
 																	<span class="input-group-text fas fa-signature"></span>
-																	<asp:TextBox runat="server" ID="obmDirectorSig" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" data-required="true" ReadOnly="true"></asp:TextBox>
+																	<asp:TextBox runat="server" ID="obmDirectorSig" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" data-required="true" ReadOnly="true" TabIndex="-1"></asp:TextBox>
 																</div>
 															</div>
 															<div class="col-md-2">
 																<div class="input-group">
 																	<span class="input-group-text fas fa-calendar-days"></span>
-																	<asp:TextBox runat="server" ID="obmDirectorDate" CssClass="form-control" TextMode="Date" ReadOnly="true"></asp:TextBox>
+																	<asp:TextBox runat="server" ID="obmDirectorDate" CssClass="form-control" TextMode="Date" ReadOnly="true" TabIndex="-1"></asp:TextBox>
 																</div>
 															</div>
 															<div class="col-md-6 d-flex align-items-center">
@@ -906,25 +910,25 @@
 											<%-- MAYOR --%>
 											<div class="col-md-12">
 												<div class="form-group">
-													<label for="mayorGroup">Mayor <asp:LinkButton runat="server" ID="mayorEmailBtn" CssClass="text-primary fs-7 text-decoration-none ms-2" OnClick="signatureEmailBtn_Click" CommandArgument="mayorBtn;Mayor" CommandName="Mayor"><span class="fa-kit fa-solid-signature-circle-user"></span>&nbsp;Assign Signature</asp:LinkButton></label>
+													<label for="mayorGroup">Mayor <asp:LinkButton runat="server" ID="mayorEmailBtn" CssClass="text-primary fs-7 text-decoration-none ms-2" OnClick="signatureEmailBtn_Click" CommandArgument="mayorBtn;Mayor" CommandName="Mayor" TabIndex="-1"><span class="fa-kit fa-solid-signature-circle-user"></span>&nbsp;Assign Signature</asp:LinkButton></label>
 													<div id="mayorGroup">
 														<div runat="server" id="mayorBtnDiv" class="row readonly-color">
 															<%-- SIGN BUTTON --%>
 															<div class="col-md-6">
-																<asp:Button runat="server" ID="mayorBtn" UseSubmitBehavior="false" CssClass="btn btn-success float-start" Width="50%" Text="Sign" data-toggle="modal" data-target="#signatureModal" OnClientClick="setSigModal('mayor');" />
+																<asp:Button runat="server" ID="mayorBtn" UseSubmitBehavior="false" CssClass="btn btn-success float-start" Width="50%" Text="Sign" data-toggle="modal" data-target="#signatureModal" OnClientClick="setSigModal('mayor');" TabIndex="-1" />
 															</div>
 														</div>
 														<div runat="server" id="mayorInputGroup" class="row">
 															<div class="col-md-4">
 																<div class="input-group">
 																	<span class="input-group-text fas fa-signature"></span>
-																	<asp:TextBox runat="server" ID="mayorSig" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" data-required="true" ReadOnly="true"></asp:TextBox>
+																	<asp:TextBox runat="server" ID="mayorSig" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" data-required="true" ReadOnly="true" TabIndex="-1"></asp:TextBox>
 																</div>
 															</div>
 															<div class="col-md-2">
 																<div class="input-group">
 																	<span class="input-group-text fas fa-calendar-days"></span>
-																	<asp:TextBox runat="server" ID="mayorDate" CssClass="form-control" TextMode="Date" ReadOnly="true"></asp:TextBox>
+																	<asp:TextBox runat="server" ID="mayorDate" CssClass="form-control" TextMode="Date" ReadOnly="true" TabIndex="-1"></asp:TextBox>
 																</div>
 															</div>
 															<div class="col-md-6 d-flex align-items-center">
@@ -943,12 +947,12 @@
 										<div class="row mt-3 mb-3 text-center">
 											<%-- SAVE BUTTON --%>
 											<div class="col-md-6">
-												<button id="saveBtn" class="btn btn-primary float-end w-50" onclick="validateFactSheetDraft('factSheetMain');" type="button" data-disable-btn="htmlIconBtn" data-disable-btn-icon="fa-floppy-disk" data-disable-btn-text="Saving">Save Fact Sheet</button>
-												<asp:Button runat="server" ID="SaveFactSheet" UseSubmitBehavior="false" OnClick="SaveFactSheet_Click" CommandName="save" hidden="true" />
+												<button id="saveBtn" class="btn btn-primary float-end w-50" onclick="validateFactSheetDraft('factSheetMain');" type="button" data-disable-btn="htmlIconBtn" data-disable-btn-icon="fa-floppy-disk" data-disable-btn-text="Saving" tabindex="-1">Save Fact Sheet</button>
+												<asp:Button runat="server" ID="SaveFactSheet" UseSubmitBehavior="false" OnClick="SaveFactSheet_Click" CommandName="save" hidden="true" TabIndex="-1" />
 											</div>
 											<%-- DELETE BUTTON --%>
 											<div class="col-md-6">
-												<asp:Button runat="server" ID="DeleteFactSheet" UseSubmitBehavior="false" CssClass="btn btn-danger float-start" Width="50%" Text="Delete" data-toggle="modal" data-target="#deleteModal" />
+												<asp:Button runat="server" ID="DeleteFactSheet" UseSubmitBehavior="false" CssClass="btn btn-danger float-start" Width="50%" Text="Delete" data-toggle="modal" data-target="#deleteModal" TabIndex="-1" />
 											</div>
 										</div>
 									</div>
@@ -980,7 +984,7 @@
 													<tr id='auditRow<%# DataBinder.Eval(Container.DataItem, "OrdinanceAuditID") %>' class="accordion">
 														<asp:HiddenField runat="server" ID="hdnAuditItem" Value='<%# DataBinder.Eval(Container.DataItem, "OrdinanceAuditID") %>' />
 														<td class="align-middle text-start mw-0">
-															<a href="javascript:void(0);" class="btn-accordion audit-link" data-toggle="collapse" data-target='<%# DataBinder.Eval(Container.DataItem, "UpdateType").Equals("UPDATED") || DataBinder.Eval(Container.DataItem, "UpdateType").Equals("REJECTED") ?  $"#auditItem{DataBinder.Eval(Container.DataItem, "OrdinanceAuditID")}" : string.Empty %>'><p class="m-0"><%# DataBinder.Eval(Container.DataItem, "LastUpdateDate", "{0:MM/dd/yyyy}") %> &mdash; <%# DataBinder.Eval(Container.DataItem, "LastUpdateBy") %> &mdash; <%# DataBinder.Eval(Container.DataItem, "UpdateType") %>
+															<a href="javascript:void(0);" class="btn-accordion audit-link" data-toggle="collapse" data-target='<%# DataBinder.Eval(Container.DataItem, "UpdateType").Equals("UPDATED") || DataBinder.Eval(Container.DataItem, "UpdateType").Equals("REJECTED") ?  $"#auditItem{DataBinder.Eval(Container.DataItem, "OrdinanceAuditID")}" : string.Empty %>' tabindex="-1"><p class="m-0"><%# DataBinder.Eval(Container.DataItem, "LastUpdateDate", "{0:MM/dd/yyyy}") %> &mdash; <%# DataBinder.Eval(Container.DataItem, "LastUpdateBy") %> &mdash; <%# DataBinder.Eval(Container.DataItem, "UpdateType") %>
 																	<span runat="server" class='<%# DataBinder.Eval(Container.DataItem, "UpdateType").Equals("UPDATED") || DataBinder.Eval(Container.DataItem, "UpdateType").Equals("REJECTED") ? "float-end lh-1p5 fas fa-chevron-down" : string.Empty %>'>
 																	</span>
 																</p></a>
@@ -999,26 +1003,6 @@
 																			</li>
 																		</ItemTemplate>
 																	</asp:Repeater>
-																	<%--<li>
-																		<p class="m-0">Revenue</p>
-																		<table runat="server" id="revAuditTable" class="table table-bordered table-striped table-hover text-center w-75" style="padding: 0px; margin: 0px">
-																			<thead>
-																				<tr>
-																					<th style="width: 13%; text-align: center">Fund</th>
-																					<th style="width: 15%; text-align: center">Agency</th>
-																					<th style="width: 15%; text-align: center">Org</th>
-																					<th style="width: 16%; text-align: center">Activity</th>
-																					<th style="width: 15%; text-align: center">Object</th>
-																					<th style="width: 18%; text-align: center">Amount</th>
-																				</tr>
-																			</thead>
-																		</table>
-																	</li>--%>
-																	<%--<asp:Repeater runat="server" ID="rpAuditAcctDesc">
-																		<ItemTemplate>
-
-																		</ItemTemplate>
-																	</asp:Repeater>--%>
 																</ul>
 															</div>
 														</td>
@@ -1033,10 +1017,10 @@
 										<table class="table m-0" runat="server">
 											<tr>
 												<td class="text-left">
-													<asp:LinkButton ID="lnkAuditFirstSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="first" data-list="auditTable" style="width: 150px;" CausesValidation="false" OnClientClick="showLoadingModal();" Enabled="false"><i class="fas fa-angles-left"></i>&nbsp;First</asp:LinkButton>
+													<asp:LinkButton ID="lnkAuditFirstSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="first" data-list="auditTable" style="width: 150px;" CausesValidation="false" OnClientClick="showLoadingModal();" TabIndex="-1" Enabled="false"><i class="fas fa-angles-left"></i>&nbsp;First</asp:LinkButton>
 												</td>
 												<td class="text-center">
-													<asp:LinkButton ID="lnkAuditPreviousSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="previous" data-list="auditTable" style="width: 150px;" CausesValidation="false" OnClientClick="showLoadingModal();"><i class="fas fa-angle-left"></i>&nbsp;Previous</asp:LinkButton>
+													<asp:LinkButton ID="lnkAuditPreviousSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="previous" data-list="auditTable" style="width: 150px;" CausesValidation="false" OnClientClick="showLoadingModal();" TabIndex="-1"><i class="fas fa-angle-left"></i>&nbsp;Previous</asp:LinkButton>
 												</td>
 												<td class="text-center">
 													<div style="margin-top: 5px">
@@ -1044,10 +1028,10 @@
 													</div>
 												</td>
 												<td class="text-center">
-													<asp:LinkButton ID="lnkAuditNextSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="next" data-list="auditTable" style="width: 150px;" CausesValidation="false" OnClientClick="showLoadingModal();">Next&nbsp;<i class="fas fa-angle-right"></i></asp:LinkButton>
+													<asp:LinkButton ID="lnkAuditNextSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="next" data-list="auditTable" style="width: 150px;" CausesValidation="false" OnClientClick="showLoadingModal();" TabIndex="-1">Next&nbsp;<i class="fas fa-angle-right"></i></asp:LinkButton>
 												</td>
 												<td class="text-end">
-													<asp:LinkButton ID="lnkAuditLastSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="last" data-list="auditTable" style="width: 150px;" CausesValidation="false" OnClientClick="showLoadingModal();">Last&nbsp;<i class="fas fa-angles-right"></i></asp:LinkButton>
+													<asp:LinkButton ID="lnkAuditLastSearchP" CssClass="btn btn-primary" runat="server" OnClick="paginationBtn_Click" data-command="last" data-list="auditTable" style="width: 150px;" CausesValidation="false" OnClientClick="showLoadingModal();" TabIndex="-1">Last&nbsp;<i class="fas fa-angles-right"></i></asp:LinkButton>
 												</td>
 											</tr>
 										</table>
@@ -1072,8 +1056,8 @@
 					<asp:Label runat="server" ID="deleteLabel" Style="font-size: 18px; font-weight: bold" CssClass="text-danger" Text="Are you sure you want to delete this ordinance fact sheet? (This cannot be undone)" />
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-					<asp:Button ID="btnDelete" runat="server" Text="Delete" CssClass="btn btn-danger" CausesValidation="false" UseSubmitBehavior="false" Visible="true" OnClick="mdlDeleteSubmit_ServerClick" OnClientClick="ShowSubmitToast();" data-disable-btn="htmlBtn" data-disable-btn-text="Deleting" />
+					<button type="button" class="btn btn-secondary" data-dismiss="modal" tabindex="-1">Cancel</button>
+					<asp:Button ID="btnDelete" runat="server" Text="Delete" CssClass="btn btn-danger" CausesValidation="false" UseSubmitBehavior="false" Visible="true" OnClick="mdlDeleteSubmit_ServerClick" OnClientClick="ShowSubmitToast();" data-disable-btn="htmlBtn" data-disable-btn-text="Deleting" TabIndex="-1" />
 				</div>
 			</div>
 		</div>
@@ -1098,7 +1082,7 @@
 										<ItemTemplate>
 											<div class="badge rounded-pill text-bg-secondary m-1" style="font-size: .95rem">
 												<%# Container.DataItem %>
-												<asp:LinkButton runat="server" ID="removeBtn" CssClass="text-danger" style="margin-left: 10px;" CommandName="remove" CommandArgument='<%# Container.DataItem %>'><span class="fa-solid fa-xmark"></span></asp:LinkButton>
+												<asp:LinkButton runat="server" ID="removeBtn" CssClass="text-danger" style="margin-left: 10px;" CommandName="remove" CommandArgument='<%# Container.DataItem %>' TabIndex="-1"><span class="fa-solid fa-xmark"></span></asp:LinkButton>
 											</div>
 										</ItemTemplate>
 									</asp:Repeater>
@@ -1113,15 +1097,14 @@
 								</div>
 								<div class="col-md-2">
 									<div class="btn-group">
-										<%-- DON'T CHANGE THE TEXT VALUES HERE!!!! THEY ARE UNICODE FOR THE ICONS!!! --%>
-										<asp:Button runat="server" ID="AddRequestEmailAddress" UseSubmitBehavior="false" CssClass="btn btn-success fas-btn" OnClick="AddRequestEmailAddress_Click" disabled="disabled" Text='&#xf055;'/>
-										<asp:Button ID="btnSendSigEmail" runat="server" CssClass="btn btn-primary fas-btn" CausesValidation="false" UseSubmitBehavior="false" Visible="true" OnClick="btnSendSigEmail_Click" OnClientClick="ShowEmailToast();" Text="&#xf1d8;" />
+										<asp:Button runat="server" ID="AddRequestEmailAddress" UseSubmitBehavior="false" CssClass="btn btn-success fas-btn" OnClick="AddRequestEmailAddress_Click" disabled="disabled" Text='&#xf055;' TabIndex="-1"/>
+										<asp:Button ID="btnSendSigEmail" runat="server" CssClass="btn btn-primary fas-btn" CausesValidation="false" UseSubmitBehavior="false" Visible="true" OnClick="btnSendSigEmail_Click" OnClientClick="ShowEmailToast();" Text="&#xf1d8;" TabIndex="-1" />
 									</div>
 								</div>
 							</div>
 						</div>
 						<div class="modal-footer">							
-							<button type="button" class="btn btn-success" data-dismiss="modal">Done</button>
+							<button type="button" class="btn btn-success" data-dismiss="modal" tabindex="-1">Done</button>
 							<input runat="server" id="sigBtnTarget" type="hidden" name="sigBtnTarget"  />
 							<input runat="server" id="sigBtnLabel" type="hidden" name="sigBtnLabel"  />
 							<input runat="server" id="sigBtnType" type="hidden" name="sigBtnType"  />
@@ -1161,16 +1144,16 @@
 									<label for="certifySig" class="ps-3">
 										By checking this box and clicking the "Sign Document" button, I affirm that I am the individual named above, or that I am authorized to sign on behalf of that individual. I understand that this action constitutes the electronic equivalent of the signature of the named individual for the purposes of this document. I certify that, to the best of my knowledge, the information provided is accurate, and I understand that any false representation may result in disciplinary action.
 									</label>
-									<asp:CheckBox runat="server" ID="certifySig" CssClass="form-check-input" style="transform: scale(1.5); margin-left: -1em;"/>
+									<asp:CheckBox runat="server" ID="certifySig" CssClass="form-check-input" style="transform: scale(1.5); margin-left: -1em;" TabIndex="-1"/>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-					<asp:Button ID="btnSignDoc" runat="server" Text="Sign Document" CssClass="btn btn-success" CausesValidation="false" UseSubmitBehavior="false" Visible="true" data-dismiss="modal" OnClick="btnSignDoc_Click" disabled="disabled" />
-					<input runat="server" id="sigType" type="hidden" name="sigType"  />
+					<button type="button" class="btn btn-secondary" data-dismiss="modal" tabindex="-1">Cancel</button>
+					<asp:Button ID="btnSignDoc" runat="server" Text="Sign Document" CssClass="btn btn-success" CausesValidation="false" UseSubmitBehavior="false" Visible="true" data-dismiss="modal" OnClick="btnSignDoc_Click" disabled="disabled" TabIndex="-1" />
+					<input runat="server" id="sigType" type="hidden" name="sigType"/>
 				</div>
 			</div>
 		</div>
@@ -1188,14 +1171,14 @@
 						<div class="col-md-12">
 							<div class="form-group">
 								<label for="rejectionReason">Rejection Details/Changes Needed:</label>
-								<asp:TextBox runat="server" ID="rejectionReason" CssClass="form-control" TextMode="MultiLine" Rows="8" AutoCompleteType="Disabled"></asp:TextBox>
+								<asp:TextBox runat="server" ID="rejectionReason" CssClass="form-control" TextMode="MultiLine" Rows="8" AutoCompleteType="Disabled" data-enter-btn="btnSendRejection"></asp:TextBox>
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class="modal-footer">
-					<asp:Button ID="btnCancelRejection" runat="server" Text="Cancel" CssClass="btn btn-secondary" CausesValidation="false" UseSubmitBehavior="false" Visible="true" data-dismiss="modal" OnClick="cancelRejection_Click" />
-					<asp:Button ID="btnSendRejection" runat="server" Text="Send Rejection" CssClass="btn btn-primary" CausesValidation="false" UseSubmitBehavior="false" Visible="true" OnClick="sendRejection_Click" OnClientClick="ShowSubmitToast();" />
+					<asp:Button ID="btnCancelRejection" runat="server" Text="Cancel" CssClass="btn btn-secondary" CausesValidation="false" UseSubmitBehavior="false" Visible="true" data-dismiss="modal" OnClick="cancelRejection_Click" TabIndex="-1" />
+					<asp:Button ID="btnSendRejection" runat="server" Text="Send Rejection" CssClass="btn btn-primary" CausesValidation="false" UseSubmitBehavior="false" Visible="true" OnClick="sendRejection_Click" OnClientClick="ShowSubmitToast();" TabIndex="-1" />
 				</div>
 			</div>
 		</div>
@@ -1205,15 +1188,10 @@
 	<%-- JAVASCRIPT --%>
 	<script>
 		InitialLoad();
-		var currentValidation = [];
-		var isValid = true;
 
 		function InitialLoad() {
-			FormatForms();
 			SetTooltips();
-			disableSubmitBtns();
 			cancelFilePick('<%= supportingDocumentation.ClientID %>');
-			enterBtn();
 			addSignatureEmails('<%= signatureEmailAddress.ClientID %>', '<%= AddRequestEmailAddress.ClientID %>');
 			multiValidation();
 			DisableDDInitialOption([
@@ -1225,17 +1203,14 @@
 			scrollToElement();
 			SetSignEnabled();			
 			FormatAudit();
+			showDatePicker()
 		}
 		
 
 		Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
-			FormatForms();
 			SetTooltips();
-			disableSubmitBtns();
 			cancelFilePick('<%= supportingDocumentation.ClientID %>');
-			enterBtn();
 			addSignatureEmails('<%= signatureEmailAddress.ClientID %>', '<%= AddRequestEmailAddress.ClientID %>');
-			multiValidation();
 			DisableDDInitialOption([
 				{ id: '<%= requestDepartment.ClientID %>', opacity: "75" },
 				{ id: '<%= requestDivision.ClientID %>', opacity: "35" },
@@ -1244,15 +1219,10 @@
 			FilterFirstItem();
 			scrollToElement();
 			SetSignEnabled();
-			FormatAudit();
-			GetToastStatus();
-			ToastAnimationHelper();			
-			CurrencyFormatting();
+			FormatAudit();			
 			scrollToElement();
 			HideAllTooltips();
-			if (!isValid) {
-				ValidationFormatting(Page_Validators);
-			}
+			showDatePicker();
 		});
 
 		function validateFactSheetDraft(validationGroups) {

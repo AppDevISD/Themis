@@ -26,7 +26,7 @@
 				<div class="row">
 					<%-- ORDINANCES --%>
 					<div class="col-md-6">
-						<a href="./Ordinances" class="btn btn-secondary btn-home-link w-100">
+						<a href="./Ordinances" class="btn btn-secondary btn-home-link w-100" tabindex="-1">
 							<span class="fas fa-book-section home-link-icon"></span>
 							<div class="home-link-text-div">
 								<strong class="home-link-text">View Ordinances</strong>
@@ -36,7 +36,7 @@
 
 					<%-- NEW FACT SHEET --%>
 					<div class="col-md-6">
-						<a href="./NewFactSheet" class="btn btn-secondary btn-home-link w-100">
+						<a href="./NewFactSheet" class="btn btn-secondary btn-home-link w-100" tabindex="-1">
 							<span class="fas fa-file-circle-plus home-link-icon"></span>
 							<div class="home-link-text-div">
 								<strong class="home-link-text">New Fact Sheet</strong>
@@ -47,5 +47,6 @@
 			</section>
 		</ContentTemplate>
 	</asp:UpdatePanel>
+
 
 </asp:Content>

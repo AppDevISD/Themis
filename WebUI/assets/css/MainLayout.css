@@ -93,7 +93,7 @@ main {
 			text-overflow: ellipsis;
 		}
 
-		.top-row a:active {
+		.top-row a:active, .top-row a:focus {
 			color: var(--color-theme-text) !important;
 		}
 .site-logo {
@@ -325,7 +325,7 @@ input[type="date"] {
 }
 
 input::-webkit-calendar-picker-indicator {
-	cursor: pointer !important;
+	display: none;
 }
 
 .date-period-separator {

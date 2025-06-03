@@ -146,3 +146,13 @@ function SetDeleteModal(ordID) {
 	$('#deleteModal').modal('show');
 
 }
+
+function showDatePicker() {
+	$('[data-calendar-btn]').each(function () {
+		$(this).on('click', function (event) {
+			var id = $(this).attr('data-calendar-btn');
+			const dateInput = document.getElementById(id);
+			dateInput.showPicker();
+		});
+	});
+}

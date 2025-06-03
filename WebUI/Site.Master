@@ -54,13 +54,13 @@
 					<div id="top-row-header" class="top-row ps-0 navbar bg-body menu-box-shadow">
 						<div class="container-fluid ps-0">
 							<%-- SITE BRANDING --%>
-							<a class="navbar-brand" href="./">
+							<a class="navbar-brand" href="./" tabindex="-1">
 								<img class="site-logo" src="./assets/images/icons/favicon/web-app-manifest-192x192.png" alt="Favicon">
 								<asp:Label CssClass="site-title gfs-neohellenic-bold" Text="&nbsp;&nbsp;THΣMIS" runat="server" />
 							</a>
 
 							<%-- MOBILE NAV TOGGLER --%>
-							<button type="button" title="Navigation menu" class="navbar-toggler" data-toggle="collapse" data-target="#sidebarCollapse">
+							<button type="button" title="Navigation menu" class="navbar-toggler" data-toggle="collapse" data-target="#sidebarCollapse" tabindex="-1">
 								<span class="navbar-toggler-icon"></span>
 							</button>
 
@@ -81,7 +81,7 @@
 						<nav class="flex-column navMenuShow">
 							<%-- HOME --%>
 							<div class='nav-item <%:ActivePage("Home")?"activePage":""%>'>
-								<a runat="server" id="Home" class="nav-link" href="./">
+								<a runat="server" id="Home" class="nav-link" href="./" tabindex="-1">
 									<span class="fas fa-house"></span>
 									<p class="m-0 fs-6 noto-sans-semi-bold">Home</p>
 								</a>
@@ -89,20 +89,20 @@
 
 							<%-- ORDINANCE TRACKING --%>
 							<div id="ordinanceTrackingParent" class="nav-item accordion">
-								<a class='btn-accordion nav-link' href="javascript:void(0);" data-toggle="collapse" data-target="#OrdinanceTrackingMenu">
+								<a class='btn-accordion nav-link' href="javascript:void(0);" data-toggle="collapse" data-target="#OrdinanceTrackingMenu" tabindex="-1">
 									<span class="fas fa-gavel"></span>
 									<p class="m-0 fs-6 noto-sans-semi-bold">Ordinance Tracking</p>
 								</a>
 								<div id="OrdinanceTrackingMenu" class='accordion-border collapse' data-parent="#ordinanceTrackingParent">
-									<a class='nav-link <%:ActivePage("Ordinances")?"activePage":""%>' href="./Ordinances">
+									<a class='nav-link <%:ActivePage("Ordinances")?"activePage":""%>' href="./Ordinances" tabindex="-1">
 										<span class="fas fa-book-section"></span>
 										<p class="m-0 fs-6 noto-sans-semi-bold">Ordinances</p>
 									</a>
-									<a class='nav-link <%:ActivePage("NewFactSheet")?"activePage":""%>' href="./NewFactSheet">
+									<a class='nav-link <%:ActivePage("NewFactSheet")?"activePage":""%>' href="./NewFactSheet" tabindex="-1">
 										<span class="fas fa-file-circle-plus"></span>
 										<p class="m-0 fs-6 noto-sans-semi-bold">New Fact Sheet</p>
 									</a>
-									<a class='nav-link <%:ActivePage("FactSheetDrafts")?"activePage":""%>' href="./FactSheetDrafts">
+									<a class='nav-link <%:ActivePage("FactSheetDrafts")?"activePage":""%>' href="./FactSheetDrafts" tabindex="-1">
 										<span class="fas fa-pen-ruler"></span>
 										<p class="m-0 fs-6 noto-sans-semi-bold">Drafts</p>
 									</a>
@@ -111,7 +111,7 @@
 
 							<%-- SETTINGS --%>
 							<div id="settingsParent" class="nav-item accordion">
-								<a class="btn-accordion nav-link" href="javascript:void(0);" data-toggle="collapse" data-target="#SettingsMenu">
+								<a class="btn-accordion nav-link" href="javascript:void(0);" data-toggle="collapse" data-target="#SettingsMenu" tabindex="-1">
 									<span class="fas fa-gear"></span>
 									<p class="m-0 fs-6 noto-sans-semi-bold">Settings</p>
 								</a>
@@ -119,13 +119,13 @@
 									<div class="Settings nav-link switchSetting">
 										<p class="m-0 fs-6 noto-sans-semi-bold">Mode</p>
 										<div class="form-check form-switch theme-switch" style="display: flex; align-items: center;">
-											<input runat="server" type="checkbox" class="form-check-input settingSwitch" id="themeSwitch"/>
+											<input runat="server" type="checkbox" class="form-check-input settingSwitch" id="themeSwitch" tabindex="-1"/>
 										</div>
 									</div>
 									<div class="Settings nav-link switchSetting" runat="server" id="adminSwitchDiv">
 										<p class="m-0 fs-6 noto-sans-semi-bold">User View</p>
 										<div class="form-check form-switch" style="display: flex; align-items: center;">
-											<asp:CheckBox runat="server" ID="adminSwitch" AutoPostBack="true" OnCheckedChanged="adminSwitch_CheckedChanged" CssClass="setting-form-check-input settingSwitch-input" onchange="showLoadingModal();" />
+											<asp:CheckBox runat="server" ID="adminSwitch" AutoPostBack="true" OnCheckedChanged="adminSwitch_CheckedChanged" CssClass="setting-form-check-input settingSwitch-input" onchange="showLoadingModal();" TabIndex="-1" />
 										</div>
 									</div>
 								</div>
@@ -134,24 +134,24 @@
 						<%-- APPDEV TOOLS --%>
 						<div runat="server" id="appDevToolsParent" class="nav-item accordion">
 							<div runat="server" id="AppDevToolsMenu" class="accordion-border collapse" data-parent="#appDevToolsParent">									
-								<asp:LinkButton runat="server" ID="ImpersonateUser" class='nav-link' data-toggle="modal" data-target="#impersonateUserModal">
+								<asp:LinkButton runat="server" ID="ImpersonateUser" class='nav-link' data-toggle="modal" data-target="#impersonateUserModal" TabIndex="-1">
 									<span class="fas fa-user-secret"></span>
 									<p class="m-0 fs-6 noto-sans-semi-bold">Impersonate</p>
 								</asp:LinkButton>
-								<asp:LinkButton runat="server" ID="StopImpersonate" class='nav-link' OnClick="StopImpersonate_Click" OnClientClick="showLoadingModal();">
+								<asp:LinkButton runat="server" ID="StopImpersonate" class='nav-link' OnClick="StopImpersonate_Click" OnClientClick="showLoadingModal();" TabIndex="-1">
 									<span class="fa-kit fa-solid-user-secret-slash"></span>
 									<p class="m-0 fs-6 noto-sans-semi-bold">Stop Impersonate</p>
 								</asp:LinkButton>
-								<asp:LinkButton runat="server" ID="TriggerError" class='nav-link' data-toggle="modal" data-target="#triggerErrorModal">
+								<asp:LinkButton runat="server" ID="TriggerError" class='nav-link' data-toggle="modal" data-target="#triggerErrorModal" TabIndex="-1">
 									<span class="fas fa-triangle-exclamation"></span>
 									<p class="m-0 fs-6 noto-sans-semi-bold">Trigger Error</p>
 								</asp:LinkButton>
-								<asp:LinkButton runat="server" ID="DeleteOrdinance" class='nav-link' data-toggle="modal" data-target="#deleteOrdinanceModal">
+								<asp:LinkButton runat="server" ID="DeleteOrdinance" class='nav-link' data-toggle="modal" data-target="#deleteOrdinanceModal" TabIndex="-1">
 									<span class="fa-kit fa-solid-book-section-slash"></span>
 									<p class="m-0 fs-6 noto-sans-semi-bold">Delete Ordinance</p>
 								</asp:LinkButton>
 							</div>
-							<a class="btn-accordion nav-link collapsed" href="javascript:void(0);" data-toggle="collapse" data-target="#AppDevToolsMenu">
+							<a class="btn-accordion nav-link collapsed" href="javascript:void(0);" data-toggle="collapse" data-target="#AppDevToolsMenu" tabindex="-1">
 								<span class="fas fa-bug"></span>
 								<p class="m-0 fs-6 noto-sans-semi-bold">AppDev Tools</p>
 							</a>
@@ -201,14 +201,14 @@
 								<div class="col-md-12">
 									<div class="form-group">
 										<label for="ddErrorCode">User Login</label>
-										<asp:TextBox runat="server" ID="txtImpersonateUser" TextMode="SingleLine" CssClass="form-control"></asp:TextBox>
+										<asp:TextBox runat="server" ID="txtImpersonateUser" TextMode="SingleLine" CssClass="form-control" data-enter-btn="btnImpersonateUser"></asp:TextBox>
 									</div>
 								</div>
 							</div>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-							<asp:Button ID="btnImpersonateUser" runat="server" Text="Impersonate" CssClass="btn btn-primary" CausesValidation="false" UseSubmitBehavior="false" Visible="true" OnClick="btnImpersonateUser_Click" OnClientClick="appDevModalClick('#impersonateUserModal');" />
+							<button type="button" class="btn btn-secondary" data-dismiss="modal" tabindex="-1">Cancel</button>
+							<asp:Button ID="btnImpersonateUser" runat="server" Text="Impersonate" CssClass="btn btn-primary" CausesValidation="false" UseSubmitBehavior="false" Visible="true" OnClick="btnImpersonateUser_Click" OnClientClick="appDevModalClick('#impersonateUserModal');" TabIndex="-1" />
 						</div>
 					</div>
 				</div>
@@ -226,14 +226,14 @@
 								<div class="col-md-12">
 									<div class="form-group">
 										<label for="txtErrorCode">Error Code</label>
-										<asp:TextBox runat="server" ID="txtErrorCode" TextMode="Number" CssClass="form-control"></asp:TextBox>
+										<asp:TextBox runat="server" ID="txtErrorCode" TextMode="Number" CssClass="form-control" data-enter-btn="btnTriggerError" ></asp:TextBox>
 									</div>
 								</div>
 							</div>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-							<asp:Button ID="btnTriggerError" runat="server" Text="Trigger" CssClass="btn btn-danger" CausesValidation="false" UseSubmitBehavior="false" Visible="true" OnClick="TriggerError_Click" OnClientClick="appDevModalClick('#triggerErrorModal');" />
+							<button type="button" class="btn btn-secondary" data-dismiss="modal" tabindex="-1">Cancel</button>
+							<asp:Button ID="btnTriggerError" runat="server" Text="Trigger" CssClass="btn btn-danger" CausesValidation="false" UseSubmitBehavior="false" Visible="true" OnClick="TriggerError_Click" OnClientClick="appDevModalClick('#triggerErrorModal');" TabIndex="-1" />
 						</div>
 					</div>
 				</div>
@@ -251,14 +251,14 @@
 								<div class="col-md-12">
 									<div class="form-group">
 										<label for="txtOrdID">Ordinance ID</label>
-										<asp:TextBox runat="server" ID="txtOrdID" TextMode="Number" CssClass="form-control"></asp:TextBox>
+										<asp:TextBox runat="server" ID="txtOrdID" TextMode="Number" CssClass="form-control" data-enter-btn="DeleteOrd"></asp:TextBox>
 									</div>
 								</div>
 							</div>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-							<asp:Button ID="DeleteOrd" runat="server" Text="Delete" CssClass="btn btn-danger" CausesValidation="false" UseSubmitBehavior="false" Visible="true" OnClick="DeleteOrd_Click" OnClientClick="appDevModalClick('#deleteOrdinanceModal');" />
+							<button type="button" class="btn btn-secondary" data-dismiss="modal" tabindex="-1">Cancel</button>
+							<asp:Button ID="DeleteOrd" runat="server" Text="Delete" CssClass="btn btn-danger" CausesValidation="false" UseSubmitBehavior="false" Visible="true" OnClick="DeleteOrd_Click" OnClientClick="appDevModalClick('#deleteOrdinanceModal');" TabIndex="-1" />
 						</div>
 					</div>
 				</div>
@@ -289,7 +289,7 @@
 				</ContentTemplate>
 			</asp:UpdatePanel>
 			
-		</form>				
+		</form>
 
 		<%-- REQUIRED FIELDS INDICATOR / ACTIVE PAGE HELPER / LOADING BUTTONS --%>
 		<script type="text/javascript" src="./Scripts/Helpers/JS/RequiredFieldsAndActivePage.js"></script>
@@ -299,5 +299,30 @@
 
 		<%-- INACTIVE REFRESH TIMER --%>
 		<script type="text/javascript" src="./Scripts/Helpers/JS/InactiveTimer.js"></script>
+
+		<script>
+			InitialLoad();
+			var currentValidation = [];
+			var isValid = true;
+
+			function InitialLoad() {
+				FormatForms();
+				disableSubmitBtns();
+				enterBtn();
+				multiValidation();
+			}
+			Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
+				FormatForms();
+				disableSubmitBtns();
+				enterBtn();
+				multiValidation();
+				GetToastStatus();
+				ToastAnimationHelper();
+				CurrencyFormatting();
+				if (!isValid) {
+					ValidationFormatting(Page_Validators);
+				}
+			});
+		</script>
 	</body>
 </html>

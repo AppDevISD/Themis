@@ -1121,12 +1121,15 @@ namespace WebUI
             switch (e.CommandName)
             {
                 case "view":
-                    ordView.Attributes["readonly"] = "true";
+                    ordView.Attributes.Add("readonly", "true");
                     ordinanceTabs.Visible = true;
                     copyOrd.Visible = Request.QueryString["id"] == null;
                     ddStatusDiv.Visible = false;
                     statusDiv.Visible = true;
                     requiredFieldDescriptor.Visible = false;
+                    firstReadDatePicker.Visible = false;
+                    contractStartDatePicker.Visible = false;
+                    contractEndDatePicker.Visible = false;
                     ordinanceNumber.Attributes["placeholder"] = "N/A";
                     agendaNumber.Attributes["placeholder"] = "N/A";
                     fiscalImpact.Attributes["placeholder"] = "N/A";
@@ -1138,7 +1141,7 @@ namespace WebUI
                     newRevenueRowDiv.Visible = false;
                     newExpenditureRowDiv.Visible = false;
                     supportingDocumentation.Visible = false;
-                    UploadDocBtn.Visible = false;
+                    uploadBtn.Visible = false;
                     submitSection.Visible = false;
                     if (rpRevenueTable.Items.Count > 0)
                     {
@@ -1335,9 +1338,12 @@ namespace WebUI
                         }
                     break;
                 case "edit":
-                    ordView.Attributes["readonly"] = "false";
+                    ordView.Attributes.Remove("readonly");
                     ordinanceTabs.Visible = false;
-                    copyOrd.Visible = false;                    
+                    copyOrd.Visible = false;
+                    firstReadDatePicker.Visible = true;
+                    contractStartDatePicker.Visible = true;
+                    contractEndDatePicker.Visible = true;
                     ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
                     ord.StatusDescription = ordStatus.StatusDescription;
                     bool adminUser = (userInfo.IsAdmin || !userInfo.UserView) ? true : false;
@@ -1437,7 +1443,7 @@ namespace WebUI
                     newExpenditureRowDiv.Visible = true;
                     supportingDocumentationDiv.Visible = true;
                     supportingDocumentation.Visible = true;
-                    UploadDocBtn.Visible = true;
+                    uploadBtn.Visible = true;
                     Session.Remove("RemoveAccs");
                     Session.Remove("RemoveOrdAccs");
                     Session.Remove("RemoveDocs");
@@ -2106,7 +2112,7 @@ namespace WebUI
                             itemString = $"<div class='change-bg lh-1p5'> {newValue} </div>";
                             break;
                         case "revenue": case "expenditure":
-                            sb.Append("<table class='table table-bordered table-hover table-standard text-center w-75' style='padding: 0px; margin: 0px'>");
+                            sb.Append("<table class='table table-bordered table-hover table-standard text-center w-100' style='padding: 0px; margin: 0px'>");
                             foreach (string header in HeaderCells)
                             {
                                 sb.Append(header);
@@ -2295,14 +2301,7 @@ namespace WebUI
             ordinance.ContractAmount = CurrencyToDecimal(contractAmount.Text);
             ordinance.ScopeChange = scYes.Checked;
             ordinance.ChangeOrderNumber = changeOrderNumber.Text ?? string.Empty;
-            if (scYes.Checked)
-            {
-                ordinance.AdditionalAmount = CurrencyToDecimal(additionalAmount.Text);
-            }
-            else
-            {
-                ordinance.AdditionalAmount = CurrencyToDecimal("-1");
-            }
+            ordinance.AdditionalAmount = CurrencyToDecimal(additionalAmount.Text);
             ordinance.ContractMethod = purchaseMethod.SelectedValue;
             ordinance.OtherException = otherException.Text ?? string.Empty;
             ordinance.PreviousOrdinanceNumbers = prevOrdinanceNums.Text;
@@ -2432,55 +2431,90 @@ namespace WebUI
             List<AccountingAudit> expAccAuditList = new List<AccountingAudit>();
             int updateRevAccsVal = new int();
             int updateExpAccsVal = new int();
+            int removeOrdAccsVal = new int();
 
             PropertyInfo[] accProperties = typeof(OrdinanceAccounting).GetProperties();
             List<OrdinanceAccounting> originalExpList = Session["OriginalExpTable"] as List<OrdinanceAccounting>;
             List<OrdinanceAccounting> originalRevList = Session["OriginalRevTable"] as List<OrdinanceAccounting>;
 
-            if (rpExpenditureTable.Items.Count > 0)
+            List<OrdinanceAccounting> removeOrdAccs = new List<OrdinanceAccounting>();
+            if (Session["RemoveOrdAccs"] != null)
             {
-                for (int i = 0; i < rpExpenditureTable.Items.Count; i++)
+                removeOrdAccs = Session["RemoveOrdAccs"] as List<OrdinanceAccounting>;
+            }
+
+            if (removeOrdAccs.Count > 0)
+            {
+                foreach (OrdinanceAccounting item in removeOrdAccs)
                 {
-                    OrdinanceAccounting accountingItem = GetAccountingItem("expenditure", i);
-                    OrdinanceAccounting originalItem = originalExpList.FirstOrDefault(r => r.OrdinanceAccountingID == accountingItem.OrdinanceAccountingID);
-                    bool isExisting = accountingItem.OrdinanceAccountingID > 0;
-                    bool hasChanges = isExisting && originalItem != null &&
-                                      accProperties.Any(p => !Equals(p.GetValue(originalItem), p.GetValue(accountingItem)));
+                    item.LastUpdateBy = _user.Login;
+                    item.LastUpdateDate = DateTime.Now;
+                    item.EffectiveDate = DateTime.Now;
 
-                    if (hasChanges)
+                    removeOrdAccsVal = Factory.Instance.Expire(item, "sp_UpdateOrdinance_Accounting");
+                    if (removeOrdAccsVal > 0)
                     {
-                        updateExpAccsVal = Factory.Instance.Update(accountingItem, "sp_UpdateOrdinance_Accounting");
-
-                        if (updateExpAccsVal > 0)
-                            expAccAuditList.Add(BuildAccAudit(accountingItem, originalItem, accProperties, baseData));
-                    }
-                    else if (!isExisting)
-                    {
-                        updateExpAccsVal = Factory.Instance.Insert(accountingItem, "sp_InsertOrdinance_Accounting", Skips("accountingInsert"));
-
-                        if (updateExpAccsVal > 0)
+                        string getAmount = string.Empty;
+                        if (item.Amount.ToString().Equals("-1.00") || item.Amount.ToString().Equals("-1"))
                         {
-                            var audit = BuildAccAudit(accountingItem, null, accProperties, baseData);
-                            audit.OrdinanceAccountingID = updateExpAccsVal;
-                            expAccAuditList.Add(audit);
+                            getAmount = $"<span>{AuditSymbol("remove")} <span data-type='String'>N/A</span></span>";
                         }
                         else
                         {
-                            updateExpAccsVal = 0;
-                            break;
+                            getAmount = $"<span>{AuditSymbol("remove")} <span data-type='Decimal'>{item.Amount}</span></span>";
                         }
-                    }
 
-                    if (updateExpAccsVal < 1)
+                        AccountingAudit accAudit = new AccountingAudit()
+                        {
+                            AccountingDesc = item.AccountingDesc,
+                            OrdinanceAccountingID = item.OrdinanceAccountingID,
+                            FundCode = $"<span>{AuditSymbol("remove")} <span data-type='String'>{item.FundCode}</span></span>",
+                            DepartmentCode = $"<span>{AuditSymbol("remove")} <span data-type='String'>{item.DepartmentCode}</span></span>",
+                            UnitCode = $"<span>{AuditSymbol("remove")} <span data-type='String'>{item.UnitCode}</span></span>",
+                            ActivityCode = $"<span>{AuditSymbol("remove")} <span data-type='String'>{item.ActivityCode}</span></span>",
+                            ObjectCode = $"<span>{AuditSymbol("remove")} <span data-type='String'>{item.ObjectCode}</span></span>",
+                            Amount = getAmount,
+                        };
+                        accAuditList.Add(accAudit);
+                    }
+                    else
+                    {
                         break;
+                    }
                 }
             }
             else
             {
-                updateExpAccsVal = 1;
+                removeOrdAccsVal = 1;
             }
 
-            if (rpRevenueTable.Items.Count > 0)
+            bool revTableHasChanges = rpRevenueTable.Items.Cast<RepeaterItem>().Any(item =>
+            {
+                OrdinanceAccounting accountingItem = GetAccountingItem("revenue", item.ItemIndex);
+                OrdinanceAccounting originalItem = originalRevList.FirstOrDefault(r => r.OrdinanceAccountingID == accountingItem.OrdinanceAccountingID);
+                bool isExisting = accountingItem.OrdinanceAccountingID > 0;
+
+                return (isExisting && originalItem != null &&
+                        accProperties.Any(p =>
+                            !baseData.Contains(p.Name) &&
+                            !Equals(p.GetValue(originalItem), p.GetValue(accountingItem))))
+                       || !isExisting;
+            });
+
+            bool expTableHasChanges = rpExpenditureTable.Items.Cast<RepeaterItem>().Any(item =>
+            {
+                OrdinanceAccounting accountingItem = GetAccountingItem("expenditure", item.ItemIndex);
+                OrdinanceAccounting originalItem = originalExpList.FirstOrDefault(r => r.OrdinanceAccountingID == accountingItem.OrdinanceAccountingID);
+                bool isExisting = accountingItem.OrdinanceAccountingID > 0;
+
+                return (isExisting && originalItem != null &&
+                        accProperties.Any(p =>
+                            !baseData.Contains(p.Name) &&
+                            !Equals(p.GetValue(originalItem), p.GetValue(accountingItem))))
+                       || !isExisting;
+            });
+
+            if (rpRevenueTable.Items.Count > 0 && (revTableHasChanges || removeOrdAccs.Any(i => i.AccountingDesc.Equals("revenue"))))
             {
                 for (int i = 0; i < rpRevenueTable.Items.Count; i++)
                 {
@@ -2495,7 +2529,11 @@ namespace WebUI
                         updateRevAccsVal = Factory.Instance.Update(accountingItem, "sp_UpdateOrdinance_Accounting");
 
                         if (updateRevAccsVal > 0)
-                            revAccAuditList.Add(BuildAccAudit(accountingItem, originalItem, accProperties, baseData));
+                        {
+                            var audit = BuildAccAudit(accountingItem, originalItem, accProperties, baseData);
+                            audit.AccountingDesc = "revenue";
+                            revAccAuditList.Add(audit);
+                        }
                     }
                     else if (!isExisting)
                     {
@@ -2504,6 +2542,7 @@ namespace WebUI
                         if (updateRevAccsVal > 0)
                         {
                             var audit = BuildAccAudit(accountingItem, null, accProperties, baseData);
+                            audit.AccountingDesc = "revenue";
                             audit.OrdinanceAccountingID = updateRevAccsVal;
                             revAccAuditList.Add(audit);
                         }
@@ -2523,11 +2562,59 @@ namespace WebUI
                 updateRevAccsVal = 1;
             }
 
-            if (revAccAuditList.Count > 0)
-                accAuditList.AddRange(revAccAuditList);
-            if (expAccAuditList.Count > 0)
-                accAuditList.AddRange(expAccAuditList);
+            if (rpExpenditureTable.Items.Count > 0 && (expTableHasChanges || removeOrdAccs.Any(i => i.AccountingDesc.Equals("expenditure"))))
+            {
+                for (int i = 0; i < rpExpenditureTable.Items.Count; i++)
+                {
+                    OrdinanceAccounting accountingItem = GetAccountingItem("expenditure", i);
+                    OrdinanceAccounting originalItem = originalExpList.FirstOrDefault(r => r.OrdinanceAccountingID == accountingItem.OrdinanceAccountingID);
+                    bool isExisting = accountingItem.OrdinanceAccountingID > 0;
+                    bool hasChanges = isExisting && originalItem != null &&
+                                      accProperties.Any(p => !Equals(p.GetValue(originalItem), p.GetValue(accountingItem)));
 
+                    if (hasChanges)
+                    {
+                        updateExpAccsVal = Factory.Instance.Update(accountingItem, "sp_UpdateOrdinance_Accounting");
+
+                        if (updateExpAccsVal > 0)
+                        {
+                            var audit = BuildAccAudit(accountingItem, originalItem, accProperties, baseData);
+                            audit.AccountingDesc = "expenditure";
+                            expAccAuditList.Add(audit);
+                        }
+                    }
+                    else if (!isExisting)
+                    {
+                        updateExpAccsVal = Factory.Instance.Insert(accountingItem, "sp_InsertOrdinance_Accounting", Skips("accountingInsert"));
+
+                        if (updateExpAccsVal > 0)
+                        {
+                            var audit = BuildAccAudit(accountingItem, null, accProperties, baseData);
+                            audit.AccountingDesc = "expenditure";
+                            audit.OrdinanceAccountingID = updateExpAccsVal;
+                            expAccAuditList.Add(audit);
+                        }
+                        else
+                        {
+                            updateExpAccsVal = 0;
+                            break;
+                        }
+                    }
+
+                    if (updateExpAccsVal < 1)
+                        break;
+                }
+            }
+            else
+            {
+                updateExpAccsVal = 1;
+            }
+
+            if (revAccAuditList.Any())
+                accAuditList.AddRange(revAccAuditList);
+
+            if (expAccAuditList.Any())
+                accAuditList.AddRange(expAccAuditList);
 
             int insertSignatureVal = new int();
             int sigAuditVal = new int();

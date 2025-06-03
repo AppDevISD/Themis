@@ -419,7 +419,7 @@ namespace DataLibrary
             }
             catch (Exception)
             {
-                return decimal.Parse("-1", NumberStyles.Any);
+                return decimal.Parse("-1.00", NumberStyles.Any);
             }
             
         }
@@ -435,33 +435,44 @@ namespace DataLibrary
             HttpContext.Current.Response.Write(log);
         }
 
-        public static AccountingAudit BuildAccAudit(OrdinanceAccounting current, OrdinanceAccounting original, PropertyInfo[] properties, List<string> baseData)
+        public static AccountingAudit BuildAccAudit( OrdinanceAccounting current, OrdinanceAccounting original, PropertyInfo[] properties, List<string> baseData)
         {
-            var accAudit = new AccountingAudit
+            var excludedProps = new HashSet<string>
             {
-                AccountingDesc = current.AccountingDesc,
-                OrdinanceAccountingID = current.OrdinanceAccountingID
+                "AccountingAuditID",
+                "AuditID",
+                "OrdinanceAccountingID",
+                "AccountingDesc"
             };
 
-            foreach (var property in properties.Where(p => !baseData.Any(b => b.Contains(p.Name))))
+            var accAudit = new AccountingAudit
             {
-                object newValue = current == null ? null : property.GetValue(current);
-                object oldValue = original == null ? null : property.GetValue(original);
+                AccountingDesc = current?.AccountingDesc,
+                OrdinanceAccountingID = current?.OrdinanceAccountingID ?? 0
+            };
 
+            foreach (var property in properties)
+            {
+                if (excludedProps.Contains(property.Name))
+                    continue;
+
+                if (baseData.Any(b => b.Contains(property.Name)))
+                    continue;
+
+                object newValue = current != null ? property.GetValue(current) : null;
+                object oldValue = original != null ? property.GetValue(original) : null;
 
                 string dataType = property.PropertyType == typeof(decimal) ? "Decimal" : "String";
                 string name = property.Name;
 
-                string change = string.Empty;
+                string change;
 
                 if (original == null)
                 {
-                    // Insert
-                    change = $"<span>{AuditSymbol("add")} <span data-type='{dataType}'>{(newValue?.ToString() ?? "N/A")}</span></span>";
+                    change = $"<span>{AuditSymbol("add")} <span data-type='{dataType}'>{newValue ?? "N/A"}</span></span>";
                 }
                 else if (!Equals(oldValue, newValue))
                 {
-                    // Update
                     if (name == "Amount" && (oldValue?.ToString() == "-1" || oldValue?.ToString() == "-1.00"))
                         change = $"<span>{AuditSymbol("add")} <span data-type='Decimal'>{newValue}</span></span>";
                     else if (name == "Amount" && (newValue?.ToString() == "-1" || newValue?.ToString() == "-1.00"))
@@ -471,27 +482,20 @@ namespace DataLibrary
                 }
                 else
                 {
-                    // No change
                     if (name == "Amount" && (newValue?.ToString() == "-1" || newValue?.ToString() == "-1.00"))
                         change = $"<span data-type='String'>N/A</span>";
                     else
                         change = $"<span data-type='{dataType}'>{newValue}</span>";
                 }
 
-                // Assign to correct property on audit
                 var auditProp = typeof(AccountingAudit).GetProperty(name);
                 if (auditProp != null && auditProp.PropertyType == typeof(string))
                 {
                     auditProp.SetValue(accAudit, change);
                 }
-                else
-                {
-                    // optionally skip, or log warning
-                }
             }
 
             return accAudit;
         }
-
     }
 }
