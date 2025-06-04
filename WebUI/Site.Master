@@ -107,6 +107,12 @@
 										<span class="fas fa-pen-ruler"></span>
 										<p class="m-0 fs-6 noto-sans-semi-bold">Drafts</p>
 									</a>
+									<div runat="server" id="ordAdmin">
+										<a class='nav-link' href="./OrdinanceAdmin" tabindex="-1">
+											<span class="fa-kit fa-solid-user-crown-gear"></span>
+											<p class="m-0 fs-6 noto-sans-semi-bold">Admin</p>
+										</a>
+									</div>
 								</div>
 							</div>
 
@@ -174,6 +180,7 @@
 				<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
 				<script type="text/javascript" src="./Scripts/Helpers/JS/FormFormatting.js"></script>
 				<script type="text/javascript" src="./Scripts/Helpers/JS/FormActions.js"></script>
+				<script type="text/javascript" src="./Scripts/Helpers/JS/TabOverflow.js"></script>
 				<script type="text/javascript" src="./Scripts/Helpers/JS/SubmitToast.js"></script>
 				<script type="text/javascript" src="./Scripts/Helpers/JS/ChartHelpers.js"></script>
 				<script type="text/javascript" src="./Scripts/Helpers/JS/MultiValidationGroup.js"></script>

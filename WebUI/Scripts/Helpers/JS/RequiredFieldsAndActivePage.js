@@ -68,7 +68,11 @@
 	}
 
 	var activePage = document.getElementsByClassName('activePage');
+	var activePageDiv = document.querySelectorAll('[data-active-page="activePage"]');
 	for (const element of activePage) {
+		element.parentElement.classList.add('show');
+	}
+	for (const element of activePageDiv) {
 		element.parentElement.classList.add('show');
 	}
 }

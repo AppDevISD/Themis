@@ -227,3 +227,23 @@
 .upload-clamp {
 	text-wrap-mode: nowrap;
 }
+
+.access-denied-bg .placeholder, .access-denied-bg table {
+	pointer-events: none;
+	filter: blur(8px);
+}
+
+.popup-bg {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 98%;
+	height: 96%;
+	--bs-bg-opacity: 0.75;
+	border-radius: var(--bs-border-radius);
+}
+
+.top-25 {
+	top: 25%;
+}

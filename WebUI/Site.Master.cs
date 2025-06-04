@@ -22,6 +22,7 @@ namespace WebUI
         public string PageTitle;
         public string toastColor;
         public string toastMessage;
+        public string hideAdmin;
 
         protected void Page_Init(object sender, EventArgs e)
         {
@@ -139,6 +140,8 @@ namespace WebUI
         {
             _user = (ADUser)Session["CurrentUser"];
             List<ADGroups> aDGroups = ISDFactory.Instance.GetAllGroupsByLoginName(_user.Login);
+            ordAdmin.Visible = aDGroups.Any(i => i.GroupName.Equals("PG-THEMIS-ADMIN"));
+            ordAdmin.Attributes.Add("data-active-page", ActivePage("OrdinanceAdmin") ? "activePage" : "");
             adminSwitchDiv.Visible = aDGroups.Any(i => i.GroupName.Equals("PG-THEMIS-ADMIN"));
             appDevToolsParent.Visible = aDGroups.Any(i => i.GroupName.Equals("DG-PublicUtilities-InformationSystems-AppDev")) || (bool)Session["ImpersonateUser"];
             ImpersonateUser.Visible = aDGroups.Any(i => i.GroupName.Equals("DG-PublicUtilities-InformationSystems-AppDev"));
@@ -156,6 +159,7 @@ namespace WebUI
         {
             UserInfo ret = new UserInfo();
             userInfo.UserView = adminSwitch.Checked;
+            ordAdmin.Visible = !userInfo.UserView;
             ret = userInfo;
             return ret;
         }

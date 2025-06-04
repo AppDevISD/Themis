@@ -134,6 +134,7 @@
     <Content Include="AccessDenied.aspx" />
     <Content Include="Pages\OrdinanceTracking\FactSheetDrafts.aspx" />
     <Content Include="Pages\OrdinanceTracking\NewFactSheet.aspx" />
+    <Content Include="Pages\OrdinanceTracking\OrdinanceAdmin.aspx" />
     <Content Include="Pages\Templates\Sandbox.aspx" />
     <Content Include="Scripts\Helpers\CSharp\FileUploadSaving.asmx" />
     <Content Include="Pages\OrdinanceTracking\Ordinances.aspx" />
@@ -160,6 +161,7 @@
     <Content Include="Scripts\Helpers\JS\MultiValidationGroup.js" />
     <Content Include="Scripts\Helpers\JS\RequiredFieldsAndActivePage.js" />
     <Content Include="Scripts\Helpers\JS\SubmitToast.js" />
+    <Content Include="Scripts\Helpers\JS\TabOverflow.js" />
     <Content Include="Scripts\WebForms\DetailsView.js" />
     <Content Include="Scripts\WebForms\Focus.js" />
     <Content Include="Scripts\WebForms\GridView.js" />
@@ -203,7 +205,6 @@
     <Compile Include="AccessDenied.aspx.designer.cs">
       <DependentUpon>AccessDenied.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Pages\OrdinanceTracking\CodeFile1.cs" />
     <Compile Include="Pages\OrdinanceTracking\FactSheetDrafts.aspx.cs">
       <DependentUpon>FactSheetDrafts.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -217,6 +218,13 @@
     </Compile>
     <Compile Include="Pages\OrdinanceTracking\NewFactSheet.aspx.designer.cs">
       <DependentUpon>NewFactSheet.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\OrdinanceTracking\OrdinanceAdmin.aspx.cs">
+      <DependentUpon>OrdinanceAdmin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\OrdinanceTracking\OrdinanceAdmin.aspx.designer.cs">
+      <DependentUpon>OrdinanceAdmin.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\Templates\Sandbox.aspx.cs">
       <DependentUpon>Sandbox.aspx</DependentUpon>
