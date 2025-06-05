@@ -20,9 +20,9 @@ namespace WebUI
             _user = Session["CurrentUser"] as ADUser;
             userInfo = Session["UserInformation"] as UserInfo;
 
-            string[,] testStrings = { { "kyle.bolinger@cwlp.com" }, { "mike.lesko@springfield.il.us" }, { "misty.buscher@springfield.il.us" }, { "alison.warren@cwlp.com" } };
-            rpEmails.DataSource = testStrings;
-            rpEmails.DataBind();
+            //string[,] testStrings = { { "kyle.bolinger@cwlp.com" }, { "mike.lesko@springfield.il.us" }, { "misty.buscher@springfield.il.us" }, { "alison.warren@cwlp.com" } };
+            //rpEmails.DataSource = testStrings;
+            //rpEmails.DataBind();
         }
     }
 }

@@ -149,10 +149,32 @@ function SetDeleteModal(ordID) {
 
 function showDatePicker() {
 	$('[data-calendar-btn]').each(function () {
-		$(this).on('click', function (event) {
+		$(this).on('click', function () {
 			var id = $(this).attr('data-calendar-btn');
 			const dateInput = document.getElementById(id);
 			dateInput.showPicker();
 		});
+	});
+}
+
+function SetModalDatePicker(modal) {
+	document.addEventListener('DOMContentLoaded', function () {
+		switch (modal) {
+			case "signatureModal":
+				const pickerBtn = document.getElementById('sigDatePicker');
+				if (pickerBtn) {
+					pickerBtn.addEventListener('click', function () {
+						const input = document.getElementById('sigDate');
+						if (input && typeof input.showPicker === 'function') {
+							try {
+								input.showPicker();
+							} catch (e) {
+								console.warn('showPicker error:', e);
+							}
+						}
+					});
+				}
+				break;
+		}
 	});
 }

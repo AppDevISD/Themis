@@ -153,7 +153,6 @@ namespace WebUI
 
             if (ScriptManager.GetCurrent(Page).IsInAsyncPostBack)
             {
-                
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "HideLoading", "hideLoadingModal();", true);
             }
             GetUploadedDocs();
@@ -239,11 +238,6 @@ namespace WebUI
             }
             SetViewState(ViewState, ItemsPerPage);
             GetControls(pageBtns["firstBtn"], pageBtns["previousBtn"], pageBtns["nextBtn"], pageBtns["lastBtn"], rpTable, pnlPaging, lblPage);
-        }
-        protected void SetPaginationAudit(Repeater rpTable, int ItemsPerPage)
-        {
-            SetViewState(ViewState, ItemsPerPage);
-            GetControls(lnkAuditFirstSearchP, lnkAuditPreviousSearchP, lnkAuditNextSearchP, lnkAuditLastSearchP, rpTable, pnlAuditPagingP, lblAuditCurrentPageBottomSearchP);
         }
         public void GetStartupData(bool isAdmin)
         {

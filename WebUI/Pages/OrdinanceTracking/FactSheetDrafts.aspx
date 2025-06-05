@@ -41,7 +41,7 @@
 
 			<ContentTemplate>
 				<div runat="server" id="draftsTable" class="card">
-					<div class="card-header bg-body">
+					<div class="card-header bg-body-secondary">
 						<h3><i class="fas fa-pen-ruler"></i>&nbsp;Drafts</h3>
 					</div>
 					<div class="card-body bg-body-tertiary">
@@ -132,7 +132,7 @@
 					<asp:HiddenField runat="server" ID="hdnStatusID" />
 					<div runat="server" id="factSheetPane">
 						<%-- FORM HEADER --%>
-						<section class="container form-header bg-body text-center position-relative">
+						<section class="container form-header bg-body-secondary text-center position-relative">
 							<div class="row h-100 align-items-center">
 								<h1><span class="fas fa-pen-ruler"></span>&nbsp;Fact Sheet</h1>
 							</div>
@@ -671,7 +671,7 @@
 										<div class="col-md-6">
 											<div class="form-group">
 												<label for="emailListContainer">Director/Supervisor Email(s) <span class="text-warning">* <span style="font-size: 11px;">Required if Submitting</span></span></label>
-												<div id="emailListContainer" class="card mb-3 bg-body-secondary" style="min-height: 100px !important;">
+												<div id="emailListContainer" class="card mb-3 bg-body" style="min-height: 100px !important;">
 													<div class="card-body" >
 														<asp:Repeater runat="server" ID="rpEmailList" OnItemCommand="rpEmailList_ItemCommand" OnItemCreated="rpEmailList_ItemCreated">
 															<ItemTemplate>
@@ -740,7 +740,7 @@
 				<div class="modal-header">
 					<h4 class="modal-title" id="deleteModalLabel">Delete</h4>
 				</div>
-				<div class="modal-body">
+				<div class="modal-body bg-body-tertiary">
 					<asp:Label runat="server" ID="deleteLabel" Style="font-size: 18px; font-weight: bold" CssClass="text-danger" Text="Are you sure you want to delete this ordinance fact sheet? (This cannot be undone)" />
 				</div>
 				<div class="modal-footer">

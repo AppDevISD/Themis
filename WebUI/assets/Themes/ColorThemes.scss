@@ -41,19 +41,15 @@
 
 /* --------------- Variables --------------- */
 @include color-mode(light) {
-	--bs-body-bg: #dddddd;
-	--bs-body-bg-rgb: rgb(221, 221, 221);
-	--bs-secondary-bg: #ffffff;
-	--bs-secondary-bg-rgb: rgb(255, 255, 255);
-	--bs-tertiary-bg: #e9ecef;
-	--bs-tertiary-bg-rgb: rgb(233, 236, 239);
+	--bs-tertiary-bg: #f4f7fa;
+	--bs-tertiary-bg-rgb: rgb(244, 247, 250);
 	--bs-border-color: rgba(0, 0, 0, 0.25);
 	--chart-border-color: rgba(0, 0, 0, 0.35);
 	--chart-line-color: rgba(35, 35, 35, 0.75);
 	--bs-primary-text-emphasis: #005ce3;
 	--bs-table-dark-bg: #fafafa;
-	/*--bs-warning-light: #cf9c00;*/
 	--bs-warning-light: #e2aa00;
+	--bs-disabled-field-bg: var(--bs-secondary-bg);
 }
 
 @each $color, $value in $color-themes {
@@ -104,9 +100,38 @@
 }
 
 @include color-mode(dark) {
+	--bs-body-bg: #343a40;
+	--bs-body-bg-rgb: rgb(52, 58, 64);
+	--bs-secondary-bg: #212529;
+	--bs-secondary-bg-rgb: rgb(33, 37, 41);
 	--bs-border-color: rgba(255, 255, 255, 0.25);
 	--chart-border-color: rgba(255, 255, 255, 0.25);
 	--chart-line-color: rgba(167, 167, 167, 0.65);
+	--bs-table-dark-bg: #2b3035;
+	--bs-disabled-field-bg: var(--bs-body-bg);
+
+
+
+	.form-control, .form-select, input[type="radio"], input[type="checkbox"] {
+		background-color: var(--bs-secondary-bg);
+		--bs-form-check-bg: var(--bs-secondary-bg) !important;
+	}
+
+	.form-control:read-only {
+		background-color: var(--bs-body-bg);
+		opacity: 1;
+	}
+
+	.form-control:disabled, .form-select:disabled {
+		background-color: var(--bs-body-bg);
+		opacity: 0.5;
+	}
+
+	.modal {
+		--bs-modal-bg: var(--bs-secondary-bg);
+	}
+
+
 }
 
 @each $color, $value in $color-themes {
@@ -192,12 +217,12 @@
 }
 
 .form-control:read-only {
-	background-color: var(--bs-secondary-bg);
+	background-color: var(--bs-disabled-field-bg);
 	opacity: 1;
 }
 
 .form-control:disabled {
-	background-color: var(--bs-secondary-bg);
+	background-color: var(--bs-disabled-field-bg);
 	opacity: 0.5;
 }
 
@@ -243,28 +268,28 @@ label:has(+ .form-control:disabled), label:has(+ .form-select:disabled) {
 	box-shadow: none;
 }
 
-[data-bs-theme='dark'] .table-striped > tbody > tr:nth-of-type(odd) > * {
-	background-color: var(--bs-body-bg);
+.table {
+	--bs-table-bg: var(--bs-secondary-bg) !important;
 }
 
-.table-striped > tbody > tr:nth-of-type(even) > * {
-	background-color: var(--bs-secondary-bg);
-}
-
-[data-bs-theme='light'] .table-striped > tbody > tr:nth-of-type(odd) > * {
+.table-striped > tbody > tr:nth-of-type(odd) > * {
 	background-color: var(--bs-table-dark-bg);
 }
 
-.table-striped > tbody > tr:nth-of-type(odd) > td .form-select, .table-striped > tbody > tr:nth-of-type(odd) > td .form-control {
+.table-striped > tbody > tr:nth-of-type(even) > * {
 	background-color: var(--bs-tertiary-bg);
 }
 
+.table-striped > tbody > tr:nth-of-type(odd) > td .form-select, .table-striped > tbody > tr:nth-of-type(odd) > td .form-control {
+	background-color: var(--bs-body-bg);
+}
+
 .table-striped > tbody > tr:nth-of-type(even) > td .form-select, .table-striped > tbody > tr:nth-of-type(even) > td .form-control {
-	background-color: var(--bs-secondary-bg);
+	background-color: var(--bs-tertiary-bg);
 }
 
 .table-standard > tbody > tr > * {
-	background-color: var(--bs-secondary-bg);
+	background-color: var(--bs-body-bg);
 }
 
 td:has(.form-select), td:has(.form-control) {
@@ -365,6 +390,10 @@ input[type="range"]:focus::-webkit-slider-thumb {
 	--bs-btn-focus-shadow-rgb: 49, 132, 253;
 }
 
+.dd-sort {
+	background-color: var(--bs-table-bg);
+}
+
 input[type="file"]::-webkit-file-upload-button {
 	color: white !important;
 	background-color: var(--bs-primary) !important;
@@ -376,36 +405,36 @@ input[type="file"]:hover::-webkit-file-upload-button {
 }
 
 [type="submit"][readonly], [type="button"][readonly], [type="button"].aspNetDisabled {
-	background-color: var(--bs-secondary-bg);
+	background-color: var(--bs-disabled-field-bg) !important;
 	opacity: 1;
 	pointer-events: none !important;
 	--bs-form-select-bg-img: none !important;
-	border-color: var(--bs-secondary-bg);	
+	border-color: var(--bs-disabled-field-bg);
 }
 
 a.aspNetDisabled, a[disabled], a[disabled='disabled'] {
 	color: rgb(from var(--bs-btn-color) r g b / 50% );
-	background-color: rgb(from var(--bs-btn-bg) r g b / 50% );
+	background-color: rgb(from var(--bs-btn-bg) r g b / 50% ) !important;
 	border-color: transparent !important;
 	pointer-events: none !important;
 }
 
 .row-delete[disabled] {
 	color: rgb(from white r g b / 50% );
-	background-color: rgb(from var(--bs-danger) r g b / 50% );
+	background-color: rgb(from var(--bs-danger) r g b / 50% ) !important;
 }
 
 button[readonly="readonly"], button[readonly="true"] {
-	background-color: var(--bs-secondary-bg);
+	background-color: var(--bs-disabled-field-bg) !important;
 	opacity: 1;
 	pointer-events: none !important;
 	--bs-form-select-bg-img: none !important;
-	border-color: var(--bs-secondary-bg);
+	border-color: var(--bs-disabled-field-bg);
 }
 
 [readonly="true"] {
 	input, select, .form-select, textarea, .radioListDiv .form-check input {
-		background-color: var(--bs-secondary-bg);
+		background-color: var(--bs-disabled-field-bg) !important;
 		opacity: 1;
 		pointer-events: none !important;
 		--bs-form-select-bg-img: none !important;

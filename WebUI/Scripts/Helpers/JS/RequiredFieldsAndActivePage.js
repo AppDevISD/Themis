@@ -39,34 +39,6 @@
 		}
 	}
 
-	var loadBtns = document.querySelectorAll('[data-load-btn="true"]');
-	if (loadBtns.length > 0) {
-		var alreadyAdded = false;
-		for (const btn of loadBtns) {
-			const parent = btn.parentElement;
-			const id = parent.id;
-			if (alreadyAdded) {
-				alreadyAdded = false;
-			}
-			else {
-				const id = btn.id
-				const text = btn.getAttribute('data-load-text');
-				const icon = btn.getAttribute('data-load-icon');
-				const cssClass = btn.getAttribute('class');
-				const style = btn.getAttribute('style');
-				var preventType = function () {
-					if (btn.getAttribute('data-prevent-type') == "readonly") {
-						return "readonly='readonly'";
-					}
-					if (btn.getAttribute('data-prevent-type') == "disabled") {
-						return "disabled='disabled'";
-					}
-				};
-				$(parent).append(`<button id="${id}Loading" class="${cssClass}" style="${style}" ${preventType()} hidden><span class="fa-fade"><span class="fas ${icon} fa-bounce"></span>&nbsp;${text}...</span></button>`);
-			}
-		}
-	}
-
 	var activePage = document.getElementsByClassName('activePage');
 	var activePageDiv = document.querySelectorAll('[data-active-page="activePage"]');
 	for (const element of activePage) {

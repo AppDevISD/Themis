@@ -4,7 +4,7 @@
 
 <!DOCTYPE html>
 
-<html runat="server" id="html" lang="en" data-bs-theme='dark' data-color-theme="blue" class="bg-body-secondary">
+<html runat="server" id="html" lang="en" data-bs-theme='dark' data-color-theme="blue" class="bg-body">
 	<head runat="server">
 		<asp:ContentPlaceHolder ID="HeadContent" runat="server"></asp:ContentPlaceHolder>
 		<title runat="server" id="title"></title>
@@ -43,7 +43,7 @@
 		<link href="./assets/css/Site.css" rel="stylesheet" type="text/css">
 
 	</head>
-	<body runat="server" class="bg-body-secondary">
+	<body runat="server">
 		<form id="formMain" runat="server" class="needs-validation">
 			<asp:ScriptManager runat="server" EnablePartialRendering="true" />
 			
@@ -51,7 +51,7 @@
 				<%-- NAV MENU --%>
 				<div class="sidebar bg-body-tertiary">
 					<%-- TOP ROW --%>
-					<div id="top-row-header" class="top-row ps-0 navbar bg-body menu-box-shadow">
+					<div id="top-row-header" class="top-row ps-0 navbar bg-body-secondary menu-box-shadow">
 						<div class="container-fluid ps-0">
 							<%-- SITE BRANDING --%>
 							<a class="navbar-brand" href="./" tabindex="-1">

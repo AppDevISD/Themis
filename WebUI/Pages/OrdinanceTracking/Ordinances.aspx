@@ -59,7 +59,7 @@
 
 			<ContentTemplate>
 				<div runat="server" id="ordTable" class="card">
-					<div class="card-header bg-body">
+					<div class="card-header bg-body-secondary">
 						<h3><i class="fas fa-book-section"></i>&nbsp;Ordinances</h3>
 					</div>
 					<div class="card-body bg-body-tertiary">
@@ -191,15 +191,15 @@
 					<asp:HiddenField runat="server" ID="hdnOrdID" />
 					<asp:HiddenField runat="server" ID="hdnEffectiveDate" />
 					<asp:HiddenField runat="server" ID="hdnEmail" />
-					<div runat="server" id="ordinanceTabs" class="nav nav-tabs" role="tablist">
+					<div runat="server" id="ordinanceTabs" class="nav nav-tabs border-0" role="tablist">
 						<button runat="server" id="factSheetTab" class="nav-link ordTabs active" data-toggle="tab" data-target="#factSheetPane" type="button" role="tab" tabindex="-1">Fact Sheet</button>
 						<button runat="server" id="auditTab" class="nav-link ordTabs" data-toggle="tab" data-target="#auditPane" type="button" role="tab" onclick="FormatAudit();" tabindex="-1">History</button>
 					</div>
 
-					<div id="ordinanceTabsContent" class="tab-content p-0 border-0">
+					<div id="ordinanceTabsContent" class="tab-content tab-card">
 						<div runat="server" id="factSheetPane" class="tab-pane fade active show" role="tabpanel">
 							<%-- FORM HEADER --%>
-							<section class="container form-header bg-body text-center position-relative tab-border-header">
+							<section class="container form-header bg-body-secondary text-center position-relative tab-border-header">
 								<div class="row h-100 align-items-center">
 									<h1><span class="fas fa-book-section"></span>&nbsp;Ordinance</h1>
 								</div>
@@ -210,7 +210,7 @@
 								<div class="statusDropDown text-start">
 									<div runat="server" id="ddStatusDiv" class="form-group text-start w-75 me-auto">
 										<label for="ddStatus">Status</label>
-										<asp:DropDownList ID="ddStatus" runat="server" AutoPostBack="true" CssClass="form-select" data-required="true" OnSelectedIndexChanged="ddStatus_SelectedIndexChanged"></asp:DropDownList>
+										<asp:DropDownList ID="ddStatus" runat="server" AutoPostBack="true" CssClass="form-select bg-body-tertiary" data-required="true" OnSelectedIndexChanged="ddStatus_SelectedIndexChanged"></asp:DropDownList>
 										<asp:HiddenField runat="server" ID="hdnOrdStatusID" />
 										<asp:HiddenField runat="server" ID="hdnStatusID" />
 									</div>
@@ -961,8 +961,8 @@
 							</div>
 						</div>
 						<div runat="server" id="auditPane" class="tab-pane fade" role="tabpanel">
-							<div class="card b-0">
-								<div class="card-header bg-body">
+							<div class="card custom-card-tab">
+								<div class="card-header bg-body-secondary">
 									<h3><i class="fas fa-clock-rotate-left"></i>&nbsp;History</h3>
 								</div>
 								<div class="card-body bg-body-tertiary">
@@ -1053,7 +1053,7 @@
 				<div class="modal-header">
 					<h4 class="modal-title" id="deleteModalLabel">Delete</h4>
 				</div>
-				<div class="modal-body">
+				<div class="modal-body bg-body-tertiary">
 					<asp:Label runat="server" ID="deleteLabel" Style="font-size: 18px; font-weight: bold" CssClass="text-danger" Text="Are you sure you want to delete this ordinance fact sheet? (This cannot be undone)" />
 				</div>
 				<div class="modal-footer">
@@ -1133,8 +1133,9 @@
 						</div>
 						<div class="col-md-4">
 							<div class="input-group">
-								<span class="input-group-text fas fa-calendar-days"></span>
+								<%--<span class="input-group-text fas fa-calendar-days"></span>--%>
 								<asp:TextBox runat="server" ID="sigDate" CssClass="form-control" TextMode="Date"></asp:TextBox>
+								<button runat="server" id="sigDatePicker" type="button" class="btn input-group-text" tabindex="-1"><span class="fas fa-calendar-days"></span></button>
 							</div>
 						</div>
 					</div>
@@ -1196,6 +1197,7 @@
 			addSignatureEmails('<%= signatureEmailAddress.ClientID %>', '<%= AddRequestEmailAddress.ClientID %>');
 			multiValidation();
 			DisableDDInitialOption([
+				{ id: '<%= ddStatus.ClientID %>', opacity: "75" },
 				{ id: '<%= requestDepartment.ClientID %>', opacity: "75" },
 				{ id: '<%= requestDivision.ClientID %>', opacity: "35" },
 				{ id: '<%= purchaseMethod.ClientID %>', opacity: "75" },
@@ -1204,6 +1206,7 @@
 			scrollToElement();
 			SetSignEnabled();			
 			FormatAudit();
+			SetModalDatePicker("signatureModal");
 		}
 		
 
@@ -1212,6 +1215,7 @@
 			cancelFilePick('<%= supportingDocumentation.ClientID %>');
 			addSignatureEmails('<%= signatureEmailAddress.ClientID %>', '<%= AddRequestEmailAddress.ClientID %>');
 			DisableDDInitialOption([
+				{ id: '<%= ddStatus.ClientID %>', opacity: "75" },
 				{ id: '<%= requestDepartment.ClientID %>', opacity: "75" },
 				{ id: '<%= requestDivision.ClientID %>', opacity: "35" },
 				{ id: '<%= purchaseMethod.ClientID %>', opacity: "75" },
@@ -1221,8 +1225,10 @@
 			SetSignEnabled();
 			FormatAudit();			
 			scrollToElement();
-			HideAllTooltips();
+			HideAllTooltips();			
 		});
+
+		
 
 		function validateFactSheetDraft(validationGroups) {
 			if (Page_ClientValidate(validationGroups)) {
@@ -1273,6 +1279,10 @@
 			$('#<%= sigDate.ClientID %>').val('');
 			$('#<%= btnSignDoc.ClientID %>').prop('disabled', true);
 			$('#<%= certifySig.ClientID %>').prop('checked', false);
+
+			$('#signatureModal').on('shown.bs.modal', function () {
+				
+			});
 		}
 
 		function OpenRejectionModal() {

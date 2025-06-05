@@ -3,66 +3,36 @@
 	
 </asp:Content>
 <asp:Content ID="MainContent" ContentPlaceHolderID="MainContent" runat="server">
-	<style>
-		.ddSortBtn {
-			position: absolute;
-			width: 93%;
-			height: 100%;
-			left: 0;
-			border-right: 1px solid red;
-			border-radius: 0;
-		}
-		.ddSort {
-			background-color: transparent;
-			border: none;
-			text-align: center;
-		}
-	</style>
 	<section>
 		<div class="card">
 			<div class="card-header bg-body">
 				<h3><i class="fas fa-key"></i>&nbsp;&nbsp;Sandbox</h3>
 			</div>
-			<asp:UpdatePanel runat="server" ID="pnlSandbox" UpdateMode="Always">
-				<ContentTemplate>
-					<div class="card-body bg-body-tertiary">
-						<div class="container-fluid">
-							<div id="firstContainer" class="bg-body-secondary p-2 rounded" style="max-width: 750px; min-height: 250px;">
-								<asp:Repeater runat="server" ID="rpEmails">
-									<ItemTemplate>
-										<div class="badge rounded-pill text-bg-secondary fs-6 m-1">
-											<%# Container.DataItem %>
-											<asp:LinkButton runat="server" ID="removeBtn" CssClass="text-danger" style="margin-left: 10px;"><span class="fa-solid fa-xmark"></span></asp:LinkButton>
-										</div>
-									</ItemTemplate>
-								</asp:Repeater>
-								
-									
-								<button class="btn badge rounded-pill text-bg-success"><span class="fa-solid fa-plus"></span>&nbsp;Add</button>
+			<div class="card-body bg-body-tertiary">
+				<ul id="adminTabs" class="nav nav-tabs border-0" role="tablist" data-collapse-tabs="#adminMoreDD">
+					<li class="nav-item">
+						<button id="defaultEmailsBtn" class="nav-link active" data-toggle="tab" data-target="#defaultEmails-tab-pane" type="button" role="tab">Default Emails</button>
+					</li>
+				</ul>
+				<div id="adminTabsContent" class="tab-content tab-card" style="min-height: 50%">
+					<div id="defaultEmails-tab-pane" class="tab-pane fade active show" role="tabpanel">
+						<div class="card">
+
+							<%--<div class="card-header bg-body">
+
+							</div>--%>
+
+							<div class="card-body bg-body-tertiary">
+
 							</div>
 
-							<div id="secondContainer" class="bg-body-secondary p-2 mt-5 rounded" style="max-width: 750px; min-height: 250px;">
-								<table>
-									<thead>
-										<tr>
-											<th style="width: 25%; text-align: center">
-												<div style="position: relative;">
-													<a class="ddSortBtn" href="#">
-													</a>
-													<asp:DropDownList runat="server" ID="testDD" CssClass="form-select ddSort" >
-														<asp:ListItem Text="Department"></asp:ListItem>
-														<asp:ListItem Text="Division"></asp:ListItem>
-													</asp:DropDownList>
-												</div>
-											</th>
-										</tr>
-									</thead>
-								</table>
-							</div>
-						</div>						
+							<%--<div class="card-footer bg-body" style="min-height: 50px;">
+
+							</div>--%>
+						</div>
 					</div>
-				</ContentTemplate>
-			</asp:UpdatePanel>
+				</div>
+			</div>
 		</div>
 	</section>
 </asp:Content>

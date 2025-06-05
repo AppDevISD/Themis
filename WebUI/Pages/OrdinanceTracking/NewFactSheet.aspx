@@ -4,7 +4,7 @@
 
 <asp:Content ID="MainContent" ContentPlaceHolderID="MainContent" runat="server">
 	<%-- FORM HEADER --%>
-	<section class="container form-header bg-body text-center">
+	<section class="container form-header bg-body-secondary text-center">
 		<div class="row h-100 align-items-center">
 			<h1><span class="fas fa-file-circle-plus"></span>&nbsp;New Fact Sheet</h1>
 		</div>
@@ -567,7 +567,7 @@
 							<div class="col-md-6">
 								<div class="form-group">
 									<label for="emailListContainer">Director/Supervisor Email(s) <span class="text-warning">* <span style="font-size: 11px;">Required if Submitting</span></span></label>
-									<div id="emailListContainer" class="card mb-3 bg-body-secondary" style="min-height: 100px !important;">
+									<div id="emailListContainer" class="card mb-3 bg-body" style="min-height: 100px !important;">
 										<div class="card-body" >
 											<asp:Repeater runat="server" ID="rpEmailList" OnItemCommand="rpEmailList_ItemCommand" OnItemCreated="rpEmailList_ItemCreated">
 												<ItemTemplate>

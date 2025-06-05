@@ -1,53 +1,66 @@
-﻿var autocollapse = function (menu, maxHeight) {
-    var tabsMenu = $(menu);
-    
+﻿function autoCollapse(id) {
+	var newMenu = $(id);
+	var dropdown = $(newMenu.attr('data-collapse-tabs'));
+	var dropdownMenu = dropdown.children('.dropdown-menu');
 
-    tabsMenu.each(function () {
-        var navHeight = $(this).innerHeight()
-        var dropdown = $($(this).attr('data-collapse-tabs'));
-        var dropdownMenu = dropdown.children('.dropdown-menu');
+	var children = newMenu.children(`:not(:last-child)`);
+	var btns = children.children();
+	var btnsCount = btns.length;
+	$(btns[btnsCount - 1]).addClass('dropdown-item');
+	$(btns[btnsCount - 1]).prependTo(dropdownMenu);
+	var childrenCount = children.length;
+	$(children[childrenCount - 1]).remove();
 
-        if (navHeight > maxHeight) {
+	if (dropdownMenu.children().length > 0) {
+		dropdown.show();
+	}
+}
+function autoExpand(id) {
+	var newMenu = $(id);
+	var dropdown = $(newMenu.attr('data-collapse-tabs'));
+	var dropdownMenu = dropdown.children('.dropdown-menu');
+	
 
-            while (navHeight > maxHeight) {
-                var children = $(this).children(`:not(:last-child)`);
-                var btns = children.children();
-                var childrenCount = children.length;
-                $(children[childrenCount - 1]).remove();
-                var btnsCount = btns.length;
-                $(btns[btnsCount - 1]).addClass('dropdown-item');
-                $(btns[btnsCount - 1]).prependTo(dropdownMenu);
-                navHeight = $(this).innerHeight();
-            }
-            dropdown.show();
-        }
-        else {
-            while (navHeight < maxHeight && ($(this).children('li').length > 0) && dropdownMenu.children().length > 0) {
-                var btns = dropdownMenu.children();
-                var collapsed = dropdownMenu.children();
-                var li = `<li id='newElement' class='nav-item'></li>`;
-                $($(this).children(':last-child')).before(li);
-                var newElement = $('#newElement');
-                $(collapsed[0]).removeClass('dropdown-item');
-                $(collapsed[0]).prependTo(newElement);
-                newElement.removeAttr('id');
-                navHeight = $(this).innerHeight();
-			}
-			if (dropdownMenu.children().length === 0) {
-                dropdown.hide();
-            }
+	var btns = dropdownMenu.children();
+	var collapsed = dropdownMenu.children();
+	var li = `<li id='newElement' class='nav-item'></li>`;
+	$(newMenu.children(':last-child')).before(li);
+	var newElement = $('#newElement');
+	$(collapsed[0]).removeClass('dropdown-item');
+	$(collapsed[0]).prependTo(newElement);
+	newElement.removeAttr('id');
 
-            if (navHeight > maxHeight) {
-                autocollapse('[data-collapse-tabs]', 50);
-            }
-        }
-    });
-};
-
+	if (dropdownMenu.children().length === 0) {
+		dropdown.hide();
+	}
+}
 function CollapseTabs() {
-    autocollapse('[data-collapse-tabs]', 50);
+	var collapseTabs = $('[data-collapse-tabs]');
+	$(collapseTabs).each(function () {
+		var id = `#${$(this).attr('id') }`;
+		if (this.scrollWidth > this.offsetWidth) {
+			while (this.scrollWidth > this.offsetWidth) {
+				autoCollapse(id);
+			}
+			
+		}
+		else {
+			autoExpand(id);
+		}
+	});
 
-    $(window).on('resize', function () {
-        autocollapse('[data-collapse-tabs]', 50);
-    });
+	$(window).on('resize', function () {
+		console.log("Resize");
+		$(collapseTabs).each(function () {
+			var id = `#${$(this).attr('id')}`;
+			if (this.scrollWidth > this.offsetWidth) {
+				while (this.scrollWidth > this.offsetWidth) {
+					autoCollapse(id);
+				}
+			}
+			else {
+				autoExpand(id);
+			}
+		});
+	});
 }
