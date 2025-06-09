@@ -1194,7 +1194,7 @@
 		function InitialLoad() {
 			SetTooltips();
 			cancelFilePick('<%= supportingDocumentation.ClientID %>');
-			addSignatureEmails('<%= signatureEmailAddress.ClientID %>', '<%= AddRequestEmailAddress.ClientID %>');
+			addSignatureEmails([{ addressID: '<%= signatureEmailAddress.ClientID %>', btnID: '<%= AddRequestEmailAddress.ClientID %>' }]);
 			multiValidation();
 			DisableDDInitialOption([
 				{ id: '<%= ddStatus.ClientID %>', opacity: "75" },
@@ -1213,7 +1213,7 @@
 		Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
 			SetTooltips();
 			cancelFilePick('<%= supportingDocumentation.ClientID %>');
-			addSignatureEmails('<%= signatureEmailAddress.ClientID %>', '<%= AddRequestEmailAddress.ClientID %>');
+			addSignatureEmails([{ addressID: '<%= signatureEmailAddress.ClientID %>', btnID: '<%= AddRequestEmailAddress.ClientID %>' }]);
 			DisableDDInitialOption([
 				{ id: '<%= ddStatus.ClientID %>', opacity: "75" },
 				{ id: '<%= requestDepartment.ClientID %>', opacity: "75" },

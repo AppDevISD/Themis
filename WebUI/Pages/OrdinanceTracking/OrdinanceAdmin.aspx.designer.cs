@@ -33,6 +33,105 @@ namespace WebUI
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl adminCard;
 
         /// <summary>
+        /// defaultEmailsBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton defaultEmailsBtn;
+
+        /// <summary>
+        /// defaultEmailsTabPane control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl defaultEmailsTabPane;
+
+        /// <summary>
+        /// pendingBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton pendingBtn;
+
+        /// <summary>
+        /// underReviewBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton underReviewBtn;
+
+        /// <summary>
+        /// beingHeldBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton beingHeldBtn;
+
+        /// <summary>
+        /// draftedBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton draftedBtn;
+
+        /// <summary>
+        /// approvedBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton approvedBtn;
+
+        /// <summary>
+        /// rejectedBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton rejectedBtn;
+
+        /// <summary>
+        /// deletedBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton deletedBtn;
+
+        /// <summary>
+        /// pendingTabPane control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl pendingTabPane;
+
+        /// <summary>
+        /// rpPendingDefaultList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rpPendingDefaultList;
+
+        /// <summary>
         /// pendingEmailAddress control.
         /// </summary>
         /// <remarks>
@@ -49,6 +148,24 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button PendingAddEmailAddress;
+
+        /// <summary>
+        /// underReviewTabPane control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl underReviewTabPane;
+
+        /// <summary>
+        /// rpUnderReviewDefaultList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rpUnderReviewDefaultList;
 
         /// <summary>
         /// underReviewEmailAddress control.
@@ -69,6 +186,24 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.Button UnderReviewAddEmailAddress;
 
         /// <summary>
+        /// beingHeldTabPane control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl beingHeldTabPane;
+
+        /// <summary>
+        /// rpBeingHeldDefaultList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rpBeingHeldDefaultList;
+
+        /// <summary>
         /// beingHeldEmailAddress control.
         /// </summary>
         /// <remarks>
@@ -85,6 +220,24 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button BeingHeldAddEmailAddress;
+
+        /// <summary>
+        /// draftedTabPane control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl draftedTabPane;
+
+        /// <summary>
+        /// rpDraftedDefaultList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rpDraftedDefaultList;
 
         /// <summary>
         /// draftedEmailAddress control.
@@ -105,6 +258,24 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.Button DraftedAddEmailAddress;
 
         /// <summary>
+        /// approvedTabPane control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl approvedTabPane;
+
+        /// <summary>
+        /// rpApprovedDefaultList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rpApprovedDefaultList;
+
+        /// <summary>
         /// approvedEmailAddress control.
         /// </summary>
         /// <remarks>
@@ -123,6 +294,24 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.Button ApprovedAddEmailAddress;
 
         /// <summary>
+        /// rejectedTabPane control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl rejectedTabPane;
+
+        /// <summary>
+        /// rpRejectedDefaultList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rpRejectedDefaultList;
+
+        /// <summary>
         /// rejectedEmailAddress control.
         /// </summary>
         /// <remarks>
@@ -139,6 +328,24 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button RejectedAddEmailAddress;
+
+        /// <summary>
+        /// deletedTabPane control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl deletedTabPane;
+
+        /// <summary>
+        /// rpDeletedDefaultList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rpDeletedDefaultList;
 
         /// <summary>
         /// deletedEmailAddress control.
@@ -177,6 +384,33 @@ namespace WebUI
         protected global::System.Web.UI.HtmlControls.HtmlButton directorSupervisorBtn;
 
         /// <summary>
+        /// cPABtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton cPABtn;
+
+        /// <summary>
+        /// obmDirectorBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton obmDirectorBtn;
+
+        /// <summary>
+        /// mayorBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton mayorBtn;
+
+        /// <summary>
         /// fundsCheckByTabPane control.
         /// </summary>
         /// <remarks>
@@ -184,6 +418,15 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl fundsCheckByTabPane;
+
+        /// <summary>
+        /// rpFundsCheckByDefaultList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rpFundsCheckByDefaultList;
 
         /// <summary>
         /// fundsCheckBySignatureEmailAddress control.
@@ -231,6 +474,15 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.DropDownList filterDivision;
 
         /// <summary>
+        /// rpDirectorSupervisorDefaultList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rpDirectorSupervisorDefaultList;
+
+        /// <summary>
         /// directorSupervisorSignatureEmailAddress control.
         /// </summary>
         /// <remarks>
@@ -247,6 +499,24 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button DirectorSupervisorAddRequestEmailAddress;
+
+        /// <summary>
+        /// cPATabPane control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl cPATabPane;
+
+        /// <summary>
+        /// rpCPADefaultList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rpCPADefaultList;
 
         /// <summary>
         /// cPASignatureEmailAddress control.
@@ -267,6 +537,24 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.Button CPAAddRequestEmailAddress;
 
         /// <summary>
+        /// obmDirectorTabPane control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl obmDirectorTabPane;
+
+        /// <summary>
+        /// rpOBMDirectorDefaultList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rpOBMDirectorDefaultList;
+
+        /// <summary>
         /// obmDirectorSignatureEmailAddress control.
         /// </summary>
         /// <remarks>
@@ -285,6 +573,24 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.Button OBMDirectorAddRequestEmailAddress;
 
         /// <summary>
+        /// mayorTabPane control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl mayorTabPane;
+
+        /// <summary>
+        /// rpMayorDefaultList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rpMayorDefaultList;
+
+        /// <summary>
         /// mayorSignatureEmailAddress control.
         /// </summary>
         /// <remarks>
@@ -301,5 +607,14 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button MayorAddRequestEmailAddress;
+
+        /// <summary>
+        /// hdnActiveTabs control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnActiveTabs;
     }
 }

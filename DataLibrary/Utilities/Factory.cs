@@ -149,7 +149,7 @@ namespace DataLibrary
             }
             return list;
         }
-        public T GetByID<T>(int id, string sp, string parameter)
+        public T GetByID<T>(object id, string sp, string parameter)
         {
             T item = (T)Activator.CreateInstance(typeof(T));
             PropertyInfo[] classType = typeof(T).GetProperties();

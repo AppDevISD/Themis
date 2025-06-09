@@ -1561,7 +1561,7 @@ namespace WebUI
             string[] newEmailAddresses = signatureEmailAddress.Text.Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
             foreach (string item in newEmailAddresses)
             {
-                emails.Add(item);
+                emails.Add(item.ToLower());
             }
             sigType.SetValue(sigRequests, string.Join(";", emails.OrderBy(i => i)));
             if (emails.Count > 0)

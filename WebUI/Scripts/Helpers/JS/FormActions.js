@@ -128,16 +128,23 @@ function enterBtn() {
 	});
 }
 
-function addSignatureEmails(addressID, btnID) {
-	$(`#${addressID}`).on('change keyup', function () {
-		var validEmail = $(`#${addressID}`).val().indexOf("@cwlp.com") > 1 || $(`#${addressID}`).val().indexOf("@springfield.il.us") > 1;
-		if (validEmail && $(`#${addressID}`).val().length > 0) {
-			$(`#${btnID}`).prop('disabled', false);
-		}
-		else {
-			$(`#${btnID}`).prop('disabled', true);
-		}
+function addSignatureEmails(controls) {
+	$(controls).each(function () {
+		const cfg = this || {};
+		const addressID = cfg.addressID;
+		const btnID = cfg.btnID;
+
+		$(`#${addressID}`).on('change keyup', function () {
+			var validEmail = $(`#${addressID}`).val().toLowerCase().indexOf("@cwlp.com") > 1 || $(`#${addressID}`).val().toLowerCase().indexOf("@springfield.il.us") > 1;
+			if (validEmail && $(`#${addressID}`).val().length > 0) {
+				$(`#${btnID}`).prop('disabled', false);
+			}
+			else {
+				$(`#${btnID}`).prop('disabled', true);
+			}
+		});
 	});
+	
 }
 
 function SetDeleteModal(ordID) {
@@ -176,5 +183,36 @@ function SetModalDatePicker(modal) {
 				}
 				break;
 		}
+	});
+}
+
+function saveTabState() {
+	$('[data-toggle="tab"]').each(function () {
+		$(this).on('click', function () {
+			let currentTabId = $(this).attr('id');
+			let value = $('#hdnActiveTabs').val().split(',').map(v => v.trim()).filter(Boolean);
+
+			let allTabIds = [];
+
+			$(this).closest('.nav').children().each(function () {
+				let tabId = $(this).children().attr('id');
+				if (tabId) allTabIds.push(tabId);
+
+				if ($(this).hasClass('dropdown')) {
+					$(this).find('.dropdown-menu').children().each(function () {
+						let dropdownTabId = $(this).attr('id');
+						if (dropdownTabId) allTabIds.push(dropdownTabId);
+					});
+				}
+			});
+
+			value = value.filter(v => !allTabIds.includes(v));
+
+			if (currentTabId && !value.includes(currentTabId)) {
+				value.push(currentTabId);
+			}
+
+			$('#hdnActiveTabs').val(value.join(','));
+		});
 	});
 }

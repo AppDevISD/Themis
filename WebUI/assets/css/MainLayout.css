@@ -495,6 +495,10 @@ option:not([selected]):not(:disabled) {
 	text-transform: uppercase;
 }
 
+[type="email"] {
+	text-transform: lowercase;
+}
+
 .invalid-border {
 	border: 2px solid var(--bs-danger) !important;
 }
