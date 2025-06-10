@@ -39,7 +39,10 @@ namespace WebUI
             {
                 GetCopyOrdinance(Convert.ToInt32(Request.QueryString["id"].ToString()));
             }
-
+            if (ScriptManager.GetCurrent(Page).IsInAsyncPostBack)
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "HideLoading", "hideLoadingModal();", true);
+            }
             GetUploadedDocs();
         }
         protected void SetStartupActives()
@@ -59,16 +62,27 @@ namespace WebUI
             requestPhone.Text = _user.Telephone;
             requestExt.Text = _user.IPPhone;
 
-            GetAllDivisions(requestDivision, requestDepartment.SelectedValue);
-
-            if (!requestDepartment.SelectedValue.IsNullOrWhiteSpace())
+            requestDivision.Items.Clear();
+            List<string> noDivisions = new List<string>()
+            {
+                "City Clerk",
+                "Community Relations",
+                "Convention & Visitor's Bureau",
+                "Lincoln Library",
+            };
+            if (!requestDepartment.SelectedValue.IsNullOrWhiteSpace() && !noDivisions.Any(i => requestDepartment.SelectedItem.Text.Equals(i)))
             {
                 requestDivision.Enabled = true;
+                requestDivision.Attributes.Add("data-required", "true");
+                requestDivisionValid.Enabled = true;
+                GetAllDivisions(requestDivision, requestDepartment.SelectedValue);
                 requestDivision.SelectedValue = userInfo.UserDivision.DivisionCode.ToString();
             }
             else
             {
                 requestDivision.Enabled = false;
+                requestDivision.Attributes.Add("data-required", "false");
+                requestDivisionValid.Enabled = false;
                 requestDivision.Items.Add(new ListItem() { Text = "Select Division...", Value = "" });
             }
         }
@@ -895,14 +909,27 @@ namespace WebUI
 
         protected void requestDepartment_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!requestDepartment.SelectedValue.IsNullOrWhiteSpace())
+            requestDivision.Items.Clear();
+            List<string> noDivisions = new List<string>()
+            {
+                "City Clerk",
+                "Community Relations",
+                "Convention & Visitor's Bureau",
+                "Lincoln Library",
+            };
+
+            if (!requestDepartment.SelectedValue.IsNullOrWhiteSpace() && !noDivisions.Any(i => requestDepartment.SelectedItem.Text.Equals(i)))
             {
                 requestDivision.Enabled = true;
+                requestDivision.Attributes.Add("data-required", "true");
+                requestDivisionValid.Enabled = true;
                 GetAllDivisions(requestDivision, requestDepartment.SelectedValue);
             }
             else
             {
                 requestDivision.Enabled = false;
+                requestDivision.Attributes.Add("data-required", "false");
+                requestDivisionValid.Enabled = false;
                 requestDivision.Items.Add(new ListItem() { Text = "Select Division...", Value = "" });
             }
         }
@@ -1015,6 +1042,10 @@ namespace WebUI
                 rfv.Attributes.Add("data-table-validator", "true");
                 box.Parent.Controls.Add(rfv);
             }
+        }
+        protected void backBtn_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("./FactSheetDrafts");
         }
     }
 }

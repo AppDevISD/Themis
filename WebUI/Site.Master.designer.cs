@@ -195,6 +195,15 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.LinkButton DeleteOrdinance;
 
         /// <summary>
+        /// TestingEmails control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton TestingEmails;
+
+        /// <summary>
         /// MainContent control.
         /// </summary>
         /// <remarks>
@@ -265,6 +274,60 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button DeleteOrd;
+
+        /// <summary>
+        /// testEmailsModal control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl testEmailsModal;
+
+        /// <summary>
+        /// pnlTestingEmail control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel pnlTestingEmail;
+
+        /// <summary>
+        /// lblNoItemsTesting control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblNoItemsTesting;
+
+        /// <summary>
+        /// rpTestingDefaultList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rpTestingDefaultList;
+
+        /// <summary>
+        /// testingEmailAddress control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox testingEmailAddress;
+
+        /// <summary>
+        /// TestingAddEmailAddress control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button TestingAddEmailAddress;
 
         /// <summary>
         /// pnlLoading control.

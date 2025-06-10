@@ -1,17 +1,19 @@
 ﻿using DataLibrary;
+using DataLibrary.OrdinanceTracking;
 using ISD.ActiveDirectory;
+using Microsoft.Ajax.Utilities;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Web.UI;
-using System.Diagnostics;
-using static DataLibrary.Utility;
-using System.Collections.Generic;
-using System.Web.UI.WebControls;
-using System.Web.UI.HtmlControls;
-using System.Web.Services.Description;
 using System.Web;
+using System.Web.Services.Description;
+using System.Web.UI;
+using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
+using static DataLibrary.Utility;
 
 namespace WebUI
 {
@@ -124,15 +126,16 @@ namespace WebUI
         public bool ActivePage(string pageTitle)
         {
             bool activePage = false;
-            switch (PageTitle.Contains(pageTitle.Replace(" ", string.Empty).ToLower()))
-            {
-                case true:
-                    activePage = true;
-                    break;
-                case false:
-                    activePage = false;
-                    break;
-            }
+            List<string> pageTitles = pageTitle.Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToList();
+                switch (pageTitles.Any(i => PageTitle.ToLower().Contains(i.Replace(" ", string.Empty).ToLower())))
+                {
+                    case true:
+                        activePage = true;
+                        break;
+                    case false:
+                        activePage = false;
+                        break;
+                }
 
             return activePage;
         }
@@ -147,6 +150,22 @@ namespace WebUI
             ImpersonateUser.Visible = aDGroups.Any(i => i.GroupName.Equals("DG-PublicUtilities-InformationSystems-AppDev"));
             StopImpersonate.Visible = (bool)Session["ImpersonateUser"];
             TriggerError.Visible = aDGroups.Any(i => i.GroupName.Equals("DG-PublicUtilities-InformationSystems-AppDev"));
+
+            DefaultEmails defaultList = Factory.Instance.GetByID<DefaultEmails>(107, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID");
+            string[] emails = defaultList.EmailAddress.ToString().Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
+
+            if (emails.Length > 0)
+            {
+                lblNoItemsTesting.Visible = false;
+                rpTestingDefaultList.DataSource = emails.OrderBy(i => i);
+                rpTestingDefaultList.DataBind();
+            }
+            else
+            {
+                lblNoItemsTesting.Visible = true;
+                rpTestingDefaultList.DataSource = null;
+                rpTestingDefaultList.DataBind();
+            }
         }
         protected void adminSwitch_CheckedChanged(object sender, EventArgs e)
         {
@@ -239,6 +258,73 @@ namespace WebUI
                 Session["ToastMessage"] = "Entry Deleted!";
                 Response.Redirect(Request.RawUrl);
             }
+        }
+
+        protected void AddTestingEmailAddress_Click(object sender, EventArgs e)
+        {
+            DefaultEmails defaultList = Factory.Instance.GetByID<DefaultEmails>(107, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID");
+            List<string> emails = new List<string>();
+            if (!defaultList.ToString().IsNullOrWhiteSpace())
+            {
+                emails = defaultList.EmailAddress.ToString().Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToList();
+            }
+
+            string[] newEmailAddresses = testingEmailAddress.Text.Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
+            foreach (string item in newEmailAddresses)
+            {
+                emails.Add(item.ToLower());
+            }
+            string setEmails = string.Join(";", emails.OrderBy(i => i));
+            defaultList.EmailAddress = setEmails.ToLower();
+
+            int updateDefaultEmails = Factory.Instance.Update(defaultList, "sp_UpdateDefaultEmail");
+            if (updateDefaultEmails > 0)
+            {
+                testingEmailAddress.Text = string.Empty;
+                if (emails.Count > 0)
+                {
+                    lblNoItemsTesting.Visible = false;
+                    rpTestingDefaultList.DataSource = emails.OrderBy(i => i);
+                    rpTestingDefaultList.DataBind();
+                }
+                else
+                {
+                    lblNoItemsTesting.Visible = true;
+                    rpTestingDefaultList.DataSource = null;
+                    rpTestingDefaultList.DataBind();
+                }
+            }
+        }
+        protected void rpTestingList_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            DefaultEmails defaultList = Factory.Instance.GetByID<DefaultEmails>(107, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID");
+            List<string> emails = defaultList.EmailAddress.ToString().Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToList();
+
+            emails.Remove(e.CommandArgument.ToString());
+
+            string setEmails = string.Join(";", emails.OrderBy(i => i));
+            defaultList.EmailAddress = setEmails.ToLower();
+            int updateDefaultEmails = Factory.Instance.Update(defaultList, "sp_UpdateDefaultEmail");
+            if (updateDefaultEmails > 0)
+            {
+                if (emails.Count > 0)
+                {
+                    lblNoItemsTesting.Visible = false;
+                    rpTestingDefaultList.DataSource = emails.OrderBy(i => i);
+                    rpTestingDefaultList.DataBind();
+                }
+                else
+                {
+                    lblNoItemsTesting.Visible = true;
+                    rpTestingDefaultList.DataSource = null;
+                    rpTestingDefaultList.DataBind();
+                }
+            }
+        }
+        protected void rpTestingList_ItemCreated(object sender, RepeaterItemEventArgs e)
+        {
+            LinkButton btn = (LinkButton)e.Item.FindControl("removeBtn");
+            ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(btn);
         }
     }
 }

@@ -226,7 +226,7 @@ main {
 		transition: padding-right 0.3s;
 	}
 
-a.activePage, [data-active-page="activePage"] .nav-link, .nav-link.active {
+a.activePage, [data-active-page="activePage"] .nav-link, .nav-link.active, .nav-item.activePage {
 	background-color: var(--active-bg) !important;
 	color: var(--active-text);
 }
@@ -425,7 +425,7 @@ select:disabled, .disabled-control, .disabled-control input {
 	color: var(--color-theme-text);
 }
 
-.input-group-text:not(:has(.fa-minus)):hover {
+.input-group-text:has(button):not(:has(.fa-minus)):hover {
 	color: var(--bs-light);
 }
 

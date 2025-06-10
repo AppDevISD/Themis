@@ -399,6 +399,8 @@ namespace WebUI
             }
             string setEmails = string.Join(";", emails.OrderBy(i => i));
             defaultList.EmailAddress = setEmails.ToLower();
+            defaultList.LastUpdateBy = _user.Login.ToLower();
+            defaultList.LastUpdateDate = DateTime.Now;
 
             int updateDefaultEmails = Factory.Instance.Update(defaultList, "sp_UpdateDefaultEmail");
             if (updateDefaultEmails > 0)

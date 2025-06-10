@@ -41,8 +41,9 @@
 
 			<ContentTemplate>
 				<div runat="server" id="draftsTable" class="card">
-					<div class="card-header bg-body-secondary">
+					<div class="card-header bg-body-secondary d-flex justify-content-between">
 						<h3><i class="fas fa-pen-ruler"></i>&nbsp;Drafts</h3>
+						<asp:LinkButton runat="server" ID="BtnNewFactSheet" CssClass="btn btn-success float-end" OnClick="BtnNewFactSheet_Click" OnClientClick="showLoadingModal();"><span class="fas fa-plus"></span>&nbsp;New Fact Sheet</asp:LinkButton>
 					</div>
 					<div class="card-body bg-body-tertiary">
 						<%-- FILTERS & SORTING --%>

@@ -99,13 +99,13 @@
 										<span class="fas fa-book-section"></span>
 										<p class="m-0 fs-6 noto-sans-semi-bold">Ordinances</p>
 									</a>
-									<a class='nav-link <%:ActivePage("NewFactSheet")?"activePage":""%>' href="./NewFactSheet" tabindex="-1">
+									<%--<a class='nav-link <%:ActivePage("NewFactSheet")?"activePage":""%>' href="./NewFactSheet" tabindex="-1" hidden>
 										<span class="fas fa-file-circle-plus"></span>
 										<p class="m-0 fs-6 noto-sans-semi-bold">New Fact Sheet</p>
-									</a>
-									<a class='nav-link <%:ActivePage("FactSheetDrafts")?"activePage":""%>' href="./FactSheetDrafts" tabindex="-1">
-										<span class="fas fa-pen-ruler"></span>
-										<p class="m-0 fs-6 noto-sans-semi-bold">Drafts</p>
+									</a>--%>
+									<a class='nav-link <%:ActivePage("FactSheetDrafts;NewFactSheet")?"activePage":""%>' href="./FactSheetDrafts" tabindex="-1">
+										<span class="fas fa-file-lines"></span>
+										<p class="m-0 fs-6 noto-sans-semi-bold">Fact Sheets</p>
 									</a>
 									<div runat="server" id="ordAdmin">
 										<a class='nav-link' href="./OrdinanceAdmin" tabindex="-1">
@@ -156,6 +156,10 @@
 								<asp:LinkButton runat="server" ID="DeleteOrdinance" class='nav-link' data-toggle="modal" data-target="#deleteOrdinanceModal" TabIndex="-1">
 									<span class="fa-kit fa-solid-book-section-slash"></span>
 									<p class="m-0 fs-6 noto-sans-semi-bold">Delete Ordinance</p>
+								</asp:LinkButton>
+								<asp:LinkButton runat="server" ID="TestingEmails" class='nav-link' data-toggle="modal" data-target="#testEmailsModal" TabIndex="-1">
+									<span class="fas fa-address-book"></span>
+									<p class="m-0 fs-6 noto-sans-semi-bold">Testing Emails</p>
 								</asp:LinkButton>
 							</div>
 							<a class="btn-accordion nav-link collapsed" href="javascript:void(0);" data-toggle="collapse" data-target="#AppDevToolsMenu" tabindex="-1">
@@ -272,6 +276,57 @@
 				</div>
 			</div>
 
+			<%-- TESTING EMAILS MODAL --%>
+			<div runat="server" class="modal fade" id="testEmailsModal" role="dialog" aria-labelledby="testEmailsModalLabel">
+				<div class="modal-dialog" role="document" style="max-width: 750px;">
+					<div class="modal-content">
+						<asp:UpdatePanel runat="server" ID="pnlTestingEmail">
+							<Triggers>
+								<asp:AsyncPostBackTrigger ControlID="TestingAddEmailAddress" EventName="Click" />
+							</Triggers>
+							<ContentTemplate>
+								<div class="modal-header">
+									<h4 class="modal-title" id="testEmailsModalLabel">Test Email Addresses</h4>
+								</div>
+								<div class="modal-body bg-body-tertiary">
+									<div class="card" style="min-height: 25vh;">
+										<div class="card-body bg-body">
+											<div runat="server" id="lblNoItemsTesting" class="row text-center" style="margin-top: 12.5%;">
+												<div class="col-md-12">
+													<h5 class="text-danger">There are no emails set for testing</h5>
+												</div>
+											</div>
+											<asp:Repeater runat="server" ID="rpTestingDefaultList" OnItemCommand="rpTestingList_ItemCommand" OnItemCreated="rpTestingList_ItemCreated">
+												<ItemTemplate>
+													<div class="badge rounded-pill text-bg-secondary m-1" style="font-size: .95rem">
+														<%# Container.DataItem %>
+														<asp:LinkButton runat="server" ID="removeBtn" CssClass="text-danger" style="margin-left: 10px;" CommandName="Testing" CommandArgument='<%# Container.DataItem %>' TabIndex="-1"><span class="fa-solid fa-xmark" data-disable-btn="aspIconBtn"></span></asp:LinkButton>
+													</div>
+												</ItemTemplate>
+											</asp:Repeater>
+										</div>
+										<div class="card-footer bg-body-tertiary">
+											<div class="row">
+												<div class="col-md-12">
+													<div class="input-group">
+														<span class="input-group-text fas fa-address-book"></span>
+														<asp:TextBox runat="server" ID="testingEmailAddress" CssClass="form-control" TextMode="Email" AutoCompleteType="Email" placeholder="john.doe@corporate.com" data-enter-btn="TestingAddEmailAddress"></asp:TextBox>
+														<asp:Button runat="server" ID="TestingAddEmailAddress" UseSubmitBehavior="false" CssClass="btn btn-success fas-btn" disabled="disabled" Text='&#xf055;' data-disable-btn="aspIconBtn" TabIndex="-1" OnClick="AddTestingEmailAddress_Click" data-email-text="testingEmailAddress" CommandName="Testing" CommandArgument="1"/>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="modal-footer">							
+									<button type="button" class="btn btn-success" data-dismiss="modal" tabindex="-1">Done</button>
+								</div>
+							</ContentTemplate>
+						</asp:UpdatePanel>
+					</div>
+				</div>
+			</div>
+
 			<%-- LOADING MODAL --%>
 			<asp:UpdatePanel runat="server" ID="pnlLoading">
 				<ContentTemplate>
@@ -319,6 +374,9 @@
 				enterBtn();
 				multiValidation();
 				showDatePicker();
+				addSignatureEmails([
+					{ addressID: '<%= testingEmailAddress.ClientID %>', btnID: '<%= TestingAddEmailAddress.ClientID %>' }
+				]);
 			}
 			Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
 				FormatForms();
@@ -326,6 +384,9 @@
 				enterBtn();
 				multiValidation();
 				showDatePicker();
+				addSignatureEmails([
+					{ addressID: '<%= testingEmailAddress.ClientID %>', btnID: '<%= TestingAddEmailAddress.ClientID %>' }
+				]);
 				GetToastStatus();
 				ToastAnimationHelper();
 				CurrencyFormatting();

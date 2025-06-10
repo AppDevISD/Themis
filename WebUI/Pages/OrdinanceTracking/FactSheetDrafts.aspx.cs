@@ -1694,5 +1694,10 @@ namespace WebUI
                 box.Parent.Controls.Add(rfv);
             }            
         }
+
+        protected void BtnNewFactSheet_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("./NewFactSheet");
+        }
     }
 }

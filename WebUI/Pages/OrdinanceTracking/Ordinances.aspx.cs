@@ -27,7 +27,8 @@ namespace WebUI
     {
         private ADUser _user = new ADUser();
         public UserInfo userInfo = new UserInfo();
-        private readonly string pendingEmailList = Factory.Instance.GetByID<DefaultEmails>(1, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID").EmailAddress.Replace(';', ',');
+        private readonly string pendingEmailList = HttpContext.Current.IsDebuggingEnabled ? Factory.Instance.GetByID<DefaultEmails>(107, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID").EmailAddress.Replace(';', ',') : Factory.Instance.GetByID<DefaultEmails>(1, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID").EmailAddress.Replace(';', ',');
+        private readonly string underReviewEmailList = HttpContext.Current.IsDebuggingEnabled ? Factory.Instance.GetByID<DefaultEmails>(107, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID").EmailAddress.Replace(';', ',') : Factory.Instance.GetByID<DefaultEmails>(2, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID").EmailAddress.Replace(';', ',');
         public string deptDivColumnType = "RequestDepartment";
         
         public readonly List<string> lockedStatus = new List<string>()
@@ -2638,7 +2639,6 @@ namespace WebUI
                             ordStatus.StatusID = 2;
                             ordStatus.StatusDescription = "Pending";
                             ordinance.StatusDescription = "Pending";
-                            isPending = true;
                         }
                         OrdinanceAudit sigAudit = new OrdinanceAudit()
                         {
@@ -2666,6 +2666,39 @@ namespace WebUI
                 _user.Email.ToLower(),
                 ordinance.RequestEmail.ToLower()
             };
+            string[] defaultEmails = new string[0];
+            bool isUnderReview = false;
+            switch (ordinance.StatusDescription)
+            {
+                case "Pending":
+                    isPending = true;
+                    break;
+                case "Under Review":
+                    isUnderReview = true;
+                    break;
+                case "Being Held":
+                    defaultEmails = Factory.Instance.GetByID<DefaultEmails>(3, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID").EmailAddress.Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
+                    foreach (string item in defaultEmails)
+                    {
+                        addEmailList.Add(item);
+                    }
+                    break;
+                case "Drafted":
+                    defaultEmails = Factory.Instance.GetByID<DefaultEmails>(4, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID").EmailAddress.Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
+                    foreach (string item in defaultEmails)
+                    {
+                        addEmailList.Add(item);
+                    }
+                    break;
+                case "Approved":
+                    defaultEmails = Factory.Instance.GetByID<DefaultEmails>(5, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID").EmailAddress.Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
+                    foreach (string item in defaultEmails)
+                    {
+                        addEmailList.Add(item);
+                    }
+                    break;
+            }
+            
             foreach (string item in addEmailList)
             {
                 emailList = Email.Instance.AddEmailAddress(emailList, item);
@@ -2684,9 +2717,15 @@ namespace WebUI
 
             Email pendingEmail = new Email();
 
-            pendingEmail.EmailSubject = $"{formType} SIGNED & PENDING";
-            pendingEmail.EmailTitle = $"{formType} SIGNED & PENDING";
-            pendingEmail.EmailText = $"<p style='margin: 0;'><span style='font-size:36.0pt;font-family:\"Times New Roman\",serif;color:#2D71D5;font-weight:bold;'>THΣMIS</span></p><div align=center style='text-align:center'><span><hr size='2' width='100%' align='center' style='margin-top: 0;'></span></div><p><span>An <b>{formType}</b> has been SIGNED '{signatureName}' by <b>{_user.FirstName} {_user.LastName}</b> as <b>Director/Supervisor</b> and is now in <b>PENDING</b> status.</span></p><br /><p style='margin: 0; line-height: 1.5;'><span>ID: {ordinance.OrdinanceID}</span></p>{ordinanceNumInfo}<p style='margin: 0; line-height: 1.5;'><span>Date: {DateTime.Now}</span></p><p style='margin: 0; line-height: 1.5;'><span>Department: {requestDepartment.SelectedItem.Text}</span></p><p style='margin: 0; line-height: 1.5;'><span>Contact: {requestContact.Text}</span></p><p style='margin: 0; line-height: 1.5;'><span>Phone: {ordinance.RequestPhone}</span></p><p><span>Status: {ordinance.StatusDescription}</span></p><br /><p><span>Please click the button below to review the document:</span></p><table border='0' cellpadding='0' cellspacing='0' style='border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;'><tr><td style='font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #0d6efd; border-radius: 5px; text-align: center;' valign='top' bgcolor='#0d6efd' align='center'><a href='{href}' target='_blank' style='display: inline-block; color: #ffffff; background-color: #0d6efd; border: solid 1px #0d6efd; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 15px 25px; text-transform: capitalize; border-color: #0d6efd; '>View Ordinance</a></td></tr></table>";
+            pendingEmail.EmailSubject = $"{formType} PENDING";
+            pendingEmail.EmailTitle = $"{formType} PENDING";
+            pendingEmail.EmailText = $"<p style='margin: 0;'><span style='font-size:36.0pt;font-family:\"Times New Roman\",serif;color:#2D71D5;font-weight:bold;'>THΣMIS</span></p><div align=center style='text-align:center'><span><hr size='2' width='100%' align='center' style='margin-top: 0;'></span></div><p><span>An <b>{formType}</b> has been moved to <b>PENDING</b> status.</span></p><br /><p style='margin: 0; line-height: 1.5;'><span>ID: {ordinance.OrdinanceID}</span></p>{ordinanceNumInfo}<p style='margin: 0; line-height: 1.5;'><span>Date: {DateTime.Now}</span></p><p style='margin: 0; line-height: 1.5;'><span>Department: {requestDepartment.SelectedItem.Text}</span></p><p style='margin: 0; line-height: 1.5;'><span>Contact: {requestContact.Text}</span></p><p style='margin: 0; line-height: 1.5;'><span>Phone: {ordinance.RequestPhone}</span></p><p><span>Status: {ordinance.StatusDescription}</span></p><br /><p><span>Please click the button below to review the document:</span></p><table border='0' cellpadding='0' cellspacing='0' style='border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;'><tr><td style='font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #0d6efd; border-radius: 5px; text-align: center;' valign='top' bgcolor='#0d6efd' align='center'><a href='{href}' target='_blank' style='display: inline-block; color: #ffffff; background-color: #0d6efd; border: solid 1px #0d6efd; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 15px 25px; text-transform: capitalize; border-color: #0d6efd; '>View Ordinance</a></td></tr></table>";
+
+            Email underReviewEmail = new Email();
+
+            underReviewEmail.EmailSubject = $"{formType} UNDER REVIEW";
+            underReviewEmail.EmailTitle = $"{formType} UNDER REVIEW";
+            underReviewEmail.EmailText = $"<p style='margin: 0;'><span style='font-size:36.0pt;font-family:\"Times New Roman\",serif;color:#2D71D5;font-weight:bold;'>THΣMIS</span></p><div align=center style='text-align:center'><span><hr size='2' width='100%' align='center' style='margin-top: 0;'></span></div><p><span>An <b>{formType}</b> has been moved to <b>UNDER REVIEW</b> status.</span></p><br /><p style='margin: 0; line-height: 1.5;'><span>ID: {ordinance.OrdinanceID}</span></p>{ordinanceNumInfo}<p style='margin: 0; line-height: 1.5;'><span>Date: {DateTime.Now}</span></p><p style='margin: 0; line-height: 1.5;'><span>Department: {requestDepartment.SelectedItem.Text}</span></p><p style='margin: 0; line-height: 1.5;'><span>Contact: {requestContact.Text}</span></p><p style='margin: 0; line-height: 1.5;'><span>Phone: {ordinance.RequestPhone}</span></p><p><span>Status: {ordinance.StatusDescription}</span></p><br /><p><span>Please click the button below to review the document:</span></p><table border='0' cellpadding='0' cellspacing='0' style='border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;'><tr><td style='font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #0d6efd; border-radius: 5px; text-align: center;' valign='top' bgcolor='#0d6efd' align='center'><a href='{href}' target='_blank' style='display: inline-block; color: #ffffff; background-color: #0d6efd; border: solid 1px #0d6efd; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 15px 25px; text-transform: capitalize; border-color: #0d6efd; '>View Ordinance</a></td></tr></table>";
 
 
 
@@ -2970,17 +3009,13 @@ namespace WebUI
                         Session["ToastMessage"] = "Form Saved!";
                         if (isPending)
                         {
-                            if (HttpContext.Current.IsDebuggingEnabled)
-                            {
-                                Debug.WriteLine(pendingEmailList);
-                                Email.Instance.SendEmail(pendingEmail, "kyle.bolinger@cwlp.com");
-                            }
-                            else
-                            {
-                                Email.Instance.SendEmail(pendingEmail, pendingEmailList);
-                            }
-                            Email.Instance.SendEmail(newEmail, emailList);
+                            Email.Instance.SendEmail(pendingEmail, pendingEmailList);
                         }
+                        if (isUnderReview)
+                        {
+                            Email.Instance.SendEmail(underReviewEmail, underReviewEmailList);
+                        }
+                        Email.Instance.SendEmail(newEmail, emailList);
                         break;
                 }
                 Response.Redirect("./Ordinances");
@@ -3012,6 +3047,11 @@ namespace WebUI
                 _user.Email.ToLower(),
                 ord.RequestEmail.ToLower()
             };
+            string[] defaultEmails = Factory.Instance.GetByID<DefaultEmails>(7, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID").EmailAddress.Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
+            foreach (string item in defaultEmails)
+            {
+                addEmailList.Add(item);
+            }
             foreach (string item in addEmailList)
             {
                 emailList = Email.Instance.AddEmailAddress(emailList, item);
@@ -3046,7 +3086,7 @@ namespace WebUI
                         Session["SubmitStatus"] = "success";
                         Session["ToastColor"] = "text-bg-success";
                         Session["ToastMessage"] = "Entry Deleted!";
-                        Email.Instance.SendEmail(newEmail, emailList, true);
+                        Email.Instance.SendEmail(newEmail, emailList);
                         Response.Redirect("./Ordinances");
                     }
                     else
@@ -3203,6 +3243,11 @@ namespace WebUI
                 _user.Email.ToLower(),
                 requestEmail.Text.ToLower()
             };
+            string[] defaultEmails = Factory.Instance.GetByID<DefaultEmails>(6, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID").EmailAddress.Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
+            foreach (string item in defaultEmails)
+            {
+                addEmailList.Add(item);
+            }
             foreach (string item in addEmailList)
             {
                 emailList = Email.Instance.AddEmailAddress(emailList, item);
@@ -3216,7 +3261,7 @@ namespace WebUI
 
             newEmail.EmailSubject = $"{formType} REJECTED";
             newEmail.EmailTitle = $"{formType} REJECTED";
-            newEmail.EmailText = $"<p style='margin: 0;'><span style='font-size:36.0pt;font-family:\"Times New Roman\",serif;color:#2D71D5;font-weight:bold;'>THΣMIS</span></p><div align=center style='text-align:center'><span><hr size='2' width='100%' align='center' style='margin-top: 0;'></span></div><p><span>An <b>{formType}</b> has been REJECTED by <b>{_user.FirstName} {_user.LastName}</b>.</span></p><br /><p style='margin: 0; line-height: 1.5;'><span>ID: {hdnOrdID.Value}</span></p>{ordinanceNumInfo}<p style='margin: 0; line-height: 1.5;'><span>Date: {DateTime.Now}</span></p><p><span>Status: Rejected</span></p><br /><p style='margin: 0; line-height: 1.5;'><span>Rejection Reason:</span></p><p style='margin: 0; line-height: 1.5;'><span>{rejectionReason.Text}</span></p><p><span>Please click the button below to review the document and make changes if necessary:</span></p><table border='0' cellpadding='0' cellspacing='0' style='border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;'><tr><td style='font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #0d6efd; border-radius: 5px; text-align: center;' valign='top' bgcolor='#0d6efd' align='center'><a href='{href}' target='_blank' style='display: inline-block; color: #ffffff; background-color: #0d6efd; border: solid 1px #0d6efd; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 15px 25px; text-transform: capitalize; border-color: #0d6efd; '>View Ordinance</a></td></tr></table><br /><p><span>If you believe this is a mistake or have any questions please contact the rejector at <a href='mailto:{_user.Email.ToLower()}'>{_user.Email.ToLower()}</a></span></p>";
+            newEmail.EmailText = $"<p style='margin: 0;'><span style='font-size:36.0pt;font-family:\"Times New Roman\",serif;color:#2D71D5;font-weight:bold;'>THΣMIS</span></p><div align=center style='text-align:center'><span><hr size='2' width='100%' align='center' style='margin-top: 0;'></span></div><p><span>An <b>{formType}</b> has been REJECTED by <b>{_user.FirstName} {_user.LastName}</b>.</span></p><br /><p style='margin: 0; line-height: 1.5;'><span>ID: {hdnOrdID.Value}</span></p>{ordinanceNumInfo}<p style='margin: 0; line-height: 1.5;'><span>Date: {DateTime.Now}</span></p><p><span>Status: Rejected</span></p><br /><p style='margin: 0; line-height: 1.5;'><span><b>Rejection Reason:</b></span></p><p style='margin: 0; line-height: 1.5;'><span>{rejectionReason.Text}</span></p><p><span>Please click the button below to review the document and make changes if necessary:</span></p><table border='0' cellpadding='0' cellspacing='0' style='border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;'><tr><td style='font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #0d6efd; border-radius: 5px; text-align: center;' valign='top' bgcolor='#0d6efd' align='center'><a href='{href}' target='_blank' style='display: inline-block; color: #ffffff; background-color: #0d6efd; border: solid 1px #0d6efd; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 15px 25px; text-transform: capitalize; border-color: #0d6efd; '>View Ordinance</a></td></tr></table><br /><p><span>If you believe this is a mistake or have any questions please contact the rejector at <a href='mailto:{_user.Email.ToLower()}'>{_user.Email.ToLower()}</a></span></p>";
 
             Email.Instance.SendEmail(newEmail, emailList);
 
