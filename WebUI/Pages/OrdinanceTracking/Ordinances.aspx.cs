@@ -27,7 +27,7 @@ namespace WebUI
     {
         private ADUser _user = new ADUser();
         public UserInfo userInfo = new UserInfo();
-        private readonly string emailList = HttpContext.Current.IsDebuggingEnabled ? "NewFactSheetEmailListTEST" : "NewFactSheetEmailList";
+        private readonly string pendingEmailList = Factory.Instance.GetByID<DefaultEmails>(1, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID").EmailAddress.Replace(';', ',');
         public string deptDivColumnType = "RequestDepartment";
         
         public readonly List<string> lockedStatus = new List<string>()
@@ -2623,6 +2623,7 @@ namespace WebUI
             int insertSignatureVal = new int();
             int sigAuditVal = new int();
             bool isPending = false;
+            string signatureName = string.Empty;
             if (Session["insertSigList"] != null)
             {
                 List<OrdinanceSignature> insertSigList = (List<OrdinanceSignature>)Session["insertSigList"];
@@ -2646,6 +2647,7 @@ namespace WebUI
                             LastUpdateBy = $"{_user.FirstName} {_user.LastName}",
                             LastUpdateDate = DateTime.Now,
                         };
+                        signatureName = item.Signature;
                         sigAuditVal = Factory.Instance.Insert(sigAudit, "sp_InsertOrdinance_Audit", Skips("ordAuditInsert"));
                     }
                 }
@@ -2658,6 +2660,7 @@ namespace WebUI
 
             int statusVal = Factory.Instance.Update(ordStatus, "sp_UpdateOrdinance_Status", Skips("ordStatusUpdate"));
 
+            string emailList = string.Empty;
             List<string> addEmailList = new List<string>()
             {
                 _user.Email.ToLower(),
@@ -2665,7 +2668,7 @@ namespace WebUI
             };
             foreach (string item in addEmailList)
             {
-                Email.Instance.AddEmailAddress(emailList, item);
+                emailList = Email.Instance.AddEmailAddress(emailList, item);
             }
             string formType = "Ordinance Fact Sheet";
             string href = $"apptest/Themis/Ordinances?id={hdnOrdID.Value}&v=view";
@@ -2676,6 +2679,14 @@ namespace WebUI
             newEmail.EmailSubject = $"{formType} UPDATED";
             newEmail.EmailTitle = $"{formType} UPDATED";
             newEmail.EmailText = $"<p style='margin: 0;'><span style='font-size:36.0pt;font-family:\"Times New Roman\",serif;color:#2D71D5;font-weight:bold;'>THΣMIS</span></p><div align=center style='text-align:center'><span><hr size='2' width='100%' align='center' style='margin-top: 0;'></span></div><p><span>An <b>{formType}</b> has been UPDATED by <b>{_user.FirstName} {_user.LastName}</b>.</span></p><br /><p style='margin: 0; line-height: 1.5;'><span>ID: {ordinance.OrdinanceID}</span></p>{ordinanceNumInfo}<p style='margin: 0; line-height: 1.5;'><span>Date: {DateTime.Now}</span></p><p style='margin: 0; line-height: 1.5;'><span>Department: {requestDepartment.SelectedItem.Text}</span></p><p style='margin: 0; line-height: 1.5;'><span>Contact: {requestContact.Text}</span></p><p style='margin: 0; line-height: 1.5;'><span>Phone: {ordinance.RequestPhone}</span></p><p><span>Status: {ordinance.StatusDescription}</span></p><br /><p><span>Please click the button below to review the document:</span></p><table border='0' cellpadding='0' cellspacing='0' style='border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;'><tr><td style='font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #0d6efd; border-radius: 5px; text-align: center;' valign='top' bgcolor='#0d6efd' align='center'><a href='{href}' target='_blank' style='display: inline-block; color: #ffffff; background-color: #0d6efd; border: solid 1px #0d6efd; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 15px 25px; text-transform: capitalize; border-color: #0d6efd; '>View Ordinance</a></td></tr></table>";
+
+
+
+            Email pendingEmail = new Email();
+
+            pendingEmail.EmailSubject = $"{formType} SIGNED & PENDING";
+            pendingEmail.EmailTitle = $"{formType} SIGNED & PENDING";
+            pendingEmail.EmailText = $"<p style='margin: 0;'><span style='font-size:36.0pt;font-family:\"Times New Roman\",serif;color:#2D71D5;font-weight:bold;'>THΣMIS</span></p><div align=center style='text-align:center'><span><hr size='2' width='100%' align='center' style='margin-top: 0;'></span></div><p><span>An <b>{formType}</b> has been SIGNED '{signatureName}' by <b>{_user.FirstName} {_user.LastName}</b> as <b>Director/Supervisor</b> and is now in <b>PENDING</b> status.</span></p><br /><p style='margin: 0; line-height: 1.5;'><span>ID: {ordinance.OrdinanceID}</span></p>{ordinanceNumInfo}<p style='margin: 0; line-height: 1.5;'><span>Date: {DateTime.Now}</span></p><p style='margin: 0; line-height: 1.5;'><span>Department: {requestDepartment.SelectedItem.Text}</span></p><p style='margin: 0; line-height: 1.5;'><span>Contact: {requestContact.Text}</span></p><p style='margin: 0; line-height: 1.5;'><span>Phone: {ordinance.RequestPhone}</span></p><p><span>Status: {ordinance.StatusDescription}</span></p><br /><p><span>Please click the button below to review the document:</span></p><table border='0' cellpadding='0' cellspacing='0' style='border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;'><tr><td style='font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #0d6efd; border-radius: 5px; text-align: center;' valign='top' bgcolor='#0d6efd' align='center'><a href='{href}' target='_blank' style='display: inline-block; color: #ffffff; background-color: #0d6efd; border: solid 1px #0d6efd; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 15px 25px; text-transform: capitalize; border-color: #0d6efd; '>View Ordinance</a></td></tr></table>";
 
 
 
@@ -2957,7 +2968,19 @@ namespace WebUI
                         break;
                     case false:
                         Session["ToastMessage"] = "Form Saved!";
-                        //Email.Instance.SendEmail(newEmail, emailList);
+                        if (isPending)
+                        {
+                            if (HttpContext.Current.IsDebuggingEnabled)
+                            {
+                                Debug.WriteLine(pendingEmailList);
+                                Email.Instance.SendEmail(pendingEmail, "kyle.bolinger@cwlp.com");
+                            }
+                            else
+                            {
+                                Email.Instance.SendEmail(pendingEmail, pendingEmailList);
+                            }
+                            Email.Instance.SendEmail(newEmail, emailList);
+                        }
                         break;
                 }
                 Response.Redirect("./Ordinances");
@@ -2983,6 +3006,7 @@ namespace WebUI
             ordStatus.ExpirationDate = DateTime.MaxValue;
             int retVal = Factory.Instance.Expire<Ordinance>(ord, "sp_UpdateOrdinance", Skips("ordUpdate"));
 
+            string emailList = string.Empty;
             List<string> addEmailList = new List<string>()
             {
                 _user.Email.ToLower(),
@@ -2990,7 +3014,7 @@ namespace WebUI
             };
             foreach (string item in addEmailList)
             {
-                Email.Instance.AddEmailAddress(emailList, item);
+                emailList = Email.Instance.AddEmailAddress(emailList, item);
             }
             string formType = "Ordinance Fact Sheet";
             string href = $"apptest/Themis/Ordinances?id={hdnOrdID.Value}&v=view";
@@ -3173,6 +3197,7 @@ namespace WebUI
         }
         protected void sendRejection_Click(object sender, EventArgs e)
         {
+            string emailList = string.Empty;
             List<string> addEmailList = new List<string>()
             {
                 _user.Email.ToLower(),
@@ -3180,7 +3205,7 @@ namespace WebUI
             };
             foreach (string item in addEmailList)
             {
-                Email.Instance.AddEmailAddress(emailList, item);
+                emailList = Email.Instance.AddEmailAddress(emailList, item);
             }
             string formType = "Ordinance Fact Sheet";
             string href = $"apptest/Themis/Ordinances?id={hdnOrdID.Value}&v=edit";

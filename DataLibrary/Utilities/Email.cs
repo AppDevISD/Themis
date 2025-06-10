@@ -41,19 +41,19 @@ namespace DataLibrary
 
         public string AddEmailAddress(string emailList, string emailAddress)
         {
-            string currentList = Properties.Settings.Default[emailList].ToString();
+            string currentList = emailList;
             switch (currentList.Contains(emailAddress))
             {
                 case true:
-                    Properties.Settings.Default[emailList] = currentList;
+                    emailList = currentList;
                     break;
 
                 case false:
-                    Properties.Settings.Default[emailList] = $"{currentList},{emailAddress}";
+                    emailList = $"{currentList},{emailAddress}";
                     break;
             }
 
-            return emailAddress;
+            return emailList;
         }
 
         public string ResetEmailList(string emailList, string permanentEmail)

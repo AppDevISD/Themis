@@ -190,7 +190,7 @@ namespace WebUI
                             string departmentName = filterDepartment.SelectedItem.Text;
                             string divisionName = !filterDivision.SelectedIndex.Equals(0) ? filterDivision.SelectedItem.Text : "None";
                             defaultEmailID = Factory.Instance.GetDefaultEmailsByDepartmentDivision(departmentName, divisionName).DefaultEmailsID;
-                            directorSupervisorSignatureEmailAddress.Enabled = true;
+                            directorSupervisorDefaultEmailAddress.Enabled = true;
 
                             HtmlGenericControl noItemsTxt = (HtmlGenericControl)listInfo["NoItemsTxt"];
                             noItemsTxt.InnerText = "There are no default emails set for the current department/division";
@@ -199,7 +199,7 @@ namespace WebUI
                         else
                         {
                             defaultEmailID = 0;
-                            directorSupervisorSignatureEmailAddress.Enabled = false;
+                            directorSupervisorDefaultEmailAddress.Enabled = false;
 
                             HtmlGenericControl noItemsTxt = (HtmlGenericControl)listInfo["NoItemsTxt"];
                             noItemsTxt.InnerText = "Please Select a Department and/or Division";
@@ -286,7 +286,7 @@ namespace WebUI
                 string departmentName = filterDepartment.SelectedItem.Text;
                 string divisionName = !filterDivision.SelectedIndex.Equals(0) ? filterDivision.SelectedItem.Text : "None";
                 defaultEmailID = Factory.Instance.GetDefaultEmailsByDepartmentDivision(departmentName, divisionName).DefaultEmailsID;
-                directorSupervisorSignatureEmailAddress.Enabled = true;
+                directorSupervisorDefaultEmailAddress.Enabled = true;
 
                 HtmlGenericControl noItemsTxt = (HtmlGenericControl)listInfo["NoItemsTxt"];
                 noItemsTxt.InnerText = "There are no default emails set for the current department/division";
@@ -295,7 +295,7 @@ namespace WebUI
             else
             {
                 defaultEmailID = 0;
-                directorSupervisorSignatureEmailAddress.Enabled = false;
+                directorSupervisorDefaultEmailAddress.Enabled = false;
 
                 HtmlGenericControl noItemsTxt = (HtmlGenericControl)listInfo["NoItemsTxt"];
                 noItemsTxt.InnerText = "Please Select a Department and/or Division";
@@ -357,8 +357,10 @@ namespace WebUI
                 rpDirectorSupervisorDefaultList.DataSource = null;
                 rpDirectorSupervisorDefaultList.DataBind();
             }
+
+            directorSupervisorDefaultEmailAddress.Text = string.Empty;
         }
-        protected void AddRequestEmailAddress_Click(object sender, EventArgs e)
+        protected void AddDefaultEmailAddress_Click(object sender, EventArgs e)
         {
             Button button = (Button)sender;
             TextBox address = (TextBox)pnlAdmin.FindControl(button.Attributes["data-email-text"]);
@@ -393,7 +395,7 @@ namespace WebUI
             string[] newEmailAddresses = address.Text.Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
             foreach (string item in newEmailAddresses)
             {
-                emails.Add(item);
+                emails.Add(item.ToLower());
             }
             string setEmails = string.Join(";", emails.OrderBy(i => i));
             defaultList.EmailAddress = setEmails.ToLower();

@@ -28,7 +28,6 @@ namespace WebUI
     {
         private ADUser _user = new ADUser();
         public UserInfo userInfo = new UserInfo();
-        private readonly string emailList = HttpContext.Current.IsDebuggingEnabled ? "NewFactSheetEmailListTEST" : "NewFactSheetEmailList";
         public string deptDivColumnType = "RequestDepartment";
 
         public readonly List<string> lockedStatus = new List<string>()
@@ -1419,6 +1418,39 @@ namespace WebUI
                     }
                 }
 
+                string sigRequests = string.Empty;
+                SignatureRequest signatureRequest = Factory.Instance.GetByID<SignatureRequest>(Convert.ToInt32(hdnOrdID.Value), "sp_GetOrdinanceSignatureRequestByOrdinanceID", "OrdinanceID");
+
+                string departmentName = requestDepartment.SelectedItem.Text;
+                string divisionName = !requestDivision.SelectedIndex.Equals(0) ? requestDivision.SelectedItem.Text : "None";
+                int defaultDeptEmailID = Factory.Instance.GetDefaultEmailsByDepartmentDivision(departmentName, "None").DefaultEmailsID;
+                int defaultDeptDivEmailID = Factory.Instance.GetDefaultEmailsByDepartmentDivision(departmentName, divisionName).DefaultEmailsID;
+                string departmentDefaultList = Factory.Instance.GetByID<DefaultEmails>(defaultDeptEmailID, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID").EmailAddress;
+                string deptDivDefaultList = string.Empty;
+                int updateSigRequest = 0;
+                if (!defaultDeptDivEmailID.Equals(defaultDeptEmailID))
+                {
+                    deptDivDefaultList = Factory.Instance.GetByID<DefaultEmails>(defaultDeptDivEmailID, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID").EmailAddress;
+                }
+                if (btn.CommandName.Equals("submit"))
+                {
+                    if (signatureRequest.DirectorSupervisor.Length > 0 && departmentDefaultList.Length > 0)
+                    {
+                        signatureRequest.DirectorSupervisor += $";{departmentDefaultList}";
+                    }
+
+                    if (signatureRequest.DirectorSupervisor.Length > 0 && deptDivDefaultList.Length > 0)
+                    {
+                        signatureRequest.DirectorSupervisor += $";{deptDivDefaultList}";
+                    }
+
+                    updateSigRequest = Factory.Instance.Update(signatureRequest, "sp_UpdateOrdinance_SignatureRequest");
+                }
+                else
+                {
+                    updateSigRequest = 1;
+                }
+
                 Email sigRequestEmail = new Email();
                 Email submittedEmail = new Email();
                 if (btn.CommandName.Equals("submit"))
@@ -1440,14 +1472,15 @@ namespace WebUI
 
                 List<int> submitVals = new List<int>(new int[]
                 {
-                retVal,
-                statusVal,
-                removeDocVal,
-                addDocsVal,
-                addUploadedDocsVal,
-                removeOrdAccsVal,
-                updateRevAccsVal,
-                updateExpAccsVal,
+                    retVal,
+                    statusVal,
+                    removeDocVal,
+                    addDocsVal,
+                    addUploadedDocsVal,
+                    removeOrdAccsVal,
+                    updateRevAccsVal,
+                    updateExpAccsVal,
+                    updateSigRequest
                 });
 
                 if (submitVals.All(i => i > 0))

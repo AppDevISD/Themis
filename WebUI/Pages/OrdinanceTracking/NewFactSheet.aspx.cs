@@ -20,7 +20,6 @@ namespace WebUI
     {
         private ADUser _user = new ADUser();
         public UserInfo userInfo = new UserInfo();
-        private readonly string emailList = HttpContext.Current.IsDebuggingEnabled ? "NewFactSheetEmailListTEST" : "NewFactSheetEmailList";
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -536,24 +535,52 @@ namespace WebUI
                     SignatureRequest signatureRequest = new SignatureRequest()
                     {
                         OrdinanceID = retVal,
-                        FundsCheckBy = string.Empty,
+                        FundsCheckBy = Factory.Instance.GetByID<DefaultEmails>(8, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID").EmailAddress,
                         DirectorSupervisor = string.Empty,
-                        CityPurchasingAgent = string.Empty,
-                        OBMDirector = string.Empty,
-                        Mayor = string.Empty,
+                        CityPurchasingAgent = Factory.Instance.GetByID<DefaultEmails>(9, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID").EmailAddress,
+                        OBMDirector = Factory.Instance.GetByID<DefaultEmails>(10, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID").EmailAddress,
+                        Mayor = Factory.Instance.GetByID<DefaultEmails>(11, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID").EmailAddress,
                         LastUpdateBy = $"{_user.FirstName} {_user.LastName}",
                         LastUpdateDate = DateTime.Now,
                         EffectiveDate = DateTime.Now,
                         ExpirationDate = DateTime.MaxValue
                     };
 
+                    string sigRequests = string.Empty;
                     if (Session["SigRequestEmails"] != null)
                     {
                         SignatureRequest directorSupervisorSigRequest = Session["SigRequestEmails"] as SignatureRequest;
                         signatureRequest.DirectorSupervisor = directorSupervisorSigRequest.DirectorSupervisor;
                     }
 
+                    
+
+                    string departmentName = requestDepartment.SelectedItem.Text;
+                    string divisionName = !requestDivision.SelectedIndex.Equals(0) ? requestDivision.SelectedItem.Text : "None";
+                    int defaultDeptEmailID = Factory.Instance.GetDefaultEmailsByDepartmentDivision(departmentName, "None").DefaultEmailsID;
+                    int defaultDeptDivEmailID = Factory.Instance.GetDefaultEmailsByDepartmentDivision(departmentName, divisionName).DefaultEmailsID;
+                    string departmentDefaultList = Factory.Instance.GetByID<DefaultEmails>(defaultDeptEmailID, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID").EmailAddress;
+                    string deptDivDefaultList = string.Empty;
+                    if (!defaultDeptDivEmailID.Equals(defaultDeptEmailID))
+                    {
+                       deptDivDefaultList = Factory.Instance.GetByID<DefaultEmails>(defaultDeptDivEmailID, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID").EmailAddress;
+                    }
+                    if (btn.CommandName.Equals("submit"))
+                    {
+                        if (signatureRequest.DirectorSupervisor.Length > 0 && departmentDefaultList.Length > 0)
+                        {
+                            signatureRequest.DirectorSupervisor += $";{departmentDefaultList}";
+                        }
+
+                        if (signatureRequest.DirectorSupervisor.Length > 0 && deptDivDefaultList.Length > 0)
+                        {
+                            signatureRequest.DirectorSupervisor += $";{deptDivDefaultList}";
+                        }
+                    }
+
                     int signatureRequestRet = Factory.Instance.Insert(signatureRequest, "sp_InsertOrdinance_SignatureRequest", Skips("ordSignatureRequestInsert"));
+
+
 
                     if (signatureRequestRet < 1)
                     {
@@ -601,6 +628,7 @@ namespace WebUI
                                     Session["SubmitStatus"] = "success";
                                     Session["ToastColor"] = "text-bg-success";
                                     Session["ToastMessage"] = "Form Submitted!";
+
                                     Email.Instance.SendEmail(sigRequestEmail, directorSupervisorEmailAddresses.Text.Replace(";", ","));
                                     Email.Instance.SendEmail(submittedEmail, _user.Email);
                                     Response.Redirect("./NewFactSheet", false);

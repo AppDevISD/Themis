@@ -501,22 +501,22 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.Repeater rpFundsCheckByDefaultList;
 
         /// <summary>
-        /// fundsCheckBySignatureEmailAddress control.
+        /// fundsCheckByDefaultEmailAddress control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox fundsCheckBySignatureEmailAddress;
+        protected global::System.Web.UI.WebControls.TextBox fundsCheckByDefaultEmailAddress;
 
         /// <summary>
-        /// FundsCheckByAddRequestEmailAddress control.
+        /// FundsCheckByAddDefaultEmailAddress control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button FundsCheckByAddRequestEmailAddress;
+        protected global::System.Web.UI.WebControls.Button FundsCheckByAddDefaultEmailAddress;
 
         /// <summary>
         /// directorSupervisorTabPane control.
@@ -573,22 +573,22 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.Repeater rpDirectorSupervisorDefaultList;
 
         /// <summary>
-        /// directorSupervisorSignatureEmailAddress control.
+        /// directorSupervisorDefaultEmailAddress control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox directorSupervisorSignatureEmailAddress;
+        protected global::System.Web.UI.WebControls.TextBox directorSupervisorDefaultEmailAddress;
 
         /// <summary>
-        /// DirectorSupervisorAddRequestEmailAddress control.
+        /// DirectorSupervisorAddDefaultEmailAddress control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button DirectorSupervisorAddRequestEmailAddress;
+        protected global::System.Web.UI.WebControls.Button DirectorSupervisorAddDefaultEmailAddress;
 
         /// <summary>
         /// cPATabPane control.
@@ -618,22 +618,22 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.Repeater rpCPADefaultList;
 
         /// <summary>
-        /// cPASignatureEmailAddress control.
+        /// cPADefaultEmailAddress control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox cPASignatureEmailAddress;
+        protected global::System.Web.UI.WebControls.TextBox cPADefaultEmailAddress;
 
         /// <summary>
-        /// CPAAddRequestEmailAddress control.
+        /// CPAAddDefaultEmailAddress control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button CPAAddRequestEmailAddress;
+        protected global::System.Web.UI.WebControls.Button CPAAddDefaultEmailAddress;
 
         /// <summary>
         /// obmDirectorTabPane control.
@@ -663,22 +663,22 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.Repeater rpOBMDirectorDefaultList;
 
         /// <summary>
-        /// obmDirectorSignatureEmailAddress control.
+        /// obmDirectorDefaultEmailAddress control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox obmDirectorSignatureEmailAddress;
+        protected global::System.Web.UI.WebControls.TextBox obmDirectorDefaultEmailAddress;
 
         /// <summary>
-        /// OBMDirectorAddRequestEmailAddress control.
+        /// OBMDirectorAddDefaultEmailAddress control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button OBMDirectorAddRequestEmailAddress;
+        protected global::System.Web.UI.WebControls.Button OBMDirectorAddDefaultEmailAddress;
 
         /// <summary>
         /// mayorTabPane control.
@@ -708,22 +708,22 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.Repeater rpMayorDefaultList;
 
         /// <summary>
-        /// mayorSignatureEmailAddress control.
+        /// mayorDefaultEmailAddress control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox mayorSignatureEmailAddress;
+        protected global::System.Web.UI.WebControls.TextBox mayorDefaultEmailAddress;
 
         /// <summary>
-        /// MayorAddRequestEmailAddress control.
+        /// MayorAddDefaultEmailAddress control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button MayorAddRequestEmailAddress;
+        protected global::System.Web.UI.WebControls.Button MayorAddDefaultEmailAddress;
 
         /// <summary>
         /// hdnActiveTabs control.

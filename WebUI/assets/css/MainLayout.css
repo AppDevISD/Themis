@@ -324,6 +324,7 @@ a.activePage, [data-active-page="activePage"] .nav-link, .nav-link.active {
 }
 
 input[type="date"] {
+	-moz-appearance: none !important;
 	cursor: text !important;
 }
 

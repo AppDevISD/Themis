@@ -17,11 +17,11 @@
 				<asp:AsyncPostBackTrigger ControlID="ApprovedAddEmailAddress" EventName="Click" />
 				<asp:AsyncPostBackTrigger ControlID="RejectedAddEmailAddress" EventName="Click" />
 				<asp:AsyncPostBackTrigger ControlID="DeletedAddEmailAddress" EventName="Click" />
-				<asp:AsyncPostBackTrigger ControlID="FundsCheckByAddRequestEmailAddress" EventName="Click" />
-				<asp:AsyncPostBackTrigger ControlID="DirectorSupervisorAddRequestEmailAddress" EventName="Click" />
-				<asp:AsyncPostBackTrigger ControlID="CPAAddRequestEmailAddress" EventName="Click" />
-				<asp:AsyncPostBackTrigger ControlID="OBMDirectorAddRequestEmailAddress" EventName="Click" />
-				<asp:AsyncPostBackTrigger ControlID="MayorAddRequestEmailAddress" EventName="Click" />
+				<asp:AsyncPostBackTrigger ControlID="FundsCheckByAddDefaultEmailAddress" EventName="Click" />
+				<asp:AsyncPostBackTrigger ControlID="DirectorSupervisorAddDefaultEmailAddress" EventName="Click" />
+				<asp:AsyncPostBackTrigger ControlID="CPAAddDefaultEmailAddress" EventName="Click" />
+				<asp:AsyncPostBackTrigger ControlID="OBMDirectorAddDefaultEmailAddress" EventName="Click" />
+				<asp:AsyncPostBackTrigger ControlID="MayorAddDefaultEmailAddress" EventName="Click" />
 				
 			</Triggers>
 
@@ -106,7 +106,7 @@
 																			<div class="input-group">
 																				<span class="input-group-text fas fa-address-book"></span>
 																				<asp:TextBox runat="server" ID="pendingEmailAddress" CssClass="form-control" TextMode="Email" AutoCompleteType="Email" placeholder="john.doe@corporate.com" data-enter-btn="PendingAddEmailAddress"></asp:TextBox>
-																				<asp:Button runat="server" ID="PendingAddEmailAddress" UseSubmitBehavior="false" CssClass="btn btn-success fas-btn" disabled="disabled" Text='&#xf055;' data-disable-btn="aspIconBtn" TabIndex="-1" OnClick="AddRequestEmailAddress_Click" data-email-text="pendingEmailAddress" CommandName="Pending" CommandArgument="1"/>
+																				<asp:Button runat="server" ID="PendingAddEmailAddress" UseSubmitBehavior="false" CssClass="btn btn-success fas-btn" disabled="disabled" Text='&#xf055;' data-disable-btn="aspIconBtn" TabIndex="-1" OnClick="AddDefaultEmailAddress_Click" data-email-text="pendingEmailAddress" CommandName="Pending" CommandArgument="1"/>
 																			</div>
 																		</div>
 																	</div>
@@ -139,7 +139,7 @@
 																			<div class="input-group">
 																				<span class="input-group-text fas fa-address-book"></span>
 																				<asp:TextBox runat="server" ID="underReviewEmailAddress" CssClass="form-control" TextMode="Email" AutoCompleteType="Email" placeholder="john.doe@corporate.com" data-enter-btn="UnderReviewAddEmailAddress"></asp:TextBox>
-																				<asp:Button runat="server" ID="UnderReviewAddEmailAddress" UseSubmitBehavior="false" CssClass="btn btn-success fas-btn" disabled="disabled" Text='&#xf055;' data-disable-btn="aspIconBtn" TabIndex="-1" OnClick="AddRequestEmailAddress_Click" data-email-text="underReviewEmailAddress" CommandName="Under Review" CommandArgument="2"/>
+																				<asp:Button runat="server" ID="UnderReviewAddEmailAddress" UseSubmitBehavior="false" CssClass="btn btn-success fas-btn" disabled="disabled" Text='&#xf055;' data-disable-btn="aspIconBtn" TabIndex="-1" OnClick="AddDefaultEmailAddress_Click" data-email-text="underReviewEmailAddress" CommandName="Under Review" CommandArgument="2"/>
 																			</div>
 																		</div>
 																	</div>
@@ -172,7 +172,7 @@
 																			<div class="input-group">
 																				<span class="input-group-text fas fa-address-book"></span>
 																				<asp:TextBox runat="server" ID="beingHeldEmailAddress" CssClass="form-control" TextMode="Email" AutoCompleteType="Email" placeholder="john.doe@corporate.com" data-enter-btn="BeingHeldAddEmailAddress"></asp:TextBox>
-																				<asp:Button runat="server" ID="BeingHeldAddEmailAddress" UseSubmitBehavior="false" CssClass="btn btn-success fas-btn" disabled="disabled" Text='&#xf055;' data-disable-btn="aspIconBtn" TabIndex="-1" OnClick="AddRequestEmailAddress_Click" data-email-text="beingHeldEmailAddress" CommandName="Being Held" CommandArgument="3"/>
+																				<asp:Button runat="server" ID="BeingHeldAddEmailAddress" UseSubmitBehavior="false" CssClass="btn btn-success fas-btn" disabled="disabled" Text='&#xf055;' data-disable-btn="aspIconBtn" TabIndex="-1" OnClick="AddDefaultEmailAddress_Click" data-email-text="beingHeldEmailAddress" CommandName="Being Held" CommandArgument="3"/>
 																			</div>
 																		</div>
 																	</div>
@@ -205,7 +205,7 @@
 																			<div class="input-group">
 																				<span class="input-group-text fas fa-address-book"></span>
 																				<asp:TextBox runat="server" ID="draftedEmailAddress" CssClass="form-control" TextMode="Email" AutoCompleteType="Email" placeholder="john.doe@corporate.com" data-enter-btn="DraftedAddEmailAddress"></asp:TextBox>
-																				<asp:Button runat="server" ID="DraftedAddEmailAddress" UseSubmitBehavior="false" CssClass="btn btn-success fas-btn" disabled="disabled" Text='&#xf055;' data-disable-btn="aspIconBtn" TabIndex="-1" OnClick="AddRequestEmailAddress_Click" data-email-text="draftedEmailAddress" CommandName="Drafted" CommandArgument="4"/>
+																				<asp:Button runat="server" ID="DraftedAddEmailAddress" UseSubmitBehavior="false" CssClass="btn btn-success fas-btn" disabled="disabled" Text='&#xf055;' data-disable-btn="aspIconBtn" TabIndex="-1" OnClick="AddDefaultEmailAddress_Click" data-email-text="draftedEmailAddress" CommandName="Drafted" CommandArgument="4"/>
 																			</div>
 																		</div>
 																	</div>
@@ -238,7 +238,7 @@
 																			<div class="input-group">
 																				<span class="input-group-text fas fa-address-book"></span>
 																				<asp:TextBox runat="server" ID="approvedEmailAddress" CssClass="form-control" TextMode="Email" AutoCompleteType="Email" placeholder="john.doe@corporate.com" data-enter-btn="ApprovedAddEmailAddress"></asp:TextBox>
-																				<asp:Button runat="server" ID="ApprovedAddEmailAddress" UseSubmitBehavior="false" CssClass="btn btn-success fas-btn" disabled="disabled" Text='&#xf055;' data-disable-btn="aspIconBtn" TabIndex="-1" OnClick="AddRequestEmailAddress_Click" data-email-text="approvedEmailAddress" CommandName="Approved" CommandArgument="5"/>
+																				<asp:Button runat="server" ID="ApprovedAddEmailAddress" UseSubmitBehavior="false" CssClass="btn btn-success fas-btn" disabled="disabled" Text='&#xf055;' data-disable-btn="aspIconBtn" TabIndex="-1" OnClick="AddDefaultEmailAddress_Click" data-email-text="approvedEmailAddress" CommandName="Approved" CommandArgument="5"/>
 																			</div>
 																		</div>
 																	</div>
@@ -271,7 +271,7 @@
 																			<div class="input-group">
 																				<span class="input-group-text fas fa-address-book"></span>
 																				<asp:TextBox runat="server" ID="rejectedEmailAddress" CssClass="form-control" TextMode="Email" AutoCompleteType="Email" placeholder="john.doe@corporate.com" data-enter-btn="RejectedAddEmailAddress"></asp:TextBox>
-																				<asp:Button runat="server" ID="RejectedAddEmailAddress" UseSubmitBehavior="false" CssClass="btn btn-success fas-btn" disabled="disabled" Text='&#xf055;' data-disable-btn="aspIconBtn" TabIndex="-1" OnClick="AddRequestEmailAddress_Click" data-email-text="rejectedEmailAddress" CommandName="Rejected" CommandArgument="6"/>
+																				<asp:Button runat="server" ID="RejectedAddEmailAddress" UseSubmitBehavior="false" CssClass="btn btn-success fas-btn" disabled="disabled" Text='&#xf055;' data-disable-btn="aspIconBtn" TabIndex="-1" OnClick="AddDefaultEmailAddress_Click" data-email-text="rejectedEmailAddress" CommandName="Rejected" CommandArgument="6"/>
 																			</div>
 																		</div>
 																	</div>
@@ -304,7 +304,7 @@
 																			<div class="input-group">
 																				<span class="input-group-text fas fa-address-book"></span>
 																				<asp:TextBox runat="server" ID="deletedEmailAddress" CssClass="form-control" TextMode="Email" AutoCompleteType="Email" placeholder="john.doe@corporate.com" data-enter-btn="DeletedAddEmailAddress"></asp:TextBox>
-																				<asp:Button runat="server" ID="DeletedAddEmailAddress" UseSubmitBehavior="false" CssClass="btn btn-success fas-btn" disabled="disabled" Text='&#xf055;' data-disable-btn="aspIconBtn" TabIndex="-1" OnClick="AddRequestEmailAddress_Click" data-email-text="deletedEmailAddress" CommandName="Deleted" CommandArgument="7"/>
+																				<asp:Button runat="server" ID="DeletedAddEmailAddress" UseSubmitBehavior="false" CssClass="btn btn-success fas-btn" disabled="disabled" Text='&#xf055;' data-disable-btn="aspIconBtn" TabIndex="-1" OnClick="AddDefaultEmailAddress_Click" data-email-text="deletedEmailAddress" CommandName="Deleted" CommandArgument="7"/>
 																			</div>
 																		</div>
 																	</div>
@@ -362,8 +362,8 @@
 																		<div class="col-md-12">
 																			<div class="input-group">
 																				<span class="input-group-text fas fa-address-book"></span>
-																				<asp:TextBox runat="server" ID="fundsCheckBySignatureEmailAddress" CssClass="form-control" TextMode="Email" AutoCompleteType="Email" placeholder="john.doe@corporate.com" data-enter-btn="FundsCheckByAddRequestEmailAddress"></asp:TextBox>
-																				<asp:Button runat="server" ID="FundsCheckByAddRequestEmailAddress" UseSubmitBehavior="false" CssClass="btn btn-success fas-btn" disabled="disabled" Text='&#xf055;' data-disable-btn="aspIconBtn" TabIndex="-1" OnClick="AddRequestEmailAddress_Click" data-email-text="fundsCheckBySignatureEmailAddress" CommandName="Funds Check By" CommandArgument="8"/>
+																				<asp:TextBox runat="server" ID="fundsCheckByDefaultEmailAddress" CssClass="form-control" TextMode="Email" AutoCompleteType="Email" placeholder="john.doe@corporate.com" data-enter-btn="FundsCheckByAddDefaultEmailAddress"></asp:TextBox>
+																				<asp:Button runat="server" ID="FundsCheckByAddDefaultEmailAddress" UseSubmitBehavior="false" CssClass="btn btn-success fas-btn" disabled="disabled" Text='&#xf055;' data-disable-btn="aspIconBtn" TabIndex="-1" OnClick="AddDefaultEmailAddress_Click" data-email-text="fundsCheckByDefaultEmailAddress" CommandName="Funds Check By" CommandArgument="8"/>
 																			</div>
 																		</div>
 																	</div>
@@ -405,8 +405,8 @@
 																		<div class="col-md-12">
 																			<div class="input-group">
 																				<span class="input-group-text fas fa-address-book"></span>
-																				<asp:TextBox runat="server" ID="directorSupervisorSignatureEmailAddress" CssClass="form-control" TextMode="Email" AutoCompleteType="Email" placeholder="john.doe@corporate.com" data-enter-btn="DirectorSupervisorAddRequestEmailAddress"></asp:TextBox>
-																				<asp:Button runat="server" ID="DirectorSupervisorAddRequestEmailAddress" UseSubmitBehavior="false" CssClass="btn btn-success fas-btn" disabled="disabled" Text='&#xf055;' data-disable-btn="aspIconBtn" TabIndex="-1" OnClick="AddRequestEmailAddress_Click" data-email-text="directorSupervisorSignatureEmailAddress" CommandName="Director/Supervisor"/>
+																				<asp:TextBox runat="server" ID="directorSupervisorDefaultEmailAddress" CssClass="form-control" TextMode="Email" AutoCompleteType="Email" placeholder="john.doe@corporate.com" data-enter-btn="DirectorSupervisorAddDefaultEmailAddress"></asp:TextBox>
+																				<asp:Button runat="server" ID="DirectorSupervisorAddDefaultEmailAddress" UseSubmitBehavior="false" CssClass="btn btn-success fas-btn" disabled="disabled" Text='&#xf055;' data-disable-btn="aspIconBtn" TabIndex="-1" OnClick="AddDefaultEmailAddress_Click" data-email-text="directorSupervisorDefaultEmailAddress" CommandName="Director/Supervisor"/>
 																			</div>
 																		</div>
 																	</div>
@@ -436,8 +436,8 @@
 																		<div class="col-md-12">
 																			<div class="input-group">
 																				<span class="input-group-text fas fa-address-book"></span>
-																				<asp:TextBox runat="server" ID="cPASignatureEmailAddress" CssClass="form-control" TextMode="Email" AutoCompleteType="Email" placeholder="john.doe@corporate.com" data-enter-btn="CPAAddRequestEmailAddress"></asp:TextBox>
-																				<asp:Button runat="server" ID="CPAAddRequestEmailAddress" UseSubmitBehavior="false" CssClass="btn btn-success fas-btn" disabled="disabled" Text='&#xf055;' data-disable-btn="aspIconBtn" TabIndex="-1" OnClick="AddRequestEmailAddress_Click" data-email-text="cPASignatureEmailAddress" CommandName="City Purchasing Agent" CommandArgument="9"/>
+																				<asp:TextBox runat="server" ID="cPADefaultEmailAddress" CssClass="form-control" TextMode="Email" AutoCompleteType="Email" placeholder="john.doe@corporate.com" data-enter-btn="CPAAddDefaultEmailAddress"></asp:TextBox>
+																				<asp:Button runat="server" ID="CPAAddDefaultEmailAddress" UseSubmitBehavior="false" CssClass="btn btn-success fas-btn" disabled="disabled" Text='&#xf055;' data-disable-btn="aspIconBtn" TabIndex="-1" OnClick="AddDefaultEmailAddress_Click" data-email-text="cPADefaultEmailAddress" CommandName="City Purchasing Agent" CommandArgument="9"/>
 																			</div>
 																		</div>
 																	</div>
@@ -467,8 +467,8 @@
 																		<div class="col-md-12">
 																			<div class="input-group">
 																				<span class="input-group-text fas fa-address-book"></span>
-																				<asp:TextBox runat="server" ID="obmDirectorSignatureEmailAddress" CssClass="form-control" TextMode="Email" AutoCompleteType="Email" placeholder="john.doe@corporate.com" data-enter-btn="OBMDirectorAddRequestEmailAddress"></asp:TextBox>
-																				<asp:Button runat="server" ID="OBMDirectorAddRequestEmailAddress" UseSubmitBehavior="false" CssClass="btn btn-success fas-btn" disabled="disabled" Text='&#xf055;' data-disable-btn="aspIconBtn" TabIndex="-1" OnClick="AddRequestEmailAddress_Click" data-email-text="obmDirectorSignatureEmailAddress" CommandName="OBM Director" CommandArgument="10"/>
+																				<asp:TextBox runat="server" ID="obmDirectorDefaultEmailAddress" CssClass="form-control" TextMode="Email" AutoCompleteType="Email" placeholder="john.doe@corporate.com" data-enter-btn="OBMDirectorAddDefaultEmailAddress"></asp:TextBox>
+																				<asp:Button runat="server" ID="OBMDirectorAddDefaultEmailAddress" UseSubmitBehavior="false" CssClass="btn btn-success fas-btn" disabled="disabled" Text='&#xf055;' data-disable-btn="aspIconBtn" TabIndex="-1" OnClick="AddDefaultEmailAddress_Click" data-email-text="obmDirectorDefaultEmailAddress" CommandName="OBM Director" CommandArgument="10"/>
 																			</div>
 																		</div>
 																	</div>
@@ -498,8 +498,8 @@
 																		<div class="col-md-12">
 																			<div class="input-group">
 																				<span class="input-group-text fas fa-address-book"></span>
-																				<asp:TextBox runat="server" ID="mayorSignatureEmailAddress" CssClass="form-control" TextMode="Email" AutoCompleteType="Email" placeholder="john.doe@corporate.com" data-enter-btn="MayorAddRequestEmailAddress"></asp:TextBox>
-																				<asp:Button runat="server" ID="MayorAddRequestEmailAddress" UseSubmitBehavior="false" CssClass="btn btn-success fas-btn" disabled="disabled" Text='&#xf055;' data-disable-btn="aspIconBtn" TabIndex="-1" OnClick="AddRequestEmailAddress_Click" data-email-text="mayorSignatureEmailAddress" CommandName="Mayor" CommandArgument="11"/>
+																				<asp:TextBox runat="server" ID="mayorDefaultEmailAddress" CssClass="form-control" TextMode="Email" AutoCompleteType="Email" placeholder="john.doe@corporate.com" data-enter-btn="MayorAddDefaultEmailAddress"></asp:TextBox>
+																				<asp:Button runat="server" ID="MayorAddDefaultEmailAddress" UseSubmitBehavior="false" CssClass="btn btn-success fas-btn" disabled="disabled" Text='&#xf055;' data-disable-btn="aspIconBtn" TabIndex="-1" OnClick="AddDefaultEmailAddress_Click" data-email-text="mayorDefaultEmailAddress" CommandName="Mayor" CommandArgument="11"/>
 																			</div>
 																		</div>
 																	</div>
@@ -534,11 +534,11 @@
 				{ addressID: '<%= approvedEmailAddress.ClientID %>', btnID: '<%= ApprovedAddEmailAddress.ClientID %>' },
 				{ addressID: '<%= rejectedEmailAddress.ClientID %>', btnID: '<%= RejectedAddEmailAddress.ClientID %>' },
 				{ addressID: '<%= deletedEmailAddress.ClientID %>', btnID: '<%= DeletedAddEmailAddress.ClientID %>' },
-				{ addressID: '<%= fundsCheckBySignatureEmailAddress.ClientID %>', btnID: '<%= FundsCheckByAddRequestEmailAddress.ClientID %>' },
-				{ addressID: '<%= directorSupervisorSignatureEmailAddress.ClientID %>', btnID: '<%= DirectorSupervisorAddRequestEmailAddress.ClientID %>' },
-				{ addressID: '<%= cPASignatureEmailAddress.ClientID %>', btnID: '<%= CPAAddRequestEmailAddress.ClientID %>' },
-				{ addressID: '<%= obmDirectorSignatureEmailAddress.ClientID %>', btnID: '<%= OBMDirectorAddRequestEmailAddress.ClientID %>' },
-				{ addressID: '<%= mayorSignatureEmailAddress.ClientID %>', btnID: '<%= MayorAddRequestEmailAddress.ClientID %>' },
+				{ addressID: '<%= fundsCheckByDefaultEmailAddress.ClientID %>', btnID: '<%= FundsCheckByAddDefaultEmailAddress.ClientID %>' },
+				{ addressID: '<%= directorSupervisorDefaultEmailAddress.ClientID %>', btnID: '<%= DirectorSupervisorAddDefaultEmailAddress.ClientID %>' },
+				{ addressID: '<%= cPADefaultEmailAddress.ClientID %>', btnID: '<%= CPAAddDefaultEmailAddress.ClientID %>' },
+				{ addressID: '<%= obmDirectorDefaultEmailAddress.ClientID %>', btnID: '<%= OBMDirectorAddDefaultEmailAddress.ClientID %>' },
+				{ addressID: '<%= mayorDefaultEmailAddress.ClientID %>', btnID: '<%= MayorAddDefaultEmailAddress.ClientID %>' },
 			]);
 			saveTabState();
 		}
@@ -553,11 +553,11 @@
 				{ addressID: '<%= approvedEmailAddress.ClientID %>', btnID: '<%= ApprovedAddEmailAddress.ClientID %>' },
 				{ addressID: '<%= rejectedEmailAddress.ClientID %>', btnID: '<%= RejectedAddEmailAddress.ClientID %>' },
 				{ addressID: '<%= deletedEmailAddress.ClientID %>', btnID: '<%= DeletedAddEmailAddress.ClientID %>' },
-				{ addressID: '<%= fundsCheckBySignatureEmailAddress.ClientID %>', btnID: '<%= FundsCheckByAddRequestEmailAddress.ClientID %>' },
-				{ addressID: '<%= directorSupervisorSignatureEmailAddress.ClientID %>', btnID: '<%= DirectorSupervisorAddRequestEmailAddress.ClientID %>' },
-				{ addressID: '<%= cPASignatureEmailAddress.ClientID %>', btnID: '<%= CPAAddRequestEmailAddress.ClientID %>' },
-				{ addressID: '<%= obmDirectorSignatureEmailAddress.ClientID %>', btnID: '<%= OBMDirectorAddRequestEmailAddress.ClientID %>' },
-				{ addressID: '<%= mayorSignatureEmailAddress.ClientID %>', btnID: '<%= MayorAddRequestEmailAddress.ClientID %>' },
+				{ addressID: '<%= fundsCheckByDefaultEmailAddress.ClientID %>', btnID: '<%= FundsCheckByAddDefaultEmailAddress.ClientID %>' },
+				{ addressID: '<%= directorSupervisorDefaultEmailAddress.ClientID %>', btnID: '<%= DirectorSupervisorAddDefaultEmailAddress.ClientID %>' },
+				{ addressID: '<%= cPADefaultEmailAddress.ClientID %>', btnID: '<%= CPAAddDefaultEmailAddress.ClientID %>' },
+				{ addressID: '<%= obmDirectorDefaultEmailAddress.ClientID %>', btnID: '<%= OBMDirectorAddDefaultEmailAddress.ClientID %>' },
+				{ addressID: '<%= mayorDefaultEmailAddress.ClientID %>', btnID: '<%= MayorAddDefaultEmailAddress.ClientID %>' },
 			]);
 			saveTabState();
 		});
