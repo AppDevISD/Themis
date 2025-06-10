@@ -86,6 +86,11 @@
 																	<strong>Pending</strong>
 																</div>
 																<div class="card-body bg-body">
+																	<div runat="server" id="lblNoItemsPending" class="row text-center" style="margin-top: 12.5%;">
+																		<div class="col-md-12">
+																			<h5 class="text-danger">There are no default emails set for the current category</h5>
+																		</div>
+																	</div>
 																	<asp:Repeater runat="server" ID="rpPendingDefaultList" OnItemCommand="rpDefaultList_ItemCommand" OnItemCreated="rpDefaultList_ItemCreated">
 																		<ItemTemplate>
 																			<div class="badge rounded-pill text-bg-secondary m-1" style="font-size: .95rem">
@@ -114,6 +119,11 @@
 																	<strong>Under Review</strong>
 																</div>
 																<div class="card-body bg-body">
+																	<div runat="server" id="lblNoItemsUnderReview" class="row text-center" style="margin-top: 12.5%;">
+																		<div class="col-md-12">
+																			<h5 class="text-danger">There are no default emails set for the current category</h5>
+																		</div>
+																	</div>
 																	<asp:Repeater runat="server" ID="rpUnderReviewDefaultList" OnItemCommand="rpDefaultList_ItemCommand" OnItemCreated="rpDefaultList_ItemCreated">
 																		<ItemTemplate>
 																			<div class="badge rounded-pill text-bg-secondary m-1" style="font-size: .95rem">
@@ -142,6 +152,11 @@
 																	<strong>Being Held</strong>
 																</div>
 																<div class="card-body bg-body">
+																	<div runat="server" id="lblNoItemsBeingHeld" class="row text-center" style="margin-top: 12.5%;">
+																		<div class="col-md-12">
+																			<h5 class="text-danger">There are no default emails set for the current category</h5>
+																		</div>
+																	</div>
 																	<asp:Repeater runat="server" ID="rpBeingHeldDefaultList" OnItemCommand="rpDefaultList_ItemCommand" OnItemCreated="rpDefaultList_ItemCreated">
 																		<ItemTemplate>
 																			<div class="badge rounded-pill text-bg-secondary m-1" style="font-size: .95rem">
@@ -170,6 +185,11 @@
 																	<strong>Drafted</strong>
 																</div>
 																<div class="card-body bg-body">
+																	<div runat="server" id="lblNoItemsDrafted" class="row text-center" style="margin-top: 12.5%;">
+																		<div class="col-md-12">
+																			<h5 class="text-danger">There are no default emails set for the current category</h5>
+																		</div>
+																	</div>
 																	<asp:Repeater runat="server" ID="rpDraftedDefaultList" OnItemCommand="rpDefaultList_ItemCommand" OnItemCreated="rpDefaultList_ItemCreated">
 																		<ItemTemplate>
 																			<div class="badge rounded-pill text-bg-secondary m-1" style="font-size: .95rem">
@@ -198,6 +218,11 @@
 																	<strong>Approved</strong>
 																</div>
 																<div class="card-body bg-body">
+																	<div runat="server" id="lblNoItemsApproved" class="row text-center" style="margin-top: 12.5%;">
+																		<div class="col-md-12">
+																			<h5 class="text-danger">There are no default emails set for the current category</h5>
+																		</div>
+																	</div>
 																	<asp:Repeater runat="server" ID="rpApprovedDefaultList" OnItemCommand="rpDefaultList_ItemCommand" OnItemCreated="rpDefaultList_ItemCreated">
 																		<ItemTemplate>
 																			<div class="badge rounded-pill text-bg-secondary m-1" style="font-size: .95rem">
@@ -226,6 +251,11 @@
 																	<strong>Rejected</strong>
 																</div>
 																<div class="card-body bg-body">
+																	<div runat="server" id="lblNoItemsRejected" class="row text-center" style="margin-top: 12.5%;">
+																		<div class="col-md-12">
+																			<h5 class="text-danger">There are no default emails set for the current category</h5>
+																		</div>
+																	</div>
 																	<asp:Repeater runat="server" ID="rpRejectedDefaultList" OnItemCommand="rpDefaultList_ItemCommand" OnItemCreated="rpDefaultList_ItemCreated">
 																		<ItemTemplate>
 																			<div class="badge rounded-pill text-bg-secondary m-1" style="font-size: .95rem">
@@ -254,6 +284,11 @@
 																	<strong>Deleted</strong>
 																</div>
 																<div class="card-body bg-body">
+																	<div runat="server" id="lblNoItemsDeleted" class="row text-center" style="margin-top: 12.5%;">
+																		<div class="col-md-12">
+																			<h5 class="text-danger">There are no default emails set for the current category</h5>
+																		</div>
+																	</div>
 																	<asp:Repeater runat="server" ID="rpDeletedDefaultList" OnItemCommand="rpDefaultList_ItemCommand" OnItemCreated="rpDefaultList_ItemCreated">
 																		<ItemTemplate>
 																			<div class="badge rounded-pill text-bg-secondary m-1" style="font-size: .95rem">
@@ -308,6 +343,11 @@
 															<div class="card">
 																<div class="card-header bg-body p-3"><strong>Funds Check By</strong></div>
 																<div class="card-body bg-body">
+																	<div runat="server" id="lblNoItemsFundsCheckBy" class="row text-center" style="margin-top: 12.5%;">
+																		<div class="col-md-12">
+																			<h5 class="text-danger">There are no default emails set for the current category</h5>
+																		</div>
+																	</div>
 																	<asp:Repeater runat="server" ID="rpFundsCheckByDefaultList" OnItemCommand="rpDefaultList_ItemCommand" OnItemCreated="rpDefaultList_ItemCreated">
 																		<ItemTemplate>
 																			<div class="badge rounded-pill text-bg-secondary m-1" style="font-size: .95rem">
@@ -346,6 +386,11 @@
 																	</div>
 																</div>
 																<div class="card-body bg-body">
+																	<div runat="server" id="lblNoItemsDirectorSupervisor" class="row text-center" style="margin-top: 12.5%;">
+																		<div class="col-md-12">
+																			<h5 runat="server" id="lblNoItemsTxtDirectorSupervisor" class="text-gray">Please Select a Department and/or Division</h5>
+																		</div>
+																	</div>
 																	<asp:Repeater runat="server" ID="rpDirectorSupervisorDefaultList" OnItemCommand="rpDefaultList_ItemCommand" OnItemCreated="rpDefaultList_ItemCreated">
 																		<ItemTemplate>
 																			<div class="badge rounded-pill text-bg-secondary m-1" style="font-size: .95rem">
@@ -372,6 +417,11 @@
 															<div class="card">
 																<div class="card-header bg-body p-3"><strong>City Purchasing Agent</strong></div>
 																<div class="card-body bg-body">
+																	<div runat="server" id="lblNoItemsCityPurchasingAgent" class="row text-center" style="margin-top: 12.5%;">
+																		<div class="col-md-12">
+																			<h5 class="text-danger">There are no default emails set for the current category</h5>
+																		</div>
+																	</div>
 																	<asp:Repeater runat="server" ID="rpCPADefaultList" OnItemCommand="rpDefaultList_ItemCommand" OnItemCreated="rpDefaultList_ItemCreated">
 																		<ItemTemplate>
 																			<div class="badge rounded-pill text-bg-secondary m-1" style="font-size: .95rem">
@@ -398,6 +448,11 @@
 															<div class="card">
 																<div class="card-header bg-body p-3"><strong>OBM Director</strong></div>
 																<div class="card-body bg-body">
+																	<div runat="server" id="lblNoItemsOBMDirector" class="row text-center" style="margin-top: 12.5%;">
+																		<div class="col-md-12">
+																			<h5 class="text-danger">There are no default emails set for the current category</h5>
+																		</div>
+																	</div>
 																	<asp:Repeater runat="server" ID="rpOBMDirectorDefaultList" OnItemCommand="rpDefaultList_ItemCommand" OnItemCreated="rpDefaultList_ItemCreated">
 																		<ItemTemplate>
 																			<div class="badge rounded-pill text-bg-secondary m-1" style="font-size: .95rem">
@@ -424,6 +479,11 @@
 															<div class="card">
 																<div class="card-header bg-body p-3"><strong>Mayor</strong></div>
 																<div class="card-body bg-body">
+																	<div runat="server" id="lblNoItemsMayor" class="row text-center" style="margin-top: 12.5%;">
+																		<div class="col-md-12">
+																			<h5 class="text-danger">There are no default emails set for the current category</h5>
+																		</div>
+																	</div>
 																	<asp:Repeater runat="server" ID="rpMayorDefaultList" OnItemCommand="rpDefaultList_ItemCommand" OnItemCreated="rpDefaultList_ItemCreated">
 																		<ItemTemplate>
 																			<div class="badge rounded-pill text-bg-secondary m-1" style="font-size: .95rem">
@@ -459,9 +519,6 @@
 				<asp:HiddenField runat="server" ID="hdnActiveTabs" Value="defaultEmailsBtn,pendingBtn,fundsCheckByBtn" />
 			</ContentTemplate>
 		</asp:UpdatePanel>
-
-
-		<%--<asp:Button runat="server" ID="CreateDefaultTypes" Text="Create Defaults" OnClick="CreateDefaultTypes_Click" CssClass="btn btn-info mt-5" />--%>
 	</section>
 
 	<script>

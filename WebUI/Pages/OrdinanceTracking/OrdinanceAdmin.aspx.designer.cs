@@ -123,6 +123,15 @@ namespace WebUI
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl pendingTabPane;
 
         /// <summary>
+        /// lblNoItemsPending control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblNoItemsPending;
+
+        /// <summary>
         /// rpPendingDefaultList control.
         /// </summary>
         /// <remarks>
@@ -157,6 +166,15 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl underReviewTabPane;
+
+        /// <summary>
+        /// lblNoItemsUnderReview control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblNoItemsUnderReview;
 
         /// <summary>
         /// rpUnderReviewDefaultList control.
@@ -195,6 +213,15 @@ namespace WebUI
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl beingHeldTabPane;
 
         /// <summary>
+        /// lblNoItemsBeingHeld control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblNoItemsBeingHeld;
+
+        /// <summary>
         /// rpBeingHeldDefaultList control.
         /// </summary>
         /// <remarks>
@@ -229,6 +256,15 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl draftedTabPane;
+
+        /// <summary>
+        /// lblNoItemsDrafted control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblNoItemsDrafted;
 
         /// <summary>
         /// rpDraftedDefaultList control.
@@ -267,6 +303,15 @@ namespace WebUI
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl approvedTabPane;
 
         /// <summary>
+        /// lblNoItemsApproved control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblNoItemsApproved;
+
+        /// <summary>
         /// rpApprovedDefaultList control.
         /// </summary>
         /// <remarks>
@@ -303,6 +348,15 @@ namespace WebUI
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl rejectedTabPane;
 
         /// <summary>
+        /// lblNoItemsRejected control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblNoItemsRejected;
+
+        /// <summary>
         /// rpRejectedDefaultList control.
         /// </summary>
         /// <remarks>
@@ -337,6 +391,15 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl deletedTabPane;
+
+        /// <summary>
+        /// lblNoItemsDeleted control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblNoItemsDeleted;
 
         /// <summary>
         /// rpDeletedDefaultList control.
@@ -420,6 +483,15 @@ namespace WebUI
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl fundsCheckByTabPane;
 
         /// <summary>
+        /// lblNoItemsFundsCheckBy control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblNoItemsFundsCheckBy;
+
+        /// <summary>
         /// rpFundsCheckByDefaultList control.
         /// </summary>
         /// <remarks>
@@ -474,6 +546,24 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.DropDownList filterDivision;
 
         /// <summary>
+        /// lblNoItemsDirectorSupervisor control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblNoItemsDirectorSupervisor;
+
+        /// <summary>
+        /// lblNoItemsTxtDirectorSupervisor control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblNoItemsTxtDirectorSupervisor;
+
+        /// <summary>
         /// rpDirectorSupervisorDefaultList control.
         /// </summary>
         /// <remarks>
@@ -508,6 +598,15 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl cPATabPane;
+
+        /// <summary>
+        /// lblNoItemsCityPurchasingAgent control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblNoItemsCityPurchasingAgent;
 
         /// <summary>
         /// rpCPADefaultList control.
@@ -546,6 +645,15 @@ namespace WebUI
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl obmDirectorTabPane;
 
         /// <summary>
+        /// lblNoItemsOBMDirector control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblNoItemsOBMDirector;
+
+        /// <summary>
         /// rpOBMDirectorDefaultList control.
         /// </summary>
         /// <remarks>
@@ -580,6 +688,15 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl mayorTabPane;
+
+        /// <summary>
+        /// lblNoItemsMayor control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblNoItemsMayor;
 
         /// <summary>
         /// rpMayorDefaultList control.

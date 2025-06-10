@@ -32,100 +32,89 @@ namespace WebUI
                 {"Pending", new Dictionary<string, object>()
                     {
                         {"ID", 1 },
-                        {"Repeater", rpPendingDefaultList }
+                        {"Repeater", rpPendingDefaultList },
+                        {"NoItems", lblNoItemsPending }
                     }
                 },
                 {"UnderReview", new Dictionary<string, object>()
                     {
                         {"ID", 2 },
-                        {"Repeater", rpUnderReviewDefaultList }
+                        {"Repeater", rpUnderReviewDefaultList },
+                        {"NoItems", lblNoItemsUnderReview }
                     }
                 },
                 {"BeingHeld", new Dictionary<string, object>()
                     {
                         {"ID", 3 },
-                        {"Repeater", rpBeingHeldDefaultList }
+                        {"Repeater", rpBeingHeldDefaultList },
+                        {"NoItems", lblNoItemsBeingHeld }
                     }
                 },
                 {"Drafted", new Dictionary<string, object>()
                     {
                         {"ID", 4 },
-                        {"Repeater", rpDraftedDefaultList }
+                        {"Repeater", rpDraftedDefaultList },
+                        {"NoItems", lblNoItemsDrafted }
                     }
                 },
                 {"Approved", new Dictionary<string, object>()
                     {
                         {"ID", 5 },
-                        {"Repeater", rpApprovedDefaultList }
+                        {"Repeater", rpApprovedDefaultList },
+                        {"NoItems", lblNoItemsApproved }
                     }
                 },
                 {"Rejected", new Dictionary<string, object>()
                     {
                         {"ID", 6 },
-                        {"Repeater", rpRejectedDefaultList }
+                        {"Repeater", rpRejectedDefaultList },
+                        {"NoItems", lblNoItemsRejected }
                     }
                 },
                 {"Deleted", new Dictionary<string, object>()
                     {
                         {"ID", 7 },
-                        {"Repeater", rpDeletedDefaultList }
+                        {"Repeater", rpDeletedDefaultList },
+                        {"NoItems", lblNoItemsDeleted }
                     }
                 },
 
                 {"FundsCheckBy", new Dictionary<string, object>()
                     {
                         {"ID", 8 },
-                        {"Repeater", rpFundsCheckByDefaultList }
+                        {"Repeater", rpFundsCheckByDefaultList },
+                        {"NoItems", lblNoItemsFundsCheckBy }
                     }
                 },
                 {"DirectorSupervisor", new Dictionary<string, object>()
                     {
-                        {"Department", new Dictionary<int, object>() },
-                        {"Repeater", rpDirectorSupervisorDefaultList }
+                        {"Repeater", rpDirectorSupervisorDefaultList },
+                        {"NoItems", lblNoItemsDirectorSupervisor },
+                        {"NoItemsTxt", lblNoItemsTxtDirectorSupervisor }
                     }
                 },
                 {"CityPurchasingAgent", new Dictionary<string, object>()
                     {
                         {"ID", 9 },
-                        {"Repeater", rpCPADefaultList }
+                        {"Repeater", rpCPADefaultList },
+                        {"NoItems", lblNoItemsCityPurchasingAgent }
                     }
                 },
                 {"OBMDirector", new Dictionary<string, object>()
                     {
                         {"ID", 10 },
-                        {"Repeater", rpOBMDirectorDefaultList }
+                        {"Repeater", rpOBMDirectorDefaultList },
+                        {"NoItems", lblNoItemsOBMDirector }
                     }
                 },
                 {"Mayor", new Dictionary<string, object>()
                     {
                         {"ID", 11 },
-                        {"Repeater", rpMayorDefaultList }
+                        {"Repeater", rpMayorDefaultList },
+                        {"NoItems", lblNoItemsMayor }
                     }
                 },
             };
-            List<DefaultEmails> departmentDefaultIDs = new List<DefaultEmails>();
-            Dictionary<string, object> departmentDict = new Dictionary<string, object>();
-            Dictionary<string, string> departments = DepartmentsList();
-            foreach (var department in departments.Keys)
-            {
-                if (!department.Equals("Select Department..."))
-                {
-                    var value = departments[department];
-                    departmentDict = (Dictionary<string, object>)defaultListType["DirectorSupervisor"]["Department"];
-                    departmentDict.Add(department, new Dictionary<string, object>()
-                    {
-                        {"ID", new int() },
-                        {"Division", string.Empty }
-                    });
-                }
-            }
-
-            foreach (KeyValuePair<string, object> item in departmentDict)
-            {
-                List<DefaultEmails> deptDefault = Factory.Instance.GetByID<List<DefaultEmails>>(item.Key, "sp_GetDefaultEmailByDepartment", "Department");
-            }
-
-            Debug.WriteLine(defaultListType);
             
 
 
@@ -187,28 +176,55 @@ namespace WebUI
             {
                 Dictionary<string, object> listInfo = listType.Value;
                 Repeater repeater = (Repeater)listInfo["Repeater"];
-                int id = new int();
+                HtmlGenericControl noItems = (HtmlGenericControl)listInfo["NoItems"];
+
+                int defaultEmailID = new int();
                 switch (listType.Key)
                 {
                     default:
-                        id = (int)listInfo["ID"];
+                        defaultEmailID = (int)listInfo["ID"];
                         break;
                     case "DirectorSupervisor":
-                        id = 12;
-                        break;
-                }
-                
-                string sessionPrefix = repeater.ClientID.Replace("rp", "").Replace("DefaultList", "");
+                        if (!filterDepartment.SelectedValue.IsNullOrWhiteSpace())
+                        {
+                            string departmentName = filterDepartment.SelectedItem.Text;
+                            string divisionName = !filterDivision.SelectedIndex.Equals(0) ? filterDivision.SelectedItem.Text : "None";
+                            defaultEmailID = Factory.Instance.GetDefaultEmailsByDepartmentDivision(departmentName, divisionName).DefaultEmailsID;
+                            directorSupervisorSignatureEmailAddress.Enabled = true;
 
-                DefaultEmails defaultList = Factory.Instance.GetByID<DefaultEmails>(id, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID");
-                string[] emails = defaultList.EmailAddress.ToString().Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
+                            HtmlGenericControl noItemsTxt = (HtmlGenericControl)listInfo["NoItemsTxt"];
+                            noItemsTxt.InnerText = "There are no default emails set for the current department/division";
+                            noItemsTxt.Attributes["class"] = "text-danger";
+                        }
+                        else
+                        {
+                            defaultEmailID = 0;
+                            directorSupervisorSignatureEmailAddress.Enabled = false;
+
+                            HtmlGenericControl noItemsTxt = (HtmlGenericControl)listInfo["NoItemsTxt"];
+                            noItemsTxt.InnerText = "Please Select a Department and/or Division";
+                            noItemsTxt.Attributes["class"] = "text-gray";
+                        }
+                            break;
+                }
+
+                DefaultEmails defaultList = new DefaultEmails();
+                string[] emails = new string[0];
+                if (defaultEmailID > 0)
+                {
+                    defaultList = Factory.Instance.GetByID<DefaultEmails>(defaultEmailID, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID");
+                   emails = defaultList.EmailAddress.ToString().Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
+                }
+
                 if (emails.Length > 0)
                 {
+                    noItems.Visible = false;
                     repeater.DataSource = emails;
                     repeater.DataBind();
                 }
                 else
                 {
+                    noItems.Visible = true;
                     repeater.DataSource = null;
                     repeater.DataBind();
                 }
@@ -261,6 +277,30 @@ namespace WebUI
         protected void Filter_SelectedIndexChanged(object sender, EventArgs e)
         {
             ActiveTabPanes(hdnActiveTabs.Value);
+            Dictionary<string, object> listInfo = defaultListType["DirectorSupervisor"];
+            HtmlGenericControl noItems = (HtmlGenericControl)listInfo["NoItems"];
+
+            int defaultEmailID = new int();
+            if (!filterDepartment.SelectedValue.IsNullOrWhiteSpace())
+            {
+                string departmentName = filterDepartment.SelectedItem.Text;
+                string divisionName = !filterDivision.SelectedIndex.Equals(0) ? filterDivision.SelectedItem.Text : "None";
+                defaultEmailID = Factory.Instance.GetDefaultEmailsByDepartmentDivision(departmentName, divisionName).DefaultEmailsID;
+                directorSupervisorSignatureEmailAddress.Enabled = true;
+
+                HtmlGenericControl noItemsTxt = (HtmlGenericControl)listInfo["NoItemsTxt"];
+                noItemsTxt.InnerText = "There are no default emails set for the current department/division";
+                noItemsTxt.Attributes["class"] = "text-danger";
+            }
+            else
+            {
+                defaultEmailID = 0;
+                directorSupervisorSignatureEmailAddress.Enabled = false;
+
+                HtmlGenericControl noItemsTxt = (HtmlGenericControl)listInfo["NoItemsTxt"];
+                noItemsTxt.InnerText = "Please Select a Department and/or Division";
+                noItemsTxt.Attributes["class"] = "text-gray";
+            }
 
             try
             {
@@ -268,11 +308,19 @@ namespace WebUI
 
                 string commandName = dropDown.Attributes["data-command"]; string commandArgument = dropDown.SelectedItem.ToString();
 
+                List<string> noDivisions = new List<string>()
+                {
+                    "City Clerk",
+                    "Community Relations",
+                    "Convention & Visitor's Bureau",
+                    "Lincoln Library",
+                };
+
                 if (commandName.Equals("department"))
                 {
                     filterDivision.Items.Clear();
 
-                    if (!filterDepartment.SelectedValue.IsNullOrWhiteSpace())
+                    if (!filterDepartment.SelectedValue.IsNullOrWhiteSpace() && !noDivisions.Any(i => filterDepartment.SelectedItem.Text.Equals(i)))
                     {
                         filterDivision.Enabled = true;
                         GetAllDivisions(filterDivision, filterDepartment.SelectedValue);
@@ -289,82 +337,26 @@ namespace WebUI
 
             }
 
-            //userInfo = (UserInfo)Session["UserInformation"];
+            DefaultEmails defaultList = new DefaultEmails();
+            string[] emails = new string[0];
+            if (defaultEmailID > 0)
+            {
+                defaultList = Factory.Instance.GetByID<DefaultEmails>(defaultEmailID, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID");
+                emails = defaultList.EmailAddress.ToString().Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
+            }
 
-            //int statusID = !filterStatus.SelectedValue.IsNullOrWhiteSpace() ? Convert.ToInt32(filterStatus.SelectedValue) : -1;
-            //string department = !filterDepartment.SelectedValue.IsNullOrWhiteSpace() ? filterDepartment.SelectedItem.Text : string.Empty;
-            //string division = !filterDivision.SelectedValue.IsNullOrWhiteSpace() ? filterDivision.SelectedItem.Text : string.Empty;
-            //string title = !filterSearchTitle.Text.IsNullOrWhiteSpace() ? filterSearchTitle.Text : string.Empty;
-
-            //List<Ordinance> filteredList = new List<Ordinance>();
-            //if ((userInfo.UserDepartment.DepartmentName != null && userInfo.UserDivision.DivisionName != null && !userInfo.IsAdmin) || userInfo.UserView)
-            //{
-            //    department = userInfo.UserDepartment.DepartmentName;
-            //}
-
-            //filteredList = Factory.Instance.GetFilteredOrdinances(statusID, department, division, title);
-
-            //if (filteredList.Count > 0)
-            //{
-            //    foreach (Ordinance ord in filteredList)
-            //    {
-            //        OrdinanceStatus ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
-            //        ord.StatusDescription = ordStatus.StatusDescription;
-            //    }
-            //}
-
-            //Dictionary<string, object> sortRet = new Dictionary<string, object>();
-
-            //sortRet = GetCurrentSort(filteredList, Session["curCmd"].ToString(), Session["sortDir"].ToString());
-
-
-            //Session["ord_list"] = sortRet["list"];
-            //if (filteredList.Count > 0)
-            //{
-            //    formTableDiv.Visible = true;
-            //    lblNoItems.Visible = false;
-            //}
-            //else
-            //{
-            //    formTableDiv.Visible = false;
-            //    lblNoItems.Visible = true;
-            //}
-
-            //List<Label> departmentLabels = new List<Label>();
-            //List<Label> divisionLabels = new List<Label>();
-
-            //foreach (RepeaterItem item in rpOrdinanceTable.Items)
-            //{
-            //    Label deptLabel = (Label)item.FindControl("ordTableDepartment");
-            //    Label divLabel = (Label)item.FindControl("ordTableDivision");
-            //    departmentLabels.Add(deptLabel);
-            //    divisionLabels.Add(divLabel);
-            //}
-
-            //switch (Session["DeptDivColumn"])
-            //{
-            //    case "department":
-            //        foreach (Label item in departmentLabels)
-            //        {
-            //            item.Visible = true;
-            //        }
-            //        foreach (Label item in divisionLabels)
-            //        {
-            //            item.Visible = false;
-            //        }
-            //        break;
-            //    case "division":
-            //        foreach (Label item in departmentLabels)
-            //        {
-            //            item.Visible = false;
-            //        }
-            //        foreach (Label item in divisionLabels)
-            //        {
-            //            item.Visible = true;
-            //        }
-            //        break;
-            //}
-            Session["ViewState"] = ViewState;
+            if (emails.Length > 0)
+            {
+                noItems.Visible = false;
+                rpDirectorSupervisorDefaultList.DataSource = emails;
+                rpDirectorSupervisorDefaultList.DataBind();
+            }
+            else
+            {
+                noItems.Visible = true;
+                rpDirectorSupervisorDefaultList.DataSource = null;
+                rpDirectorSupervisorDefaultList.DataBind();
+            }
         }
         protected void AddRequestEmailAddress_Click(object sender, EventArgs e)
         {
@@ -375,6 +367,7 @@ namespace WebUI
             
             Dictionary<string, object> listInfo = defaultListType[defaultType];
             Repeater repeater = (Repeater)listInfo["Repeater"];
+            HtmlGenericControl noItems = (HtmlGenericControl)listInfo["NoItems"];
 
             int defaultEmailID = new int();
 
@@ -384,7 +377,9 @@ namespace WebUI
                     defaultEmailID = Convert.ToInt32(button.CommandArgument);
                     break;
                 case "Director/Supervisor":
-                    defaultEmailID = 12;
+                    string departmentName = filterDepartment.SelectedItem.Text;
+                    string divisionName = !filterDivision.SelectedIndex.Equals(0) ? filterDivision.SelectedItem.Text : "None";
+                    defaultEmailID = Factory.Instance.GetDefaultEmailsByDepartmentDivision(departmentName, divisionName).DefaultEmailsID;
                     break;
             }
 
@@ -409,11 +404,13 @@ namespace WebUI
                 address.Text = string.Empty;
                 if (emails.Count > 0)
                 {
+                    noItems.Visible = false;
                     repeater.DataSource = emails.OrderBy(i => i);
                     repeater.DataBind();
                 }
                 else
                 {
+                    noItems.Visible = true;
                     repeater.DataSource = null;
                     repeater.DataBind();
                 }
@@ -423,20 +420,23 @@ namespace WebUI
         protected void rpDefaultList_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
             Dictionary<string, object> listInfo = defaultListType[e.CommandName];
-            int id = new int();
+            int defaultEmailID = new int();
             Repeater repeater = (Repeater)listInfo["Repeater"];
+            HtmlGenericControl noItems = (HtmlGenericControl)listInfo["NoItems"];
 
             switch (e.CommandName)
             {
                 default:
-                    id = (int)listInfo["ID"];
+                    defaultEmailID = (int)listInfo["ID"];
                     break;
                 case "DirectorSupervisor":
-                    id = 12;
+                    string departmentName = filterDepartment.SelectedItem.Text;
+                    string divisionName = !filterDivision.SelectedIndex.Equals(0) ? filterDivision.SelectedItem.Text : "None";
+                    defaultEmailID = Factory.Instance.GetDefaultEmailsByDepartmentDivision(departmentName, divisionName).DefaultEmailsID;
                     break;
             }
 
-            DefaultEmails defaultList = Factory.Instance.GetByID<DefaultEmails>(id, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID");
+            DefaultEmails defaultList = Factory.Instance.GetByID<DefaultEmails>(defaultEmailID, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID");
             List<string> emails = defaultList.EmailAddress.ToString().Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToList();
 
             emails.Remove(e.CommandArgument.ToString());
@@ -448,11 +448,13 @@ namespace WebUI
             {                
                 if (emails.Count > 0)
                 {
+                    noItems.Visible = false;
                     repeater.DataSource = emails.OrderBy(i => i);
                     repeater.DataBind();
                 }
                 else
                 {
+                    noItems.Visible = true;
                     repeater.DataSource = null;
                     repeater.DataBind();
                 }
@@ -464,67 +466,6 @@ namespace WebUI
         {
             LinkButton btn = (LinkButton)e.Item.FindControl("removeBtn");
             ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(btn);
-        }
-
-        protected void CreateDefaultTypes_Click(object sender, EventArgs e)
-        {
-            Dictionary<string, string> departments = DepartmentsList();
-
-            Dictionary<string, List<string>> defaultTypes = new Dictionary<string, List<string>>();
-            foreach (var department in departments.Keys)
-            {
-                if (!department.Equals("Select Department..."))
-                {
-                    var value = departments[department];
-
-                    List<Division> divisionList = GetDivisionsByDept(Convert.ToInt32(value));
-                    List<string> divisions = new List<string>();
-                    foreach (Division item in divisionList)
-                    {
-                        divisions.Add(item.DivisionName);
-                    }
-
-                    defaultTypes.Add(department, divisions);
-                }
-            }
-
-            List<string> skips = new List<string>()
-            {
-                "DefaultEmailsID"
-            };
-            // THIS IS THE TEMPLATE FOR THE INSERT //
-            foreach (KeyValuePair<string, List<string>> item in defaultTypes)
-            {
-                DefaultEmails defaultDept = new DefaultEmails()
-                {
-                    EmailAddress = string.Empty,
-                    Department = item.Key,
-                    Division = string.Empty,
-                    DefaultType = "Director/Supervisor",
-                    LastUpdateBy = "kbolinger",
-                    LastUpdateDate = Convert.ToDateTime("2025-06-05 00:00:00"),
-                    EffectiveDate = Convert.ToDateTime("2025-06-05 00:00:00"),
-                    ExpirationDate = DateTime.MaxValue
-                };
-                int ret = Factory.Instance.Insert(defaultDept, "sp_InsertDefaultEmail", skips);
-                Debug.WriteLine($"Department: {item.Key}");
-                foreach (string division in item.Value)
-                {
-                    DefaultEmails defaultDiv = new DefaultEmails()
-                    {
-                        EmailAddress = string.Empty,
-                        Department = item.Key,
-                        Division = division,
-                        DefaultType = "Director/Supervisor",
-                        LastUpdateBy = "kbolinger",
-                        LastUpdateDate = Convert.ToDateTime("2025-06-05 00:00:00"),
-                        EffectiveDate = Convert.ToDateTime("2025-06-05 00:00:00"),
-                        ExpirationDate = DateTime.MaxValue
-                    };
-                    int retVal = Factory.Instance.Insert(defaultDiv, "sp_InsertDefaultEmail", skips);
-                    Debug.WriteLine($"Department: {item.Key}      |      Division: {division}");
-                }
-            }
         }
     }
 }

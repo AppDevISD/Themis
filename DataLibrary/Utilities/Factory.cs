@@ -16,6 +16,7 @@ using System.Xml.Linq;
 using System.Web.UI;
 using System.Linq;
 using System.Runtime.InteropServices;
+using DataLibrary.OrdinanceTracking;
 
 namespace DataLibrary
 {
@@ -256,6 +257,61 @@ namespace DataLibrary
                 }
             }
             return lOrdinance;
+        }
+
+        public DefaultEmails GetDefaultEmailsByDepartmentDivision(string dept, string division)
+        {
+            PropertyInfo[] classType = typeof(DefaultEmails).GetProperties();
+            DefaultEmails defaultEmails = new DefaultEmails();
+            SqlConnection cn = new SqlConnection(Properties.Settings.Default["ThemisDB"].ToString());
+            SqlCommand cmd = new SqlCommand("sp_GetDefaultEmailByDepartmentDivision", cn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@pDepartment", dept);
+            cmd.Parameters.AddWithValue("@pDivision", division);
+
+            using (cn)
+            {
+                cn.Open();
+                SqlDataReader rs;
+                rs = cmd.ExecuteReader();
+                while (rs.Read())
+                {
+
+                    DefaultEmails item = (DefaultEmails)Activator.CreateInstance(typeof(DefaultEmails));
+                    foreach (var property in classType)
+                    {
+                        try
+                        {
+                            Type propertyType = property.PropertyType;
+                            if (rs[property.Name] != DBNull.Value)
+                            {
+                                object value = Convert.ChangeType(rs[property.Name], propertyType);
+                                if (value != null && propertyType.IsAssignableFrom(value.GetType()))
+                                {
+                                    property.SetValue(item, value);
+                                }
+                            }
+                            else
+                            {
+                                if (Nullable.GetUnderlyingType(propertyType) != null)
+                                {
+                                    property.SetValue(item, null);
+                                }
+                                else
+                                {
+                                    property.SetValue(item, Activator.CreateInstance(propertyType));
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"Error setting property {property.Name}: {ex.Message}");
+                        }
+                    }
+                    defaultEmails = item;
+                }
+            }
+            return defaultEmails;
         }
 
 

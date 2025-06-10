@@ -982,6 +982,10 @@ button[readonly=readonly], button[readonly=true] {
   color: #20c997;
 }
 
+.text-gray {
+  color: gray;
+}
+
 .lh-1p5 {
   line-height: 1.5;
 }
