@@ -330,7 +330,13 @@
 															<button runat="server" id="obmDirectorBtn" class="nav-link" data-toggle="tab" data-target="#obmDirectorTabPane" type="button" role="tab">OBM Director</button>
 														</li>
 														<li class="nav-item">
+															<button runat="server" id="budgetBtn" class="nav-link" data-toggle="tab" data-target="#budgetTabPane" type="button" role="tab">Budget</button>
+														</li>
+														<li class="nav-item">
 															<button runat="server" id="mayorBtn" class="nav-link" data-toggle="tab" data-target="#mayorTabPane" type="button" role="tab">Mayor</button>
+														</li>
+														<li class="nav-item">
+															<button runat="server" id="ccDirectorBtn" class="nav-link" data-toggle="tab" data-target="#ccDirectorTabPane" type="button" role="tab">Corporation Counsel Director</button>
 														</li>
 														<li id="sigEmailsMoreDD" class="nav-item dropdown">
 															<button class="nav-link dropdown-toggle" data-toggle="dropdown" type="button" role="button">More</button>
@@ -379,8 +385,8 @@
 																		</div>
 																		<div class="col-md-9">
 																			<div class="input-group">
-																				<asp:DropDownList ID="filterDepartment" runat="server" AutoPostBack="true" CssClass="form-select" OnSelectedIndexChanged="Filter_SelectedIndexChanged" data-command="department" onchange="showLoadingModal();" data-filter="true"></asp:DropDownList>
-																				<asp:DropDownList ID="filterDivision" runat="server" AutoPostBack="true" CssClass="form-select" OnSelectedIndexChanged="Filter_SelectedIndexChanged" data-command="division" onchange="showLoadingModal();" data-filter="true"></asp:DropDownList>
+																				<asp:DropDownList ID="filterDepartment" runat="server" AutoPostBack="true" CssClass="form-select" OnSelectedIndexChanged="Filter_SelectedIndexChanged" data-command="department" data-type="DirectorSupervisor" onchange="showLoadingModal();" data-filter="true"></asp:DropDownList>
+																				<asp:DropDownList ID="filterDivision" runat="server" AutoPostBack="true" CssClass="form-select" OnSelectedIndexChanged="Filter_SelectedIndexChanged" data-command="division" data-type="DirectorSupervisor" onchange="showLoadingModal();" data-filter="true"></asp:DropDownList>
 																			</div>
 																		</div>
 																	</div>
@@ -475,6 +481,46 @@
 																</div>
 															</div>
 														</div>
+														<div runat="server" id="budgetTabPane" class="tab-pane fade" role="tabpanel">
+															<div class="card">
+																<div class="card-header bg-body p-3">
+																	<div class="row align-items-center">
+																		<div class="col-md-3">
+																			<strong>Budget</strong>
+																		</div>
+																		<div class="col-md-9">
+																			<asp:DropDownList ID="filterBusiness" runat="server" AutoPostBack="true" CssClass="form-select" OnSelectedIndexChanged="Filter_SelectedIndexChanged" data-command="budget" data-type="Budget" onchange="showLoadingModal();" data-filter="true"></asp:DropDownList>
+																		</div>
+																	</div>
+																</div>
+																<div class="card-body bg-body">
+																	<div runat="server" id="lblNoItemsBudget" class="row text-center" style="margin-top: 12.5%;">
+																		<div class="col-md-12">
+																			<h5 runat="server" id="lblNoItemsTxtBudget" class="text-gray">Please Select a Business</h5>
+																		</div>
+																	</div>
+																	<asp:Repeater runat="server" ID="rpBudgetDefaultList" OnItemCommand="rpDefaultList_ItemCommand" OnItemCreated="rpDefaultList_ItemCreated">
+																		<ItemTemplate>
+																			<div class="badge rounded-pill text-bg-secondary m-1" style="font-size: .95rem">
+																				<%# Container.DataItem %>
+																				<asp:LinkButton runat="server" ID="removeBtn" CssClass="text-danger" style="margin-left: 10px;" CommandName="Budget" CommandArgument='<%# Container.DataItem %>' TabIndex="-1"><span class="fa-solid fa-xmark" data-disable-btn="aspIconBtn"></span></asp:LinkButton>
+																			</div>
+																		</ItemTemplate>
+																	</asp:Repeater>
+																</div>
+																<div class="card-footer bg-body-tertiary">
+																	<div class="row">
+																		<div class="col-md-12">
+																			<div class="input-group">
+																				<span class="input-group-text fas fa-address-book"></span>
+																				<asp:TextBox runat="server" ID="budgetDefaultEmailAddress" CssClass="form-control" TextMode="Email" AutoCompleteType="Email" placeholder="john.doe@corporate.com" data-enter-btn="BudgetAddDefaultEmailAddress"></asp:TextBox>
+																				<asp:Button runat="server" ID="BudgetAddDefaultEmailAddress" UseSubmitBehavior="false" CssClass="btn btn-success fas-btn" disabled="disabled" Text='&#xf055;' data-disable-btn="aspIconBtn" TabIndex="-1" OnClick="AddDefaultEmailAddress_Click" data-email-text="budgetDefaultEmailAddress" CommandName="Budget"/>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
 														<div runat="server" id="mayorTabPane" class="tab-pane fade" role="tabpanel">
 															<div class="card">
 																<div class="card-header bg-body p-3"><strong>Mayor</strong></div>
@@ -499,7 +545,38 @@
 																			<div class="input-group">
 																				<span class="input-group-text fas fa-address-book"></span>
 																				<asp:TextBox runat="server" ID="mayorDefaultEmailAddress" CssClass="form-control" TextMode="Email" AutoCompleteType="Email" placeholder="john.doe@corporate.com" data-enter-btn="MayorAddDefaultEmailAddress"></asp:TextBox>
-																				<asp:Button runat="server" ID="MayorAddDefaultEmailAddress" UseSubmitBehavior="false" CssClass="btn btn-success fas-btn" disabled="disabled" Text='&#xf055;' data-disable-btn="aspIconBtn" TabIndex="-1" OnClick="AddDefaultEmailAddress_Click" data-email-text="mayorDefaultEmailAddress" CommandName="Mayor" CommandArgument="11"/>
+																				<asp:Button runat="server" ID="MayorAddDefaultEmailAddress" UseSubmitBehavior="false" CssClass="btn btn-success fas-btn" disabled="disabled" Text='&#xf055;' data-disable-btn="aspIconBtn" TabIndex="-1" OnClick="AddDefaultEmailAddress_Click" data-email-text="mayorDefaultEmailAddress" CommandName="Mayor" CommandArgument="13"/>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+														<div runat="server" id="ccDirectorTabPane" class="tab-pane fade" role="tabpanel">
+															<div class="card">
+																<div class="card-header bg-body p-3"><strong>Corporation Counsel Director</strong></div>
+																<div class="card-body bg-body">
+																	<div runat="server" id="lblNoItemsCCDirector" class="row text-center" style="margin-top: 12.5%;">
+																		<div class="col-md-12">
+																			<h5 class="text-danger">There are no default emails set for the current category</h5>
+																		</div>
+																	</div>
+																	<asp:Repeater runat="server" ID="rpCCDirectorDefaultList" OnItemCommand="rpDefaultList_ItemCommand" OnItemCreated="rpDefaultList_ItemCreated">
+																		<ItemTemplate>
+																			<div class="badge rounded-pill text-bg-secondary m-1" style="font-size: .95rem">
+																				<%# Container.DataItem %>
+																				<asp:LinkButton runat="server" ID="removeBtn" CssClass="text-danger" style="margin-left: 10px;" CommandName="CCDirector" CommandArgument='<%# Container.DataItem %>' TabIndex="-1"><span class="fa-solid fa-xmark" data-disable-btn="aspIconBtn"></span></asp:LinkButton>
+																			</div>
+																		</ItemTemplate>
+																	</asp:Repeater>
+																</div>
+																<div class="card-footer bg-body-tertiary">
+																	<div class="row">
+																		<div class="col-md-12">
+																			<div class="input-group">
+																				<span class="input-group-text fas fa-address-book"></span>
+																				<asp:TextBox runat="server" ID="ccDirectorDefaultEmailAddress" CssClass="form-control" TextMode="Email" AutoCompleteType="Email" placeholder="john.doe@corporate.com" data-enter-btn="CCDirectorAddDefaultEmailAddress"></asp:TextBox>
+																				<asp:Button runat="server" ID="CCDirectorAddDefaultEmailAddress" UseSubmitBehavior="false" CssClass="btn btn-success fas-btn" disabled="disabled" Text='&#xf055;' data-disable-btn="aspIconBtn" TabIndex="-1" OnClick="AddDefaultEmailAddress_Click" data-email-text="ccDirectorDefaultEmailAddress" CommandName="CCDirector" CommandArgument="14"/>
 																			</div>
 																		</div>
 																	</div>
@@ -538,8 +615,11 @@
 				{ addressID: '<%= directorSupervisorDefaultEmailAddress.ClientID %>', btnID: '<%= DirectorSupervisorAddDefaultEmailAddress.ClientID %>' },
 				{ addressID: '<%= cPADefaultEmailAddress.ClientID %>', btnID: '<%= CPAAddDefaultEmailAddress.ClientID %>' },
 				{ addressID: '<%= obmDirectorDefaultEmailAddress.ClientID %>', btnID: '<%= OBMDirectorAddDefaultEmailAddress.ClientID %>' },
+				{ addressID: '<%= budgetDefaultEmailAddress.ClientID %>', btnID: '<%= BudgetAddDefaultEmailAddress.ClientID %>' },
 				{ addressID: '<%= mayorDefaultEmailAddress.ClientID %>', btnID: '<%= MayorAddDefaultEmailAddress.ClientID %>' },
+				{ addressID: '<%= ccDirectorDefaultEmailAddress.ClientID %>', btnID: '<%= CCDirectorAddDefaultEmailAddress.ClientID %>' }
 			]);
+			FilterFirstItem();
 			saveTabState();
 		}
 
@@ -557,8 +637,11 @@
 				{ addressID: '<%= directorSupervisorDefaultEmailAddress.ClientID %>', btnID: '<%= DirectorSupervisorAddDefaultEmailAddress.ClientID %>' },
 				{ addressID: '<%= cPADefaultEmailAddress.ClientID %>', btnID: '<%= CPAAddDefaultEmailAddress.ClientID %>' },
 				{ addressID: '<%= obmDirectorDefaultEmailAddress.ClientID %>', btnID: '<%= OBMDirectorAddDefaultEmailAddress.ClientID %>' },
+				{ addressID: '<%= budgetDefaultEmailAddress.ClientID %>', btnID: '<%= BudgetAddDefaultEmailAddress.ClientID %>' },
 				{ addressID: '<%= mayorDefaultEmailAddress.ClientID %>', btnID: '<%= MayorAddDefaultEmailAddress.ClientID %>' },
+				{ addressID: '<%= ccDirectorDefaultEmailAddress.ClientID %>', btnID: '<%= CCDirectorAddDefaultEmailAddress.ClientID %>' }
 			]);
+			FilterFirstItem();
 			saveTabState();
 		});
 	</script>

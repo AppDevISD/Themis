@@ -29,4 +29,9 @@ namespace DataLibrary
         public int DivisionCode { get; set; }
         public string DivisionName { get; set; }
     }
+
+    public class Info
+    {
+        public int intID { get; set; }
+    }
 }

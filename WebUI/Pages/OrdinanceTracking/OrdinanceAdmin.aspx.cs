@@ -107,13 +107,27 @@ namespace WebUI
                         {"NoItems", lblNoItemsOBMDirector }
                     }
                 },
+                {"Budget", new Dictionary<string, object>()
+                    {
+                        {"Repeater", rpBudgetDefaultList },
+                        {"NoItems", lblNoItemsBudget },
+                        {"NoItemsTxt", lblNoItemsTxtBudget }
+                    }
+                },
                 {"Mayor", new Dictionary<string, object>()
                     {
-                        {"ID", 11 },
+                        {"ID", 13 },
                         {"Repeater", rpMayorDefaultList },
                         {"NoItems", lblNoItemsMayor }
                     }
                 },
+                {"CCDirector", new Dictionary<string, object>()
+                    {
+                        {"ID", 14 },
+                        {"Repeater", rpCCDirectorDefaultList },
+                        {"NoItems", lblNoItemsCCDirector }
+                    }
+                }
             };
             
 
@@ -143,6 +157,18 @@ namespace WebUI
                 var value = departments[department];
                 ListItem newItem = new ListItem(department, value);
                 filterDepartment.Items.Add(newItem);
+            }
+
+            List<ListItem> businessItems = new List<ListItem>()
+            {
+                new ListItem() { Text = "Select Business...", Value = "" },
+                new ListItem() { Text = "City", Value = "City"},
+                new ListItem() { Text = "CWLP", Value = "CWLP"}
+
+            };
+            foreach (ListItem item in businessItems)
+            {
+                filterBusiness.Items.Add(item);
             }
         }
         protected void GetAllDivisions(DropDownList dd, string deptCode)
@@ -206,6 +232,27 @@ namespace WebUI
                             noItemsTxt.Attributes["class"] = "text-gray";
                         }
                             break;
+                    case "Budget":
+                        if (!filterBusiness.SelectedValue.IsNullOrWhiteSpace())
+                        {
+                            string departmentName = filterBusiness.SelectedItem.Text;
+                            defaultEmailID = Factory.Instance.GetDefaultEmailsByDepartmentDivision(departmentName, "None").DefaultEmailsID;
+                            budgetDefaultEmailAddress.Enabled = true;
+
+                            HtmlGenericControl noItemsTxt = (HtmlGenericControl)listInfo["NoItemsTxt"];
+                            noItemsTxt.InnerText = "There are no default emails set for the current business";
+                            noItemsTxt.Attributes["class"] = "text-danger";
+                        }
+                        else
+                        {
+                            defaultEmailID = 0;
+                            budgetDefaultEmailAddress.Enabled = false;
+
+                            HtmlGenericControl noItemsTxt = (HtmlGenericControl)listInfo["NoItemsTxt"];
+                            noItemsTxt.InnerText = "Please Select a Business";
+                            noItemsTxt.Attributes["class"] = "text-gray";
+                        }
+                        break;
                 }
 
                 DefaultEmails defaultList = new DefaultEmails();
@@ -247,7 +294,9 @@ namespace WebUI
                 { "directorSupervisorBtn", new Dictionary<HtmlButton, HtmlGenericControl>() {{directorSupervisorBtn, directorSupervisorTabPane}}},
                 { "cPABtn", new Dictionary<HtmlButton, HtmlGenericControl>() {{cPABtn, cPATabPane}}},
                 { "obmDirectorBtn", new Dictionary<HtmlButton, HtmlGenericControl>() {{obmDirectorBtn, obmDirectorTabPane}}},
+                { "budgetBtn", new Dictionary<HtmlButton, HtmlGenericControl>() {{budgetBtn, budgetTabPane}}},
                 { "mayorBtn", new Dictionary<HtmlButton, HtmlGenericControl>() {{mayorBtn, mayorTabPane}}},
+                { "ccDirectorBtn", new Dictionary<HtmlButton, HtmlGenericControl>() {{ccDirectorBtn, ccDirectorTabPane}}}
             };
 
             foreach (KeyValuePair<string, Dictionary<HtmlButton, HtmlGenericControl>> tab in tabs)
@@ -277,64 +326,86 @@ namespace WebUI
         protected void Filter_SelectedIndexChanged(object sender, EventArgs e)
         {
             ActiveTabPanes(hdnActiveTabs.Value);
-            Dictionary<string, object> listInfo = defaultListType["DirectorSupervisor"];
+            DropDownList dropDown = (DropDownList)sender;
+            string commandName = dropDown.Attributes["data-command"];
+            string commandArgument = dropDown.SelectedItem.ToString();
+            string listType = dropDown.Attributes["data-type"];
+            Dictionary<string, object> listInfo = defaultListType[listType];
+            Repeater repeater = (Repeater)listInfo["Repeater"];
             HtmlGenericControl noItems = (HtmlGenericControl)listInfo["NoItems"];
+            HtmlGenericControl noItemsTxt = (HtmlGenericControl)listInfo["NoItemsTxt"];
 
             int defaultEmailID = new int();
-            if (!filterDepartment.SelectedValue.IsNullOrWhiteSpace())
+            switch (commandName)
             {
-                string departmentName = filterDepartment.SelectedItem.Text;
-                string divisionName = !filterDivision.SelectedIndex.Equals(0) ? filterDivision.SelectedItem.Text : "None";
-                defaultEmailID = Factory.Instance.GetDefaultEmailsByDepartmentDivision(departmentName, divisionName).DefaultEmailsID;
-                directorSupervisorDefaultEmailAddress.Enabled = true;
-
-                HtmlGenericControl noItemsTxt = (HtmlGenericControl)listInfo["NoItemsTxt"];
-                noItemsTxt.InnerText = "There are no default emails set for the current department/division";
-                noItemsTxt.Attributes["class"] = "text-danger";
-            }
-            else
-            {
-                defaultEmailID = 0;
-                directorSupervisorDefaultEmailAddress.Enabled = false;
-
-                HtmlGenericControl noItemsTxt = (HtmlGenericControl)listInfo["NoItemsTxt"];
-                noItemsTxt.InnerText = "Please Select a Department and/or Division";
-                noItemsTxt.Attributes["class"] = "text-gray";
-            }
-
-            try
-            {
-                DropDownList dropDown = (DropDownList)sender;
-
-                string commandName = dropDown.Attributes["data-command"]; string commandArgument = dropDown.SelectedItem.ToString();
-
-                List<string> noDivisions = new List<string>()
-                {
-                    "City Clerk",
-                    "Community Relations",
-                    "Convention & Visitor's Bureau",
-                    "Lincoln Library",
-                };
-
-                if (commandName.Equals("department"))
-                {
-                    filterDivision.Items.Clear();
-
-                    if (!filterDepartment.SelectedValue.IsNullOrWhiteSpace() && !noDivisions.Any(i => filterDepartment.SelectedItem.Text.Equals(i)))
+                default:
+                    if (!filterDepartment.SelectedValue.IsNullOrWhiteSpace())
                     {
-                        filterDivision.Enabled = true;
-                        GetAllDivisions(filterDivision, filterDepartment.SelectedValue);
+                        string departmentName = filterDepartment.SelectedItem.Text;
+                        string divisionName = !filterDivision.SelectedIndex.Equals(0) ? filterDivision.SelectedItem.Text : "None";
+                        defaultEmailID = Factory.Instance.GetDefaultEmailsByDepartmentDivision(departmentName, divisionName).DefaultEmailsID;
+                        directorSupervisorDefaultEmailAddress.Enabled = true;
+                        directorSupervisorDefaultEmailAddress.Text = string.Empty;
+
+
+                        noItemsTxt.InnerText = "There are no default emails set for the current department/division";
+                        noItemsTxt.Attributes["class"] = "text-danger";
                     }
                     else
                     {
-                        filterDivision.Enabled = false;
-                        filterDivision.Items.Add(new ListItem() { Text = "Select Division...", Value = "" });
-                    }
-                }
-            }
-            catch (Exception)
-            {
+                        defaultEmailID = 0;
+                        directorSupervisorDefaultEmailAddress.Enabled = false;
+                        directorSupervisorDefaultEmailAddress.Text = string.Empty;
 
+                        noItemsTxt.InnerText = "Please Select a Department and/or Division";
+                        noItemsTxt.Attributes["class"] = "text-gray";
+                    }
+
+                    List<string> noDivisions = new List<string>()
+                    {
+                        "City Clerk",
+                        "Community Relations",
+                        "Convention & Visitor's Bureau",
+                        "Lincoln Library",
+                    };
+
+                    if (commandName.ToLower().Equals("department"))
+                    {
+                        filterDivision.Items.Clear();
+
+                        if (!filterDepartment.SelectedValue.IsNullOrWhiteSpace() && !noDivisions.Any(i => filterDepartment.SelectedItem.Text.Equals(i)))
+                        {
+                            filterDivision.Enabled = true;
+                            GetAllDivisions(filterDivision, filterDepartment.SelectedValue);
+                        }
+                        else
+                        {
+                            filterDivision.Enabled = false;
+                            filterDivision.Items.Add(new ListItem() { Text = "Select Division...", Value = "" });
+                        }
+                    }
+                    break;
+                case "budget":
+                    if (!filterBusiness.SelectedValue.IsNullOrWhiteSpace())
+                    {
+                        string departmentName = filterBusiness.SelectedItem.Text;
+                        defaultEmailID = Factory.Instance.GetDefaultEmailsByDepartmentDivision(departmentName, "None").DefaultEmailsID;
+                        budgetDefaultEmailAddress.Enabled = true;
+                        budgetDefaultEmailAddress.Text = string.Empty;
+
+                        noItemsTxt.InnerText = "There are no default emails set for the current business";
+                        noItemsTxt.Attributes["class"] = "text-danger";
+                    }
+                    else
+                    {
+                        defaultEmailID = 0;
+                        budgetDefaultEmailAddress.Enabled = false;
+                        budgetDefaultEmailAddress.Text = string.Empty;
+
+                        noItemsTxt.InnerText = "Please Select a Business";
+                        noItemsTxt.Attributes["class"] = "text-gray";
+                    }
+                    break;
             }
 
             DefaultEmails defaultList = new DefaultEmails();
@@ -348,17 +419,17 @@ namespace WebUI
             if (emails.Length > 0)
             {
                 noItems.Visible = false;
-                rpDirectorSupervisorDefaultList.DataSource = emails;
-                rpDirectorSupervisorDefaultList.DataBind();
+                repeater.DataSource = emails;
+                repeater.DataBind();
             }
             else
             {
                 noItems.Visible = true;
-                rpDirectorSupervisorDefaultList.DataSource = null;
-                rpDirectorSupervisorDefaultList.DataBind();
+                repeater.DataSource = null;
+                repeater.DataBind();
             }
 
-            directorSupervisorDefaultEmailAddress.Text = string.Empty;
+            
         }
         protected void AddDefaultEmailAddress_Click(object sender, EventArgs e)
         {
@@ -382,6 +453,10 @@ namespace WebUI
                     string departmentName = filterDepartment.SelectedItem.Text;
                     string divisionName = !filterDivision.SelectedIndex.Equals(0) ? filterDivision.SelectedItem.Text : "None";
                     defaultEmailID = Factory.Instance.GetDefaultEmailsByDepartmentDivision(departmentName, divisionName).DefaultEmailsID;
+                    break;
+                case "Budget":
+                    string businessName = filterBusiness.SelectedItem.Text;
+                    defaultEmailID = Factory.Instance.GetDefaultEmailsByDepartmentDivision(businessName, "None").DefaultEmailsID;
                     break;
             }
 
@@ -437,6 +512,10 @@ namespace WebUI
                     string departmentName = filterDepartment.SelectedItem.Text;
                     string divisionName = !filterDivision.SelectedIndex.Equals(0) ? filterDivision.SelectedItem.Text : "None";
                     defaultEmailID = Factory.Instance.GetDefaultEmailsByDepartmentDivision(departmentName, divisionName).DefaultEmailsID;
+                    break;
+                case "Budget":
+                    string businessName = filterBusiness.SelectedItem.Text;
+                    defaultEmailID = Factory.Instance.GetDefaultEmailsByDepartmentDivision(businessName, "None").DefaultEmailsID;
                     break;
             }
 

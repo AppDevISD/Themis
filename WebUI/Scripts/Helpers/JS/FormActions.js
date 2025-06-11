@@ -69,6 +69,7 @@ function disableSubmitBtns() {
 		var type = $(this).attr('data-disable-btn');
 		var icon = $(this).attr('data-disable-btn-icon') || null;
 		var text = $(this).attr('data-disable-btn-text') || null;
+		var select = $(this).attr('data-disable-btn-select') || null;
 		$(this).on('click', function () {
 			if (text != null && (text.includes("Submit") || text.includes("Submitting") || text.includes("Save") || text.includes("Saving"))) {
 				if (isValid) {
@@ -105,6 +106,9 @@ function disableSubmitBtns() {
 					break;
 				case "aspIconBtn":
 					$(this).addClass('fa-fade');
+					if (select) {
+						$(`#${select}`).addClass('fa-fade');
+					}
 					break;
 			}
 		});

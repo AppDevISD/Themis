@@ -68,7 +68,7 @@ namespace WebUI
                     { "nextBtn", lnkNextSearchP },
                     { "lastBtn", lnkLastSearchP },
                 };
-                SetPagination(rpDraftsTable, pageBtns, pnlPagingP, lblCurrentPageBottomSearchP, 10);
+                SetPagination(rpDraftsTable, pageBtns, pnlPagingP, pnlFooter, lblCurrentPageBottomSearchP, 10);
                 Session["ViewState"] = ViewState;
                 GetStartupData();
             }
@@ -91,7 +91,7 @@ namespace WebUI
                     { "nextBtn", lnkNextSearchP },
                     { "lastBtn", lnkLastSearchP },
                 };
-                SetPagination(rpDraftsTable, pageBtns, pnlPagingP, lblCurrentPageBottomSearchP, 10);
+                SetPagination(rpDraftsTable, pageBtns, pnlPagingP, pnlFooter, lblCurrentPageBottomSearchP, 10);
                 Session["ViewState"] = ViewState;
                 GetStartupData();
             }
@@ -175,14 +175,14 @@ namespace WebUI
             ordView.Visible = false;
             lblNoItems.Visible = false;
         }
-        protected void SetPagination(Repeater rpTable, Dictionary<string, LinkButton> pageBtns, Panel pnlPaging, Label lblPage, int ItemsPerPage, bool GetViewState = false)
+        protected void SetPagination(Repeater rpTable, Dictionary<string, LinkButton> pageBtns, Panel pnlPaging, HtmlGenericControl pnlFooter, Label lblPage, int ItemsPerPage, bool GetViewState = false)
         {
             if (GetViewState)
             {
                 ViewState["PgNumP"] = Convert.ToInt32(Session["ViewStatePage"]);
             }
             SetViewState(ViewState, ItemsPerPage);
-            GetControls(pageBtns["firstBtn"], pageBtns["previousBtn"], pageBtns["nextBtn"], pageBtns["lastBtn"], rpTable, pnlPaging, lblPage);
+            GetControls(pageBtns["firstBtn"], pageBtns["previousBtn"], pageBtns["nextBtn"], pageBtns["lastBtn"], rpTable, pnlPaging, pnlFooter, lblPage);
         }
         public void GetStartupData()
         {
@@ -247,7 +247,7 @@ namespace WebUI
                 { "lastBtn", lnkLastSearchP },
             };
 
-            SetPagination(rpDraftsTable, pageBtns, pnlPagingP, lblCurrentPageBottomSearchP, 10);
+            SetPagination(rpDraftsTable, pageBtns, pnlPagingP, pnlFooter, lblCurrentPageBottomSearchP, 10);
             userInfo = (UserInfo)Session["UserInformation"];
 
             string title = !filterSearchTitle.Text.IsNullOrWhiteSpace() ? filterSearchTitle.Text : string.Empty;
@@ -293,7 +293,7 @@ namespace WebUI
                     { "nextBtn", lnkNextSearchP },
                     { "lastBtn", lnkLastSearchP },
                 };
-            SetPagination(rpDraftsTable, pageBtns, pnlPagingP, lblCurrentPageBottomSearchP, 10);
+            SetPagination(rpDraftsTable, pageBtns, pnlPagingP, pnlFooter, lblCurrentPageBottomSearchP, 10);
             List<Ordinance> ord_list = new List<Ordinance>();
             ord_list = (List<Ordinance>)Session["ord_list"];
             LinkButton button = (LinkButton)sender;
@@ -352,7 +352,7 @@ namespace WebUI
                 { "nextBtn", lnkNextSearchP },
                 { "lastBtn", lnkLastSearchP },
             };
-            SetPagination(rpDraftsTable, pageBtns, pnlPagingP, lblCurrentPageBottomSearchP, 10, false);
+            SetPagination(rpDraftsTable, pageBtns, pnlPagingP, pnlFooter, lblCurrentPageBottomSearchP, 10, false);
             List<Ordinance> ord_list = new List<Ordinance>();
             ord_list = (List<Ordinance>)Session["ord_list"];
             PageButtonClick(ord_list, commandName);
@@ -1554,7 +1554,7 @@ namespace WebUI
                     { "nextBtn", lnkNextSearchP },
                     { "lastBtn", lnkLastSearchP },
                 };
-                SetPagination(rpDraftsTable, pageBtns, pnlPagingP, lblCurrentPageBottomSearchP, 10, true);
+                SetPagination(rpDraftsTable, pageBtns, pnlPagingP, pnlFooter, lblCurrentPageBottomSearchP, 10, true);
                 List<Ordinance> ord_list = new List<Ordinance>();
                 ord_list = (List<Ordinance>)Session["ord_list"];
                 BindDataRepeaterPagination("no", ord_list);

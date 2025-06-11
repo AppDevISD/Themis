@@ -151,7 +151,7 @@ namespace WebUI
             StopImpersonate.Visible = (bool)Session["ImpersonateUser"];
             TriggerError.Visible = aDGroups.Any(i => i.GroupName.Equals("DG-PublicUtilities-InformationSystems-AppDev"));
 
-            DefaultEmails defaultList = Factory.Instance.GetByID<DefaultEmails>(107, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID");
+            DefaultEmails defaultList = Factory.Instance.GetByID<DefaultEmails>(110, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID");
             string[] emails = defaultList.EmailAddress.ToString().Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
 
             if (emails.Length > 0)
@@ -262,7 +262,7 @@ namespace WebUI
 
         protected void AddTestingEmailAddress_Click(object sender, EventArgs e)
         {
-            DefaultEmails defaultList = Factory.Instance.GetByID<DefaultEmails>(107, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID");
+            DefaultEmails defaultList = Factory.Instance.GetByID<DefaultEmails>(110, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID");
             List<string> emails = new List<string>();
             if (!defaultList.ToString().IsNullOrWhiteSpace())
             {
@@ -297,7 +297,7 @@ namespace WebUI
         }
         protected void rpTestingList_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
-            DefaultEmails defaultList = Factory.Instance.GetByID<DefaultEmails>(107, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID");
+            DefaultEmails defaultList = Factory.Instance.GetByID<DefaultEmails>(110, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID");
             List<string> emails = defaultList.EmailAddress.ToString().Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToList();
 
             emails.Remove(e.CommandArgument.ToString());

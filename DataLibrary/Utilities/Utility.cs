@@ -1,6 +1,7 @@
 ﻿using DataLibrary;
 using ISD.ActiveDirectory;
 using System;
+using System.Runtime;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -43,6 +44,14 @@ namespace DataLibrary
                     case true:
                         strLoginID = loginID;
                         adu = ISDFactory.Instance.GetUserInformationByLoginName(strLoginID);
+                        if (adu.EmployeeID.Equals(null) || adu.EmployeeID.Equals(string.Empty))
+                        {
+                            adu.EmployeeID = GetEmployeeID(adu.Email);
+                        }
+                        if (adu.PhotoLocation.Equals(null) || adu.PhotoLocation.Equals(string.Empty))
+                        {
+                            adu.PhotoLocation = $"\\\\INTRANET\\Shared$\\HRPhotos\\{adu.EmployeeID}.jpg";
+                        }
                         adu.Telephone = EmployeePhone(Convert.ToInt32(adu.EmployeeID)) ?? adu.Telephone;
                         if (adu.Telephone.Length > 0 && !adu.Telephone.StartsWith("217") && !adu.Telephone.StartsWith("(217)"))
                         {
@@ -68,6 +77,14 @@ namespace DataLibrary
                         }
                         else { }
                         adu = ISDFactory.Instance.GetUserInformationByLoginName(strLoginID);
+                        if (adu.EmployeeID.Equals(null) || adu.EmployeeID.Equals(string.Empty))
+                        {
+                            adu.EmployeeID = GetEmployeeID(adu.Email);
+                        }
+                        if (adu.PhotoLocation.Equals(null) || adu.PhotoLocation.Equals(string.Empty))
+                        {
+                            adu.PhotoLocation = $"\\\\INTRANET\\Shared$\\HRPhotos\\{adu.EmployeeID}.jpg";
+                        }
                         adu.Telephone = EmployeePhone(Convert.ToInt32(adu.EmployeeID)) ?? adu.Telephone;
                         if (adu.Telephone.Length > 0 && !adu.Telephone.StartsWith("217") && !adu.Telephone.StartsWith("(217)"))
                         {
@@ -149,6 +166,58 @@ namespace DataLibrary
             }
             return employeeExt;
         }
+        public static string GetEmployeeID(string email)
+        {
+            Info info = new Info();
+            SqlConnection cn = new SqlConnection(Properties.Settings.Default["EmployeeDirectoryDB"].ToString());
+            SqlCommand cmd = new SqlCommand("spGetEmployeeInformationByEmail", cn);
+            cmd.Parameters.AddWithValue($"@pemail", email);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            using (cn)
+            {
+                cn.Open();
+                SqlDataReader rs;
+                rs = cmd.ExecuteReader();
+                while (rs.Read())
+                {
+                    info.intID = Convert.ToInt32(rs["intID"]);
+                }
+            }
+            return info.intID.ToString();
+        }
+        public static string GetEmployeePhotoLocation(string pIntID)
+        {
+
+            SqlConnection cn = new SqlConnection(Properties.Settings.Default["IDCards"].ToString());
+            string PhotoLocation = "";
+            using (cn)
+            {
+                cn.Open();
+                string strSQLCommand = "Select photo from IdentificationCards Where int_id = " + pIntID;
+                SqlCommand cmd2 = new SqlCommand(strSQLCommand, cn);
+                SqlDataReader rs2;
+                rs2 = cmd2.ExecuteReader();
+
+
+                while (rs2.Read())
+                {
+                    PhotoLocation = rs2["Photo"].ToString();
+                    Token t = new Token(PhotoLocation, "\\");
+                    while (t.hasElements())
+                    {
+                        PhotoLocation = t.nextElement();
+                    }
+                    PhotoLocation = @"\\INTRANET\Shared$\HRPhotos\" //Properties.Settings.Default["PictureLocation"].ToString()
+                                    + @"\" + PhotoLocation;
+                }
+
+                //rs2.Close();
+
+                //_cn.Close();
+            }
+            return PhotoLocation;
+        }
         public static Department GetUserDepartment(string employeeID)
         {
             Department department = new Department();
@@ -208,8 +277,15 @@ namespace DataLibrary
                 rs = cmd.ExecuteReader();
                 while (rs.Read())
                 {
-                    division.DivisionCode = Convert.ToInt32(rs["divCode"]);
-                    division.DivisionName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(rs["division"].ToString().ToLower());
+                    try
+                    {
+                        division.DivisionCode = Convert.ToInt32(rs["divCode"]);
+                        division.DivisionName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(rs["division"].ToString().ToLower());
+                    }
+                    catch (Exception)
+                    {
+
+                    }
                 }
             }
             return division;
@@ -315,7 +391,10 @@ namespace DataLibrary
                 { "directorSupervisor", "Director/Supervisor" },
                 { "cPA", "City Purchasing Agent" },
                 { "obmDirector", "OBM Director" },
+                { "budgetOBM", "OBM Budget" },
+                { "budgetCWLP", "CWLP Budget" },
                 { "mayor", "Mayor" },
+                { "ccDirector", "Corporation Counsel Director" },
 
                 { "RejectionReason", "Rejection Reason" },
                 { "Revenue", "Revenue" },

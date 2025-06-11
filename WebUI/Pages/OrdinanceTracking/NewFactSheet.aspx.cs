@@ -545,7 +545,17 @@ namespace WebUI
                     {
                         finishSubmit = false;
                     }
-                    
+
+                    int businessID = new int();
+                    switch (requestDepartment.SelectedItem.Value)
+                    {
+                        default:
+                            businessID = 11;
+                            break;
+                        case "Public Utilities":
+                            businessID = 12;
+                            break;
+                    }
                     SignatureRequest signatureRequest = new SignatureRequest()
                     {
                         OrdinanceID = retVal,
@@ -553,12 +563,15 @@ namespace WebUI
                         DirectorSupervisor = string.Empty,
                         CityPurchasingAgent = Factory.Instance.GetByID<DefaultEmails>(9, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID").EmailAddress,
                         OBMDirector = Factory.Instance.GetByID<DefaultEmails>(10, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID").EmailAddress,
-                        Mayor = Factory.Instance.GetByID<DefaultEmails>(11, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID").EmailAddress,
+                        Budget = Factory.Instance.GetByID<DefaultEmails>(businessID, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID").EmailAddress,
+                        Mayor = Factory.Instance.GetByID<DefaultEmails>(13, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID").EmailAddress,
+                        CCDirector = Factory.Instance.GetByID<DefaultEmails>(14, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID").EmailAddress,
                         LastUpdateBy = $"{_user.FirstName} {_user.LastName}",
                         LastUpdateDate = DateTime.Now,
                         EffectiveDate = DateTime.Now,
                         ExpirationDate = DateTime.MaxValue
                     };
+
 
                     string sigRequests = string.Empty;
                     if (Session["SigRequestEmails"] != null)

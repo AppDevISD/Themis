@@ -879,10 +879,13 @@ input[type=file]:hover::-webkit-file-upload-button {
   border-color: var(--bs-disabled-field-bg);
 }
 
-a.aspNetDisabled, a[disabled], a[disabled=disabled] {
+a.aspNetDisabled, a[disabled]:not([data-disable-btn-symbol]), a[disabled=disabled]:not([data-disable-btn-symbol]) {
   color: rgb(from var(--bs-btn-color) r g b/50%);
   background-color: rgb(from var(--bs-btn-bg) r g b/50%) !important;
   border-color: transparent !important;
+}
+
+a.aspNetDisabled, a[disabled], a[disabled=disabled] {
   pointer-events: none !important;
 }
 

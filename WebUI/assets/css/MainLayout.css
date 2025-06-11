@@ -96,6 +96,7 @@ main {
 		.top-row a:active, .top-row a:focus {
 			color: var(--color-theme-text) !important;
 		}
+
 .site-logo {
 	width: 60px;
 	margin-left: 20px;

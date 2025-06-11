@@ -26,6 +26,7 @@ namespace DataLibrary
         public LinkButton LastBtn = new LinkButton();
         public Repeater TableRepeater = new Repeater();
         public Panel TablePanel = new Panel();
+        public HtmlGenericControl TableFooter = new HtmlGenericControl();
         public Label PageLabel = new Label();
         public int ItemsPerPg = new int();
         public static TablePagination _TablePagination = null;
@@ -46,7 +47,7 @@ namespace DataLibrary
             Instance.ViewState = state;
             Instance.ItemsPerPg = ItemsPerPage;
         }
-        public static void GetControls(LinkButton firstButton, LinkButton previousButton, LinkButton nextButton, LinkButton lastButton, Repeater tableRepeater, Panel tablePanel, Label pageLabel)
+        public static void GetControls(LinkButton firstButton, LinkButton previousButton, LinkButton nextButton, LinkButton lastButton, Repeater tableRepeater, Panel tablePanel, HtmlGenericControl tableFooter, Label pageLabel)
         {
             Instance.FirstBtn = firstButton;
             Instance.PreviousBtn = previousButton;
@@ -54,6 +55,7 @@ namespace DataLibrary
             Instance.LastBtn = lastButton;
             Instance.TableRepeater = tableRepeater;
             Instance.TablePanel = tablePanel;
+            Instance.TableFooter = tableFooter;
             Instance.PageLabel = pageLabel;
         }
         public static int SearchPgNumP
@@ -233,16 +235,19 @@ namespace DataLibrary
             if (_list.Count <= 0)
             {
                 Instance.TablePanel.Visible = false;
+                Instance.TableFooter.Visible = false;
             }
             else
             {
                 if (pDSSearch.PageCount == 1)
                 {
                     Instance.TablePanel.Visible = false;
+                    Instance.TableFooter.Visible = false;
                 }
                 else
                 {
                     Instance.TablePanel.Visible = true;
+                    Instance.TableFooter.Visible = true;
                 }
                 pDSSearch.CurrentPageIndex = SearchPgNumP - 1;
                 Instance.FirstBtn.Enabled = !pDSSearch.IsFirstPage;

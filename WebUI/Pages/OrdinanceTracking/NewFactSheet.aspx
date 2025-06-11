@@ -6,7 +6,7 @@
 	<%-- FORM HEADER --%>
 	<section class="container form-header bg-body-secondary text-center position-relative">
 		<div class="row h-100 align-items-center">
-			<h1><span class="fas fa-file-circle-plus"></span>&nbsp;New Fact Sheet</h1>
+			<h1><span class="fa-kit fa-solid-file-lines-circle-plus"></span>&nbsp;New Fact Sheet</h1>
 		</div>
 		<asp:LinkButton runat="server" ID="backBtn" CssClass="btn bg-danger backBtn" OnClick="backBtn_Click" OnClientClick="showLoadingModal();" TabIndex="-1"><span class="fas fa-xmark text-light"></span></asp:LinkButton>
 	</section>

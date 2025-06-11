@@ -465,6 +465,15 @@ namespace WebUI
         protected global::System.Web.UI.HtmlControls.HtmlButton obmDirectorBtn;
 
         /// <summary>
+        /// budgetBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton budgetBtn;
+
+        /// <summary>
         /// mayorBtn control.
         /// </summary>
         /// <remarks>
@@ -472,6 +481,15 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlButton mayorBtn;
+
+        /// <summary>
+        /// ccDirectorBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton ccDirectorBtn;
 
         /// <summary>
         /// fundsCheckByTabPane control.
@@ -681,6 +699,69 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.Button OBMDirectorAddDefaultEmailAddress;
 
         /// <summary>
+        /// budgetTabPane control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl budgetTabPane;
+
+        /// <summary>
+        /// filterBusiness control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList filterBusiness;
+
+        /// <summary>
+        /// lblNoItemsBudget control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblNoItemsBudget;
+
+        /// <summary>
+        /// lblNoItemsTxtBudget control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblNoItemsTxtBudget;
+
+        /// <summary>
+        /// rpBudgetDefaultList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rpBudgetDefaultList;
+
+        /// <summary>
+        /// budgetDefaultEmailAddress control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox budgetDefaultEmailAddress;
+
+        /// <summary>
+        /// BudgetAddDefaultEmailAddress control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BudgetAddDefaultEmailAddress;
+
+        /// <summary>
         /// mayorTabPane control.
         /// </summary>
         /// <remarks>
@@ -724,6 +805,51 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button MayorAddDefaultEmailAddress;
+
+        /// <summary>
+        /// ccDirectorTabPane control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl ccDirectorTabPane;
+
+        /// <summary>
+        /// lblNoItemsCCDirector control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblNoItemsCCDirector;
+
+        /// <summary>
+        /// rpCCDirectorDefaultList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rpCCDirectorDefaultList;
+
+        /// <summary>
+        /// ccDirectorDefaultEmailAddress control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox ccDirectorDefaultEmailAddress;
+
+        /// <summary>
+        /// CCDirectorAddDefaultEmailAddress control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button CCDirectorAddDefaultEmailAddress;
 
         /// <summary>
         /// hdnActiveTabs control.

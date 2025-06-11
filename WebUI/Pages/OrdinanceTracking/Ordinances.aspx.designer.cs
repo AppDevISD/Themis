@@ -186,6 +186,15 @@ namespace WebUI
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblNoItems;
 
         /// <summary>
+        /// pnlFooter control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl pnlFooter;
+
+        /// <summary>
         /// pnlPagingP control.
         /// </summary>
         /// <remarks>
@@ -1302,6 +1311,87 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.Label obmDirectorCertified;
 
         /// <summary>
+        /// budgetRow control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl budgetRow;
+
+        /// <summary>
+        /// businessType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl businessType;
+
+        /// <summary>
+        /// budgetEmailBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton budgetEmailBtn;
+
+        /// <summary>
+        /// budgetBtnDiv control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl budgetBtnDiv;
+
+        /// <summary>
+        /// budgetBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button budgetBtn;
+
+        /// <summary>
+        /// budgetInputGroup control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl budgetInputGroup;
+
+        /// <summary>
+        /// budgetSig control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox budgetSig;
+
+        /// <summary>
+        /// budgetDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox budgetDate;
+
+        /// <summary>
+        /// budgetCertified control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label budgetCertified;
+
+        /// <summary>
         /// mayorRow control.
         /// </summary>
         /// <remarks>
@@ -1374,6 +1464,78 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.Label mayorCertified;
 
         /// <summary>
+        /// ccDirectorRow control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl ccDirectorRow;
+
+        /// <summary>
+        /// ccDirectorEmailBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton ccDirectorEmailBtn;
+
+        /// <summary>
+        /// ccDirectorBtnDiv control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl ccDirectorBtnDiv;
+
+        /// <summary>
+        /// ccDirectorBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button ccDirectorBtn;
+
+        /// <summary>
+        /// ccDirectorInputGroup control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl ccDirectorInputGroup;
+
+        /// <summary>
+        /// ccDirectorSig control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox ccDirectorSig;
+
+        /// <summary>
+        /// ccDirectorDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox ccDirectorDate;
+
+        /// <summary>
+        /// ccDirectorCertified control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label ccDirectorCertified;
+
+        /// <summary>
         /// submitSection control.
         /// </summary>
         /// <remarks>
@@ -1417,6 +1579,15 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater rpAudit;
+
+        /// <summary>
+        /// pnlFooterAudit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl pnlFooterAudit;
 
         /// <summary>
         /// pnlAuditPagingP control.

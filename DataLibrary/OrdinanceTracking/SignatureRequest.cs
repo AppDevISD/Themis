@@ -14,7 +14,9 @@ namespace DataLibrary
         public string DirectorSupervisor { get; set; }
         public string CityPurchasingAgent { get; set; }
         public string OBMDirector { get; set; }
+        public string Budget { get; set; }
         public string Mayor { get; set; }
+        public string CCDirector { get; set; }
         public string LastUpdateBy { get; set; }
         public DateTime LastUpdateDate { get; set; }
         public DateTime EffectiveDate { get; set; }

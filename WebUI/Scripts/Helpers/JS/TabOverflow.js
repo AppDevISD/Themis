@@ -50,7 +50,6 @@ function CollapseTabs() {
 	});
 
 	$(window).on('resize', function () {
-		console.log("Resize");
 		$(collapseTabs).each(function () {
 			var id = `#${$(this).attr('id')}`;
 			if (this.scrollWidth > this.offsetWidth) {

@@ -99,12 +99,12 @@
 							<table id="FormTable" class="table table-bordered table-striped table-hover text-center" style="padding: 0px; margin: 0px">
 								<thead>
 									<tr>
-										<th style="width: 4%; text-align: center"><asp:LinkButton runat="server" ID="sortID" data-command="OrdinanceID" data-text="ID" OnClick="SortBtn_Click" class="btn btn-sort" TabIndex="-1"><strong>ID<span runat="server" class='float-end lh-1p5'></span></strong></asp:LinkButton></th>
-										<th style="width: 6%; text-align: center"><asp:LinkButton runat="server" ID="sortDate" data-command="EffectiveDate" data-text="Date" OnClick="SortBtn_Click" class="btn btn-sort" TabIndex="-1"><strong>Date<span runat="server" class='float-end lh-1p5 fas fa-arrow-down'></span></strong></asp:LinkButton></th>
-										<th style="width: 34%; text-align: center"><asp:LinkButton runat="server" ID="sortTitle" data-command="OrdinanceTitle" data-text="Title" OnClick="SortBtn_Click" class="btn btn-sort" TabIndex="-1"><strong>Title<span class="float-end lh-1p5 me-1"></span></strong></asp:LinkButton></th>
+										<th style="width: 4%; text-align: center"><asp:LinkButton runat="server" ID="sortID" data-command="OrdinanceID" data-text="ID" OnClick="SortBtn_Click" class="btn btn-sort" TabIndex="-1" data-disable-btn="aspIconBtn" data-disable-btn-symbol="true"><strong>ID<span runat="server" class='float-end lh-1p5'></span></strong></asp:LinkButton></th>
+										<th style="width: 6%; text-align: center"><asp:LinkButton runat="server" ID="sortDate" data-command="EffectiveDate" data-text="Date" OnClick="SortBtn_Click" class="btn btn-sort" TabIndex="-1" data-disable-btn="aspIconBtn" data-disable-btn-symbol="true"><strong>Date<span runat="server" class='float-end lh-1p5 fas fa-arrow-down'></span></strong></asp:LinkButton></th>
+										<th style="width: 34%; text-align: center"><asp:LinkButton runat="server" ID="sortTitle" data-command="OrdinanceTitle" data-text="Title" OnClick="SortBtn_Click" class="btn btn-sort" TabIndex="-1" data-disable-btn="aspIconBtn" data-disable-btn-symbol="true"><strong>Title<span class="float-end lh-1p5 me-1"></span></strong></asp:LinkButton></th>
 										<th style="width: 25%; text-align: center">
 											<div style="position: relative;">
-												<asp:LinkButton runat="server" ID="sortDepartmentDivision" data-command="RequestDepartment" data-text="Department" OnClick="SortBtn_Click" class="btn-sort btn-dd-sort" TabIndex="-1"><strong><span class="float-end lh-1p5"></span></strong></span></asp:LinkButton>
+												<asp:LinkButton runat="server" ID="sortDepartmentDivision" data-command="RequestDepartment" data-text="Department" OnClick="SortBtn_Click" class="btn-sort btn-dd-sort" TabIndex="-1" data-disable-btn="aspIconBtn" data-disable-btn-symbol="true" data-disable-btn-select="ddDeptDivision"><strong><span class="float-end lh-1p5"></span></strong></span></asp:LinkButton>
 												<asp:DropDownList runat="server" ID="ddDeptDivision" CssClass="form-select dd-sort" OnSelectedIndexChanged="ddDeptDivision_SelectedIndexChanged" AutoPostBack="true" TabIndex="-1" >
 													<asp:ListItem Text="Department" Value="RequestDepartment"></asp:ListItem>
 													<asp:ListItem Text="Division" Value="RequestDivision"></asp:ListItem>
@@ -112,8 +112,8 @@
 											</div>
 										</th>
 										
-										<th style="width: 15%; text-align: center"><asp:LinkButton runat="server" ID="sortContact" data-command="RequestContact" data-text="Contact" OnClick="SortBtn_Click" class="btn btn-sort" TabIndex="-1"><strong>Contact<span class="float-end lh-1p5"></span></strong></asp:LinkButton></th>
-										<th style="width: 10%; text-align: center"><asp:LinkButton runat="server" ID="sortStatus" data-command="StatusDescription" data-text="Status" OnClick="SortBtn_Click" class="btn btn-sort" TabIndex="-1"><strong>Status<span class="float-end lh-1p5"></span></strong></asp:LinkButton></th>
+										<th style="width: 15%; text-align: center"><asp:LinkButton runat="server" ID="sortContact" data-command="RequestContact" data-text="Contact" OnClick="SortBtn_Click" class="btn btn-sort" TabIndex="-1" data-disable-btn="aspIconBtn" data-disable-btn-symbol="true"><strong>Contact<span class="float-end lh-1p5"></span></strong></asp:LinkButton></th>
+										<th style="width: 10%; text-align: center"><asp:LinkButton runat="server" ID="sortStatus" data-command="StatusDescription" data-text="Status" OnClick="SortBtn_Click" class="btn btn-sort" TabIndex="-1" data-disable-btn="aspIconBtn" data-disable-btn-symbol="true"><strong>Status<span class="float-end lh-1p5"></span></strong></asp:LinkButton></th>
 										<th style="width: 6%; text-align: center"><strong>Action</strong></th>
 									</tr>
 								</thead>
@@ -160,7 +160,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="card-footer p-0">
+					<div runat="server" id="pnlFooter" class="card-footer p-0">
 						<asp:Panel ID="pnlPagingP" CssClass="panel m-0" runat="server" Visible="false">
 							<table class="table m-0" runat="server">
 								<tr>
@@ -906,7 +906,41 @@
 											</div>
 										</div>
 
-										<%-- FIFTH ROW --%>
+										<%-- SIXTH ROW --%>
+										<div runat="server" id="budgetRow" class="row mb-3">
+											<div class="col-md-12">
+												<div class="form-group">
+													<label for="budgetGroup"><label runat="server" id="businessType"></label> Budget <asp:LinkButton runat="server" ID="budgetEmailBtn" CssClass="text-primary fs-7 text-decoration-none ms-2" OnClick="signatureEmailBtn_Click" CommandArgument="budgetBtn;Budget" CommandName="Budget" TabIndex="-1"><span class="fa-kit fa-solid-signature-circle-user"></span>&nbsp;Assign Signature</asp:LinkButton></label>
+													<div id="budgetGroup">
+														<div runat="server" id="budgetBtnDiv" class="row readonly-color">
+															<%-- SIGN BUTTON --%>
+															<div class="col-md-6">
+																<asp:Button runat="server" ID="budgetBtn" UseSubmitBehavior="false" CssClass="btn btn-success float-start" Width="50%" Text="Sign" data-toggle="modal" data-target="#signatureModal" OnClientClick="setSigModal('budget');" TabIndex="-1" />
+															</div>
+														</div>
+														<div runat="server" id="budgetInputGroup" class="row">
+															<div class="col-md-4">
+																<div class="input-group">
+																	<span class="input-group-text fas fa-signature"></span>
+																	<asp:TextBox runat="server" ID="budgetSig" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" data-required="true" ReadOnly="true" TabIndex="-1"></asp:TextBox>
+																</div>
+															</div>
+															<div class="col-md-2">
+																<div class="input-group">
+																	<span class="input-group-text fas fa-calendar-days"></span>
+																	<asp:TextBox runat="server" ID="budgetDate" CssClass="form-control" TextMode="Date" ReadOnly="true" TabIndex="-1"></asp:TextBox>
+																</div>
+															</div>
+															<div class="col-md-6 d-flex align-items-center">
+																<asp:Label runat="server" ID="budgetCertified" CssClass="text-success m-0"><span class="fas fa-check"></span>&nbsp;Signature Certified!</asp:Label>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+
+										<%-- SIXTH ROW --%>
 										<div runat="server" id="mayorRow" class="row mb-3">
 											<%-- MAYOR --%>
 											<div class="col-md-12">
@@ -934,6 +968,40 @@
 															</div>
 															<div class="col-md-6 d-flex align-items-center">
 																<asp:Label runat="server" ID="mayorCertified" CssClass="text-success m-0"><span class="fas fa-check"></span>&nbsp;Signature Certified!</asp:Label>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+
+										<%-- SEVENTH ROW --%>
+										<div runat="server" id="ccDirectorRow" class="row mb-3">
+											<div class="col-md-12">
+												<div class="form-group">
+													<label for="ccDirectorGroup">Corporation Council Director <asp:LinkButton runat="server" ID="ccDirectorEmailBtn" CssClass="text-primary fs-7 text-decoration-none ms-2" OnClick="signatureEmailBtn_Click" CommandArgument="ccDirectorBtn;CCDirector" CommandName="CCDirector" TabIndex="-1"><span class="fa-kit fa-solid-signature-circle-user"></span>&nbsp;Assign Signature</asp:LinkButton></label>
+													<div id="ccDirectorGroup">
+														<div runat="server" id="ccDirectorBtnDiv" class="row readonly-color">
+															<%-- SIGN BUTTON --%>
+															<div class="col-md-6">
+																<asp:Button runat="server" ID="ccDirectorBtn" UseSubmitBehavior="false" CssClass="btn btn-success float-start" Width="50%" Text="Sign" data-toggle="modal" data-target="#signatureModal" OnClientClick="setSigModal('ccDirector');" TabIndex="-1" />
+															</div>
+														</div>
+														<div runat="server" id="ccDirectorInputGroup" class="row">
+															<div class="col-md-4">
+																<div class="input-group">
+																	<span class="input-group-text fas fa-signature"></span>
+																	<asp:TextBox runat="server" ID="ccDirectorSig" CssClass="form-control" TextMode="SingleLine" AutoCompleteType="Disabled" data-required="true" ReadOnly="true" TabIndex="-1"></asp:TextBox>
+																</div>
+															</div>
+															<div class="col-md-2">
+																<div class="input-group">
+																	<span class="input-group-text fas fa-calendar-days"></span>
+																	<asp:TextBox runat="server" ID="ccDirectorDate" CssClass="form-control" TextMode="Date" ReadOnly="true" TabIndex="-1"></asp:TextBox>
+																</div>
+															</div>
+															<div class="col-md-6 d-flex align-items-center">
+																<asp:Label runat="server" ID="ccDirectorCertified" CssClass="text-success m-0"><span class="fas fa-check"></span>&nbsp;Signature Certified!</asp:Label>
 															</div>
 														</div>
 													</div>
@@ -1013,7 +1081,7 @@
 										</tbody>
 									</table>
 								</div>
-								<div class="card-footer p-0">
+								<div runat="server" id="pnlFooterAudit" class="card-footer p-0">
 									<asp:Panel ID="pnlAuditPagingP" CssClass="panel m-0" runat="server" Visible="false">
 										<table class="table m-0" runat="server">
 											<tr>
@@ -1204,7 +1272,7 @@
 			]);
 			FilterFirstItem();
 			scrollToElement();
-			SetSignEnabled();			
+			SetSignEnabled();
 			FormatAudit();
 			SetModalDatePicker("signatureModal");
 		}
@@ -1279,10 +1347,6 @@
 			$('#<%= sigDate.ClientID %>').val('');
 			$('#<%= btnSignDoc.ClientID %>').prop('disabled', true);
 			$('#<%= certifySig.ClientID %>').prop('checked', false);
-
-			$('#signatureModal').on('shown.bs.modal', function () {
-				
-			});
 		}
 
 		function OpenRejectionModal() {

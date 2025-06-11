@@ -82,7 +82,7 @@
 						<nav class="flex-column navMenuShow">
 							<%-- HOME --%>
 							<div class='nav-item <%:ActivePage("Home")?"activePage":""%>'>
-								<a runat="server" id="Home" class="nav-link" href="./" tabindex="-1">
+								<a runat="server" id="Home" class="nav-link" href="./" tabindex="-1" data-disable-btn="aspIconBtn" data-disable-btn-symbol="true">
 									<span class="fas fa-house"></span>
 									<p class="m-0 fs-6 noto-sans-semi-bold">Home</p>
 								</a>
@@ -95,7 +95,7 @@
 									<p class="m-0 fs-6 noto-sans-semi-bold">Ordinance Tracking</p>
 								</a>
 								<div id="OrdinanceTrackingMenu" class='accordion-border collapse' data-parent="#ordinanceTrackingParent">
-									<a class='nav-link <%:ActivePage("Ordinances")?"activePage":""%>' href="./Ordinances" tabindex="-1">
+									<a class='nav-link <%:ActivePage("Ordinances")?"activePage":""%>' href="./Ordinances" tabindex="-1" data-disable-btn="aspIconBtn" data-disable-btn-symbol="true">
 										<span class="fas fa-book-section"></span>
 										<p class="m-0 fs-6 noto-sans-semi-bold">Ordinances</p>
 									</a>
@@ -103,12 +103,12 @@
 										<span class="fas fa-file-circle-plus"></span>
 										<p class="m-0 fs-6 noto-sans-semi-bold">New Fact Sheet</p>
 									</a>--%>
-									<a class='nav-link <%:ActivePage("FactSheetDrafts;NewFactSheet")?"activePage":""%>' href="./FactSheetDrafts" tabindex="-1">
+									<a class='nav-link <%:ActivePage("FactSheetDrafts;NewFactSheet")?"activePage":""%>' href="./FactSheetDrafts" tabindex="-1" data-disable-btn="aspIconBtn" data-disable-btn-symbol="true">
 										<span class="fas fa-file-lines"></span>
 										<p class="m-0 fs-6 noto-sans-semi-bold">Fact Sheets</p>
 									</a>
 									<div runat="server" id="ordAdmin">
-										<a class='nav-link' href="./OrdinanceAdmin" tabindex="-1">
+										<a class='nav-link' href="./OrdinanceAdmin" tabindex="-1" data-disable-btn="aspIconBtn" data-disable-btn-symbol="true">
 											<span class="fa-kit fa-solid-user-crown-gear"></span>
 											<p class="m-0 fs-6 noto-sans-semi-bold">Admin</p>
 										</a>

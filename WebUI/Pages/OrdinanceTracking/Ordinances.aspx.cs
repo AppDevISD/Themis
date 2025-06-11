@@ -27,9 +27,10 @@ namespace WebUI
     {
         private ADUser _user = new ADUser();
         public UserInfo userInfo = new UserInfo();
-        private readonly string pendingEmailList = HttpContext.Current.IsDebuggingEnabled ? Factory.Instance.GetByID<DefaultEmails>(107, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID").EmailAddress.Replace(';', ',') : Factory.Instance.GetByID<DefaultEmails>(1, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID").EmailAddress.Replace(';', ',');
-        private readonly string underReviewEmailList = HttpContext.Current.IsDebuggingEnabled ? Factory.Instance.GetByID<DefaultEmails>(107, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID").EmailAddress.Replace(';', ',') : Factory.Instance.GetByID<DefaultEmails>(2, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID").EmailAddress.Replace(';', ',');
+        private readonly string pendingEmailList = HttpContext.Current.IsDebuggingEnabled ? Factory.Instance.GetByID<DefaultEmails>(110, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID").EmailAddress.Replace(';', ',') : Factory.Instance.GetByID<DefaultEmails>(1, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID").EmailAddress.Replace(';', ',');
+        private readonly string underReviewEmailList = HttpContext.Current.IsDebuggingEnabled ? Factory.Instance.GetByID<DefaultEmails>(110, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID").EmailAddress.Replace(';', ',') : Factory.Instance.GetByID<DefaultEmails>(2, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID").EmailAddress.Replace(';', ',');
         public string deptDivColumnType = "RequestDepartment";
+        public string BudgetType = string.Empty;
         
         public readonly List<string> lockedStatus = new List<string>()
         {
@@ -69,7 +70,7 @@ namespace WebUI
                     { "nextBtn", lnkNextSearchP },
                     { "lastBtn", lnkLastSearchP },
                 };
-                SetPagination(rpOrdinanceTable, pageBtns, pnlPagingP, lblCurrentPageBottomSearchP, 10);
+                SetPagination(rpOrdinanceTable, pageBtns, pnlPagingP, pnlFooter, lblCurrentPageBottomSearchP, 10);
                 Session["ViewState"] = ViewState;
                 GetStartupData(userInfo.IsAdmin);
             }            
@@ -92,7 +93,7 @@ namespace WebUI
                     { "nextBtn", lnkNextSearchP },
                     { "lastBtn", lnkLastSearchP },
                 };
-                SetPagination(rpOrdinanceTable, pageBtns, pnlPagingP, lblCurrentPageBottomSearchP, 10);
+                SetPagination(rpOrdinanceTable, pageBtns, pnlPagingP, pnlFooter, lblCurrentPageBottomSearchP, 10);
                 Session["ViewState"] = ViewState;
                 filterStatus.SelectedIndex = 0;
                 filterDepartment.SelectedIndex = 0;
@@ -231,14 +232,14 @@ namespace WebUI
             }
 
         }
-        protected void SetPagination(Repeater rpTable, Dictionary<string, LinkButton> pageBtns, Panel pnlPaging, Label lblPage, int ItemsPerPage, bool GetViewState = false)
+        protected void SetPagination(Repeater rpTable, Dictionary<string, LinkButton> pageBtns, Panel pnlPaging, HtmlGenericControl pnlFooter, Label lblPage, int ItemsPerPage, bool GetViewState = false)
         {
             if (GetViewState)
             {
                 ViewState["PgNumP"] = Convert.ToInt32(Session["ViewStatePage"]);
             }
             SetViewState(ViewState, ItemsPerPage);
-            GetControls(pageBtns["firstBtn"], pageBtns["previousBtn"], pageBtns["nextBtn"], pageBtns["lastBtn"], rpTable, pnlPaging, lblPage);
+            GetControls(pageBtns["firstBtn"], pageBtns["previousBtn"], pageBtns["nextBtn"], pageBtns["lastBtn"], rpTable, pnlPaging, pnlFooter, lblPage);
         }
         public void GetStartupData(bool isAdmin)
         {
@@ -305,7 +306,7 @@ namespace WebUI
                 { "lastBtn", lnkLastSearchP },
             };
 
-            SetPagination(rpOrdinanceTable, pageBtns, pnlPagingP, lblCurrentPageBottomSearchP, 10);
+            SetPagination(rpOrdinanceTable, pageBtns, pnlPagingP, pnlFooter, lblCurrentPageBottomSearchP, 10);
 
             try
             {
@@ -420,7 +421,7 @@ namespace WebUI
                     { "nextBtn", lnkNextSearchP },
                     { "lastBtn", lnkLastSearchP },
                 };
-            SetPagination(rpOrdinanceTable, pageBtns, pnlPagingP, lblCurrentPageBottomSearchP, 10);
+            SetPagination(rpOrdinanceTable, pageBtns, pnlPagingP, pnlFooter, lblCurrentPageBottomSearchP, 10);
             List<Ordinance> ord_list = new List<Ordinance>();
             ord_list = (List<Ordinance>)Session["ord_list"];
             LinkButton button = (LinkButton)sender;
@@ -628,7 +629,7 @@ namespace WebUI
                         { "nextBtn", lnkNextSearchP },
                         { "lastBtn", lnkLastSearchP },
                     };
-                    SetPagination(rpOrdinanceTable, pageBtns, pnlPagingP, lblCurrentPageBottomSearchP, 10, false);
+                    SetPagination(rpOrdinanceTable, pageBtns, pnlPagingP, pnlFooter, lblCurrentPageBottomSearchP, 10, false);
                     List<Ordinance> ord_list = new List<Ordinance>();
                     ord_list = (List<Ordinance>)Session["ord_list"];
                     PageButtonClick(ord_list, commandName);
@@ -642,7 +643,7 @@ namespace WebUI
                         { "nextBtn", lnkAuditNextSearchP },
                         { "lastBtn", lnkAuditLastSearchP },
                     };
-                    SetPagination(rpAudit, pageBtns, pnlAuditPagingP, lblAuditCurrentPageBottomSearchP, 11);
+                    SetPagination(rpAudit, pageBtns, pnlAuditPagingP, pnlFooterAudit, lblAuditCurrentPageBottomSearchP, 11);
                     List<OrdinanceAudit> audit_list = new List<OrdinanceAudit>();
                     audit_list = (List<OrdinanceAudit>)Session["ordAudit"];
                     PageButtonClick(audit_list, commandName);
@@ -878,7 +879,9 @@ namespace WebUI
                 directorSupervisorSig,
                 cPASig,
                 obmDirectorSig,
-                mayorSig
+                budgetSig,
+                mayorSig,
+                ccDirectorSig
             };
             List<LinkButton> emailBtns = new List<LinkButton>() 
             {
@@ -886,7 +889,9 @@ namespace WebUI
                 directorSupervisorEmailBtn,
                 cPAEmailBtn,
                 obmDirectorEmailBtn,
+                budgetEmailBtn,
                 mayorEmailBtn,
+                ccDirectorEmailBtn
             };
             List<Button> signBtns = new List<Button>()
             {
@@ -894,7 +899,9 @@ namespace WebUI
                 directorSupervisorBtn,
                 cPABtn,
                 obmDirectorBtn,
-                mayorBtn
+                budgetBtn,
+                mayorBtn,
+                ccDirectorBtn
             };
             List<HtmlGenericControl> sigRows = new List<HtmlGenericControl>()
             {
@@ -902,7 +909,9 @@ namespace WebUI
                 directorSupervisorRow,
                 cPARow,
                 obmDirectorRow,
-                mayorRow
+                budgetRow,
+                mayorRow,
+                ccDirectorRow
             };
 
             int ordID = Convert.ToInt32(e.CommandArgument);
@@ -915,6 +924,17 @@ namespace WebUI
             ordinanceNumber.Text = ord.OrdinanceNumber;
             requestDepartment.SelectedValue = DepartmentsList()[ord.RequestDepartment];
 
+            switch (requestDepartment.SelectedItem.Text)
+            {
+                default:
+                    businessType.InnerText = "OBM";
+                    BudgetType = "OBM";
+                    break;
+                case "Public Utilities":
+                    businessType.InnerText = "CWLP";
+                    BudgetType = "CWLP";
+                    break;
+            }
             requestDivision.Enabled = true;
             GetAllDivisions(requestDivision, requestDepartment.SelectedValue);
             requestDivision.SelectedValue = GetDivisionsByDept(Convert.ToInt32(requestDepartment.SelectedValue)).First(i => i.DivisionName.Equals(ord.RequestDivision)).DivisionCode.ToString();
@@ -1110,7 +1130,7 @@ namespace WebUI
                 { "nextBtn", lnkAuditNextSearchP },
                 { "lastBtn", lnkAuditLastSearchP },
             };
-            SetPagination(rpAudit, pageBtns, pnlAuditPagingP, lblAuditCurrentPageBottomSearchP, 11);
+            SetPagination(rpAudit, pageBtns, pnlAuditPagingP, pnlFooterAudit, lblAuditCurrentPageBottomSearchP, 11);
             if (ordAudits.Count > 0)
             {
                 Session["ordAudit"] = ordAudits;
@@ -1304,9 +1324,17 @@ namespace WebUI
                                     obmDirectorBtnDiv.Visible = false;
                                     obmDirectorInputGroup.Visible = true;
                                     break;
+                                case "budgetSig":
+                                    budgetBtnDiv.Visible = false;
+                                    budgetInputGroup.Visible = true;
+                                    break;
                                 case "mayorSig":
                                     mayorBtnDiv.Visible = false;
                                     mayorInputGroup.Visible = true;
+                                    break;
+                                case "ccDirectorSig":
+                                    ccDirectorBtnDiv.Visible = false;
+                                    ccDirectorInputGroup.Visible = true;
                                     break;
                             }
                         }
@@ -1334,10 +1362,20 @@ namespace WebUI
                                     obmDirectorBtn.Text = "Awaiting Signature...";
                                     obmDirectorInputGroup.Visible = false;
                                     break;
+                                case "budgetSig":
+                                    budgetBtnDiv.Visible = true;
+                                    budgetBtn.Text = "Awaiting Signature...";
+                                    budgetInputGroup.Visible = false;
+                                    break;
                                 case "mayorSig":
                                     mayorBtnDiv.Visible = true;
                                     mayorBtn.Text = "Awaiting Signature...";
                                     mayorInputGroup.Visible = false;
+                                    break;
+                                case "ccDirectorSig":
+                                    ccDirectorBtnDiv.Visible = true;
+                                    ccDirectorBtn.Text = "Awaiting Signature...";
+                                    ccDirectorInputGroup.Visible = false;
                                     break;
                             }
                         }
@@ -1561,9 +1599,17 @@ namespace WebUI
                                     obmDirectorBtnDiv.Visible = false;
                                     obmDirectorInputGroup.Visible = true;
                                     break;
+                                case "budgetSig":
+                                    budgetBtnDiv.Visible = false;
+                                    budgetInputGroup.Visible = true;
+                                    break;
                                 case "mayorSig":
                                     mayorBtnDiv.Visible = false;
                                     mayorInputGroup.Visible = true;
+                                    break;
+                                case "ccDirectorSig":
+                                    ccDirectorBtnDiv.Visible = false;
+                                    ccDirectorInputGroup.Visible = true;
                                     break;
                             }
                         }
@@ -1600,12 +1646,26 @@ namespace WebUI
                                     obmDirectorBtnDiv.Attributes["readonly"] = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null || validEmails.Any(i => _user.Email.ToLower().Equals(i))) ? "false" : "true";
                                     obmDirectorInputGroup.Visible = false;
                                     break;
+                                case "budgetSig":
+                                    validEmails = signatureRequest.Budget.Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
+                                    budgetBtnDiv.Visible = true;
+                                    budgetBtn.Text = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null || validEmails.Any(i => _user.Email.ToLower().Equals(i))) ? "Sign" : "Awaiting Signature...";
+                                    budgetBtnDiv.Attributes["readonly"] = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null || validEmails.Any(i => _user.Email.ToLower().Equals(i))) ? "false" : "true";
+                                    budgetInputGroup.Visible = false;
+                                    break;
                                 case "mayorSig":
                                     validEmails = signatureRequest.Mayor.Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
                                     mayorBtnDiv.Visible = true;
                                     mayorBtn.Text = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null || validEmails.Any(i => _user.Email.ToLower().Equals(i))) ? "Sign" : "Awaiting Signature...";
                                     mayorBtnDiv.Attributes["readonly"] = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null || validEmails.Any(i => _user.Email.ToLower().Equals(i))) ? "false" : "true";
                                     mayorInputGroup.Visible = false;
+                                    break;
+                                case "ccDirectorSig":
+                                    validEmails = signatureRequest.CCDirector.Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
+                                    ccDirectorBtnDiv.Visible = true;
+                                    ccDirectorBtn.Text = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null || validEmails.Any(i => _user.Email.ToLower().Equals(i))) ? "Sign" : "Awaiting Signature...";
+                                    ccDirectorBtnDiv.Attributes["readonly"] = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null || validEmails.Any(i => _user.Email.ToLower().Equals(i))) ? "false" : "true";
+                                    ccDirectorInputGroup.Visible = false;
                                     break;
                             }
                         }
@@ -1776,12 +1836,26 @@ namespace WebUI
                         obmDirectorSig.Text = item.Signature;
                         obmDirectorDate.Text = item.DateSigned.ToString("yyyy-MM-dd");
                         break;
+                    case "budget":
+                        budgetBtnDiv.Visible = false;
+                        budgetInputGroup.Visible = true;
+                        budgetEmailBtn.Visible = false;
+                        budgetSig.Text = item.Signature;
+                        budgetDate.Text = item.DateSigned.ToString("yyyy-MM-dd");
+                        break;
                     case "mayor":
                         mayorBtnDiv.Visible = false;
                         mayorInputGroup.Visible = true;
                         mayorEmailBtn.Visible = false;
                         mayorSig.Text = item.Signature;
                         mayorDate.Text = item.DateSigned.ToString("yyyy-MM-dd");
+                        break;
+                    case "ccDirector":
+                        ccDirectorBtnDiv.Visible = false;
+                        ccDirectorInputGroup.Visible = true;
+                        ccDirectorEmailBtn.Visible = false;
+                        ccDirectorSig.Text = item.Signature;
+                        ccDirectorDate.Text = item.DateSigned.ToString("yyyy-MM-dd");
                         break;
                 }
             }
@@ -2640,10 +2714,31 @@ namespace WebUI
                             ordStatus.StatusDescription = "Pending";
                             ordinance.StatusDescription = "Pending";
                         }
+                        string sigType = string.Empty;
+                        
+                        switch (item.SignatureType)
+                        {
+                            default:
+                                sigType = item.SignatureType;
+                                break;
+                            case "budget":
+                                
+                                switch (requestDepartment.SelectedItem.Text)
+                                {
+                                    default:
+                                        sigType = $"{item.SignatureType}OBM";
+                                        break;
+                                    case "Public Utilities":
+                                        sigType = $"{item.SignatureType}CWLP";
+                                        break;
+                                }
+                                break;
+                        }
+
                         OrdinanceAudit sigAudit = new OrdinanceAudit()
                         {
                             OrdinanceID = Convert.ToInt32(hdnOrdID.Value),
-                            UpdateType = $"SIGNED '{item.Signature}' for {FieldLabels(item.SignatureType)}",
+                            UpdateType = $"SIGNED '{item.Signature}' for {FieldLabels(sigType)}",
                             LastUpdateBy = $"{_user.FirstName} {_user.LastName}",
                             LastUpdateDate = DateTime.Now,
                         };
@@ -3141,7 +3236,7 @@ namespace WebUI
                     { "nextBtn", lnkNextSearchP },
                     { "lastBtn", lnkLastSearchP },
                 };
-                SetPagination(rpOrdinanceTable, pageBtns, pnlPagingP, lblCurrentPageBottomSearchP, 10, true);
+                SetPagination(rpOrdinanceTable, pageBtns, pnlPagingP, pnlFooter, lblCurrentPageBottomSearchP, 10, true);
                 List<Ordinance> ord_list = new List<Ordinance>();
                 ord_list = (List<Ordinance>)Session["ord_list"];
                 BindDataRepeaterPagination("no", ord_list);
@@ -3212,12 +3307,26 @@ namespace WebUI
                     obmDirectorSig.Text = sigName.Text;
                     obmDirectorDate.Text = sigDate.Text;
                     break;
+                case "budget":
+                    budgetBtnDiv.Visible = false;
+                    budgetInputGroup.Visible = true;
+                    budgetEmailBtn.Visible = false;
+                    budgetSig.Text = sigName.Text;
+                    budgetDate.Text = sigDate.Text;
+                    break;
                 case "mayor":
                     mayorBtnDiv.Visible = false;
                     mayorInputGroup.Visible = true;
                     mayorEmailBtn.Visible = false;
                     mayorSig.Text = sigName.Text;
                     mayorDate.Text = sigDate.Text;
+                    break;
+                case "ccDirector":
+                    ccDirectorBtnDiv.Visible = false;
+                    ccDirectorInputGroup.Visible = true;
+                    ccDirectorEmailBtn.Visible = false;
+                    ccDirectorSig.Text = sigName.Text;
+                    ccDirectorDate.Text = sigDate.Text;
                     break;
             }
 

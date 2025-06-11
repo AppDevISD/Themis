@@ -64,8 +64,8 @@
 							<table id="FormTable" class="table table-bordered table-striped table-hover text-center" style="padding: 0px; margin: 0px">
 								<thead>
 									<tr>
-										<th style="width: 15%; text-align: center"><asp:LinkButton runat="server" ID="sortDate" data-command="LastUpdateDate" data-text="Last Updated" OnClick="SortBtn_Click" class="btn btn-sort" TabIndex="-1"><strong>Last Updated<span runat="server" class='float-end lh-1p5 fas fa-arrow-down'></span></strong></asp:LinkButton></th>
-										<th style="width: 100%; text-align: center"><asp:LinkButton runat="server" ID="sortTitle" data-command="OrdinanceTitle" data-text="Title" OnClick="SortBtn_Click" class="btn btn-sort" TabIndex="-1"><strong>Title<span class="float-end lh-1p5 me-1"></span></strong></asp:LinkButton></th>
+										<th style="width: 15%; text-align: center"><asp:LinkButton runat="server" ID="sortDate" data-command="LastUpdateDate" data-text="Last Updated" OnClick="SortBtn_Click" class="btn btn-sort" TabIndex="-1" data-disable-btn="aspIconBtn" data-disable-btn-symbol="true"><strong>Last Updated<span runat="server" class='float-end lh-1p5 fas fa-arrow-down'></span></strong></asp:LinkButton></th>
+										<th style="width: 100%; text-align: center"><asp:LinkButton runat="server" ID="sortTitle" data-command="OrdinanceTitle" data-text="Title" OnClick="SortBtn_Click" class="btn btn-sort" TabIndex="-1" data-disable-btn="aspIconBtn" data-disable-btn-symbol="true"><strong>Title<span class="float-end lh-1p5 me-1"></span></strong></asp:LinkButton></th>
 										<th style="width: 6%; text-align: center"><strong>Action</strong></th>
 									</tr>
 								</thead>
@@ -98,7 +98,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="card-footer p-0">
+					<div runat="server" id="pnlFooter" class="card-footer p-0">
 						<asp:Panel ID="pnlPagingP" CssClass="panel m-0" runat="server" Visible="false">
 							<table class="table m-0" runat="server">
 								<tr>
