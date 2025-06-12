@@ -1,5 +1,6 @@
 ﻿using DataLibrary;
 using DataLibrary.OrdinanceTracking;
+using System.IO.Compression;
 using ISD.ActiveDirectory;
 using Microsoft.Ajax.Utilities;
 using Microsoft.Reporting.WebForms;
@@ -317,8 +318,15 @@ namespace WebUI
                 if (commandName.Equals("department"))
                 {
                     filterDivision.Items.Clear();
+                    List<string> noDivisions = new List<string>()
+                    {
+                        "City Clerk",
+                        "Community Relations",
+                        "Convention & Visitor's Bureau",
+                        "Lincoln Library",
+                    };
 
-                    if (!filterDepartment.SelectedValue.IsNullOrWhiteSpace())
+                    if (!filterDepartment.SelectedValue.IsNullOrWhiteSpace() && !noDivisions.Any(i => filterDepartment.SelectedItem.Text.Equals(i)))
                     {
                         filterDivision.Enabled = true;
                         GetAllDivisions(filterDivision, filterDepartment.SelectedValue);
@@ -690,14 +698,27 @@ namespace WebUI
         }
         protected void requestDepartment_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!requestDepartment.SelectedValue.IsNullOrWhiteSpace())
+            requestDivision.Items.Clear();
+            List<string> noDivisions = new List<string>()
+            {
+                "City Clerk",
+                "Community Relations",
+                "Convention & Visitor's Bureau",
+                "Lincoln Library",
+            };
+
+            if (!requestDepartment.SelectedValue.IsNullOrWhiteSpace() && !noDivisions.Any(i => requestDepartment.SelectedItem.Text.Equals(i)))
             {
                 requestDivision.Enabled = true;
+                requestDivision.Attributes.Add("data-required", "true");
+                requestDivisionValid.Enabled = true;
                 GetAllDivisions(requestDivision, requestDepartment.SelectedValue);
             }
             else
             {
                 requestDivision.Enabled = false;
+                requestDivision.Attributes.Add("data-required", "false");
+                requestDivisionValid.Enabled = false;
                 requestDivision.Items.Add(new ListItem() { Text = "Select Division...", Value = "" });
             }
         }
@@ -807,15 +828,15 @@ namespace WebUI
             string[] emails = sigType.GetValue(sigRequests).ToString().Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
             if (emails.Length > 0)
             {
-                emailListDiv.Visible = true;
-                btnSendSigEmail.Enabled = true;
+                lblNoItemsEmailList.Visible = false;
+                btnSendSigEmail.Attributes.Remove("disabled");
                 rpEmailList.DataSource = emails;
                 rpEmailList.DataBind();
             }
             else
             {
-                emailListDiv.Visible = false;
-                btnSendSigEmail.Enabled = false;
+                lblNoItemsEmailList.Visible = true;
+                btnSendSigEmail.Attributes.Add("disabled", "disabled");
                 rpEmailList.DataSource = null;
                 rpEmailList.DataBind();
             }
@@ -835,15 +856,15 @@ namespace WebUI
             sigType.SetValue(sigRequests, string.Join(";", emails.OrderBy(i => i)));
             if (emails.Count > 0)
             {
-                emailListDiv.Visible = true;
-                btnSendSigEmail.Enabled = true;
+                lblNoItemsEmailList.Visible = false;
+                btnSendSigEmail.Attributes.Remove("disabled");
                 rpEmailList.DataSource = emails.OrderBy(i => i);
                 rpEmailList.DataBind();
             }
             else
             {
-                emailListDiv.Visible = false;
-                btnSendSigEmail.Enabled = false;
+                lblNoItemsEmailList.Visible = true;
+                btnSendSigEmail.Attributes.Add("disabled", "disabled");
                 rpEmailList.DataSource = null;
                 rpEmailList.DataBind();
             }
@@ -935,9 +956,33 @@ namespace WebUI
                     BudgetType = "CWLP";
                     break;
             }
-            requestDivision.Enabled = true;
-            GetAllDivisions(requestDivision, requestDepartment.SelectedValue);
-            requestDivision.SelectedValue = GetDivisionsByDept(Convert.ToInt32(requestDepartment.SelectedValue)).First(i => i.DivisionName.Equals(ord.RequestDivision)).DivisionCode.ToString();
+            requestDivision.Items.Clear();
+            List<string> noDivisions = new List<string>()
+            {
+                "City Clerk",
+                "Community Relations",
+                "Convention & Visitor's Bureau",
+                "Lincoln Library",
+            };
+
+            if (!requestDepartment.SelectedValue.IsNullOrWhiteSpace() && !noDivisions.Any(i => requestDepartment.SelectedItem.Text.Equals(i)))
+            {
+                requestDivision.Enabled = true;
+                requestDivision.Attributes.Add("data-required", "true");
+                requestDivisionValid.Enabled = true;
+                GetAllDivisions(requestDivision, requestDepartment.SelectedValue);
+                requestDivision.SelectedValue = GetDivisionsByDept(Convert.ToInt32(requestDepartment.SelectedValue)).First(i => i.DivisionName.Equals(ord.RequestDivision)).DivisionCode.ToString();
+            }
+            else
+            {
+                requestDivision.Enabled = false;
+                requestDivision.Attributes.Add("data-required", "false");
+                requestDivisionValid.Enabled = false;
+                requestDivision.Items.Add(new ListItem() { Text = "Select Division...", Value = "" });
+            }
+            lblRequestDivision.Visible = true;
+            requestDivision.Visible = true;
+
 
             firstReadDate.Text = ord.FirstReadDate.ToString("yyyy-MM-dd");
             requestContact.Text = ord.RequestContact;
@@ -1152,6 +1197,11 @@ namespace WebUI
                     ddStatusDiv.Visible = false;
                     statusDiv.Visible = true;
                     requiredFieldDescriptor.Visible = false;
+                    if (requestDepartment.SelectedValue.IsNullOrWhiteSpace() || noDivisions.Any(i => requestDepartment.SelectedItem.Text.Equals(i)))
+                    {
+                        lblRequestDivision.Visible = false;
+                        requestDivision.Visible = false;
+                    }
                     firstReadDatePicker.Visible = false;
                     contractStartDatePicker.Visible = false;
                     contractEndDatePicker.Visible = false;
@@ -1716,17 +1766,28 @@ namespace WebUI
                     }
                     RevExpBool HideTables = new RevExpBool() { HideTables = hideTables };
                     List<string> sigTypeList = new List<string>()
-        {
-            "fundsCheckBy",
-            "directorSupervisor",
-            "cPA",
-            "obmDirector",
-            "mayor",
-        };
+                    {
+                        "fundsCheckBy",
+                        "directorSupervisor",
+                        "cPA",
+                        "obmDirector",
+                        "mayor",
+                        "ccDirector"
+                    };
+                    switch (ord.RequestDepartment)
+                    {
+                        default:
+                            sigTypeList.Add("budgetOBM");
+                            break;
+                        case "Public Utilities":
+                            sigTypeList.Add("budgetCWLP");
+                            break;
+                    }
                     foreach (string item in sigTypeList)
                     {
                         if (!ordSigs.Any(i => i.SignatureType.Equals(item)))
                         {
+                            
                             OrdinanceSignature blankSig = new OrdinanceSignature()
                             {
                                 SignatureID = -1,
@@ -1739,6 +1800,7 @@ namespace WebUI
                                 LastUpdateBy = string.Empty,
                                 LastUpdateDate = DateTime.Now
                             };
+                            
                             ordSigs.Add(blankSig);
                         }
                     }
@@ -1758,8 +1820,15 @@ namespace WebUI
                             case "obmDirector":
                                 item.SortOrder = 3;
                                 break;
-                            case "mayor":
+                            case "budgetOBM":
+                            case "budgetCWLP":
                                 item.SortOrder = 4;
+                                break;
+                            case "mayor":
+                                item.SortOrder = 5;
+                                break;
+                            case "ccDirector":
+                                item.SortOrder = 6;
                                 break;
                         }
                     }
@@ -1793,14 +1862,54 @@ namespace WebUI
                     string delivery = HttpContext.Current.IsDebuggingEnabled ? "inline" : "attachment";
                     string fileName = ord.OrdinanceNumber.IsNullOrWhiteSpace() ? $"Ordinance_{ord.OrdinanceID}" : ord.OrdinanceNumber;
 
-                    Response.Clear();
-                    Response.ClearContent();
-                    Response.ClearHeaders();
-                    Response.Buffer = true;
-                    Response.ContentType = "application/pdf";
-                    Response.AddHeader("content-disposition", $"{delivery}; filename={fileName}.pdf");
-                    Response.BinaryWrite(bytes); // create the file                    
-                    Context.ApplicationInstance.CompleteRequest();
+                    if (ordDocs.Count > 0 && !delivery.Equals("inline"))
+                    {
+                        using (MemoryStream zipStream = new MemoryStream())
+                        {
+                            using (ZipArchive zip = new ZipArchive(zipStream, ZipArchiveMode.Create, true))
+                            {
+                                ZipArchiveEntry pdfEntry = zip.CreateEntry($"{fileName}_FactSheet.pdf");
+                                using (Stream entryStream = pdfEntry.Open())
+                                {
+                                    entryStream.Write(bytes, 0, bytes.Length);
+                                }
+
+                                foreach (OrdinanceDocument item in ordDocs)
+                                {
+                                    ZipArchiveEntry docEntry = zip.CreateEntry(item.DocumentName);
+                                    using (Stream entryStream = docEntry.Open())
+                                    {
+                                        entryStream.Write(item.DocumentData, 0, item.DocumentData.Length);
+                                    }
+                                }
+                            }
+                            zipStream.Position = 0;
+                            Response.Clear();
+                            Response.ClearContent();
+                            Response.ClearHeaders();
+                            Response.Buffer = true;
+                            Response.ContentType = "application/zip";
+                            Response.AddHeader("content-disposition", $"attachment; filename={fileName}.zip");
+                            Response.AddHeader("Content-Length", zipStream.Length.ToString());
+                            zipStream.CopyTo(Response.OutputStream);
+                            Response.Flush();
+                            Context.ApplicationInstance.CompleteRequest();
+                        }
+                    }
+                    else
+                    {
+                        Response.Clear();
+                        Response.ClearContent();
+                        Response.ClearHeaders();
+                        Response.Buffer = true;
+                        Response.ContentType = "application/pdf";
+                        Response.AddHeader("content-disposition", $"{delivery}; filename={fileName}_FactSheet.pdf");
+                        Response.AddHeader("Content-Length", bytes.Length.ToString());
+                        Response.BinaryWrite(bytes);
+                        Response.Flush();
+                        Context.ApplicationInstance.CompleteRequest();
+                    }
+
                     break;
             }
             
@@ -2068,15 +2177,15 @@ namespace WebUI
                     sigType.SetValue(sigRequests, string.Join(";", emails.OrderBy(i => i)));
                     if (emails.Count > 0)
                     {
-                        emailListDiv.Visible = true;
-                        btnSendSigEmail.Enabled = true;
+                        lblNoItemsEmailList.Visible = false;
+                        btnSendSigEmail.Attributes.Remove("disabled");
                         rpEmailList.DataSource = emails.OrderBy(i => i);
                         rpEmailList.DataBind();
                     }
                     else
                     {
-                        emailListDiv.Visible = false;
-                        btnSendSigEmail.Enabled = false;
+                        lblNoItemsEmailList.Visible = true;
+                        btnSendSigEmail.Attributes.Add("disabled", "disabled");
                         rpEmailList.DataSource = null;
                         rpEmailList.DataBind();
                     }
@@ -2363,7 +2472,7 @@ namespace WebUI
             ordinance.OrdinanceNumber = ordinanceNumber.Text ?? string.Empty;
             ordinance.AgendaNumber = agendaNumber.Text ?? string.Empty;
             ordinance.RequestDepartment = requestDepartment.SelectedItem.Text;
-            ordinance.RequestDivision = requestDivision.SelectedItem.Text;
+            ordinance.RequestDivision = !requestDivision.SelectedValue.IsNullOrWhiteSpace() ? requestDivision.SelectedItem.Text : requestDepartment.SelectedItem.Text;
             ordinance.RequestContact = requestContact.Text;
             ordinance.RequestPhone = $"{requestPhone.Text}{requestExt.Text}";
             ordinance.RequestEmail = requestEmail.Text.ToLower();
@@ -2410,10 +2519,15 @@ namespace WebUI
             ordStatus.LastUpdateDate = DateTime.Now;
             ordStatus.EffectiveDate = Convert.ToDateTime(hdnEffectiveDate.Value);
             ordStatus.ExpirationDate = DateTime.MaxValue;
+
+            OrdinanceStatus originalStatus = (OrdinanceStatus)Session["OriginalStatus"];
+            string oldStatus = originalStatus.StatusDescription;
+            string newStatus = ddStatus.SelectedItem.ToString();
             if (ddStatus.SelectedItem.ToString().ToLower().Contains("select"))
             {
                 ordinance.StatusDescription = "New";
                 ordStatus.StatusDescription = "New";
+                oldStatus = "New";
             }
             else
             {
@@ -2766,10 +2880,16 @@ namespace WebUI
             switch (ordinance.StatusDescription)
             {
                 case "Pending":
-                    isPending = true;
+                    if (!oldStatus.Equals(newStatus))
+                    {
+                        isPending = true;
+                    }
                     break;
                 case "Under Review":
-                    isUnderReview = true;
+                    if (!oldStatus.Equals(newStatus))
+                    {
+                        isUnderReview = true;
+                    }
                     break;
                 case "Being Held":
                     defaultEmails = Factory.Instance.GetByID<DefaultEmails>(3, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID").EmailAddress.Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
@@ -3259,9 +3379,10 @@ namespace WebUI
 
             List<string> emails = sigType.GetValue(sigRequests).ToString().Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToList();
 
+            string emailList = string.Empty;
             foreach (string item in emails)
             {
-                Email.Instance.AddEmailAddress("SingleEmail", item);
+                emailList = Email.Instance.AddEmailAddress(emailList, item);
             }
 
             string href = $"apptest/Themis/Ordinances?id={hdnOrdID.Value.ToString()}&v=edit&f={sigBtnTarget.Value.ToString()}";
@@ -3273,7 +3394,10 @@ namespace WebUI
             newEmail.EmailTitle = $"{formType} Signature Requested";
             newEmail.EmailText = $"<p style='margin: 0;'><span style='font-size:36.0pt;font-family:\"Times New Roman\",serif;color:#2D71D5;font-weight:bold'>THΣMIS</span></p><div align=center style='text-align:center'><span><hr size='2' width='100%' align='center' style='margin-top: 0;'></span></div><p><span>You are receiving this message because your signature is required in the role of <b>{sigBtnLabel.Value.ToString()}</b> for Ordinance ID #{hdnOrdID.Value.ToString()} on THΣMIS.</span></p><p><span>Please click the button below to review and sign the document</span></p><table border='0' cellpadding='0' cellspacing='0' style='border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;'><tr><td style='font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #198754; border-radius: 5px; text-align: center;' valign='top' bgcolor='#198754' align='center'><a href='{href}' target='_blank' style='display: inline-block; color: #ffffff; background-color: #198754; border: solid 1px #198754; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 15px 25px; text-transform: capitalize; border-color: #198754; '>Sign Ordinance</a></td></tr></table><br /><p><span>Thank you for your prompt attention to this matter.</span></p>";
 
-            Email.Instance.SendEmail(newEmail, "SingleEmail");
+            string emailStatus = Email.Instance.SendEmail(newEmail, emailList);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "ShowToastEmail", $"ShowEmailToast('{emailStatus}');", true);
+
+
         }
         protected void btnSignDoc_Click(object sender, EventArgs e)
         {
@@ -3342,7 +3466,8 @@ namespace WebUI
             List<OrdinanceSignature> insertSigList = (List<OrdinanceSignature>)Session["insertSigList"] ?? new List<OrdinanceSignature>();
             insertSigList.Add(signature);
             Session["insertSigList"] = insertSigList;
-            SaveFactSheet.CssClass += " emphasize";
+            saveBtn.Attributes["class"] += " fa-bounce";
+            saveBtn.Focus();
         }
         protected void sendRejection_Click(object sender, EventArgs e)
         {

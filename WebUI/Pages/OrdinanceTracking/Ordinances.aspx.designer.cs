@@ -474,6 +474,15 @@ namespace WebUI
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl requestDivisionDiv;
 
         /// <summary>
+        /// lblRequestDivision control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblRequestDivision;
+
+        /// <summary>
         /// requestDivision control.
         /// </summary>
         /// <remarks>
@@ -1545,6 +1554,15 @@ namespace WebUI
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl submitSection;
 
         /// <summary>
+        /// saveBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton saveBtn;
+
+        /// <summary>
         /// SaveFactSheet control.
         /// </summary>
         /// <remarks>
@@ -1680,13 +1698,13 @@ namespace WebUI
         protected global::System.Web.UI.UpdatePanel pnlSigEmail;
 
         /// <summary>
-        /// emailListDiv control.
+        /// lblNoItemsEmailList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl emailListDiv;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblNoItemsEmailList;
 
         /// <summary>
         /// rpEmailList control.

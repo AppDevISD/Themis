@@ -661,6 +661,9 @@ option:not([selected]):not(:disabled) {
 	border-bottom-right-radius: 15px;
 }
 
+.nav-tabs .nav-link {
+	--bs-nav-tabs-link-hover-border-color: var(--custom-theme-border-color) !important;
+}
 .nav-tabs .nav-link.active {
 	border: var(--bs-border-width) solid var(--custom-theme-border-color);
 }

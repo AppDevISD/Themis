@@ -49,8 +49,15 @@ namespace DataLibrary
                     break;
 
                 case false:
-                    emailList = $"{currentList},{emailAddress}";
-                    break;
+                    if (emailList.Length > 0)
+                    {
+                        emailList = $"{currentList},{emailAddress}";
+                    }
+                    else
+                    {
+                        emailList = emailAddress;
+                    }
+                        break;
             }
 
             return emailList;
@@ -64,23 +71,29 @@ namespace DataLibrary
 
         public string SendEmail(Email pEmail, string emailList, bool useAppSettings = false)
         {
-            string retVal = "";
-            HttpContext _context = HttpContext.Current;
-
+            string retVal = string.Empty;
             string emailAddress = useAppSettings ? Properties.Settings.Default[emailList].ToString() : emailList;
-            MailMessage NewEmail = new MailMessage("THΣMIS Application NoReply@cwlp.com", emailAddress);
-            NewEmail.IsBodyHtml = true;
-            NewEmail.Body = pEmail.EmailText;
-            NewEmail.Subject = pEmail.EmailSubject.ToString();
-            SmtpClient client = new SmtpClient(Properties.Settings.Default["ExchangeIP"].ToString());
+
             try
             {
+                MailAddress from = new MailAddress("THΣMIS Application NoReply@cwlp.com");
+                MailAddress to = new MailAddress(emailAddress);
+                MailMessage NewEmail = new MailMessage(from, to);
+                NewEmail.IsBodyHtml = true;
+                NewEmail.Body = pEmail.EmailText;
+                NewEmail.Subject = pEmail.EmailSubject.ToString();
+                SmtpClient client = new SmtpClient(Properties.Settings.Default["ExchangeIP"].ToString());
                 client.Send(NewEmail);
-                retVal = "";
+                retVal = "success";
+            }
+            catch (FormatException)
+            {
+                retVal = "failed";
+                errorMsg = "Invalid email address format.";
             }
             catch (Exception e)
             {
-                retVal = "-1";
+                retVal = "failed";
                 errorMsg = e.Message;
             }
             return retVal;

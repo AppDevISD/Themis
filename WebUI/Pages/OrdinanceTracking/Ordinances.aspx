@@ -262,7 +262,7 @@
 											<%-- DIVISION --%>
 											<div runat="server" id="requestDivisionDiv" class="col-md-5">
 												<div class="form-group">
-													<label for="requestDivision">Requesting Division</label>
+													<label runat="server" id="lblRequestDivision" for="requestDivision">Requesting Division</label>
 													<asp:DropDownList ID="requestDivision" runat="server" AutoPostBack="true" CssClass="form-select" data-required="true"></asp:DropDownList>
 													<asp:RequiredFieldValidator runat="server" ID="requestDivisionValid" ControlToValidate="requestDivision" ErrorMessage="Please Select a Division" ValidationGroup="factSheetMain" SetFocusOnError="false" Display="None" CssClass="text-danger invalid-feedback ps-2"></asp:RequiredFieldValidator>
 												</div>
@@ -1016,7 +1016,7 @@
 										<div class="row mt-3 mb-3 text-center">
 											<%-- SAVE BUTTON --%>
 											<div class="col-md-6">
-												<button id="saveBtn" class="btn btn-primary float-end w-50" onclick="validateFactSheetDraft('factSheetMain');" type="button" data-disable-btn="htmlIconBtn" data-disable-btn-icon="fa-floppy-disk" data-disable-btn-text="Saving" tabindex="-1">Save Fact Sheet</button>
+												<button runat="server" id="saveBtn" class="btn btn-primary float-end w-50" onclick="validateFactSheetDraft('factSheetMain');" type="button" data-disable-btn="htmlIconBtn" data-disable-btn-icon="fa-floppy-disk" data-disable-btn-text="Saving" tabindex="-1">Save Fact Sheet</button>
 												<asp:Button runat="server" ID="SaveFactSheet" UseSubmitBehavior="false" OnClick="SaveFactSheet_Click" CommandName="save" hidden="true" TabIndex="-1" />
 											</div>
 											<%-- DELETE BUTTON --%>
@@ -1145,29 +1145,32 @@
 							<h4 class="modal-title" id="signatureEmailModalLabel">Assign Signature</h4>
 						</div>
 						<div class="modal-body bg-body-tertiary">
-							<div runat="server" id="emailListDiv" class="row mb-5">
-								<div class="col-md-12">
-								<asp:Repeater runat="server" ID="rpEmailList" OnItemCommand="rpEmailList_ItemCommand" OnItemCreated="rpEmailList_ItemCreated">
+							<div class="card" style="min-height: 25vh;">
+								<div class="card-body bg-body">
+									<div runat="server" id="lblNoItemsEmailList" class="row text-center" style="margin-top: 12.5%;">
+										<div class="col-md-12">
+											<h5 class="text-danger">There are no emails assigned for this category</h5>
+										</div>
+									</div>
+									<asp:Repeater runat="server" ID="rpEmailList" OnItemCommand="rpEmailList_ItemCommand" OnItemCreated="rpEmailList_ItemCreated">
 										<ItemTemplate>
 											<div class="badge rounded-pill text-bg-secondary m-1" style="font-size: .95rem">
 												<%# Container.DataItem %>
-												<asp:LinkButton runat="server" ID="removeBtn" CssClass="text-danger" style="margin-left: 10px;" CommandName="remove" CommandArgument='<%# Container.DataItem %>' TabIndex="-1"><span class="fa-solid fa-xmark"></span></asp:LinkButton>
+												<asp:LinkButton runat="server" ID="removeBtn" CssClass="text-danger" style="margin-left: 10px;" CommandName="remove" CommandArgument='<%# Container.DataItem %>' TabIndex="-1"><span class="fa-solid fa-xmark" data-disable-btn="aspIconBtn"></span></asp:LinkButton>
 											</div>
 										</ItemTemplate>
 									</asp:Repeater>
 								</div>
-							</div>
-							<div class="row mb-5">
-								<div class="col-md-10">
-									<div class="input-group">
-										<span class="input-group-text fas fa-address-book"></span>
-										<asp:TextBox runat="server" ID="signatureEmailAddress" CssClass="form-control" TextMode="Email" AutoCompleteType="Email" placeholder="john.doe@corporate.com" ></asp:TextBox>
-									</div>
-								</div>
-								<div class="col-md-2">
-									<div class="btn-group">
-										<asp:Button runat="server" ID="AddRequestEmailAddress" UseSubmitBehavior="false" CssClass="btn btn-success fas-btn" OnClick="AddRequestEmailAddress_Click" disabled="disabled" Text='&#xf055;' TabIndex="-1"/>
-										<asp:Button ID="btnSendSigEmail" runat="server" CssClass="btn btn-primary fas-btn" CausesValidation="false" UseSubmitBehavior="false" Visible="true" OnClick="btnSendSigEmail_Click" OnClientClick="ShowEmailToast();" Text="&#xf1d8;" TabIndex="-1" />
+								<div class="card-footer bg-body-tertiary">
+									<div class="row">
+										<div class="col-md-12">
+											<div class="input-group">
+												<span class="input-group-text fas fa-address-book"></span>
+												<asp:TextBox runat="server" ID="signatureEmailAddress" CssClass="form-control" TextMode="Email" AutoCompleteType="Email" placeholder="john.doe@corporate.com" data-enter-btn="AddRequestEmailAddress"></asp:TextBox>
+												<asp:Button runat="server" ID="AddRequestEmailAddress" UseSubmitBehavior="false" CssClass="btn btn-success fas-btn" OnClick="AddRequestEmailAddress_Click" disabled="disabled" Text='&#xf055;' data-disable-btn="aspIconBtn" TabIndex="-1"/>
+												<asp:Button ID="btnSendSigEmail" runat="server" CssClass="btn btn-primary fas-btn" CausesValidation="false" UseSubmitBehavior="false" OnClick="btnSendSigEmail_Click" Text="&#xf1d8;" data-disable-btn="aspIconBtn" TabIndex="-1" />
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -1222,7 +1225,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal" tabindex="-1">Cancel</button>
-					<asp:Button ID="btnSignDoc" runat="server" Text="Sign Document" CssClass="btn btn-success" CausesValidation="false" UseSubmitBehavior="false" Visible="true" data-dismiss="modal" OnClick="btnSignDoc_Click" disabled="disabled" TabIndex="-1" />
+					<asp:Button ID="btnSignDoc" runat="server" Text="Sign Document" CssClass="btn btn-success" CausesValidation="false" UseSubmitBehavior="false" Visible="true" data-dismiss="modal" OnClick="btnSignDoc_Click" disabled="disabled" TabIndex="-1"/>
 					<input runat="server" id="sigType" type="hidden" name="sigType"/>
 				</div>
 			</div>

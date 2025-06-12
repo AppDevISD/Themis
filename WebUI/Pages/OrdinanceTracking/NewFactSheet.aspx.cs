@@ -367,7 +367,7 @@ namespace WebUI
                 ordinance.OrdinanceNumber = string.Empty;
                 ordinance.AgendaNumber = string.Empty;
                 ordinance.RequestDepartment = requestDepartment.SelectedItem.Text;
-                ordinance.RequestDivision = requestDivision.SelectedItem.Text;
+                ordinance.RequestDivision = !requestDivision.SelectedValue.IsNullOrWhiteSpace() ? requestDivision.SelectedItem.Text : requestDepartment.SelectedItem.Text;
                 ordinance.RequestContact = requestContact.Text;
                 ordinance.RequestPhone = $"{requestPhone.Text}{xString}{requestExt.Text}";
                 ordinance.RequestEmail = requestEmail.Text;

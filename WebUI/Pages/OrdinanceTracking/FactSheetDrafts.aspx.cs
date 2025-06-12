@@ -360,14 +360,27 @@ namespace WebUI
         }
         protected void requestDepartment_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!requestDepartment.SelectedValue.IsNullOrWhiteSpace())
+            requestDivision.Items.Clear();
+            List<string> noDivisions = new List<string>()
+            {
+                "City Clerk",
+                "Community Relations",
+                "Convention & Visitor's Bureau",
+                "Lincoln Library",
+            };
+
+            if (!requestDepartment.SelectedValue.IsNullOrWhiteSpace() && !noDivisions.Any(i => requestDepartment.SelectedItem.Text.Equals(i)))
             {
                 requestDivision.Enabled = true;
+                requestDivision.Attributes.Add("data-required", "true");
+                requestDivisionValid.Enabled = true;
                 GetAllDivisions(requestDivision, requestDepartment.SelectedValue);
             }
             else
             {
                 requestDivision.Enabled = false;
+                requestDivision.Attributes.Add("data-required", "false");
+                requestDivisionValid.Enabled = false;
                 requestDivision.Items.Add(new ListItem() { Text = "Select Division...", Value = "" });
             }
         }
@@ -494,9 +507,30 @@ namespace WebUI
 
             requestDepartment.SelectedValue = DepartmentsList()[ord.RequestDepartment];
 
-            requestDivision.Enabled = true;
-            GetAllDivisions(requestDivision, requestDepartment.SelectedValue);
-            requestDivision.SelectedValue = GetDivisionsByDept(Convert.ToInt32(requestDepartment.SelectedValue)).First(i => i.DivisionName.Equals(ord.RequestDivision)).DivisionCode.ToString();
+            requestDivision.Items.Clear();
+            List<string> noDivisions = new List<string>()
+            {
+                "City Clerk",
+                "Community Relations",
+                "Convention & Visitor's Bureau",
+                "Lincoln Library",
+            };
+
+            if (!requestDepartment.SelectedValue.IsNullOrWhiteSpace() && !noDivisions.Any(i => requestDepartment.SelectedItem.Text.Equals(i)))
+            {
+                requestDivision.Enabled = true;
+                requestDivision.Attributes.Add("data-required", "true");
+                requestDivisionValid.Enabled = true;
+                GetAllDivisions(requestDivision, requestDepartment.SelectedValue);
+                requestDivision.SelectedValue = GetDivisionsByDept(Convert.ToInt32(requestDepartment.SelectedValue)).First(i => i.DivisionName.Equals(ord.RequestDivision)).DivisionCode.ToString();
+            }
+            else
+            {
+                requestDivision.Enabled = false;
+                requestDivision.Attributes.Add("data-required", "false");
+                requestDivisionValid.Enabled = false;
+                requestDivision.Items.Add(new ListItem() { Text = "Select Division...", Value = "" });
+            }
 
             firstReadDate.Text = ord.FirstReadDate.ToString("yyyy-MM-dd");
             requestContact.Text = ord.RequestContact;
@@ -1203,7 +1237,7 @@ namespace WebUI
                 ordinance.OrdinanceNumber = string.Empty;
                 ordinance.AgendaNumber = string.Empty;
                 ordinance.RequestDepartment = requestDepartment.SelectedItem.Text;
-                ordinance.RequestDivision = requestDivision.SelectedItem.Text;
+                ordinance.RequestDivision = !requestDivision.SelectedValue.IsNullOrWhiteSpace() ? requestDivision.SelectedItem.Text : requestDepartment.SelectedItem.Text;
                 ordinance.RequestContact = requestContact.Text;
                 ordinance.RequestPhone = $"{requestPhone.Text}{requestExt.Text}";
                 ordinance.RequestEmail = requestEmail.Text.ToLower();
@@ -1444,6 +1478,8 @@ namespace WebUI
                         signatureRequest.DirectorSupervisor += $";{deptDivDefaultList}";
                     }
 
+                    signatureRequest.LastUpdateBy = _user.Login;
+                    signatureRequest.LastUpdateDate = DateTime.Now;
                     updateSigRequest = Factory.Instance.Update(signatureRequest, "sp_UpdateOrdinance_SignatureRequest");
                 }
                 else

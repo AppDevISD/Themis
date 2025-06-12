@@ -139,7 +139,7 @@ function addSignatureEmails(controls) {
 		const btnID = cfg.btnID;
 
 		$(`#${addressID}`).on('change keyup', function () {
-			var validEmail = $(`#${addressID}`).val().toLowerCase().indexOf("@cwlp.com") > 1 || $(`#${addressID}`).val().toLowerCase().indexOf("@springfield.il.us") > 1;
+			var validEmail = $(`#${addressID}`).val().toLowerCase().indexOf("@cwlp.com") > 1 || $(`#${addressID}`).val().toLowerCase().indexOf("@springfield.il.us") || $(`#${addressID}`).val().toLowerCase().indexOf("@lincolnlibrary.info") > 1;
 			if (validEmail && $(`#${addressID}`).val().length > 0) {
 				$(`#${btnID}`).prop('disabled', false);
 			}

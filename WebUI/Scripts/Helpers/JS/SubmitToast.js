@@ -19,11 +19,22 @@ function ShowSubmitToast() {
 	localStorage.setItem('showToast', 'show');
 }
 
-function ShowEmailToast() {
-	$('#submitToast').removeClass("text-bg-danger");
-	$('#submitToast').addClass("text-bg-success");
+function ShowEmailToast(status) {
+	console.log(status);
+	switch (status) {
 
-	$('#toastMessage').html("Email Sent!");
+		case "success":
+			$('#submitToast').removeClass("text-bg-danger");
+			$('#submitToast').addClass("text-bg-success");
+			$('#toastMessage').html("Email Sent!");
+			break;
+		case "failed":
+			$('#submitToast').removeClass("text-bg-success");
+			$('#submitToast').addClass("text-bg-danger");
+			$('#toastMessage').html("Something went wrong sending the email!");
+			break;
+	}
+
 	ShowSubmitToast();
 	GetToastStatus();
 }
