@@ -222,13 +222,47 @@ namespace WebUI
             filterDepartmentDiv.Visible = userInfo.IsAdmin && !userInfo.UserView;
             if (!userInfo.IsAdmin || userInfo.UserView)
             {
-                filterDivision.Enabled = true;
-                GetAllDivisions(filterDivision, userInfo.UserDepartment.DepartmentCode.ToString());
+                filterDivision.Items.Clear();
+                List<string> noDivisions = new List<string>()
+                    {
+                        "City Clerk",
+                        "Community Relations",
+                        "Convention & Visitor's Bureau",
+                        "Lincoln Library",
+                    };
+
+                if (!noDivisions.Any(i => userInfo.UserDepartment.DepartmentName.Equals(i)))
+                {
+                    filterDivision.Enabled = true;
+                    GetAllDivisions(filterDivision, userInfo.UserDepartment.DepartmentCode.ToString());
+                }
+                else
+                {
+                    filterDivision.Enabled = false;
+                    filterDivision.Items.Add(new ListItem() { Text = "Select Division...", Value = "" });
+                }
             }
             else if (!filterDepartment.SelectedValue.IsNullOrWhiteSpace())
             {
-                filterDivision.Enabled = true;
-                GetAllDivisions(filterDivision, filterDepartment.SelectedValue);
+                filterDivision.Items.Clear();
+                List<string> noDivisions = new List<string>()
+                    {
+                        "City Clerk",
+                        "Community Relations",
+                        "Convention & Visitor's Bureau",
+                        "Lincoln Library",
+                    };
+
+                if (!noDivisions.Any(i => filterDepartment.SelectedItem.Text.Equals(i)))
+                {
+                    filterDivision.Enabled = true;
+                    GetAllDivisions(filterDivision, filterDepartment.SelectedValue.ToString());
+                }
+                else
+                {
+                    filterDivision.Enabled = false;
+                    filterDivision.Items.Add(new ListItem() { Text = "Select Division...", Value = "" });
+                }
             }
             else
             {
@@ -252,8 +286,7 @@ namespace WebUI
             ord_list = Factory.Instance.GetAllLookup<Ordinance>(0, "sp_GetOrdinanceByFilteredStatusID", "StatusID");
             if (ord_list.Count > 0)
             {
-                
-                if ((userInfo.UserDepartment.DepartmentName != null && userInfo.UserDivision.DivisionName != null && !isAdmin) || userInfo.UserView)
+                if ((!userInfo.UserDepartment.DepartmentName.IsNullOrWhiteSpace() && !isAdmin) || userInfo.UserView)
                 {
                     ord_list = Factory.Instance.GetFilteredOrdinances(-1, userInfo.UserDepartment.DepartmentName, string.Empty, string.Empty);
                 }
@@ -355,9 +388,14 @@ namespace WebUI
             string title = !filterSearchTitle.Text.IsNullOrWhiteSpace() ? filterSearchTitle.Text : string.Empty;
 
             List<Ordinance> filteredList = new List<Ordinance>();
-            if ((userInfo.UserDepartment.DepartmentName != null && userInfo.UserDivision.DivisionName != null && !userInfo.IsAdmin) || userInfo.UserView)
+            if ((userInfo.UserDepartment.DepartmentName != null && !userInfo.IsAdmin) || userInfo.UserView)
             {
                 department = userInfo.UserDepartment.DepartmentName;
+            }
+
+            if (userInfo.UserDivision.DivisionName != null && (!userInfo.IsAdmin || userInfo.UserView))
+            {
+                division = userInfo.UserDivision.DivisionName;
             }
 
             filteredList = Factory.Instance.GetFilteredOrdinances(statusID, department, division, title);

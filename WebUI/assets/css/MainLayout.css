@@ -423,16 +423,24 @@ select:disabled, .disabled-control, .disabled-control input {
 }
 
 .input-group-text:not(:has(.fa-minus)) {
+	transition: all 0.3s ease !important;
 	color: var(--color-theme-text);
 }
 
-.input-group-text:has(button):not(:has(.fa-minus)):hover {
+button.input-group-text:not(:has(.fa-minus)):hover {
+	transition: all 0.3s ease !important;
 	color: var(--bs-light);
 }
 
-[data-control-type="shape-button"] {
-	cursor: pointer;
+button.input-group-text:not(:has(.fa-minus)):focus {
+	transition: all 0.3s ease !important;
+	color: var(--color-theme-text);
+	border-color: var(--custom-theme-border-color);
 }
+
+	[data-control-type="shape-button"] {
+		cursor: pointer;
+	}
 
 .shape-button {
 	left: 50%;
