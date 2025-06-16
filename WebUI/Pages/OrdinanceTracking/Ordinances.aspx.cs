@@ -133,7 +133,9 @@ namespace WebUI
                         directorSupervisorBtnDiv,
                         cPABtnDiv,
                         obmDirectorBtnDiv,
-                        mayorBtnDiv
+                        budgetBtnDiv,
+                        mayorBtnDiv,
+                        ccDirectorBtnDiv
                     };
                     List<Button> signBtns = new List<Button>()
                     {
@@ -141,7 +143,9 @@ namespace WebUI
                         directorSupervisorBtn,
                         cPABtn,
                         obmDirectorBtn,
-                        mayorBtn
+                        budgetBtn,
+                        mayorBtn,
+                        ccDirectorBtn
                     };
                     foreach (HtmlGenericControl item in signBtnDivs.Where(i => !i.ClientID.Equals($"{ctrl.ToString()}Div")))
                     {
