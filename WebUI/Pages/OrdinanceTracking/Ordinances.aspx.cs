@@ -684,7 +684,32 @@ namespace WebUI
             }
             else if (lockedStatus.Any(i => i.Equals(status)))
             {
-                unlock = false;
+                bool isLocked = true;
+                List<Ordinance> lst = Session["ord_list"] as List<Ordinance>;
+                foreach (Ordinance item in lst)
+                {
+                    SignatureRequest signatureRequest = Factory.Instance.GetByID<SignatureRequest>(Convert.ToInt32(item.OrdinanceID), "sp_GetOrdinanceSignatureRequestByOrdinanceID", "OrdinanceID");
+                    List<string> emails = new List<string>();
+                    emails.AddRange(signatureRequest.FundsCheckBy.Split(';').Where(i => !i.IsNullOrWhiteSpace()));
+                    emails.AddRange(signatureRequest.CityPurchasingAgent.Split(';').Where(i => !i.IsNullOrWhiteSpace()));
+                    emails.AddRange(signatureRequest.OBMDirector.Split(';').Where(i => !i.IsNullOrWhiteSpace()));
+                    emails.AddRange(signatureRequest.Budget.Split(';').Where(i => !i.IsNullOrWhiteSpace()));
+                    emails.AddRange(signatureRequest.Mayor.Split(';').Where(i => !i.IsNullOrWhiteSpace()));
+                    emails.AddRange(signatureRequest.CCDirector.Split(';').Where(i => !i.IsNullOrWhiteSpace()));
+
+                    if (emails.Any(i => i.Equals(_user.Email)))
+                    {
+                        isLocked = false;
+                    }
+                }
+                if (isLocked)
+                {
+                    unlock = false;
+                }
+                else
+                {
+                    unlock = true;
+                }
             }
             else
             {
@@ -855,7 +880,7 @@ namespace WebUI
             string[] newEmailAddresses = signatureEmailAddress.Text.Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
             foreach (string item in newEmailAddresses)
             {
-                emails.Add(item);
+                emails.Add(item.ToLower());
             }
             sigType.SetValue(sigRequests, string.Join(";", emails.OrderBy(i => i)));
             if (emails.Count > 0)
@@ -944,7 +969,7 @@ namespace WebUI
             hdnOrdID.Value = ordID.ToString();
             hdnEffectiveDate.Value = ord.EffectiveDate.ToString();
 
-            lblOrdID.Text = $"ID: {ordID.ToString()}";
+            lblOrdID.Text = $"ID: {ordID}";
             ddStatus.SelectedValue = ord.StatusDescription;
             ordinanceNumber.Text = ord.OrdinanceNumber;
             requestDepartment.SelectedValue = DepartmentsList()[ord.RequestDepartment];
@@ -1622,107 +1647,163 @@ namespace WebUI
                     otherExceptionDiv.Visible = true;
 
                     foreach (LinkButton item in emailBtns) if (!userInfo.IsAdmin || userInfo.UserView || Request.QueryString["id"] != null)
-                        {
-                            item.Visible = false;
-                        }
-                        else
-                        {
-                            item.Visible = true;
-                        }
+                    {
+                        item.Visible = false;
+                    }
+                    else
+                    {
+                        item.Visible = true;
+                    }
                     foreach (Button item in signBtns)
                     {
                         item.Text = "Sign";
                     }
                     foreach (TextBox item in sigTextBoxes) if (!item.Text.IsNullOrWhiteSpace())
+                    {
+                        switch (item.ClientID)
                         {
-                            switch (item.ClientID)
-                            {
-                                case "fundsCheckBySig":
-                                    fundsCheckByBtnDiv.Visible = false;
-                                    fundsCheckByInputGroup.Visible = true;
-                                    break;
-                                case "directorSupervisorSig":
-                                    directorSupervisorBtnDiv.Visible = false;
-                                    directorSupervisorInputGroup.Visible = true;
-                                    break;
-                                case "cPASig":
-                                    cPABtnDiv.Visible = false;
-                                    cPAInputGroup.Visible = true;
-                                    break;
-                                case "obmDirectorSig":
-                                    obmDirectorBtnDiv.Visible = false;
-                                    obmDirectorInputGroup.Visible = true;
-                                    break;
-                                case "budgetSig":
-                                    budgetBtnDiv.Visible = false;
-                                    budgetInputGroup.Visible = true;
-                                    break;
-                                case "mayorSig":
-                                    mayorBtnDiv.Visible = false;
-                                    mayorInputGroup.Visible = true;
-                                    break;
-                                case "ccDirectorSig":
-                                    ccDirectorBtnDiv.Visible = false;
-                                    ccDirectorInputGroup.Visible = true;
-                                    break;
-                            }
+                            case "fundsCheckBySig":
+                                fundsCheckByBtnDiv.Visible = false;
+                                fundsCheckByInputGroup.Visible = true;
+                                break;
+                            case "directorSupervisorSig":
+                                directorSupervisorBtnDiv.Visible = false;
+                                directorSupervisorInputGroup.Visible = true;
+                                break;
+                            case "cPASig":
+                                cPABtnDiv.Visible = false;
+                                cPAInputGroup.Visible = true;
+                                break;
+                            case "obmDirectorSig":
+                                obmDirectorBtnDiv.Visible = false;
+                                obmDirectorInputGroup.Visible = true;
+                                break;
+                            case "budgetSig":
+                                budgetBtnDiv.Visible = false;
+                                budgetInputGroup.Visible = true;
+                                break;
+                            case "mayorSig":
+                                mayorBtnDiv.Visible = false;
+                                mayorInputGroup.Visible = true;
+                                break;
+                            case "ccDirectorSig":
+                                ccDirectorBtnDiv.Visible = false;
+                                ccDirectorInputGroup.Visible = true;
+                                break;
                         }
-                        else
+                    }
+                    else
+                    {
+                        string[] validEmails;
+                        switch (item.ClientID)
                         {
-                            string[] validEmails;
-                            switch (item.ClientID)
-                            {
-                                case "fundsCheckBySig":
-                                    validEmails = signatureRequest.FundsCheckBy.Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
-                                    fundsCheckByBtnDiv.Visible = true;
-                                    fundsCheckByBtn.Text = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null || validEmails.Any(i => _user.Email.ToLower().Equals(i))) ? "Sign" : "Awaiting Signature...";
-                                    fundsCheckByBtnDiv.Attributes["readonly"] = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null || validEmails.Any(i => _user.Email.ToLower().Equals(i))) ? "false" : "true";
-                                    fundsCheckByInputGroup.Visible = false;
-                                    break;
-                                case "directorSupervisorSig":
-                                    validEmails = signatureRequest.DirectorSupervisor.Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
-                                    directorSupervisorBtnDiv.Visible = true;
-                                    directorSupervisorBtn.Text = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null || validEmails.Any(i => _user.Email.ToLower().Equals(i))) ? "Sign" : "Awaiting Signature...";
-                                    directorSupervisorBtnDiv.Attributes["readonly"] = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null || validEmails.Any(i => _user.Email.ToLower().Equals(i))) ? "false" : "true";
+                            case "fundsCheckBySig":
+                                validEmails = signatureRequest.FundsCheckBy.Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
+                                fundsCheckByBtnDiv.Visible = true;
+                                if (userInfo.IsAdmin && !userInfo.UserView)
+                                {
+                                        fundsCheckByBtn.Text = "Sign";
+                                        fundsCheckByBtnDiv.Attributes["readonly"] = "false";
+                                    }
+                                else
+                                {
+                                    fundsCheckByBtn.Text = (Request.QueryString["f"] != null || validEmails.Any(i => _user.Email.ToLower().Equals(i))) ? "Sign" : "Awaiting Signature...";
+                                    fundsCheckByBtnDiv.Attributes["readonly"] = (Request.QueryString["f"] != null || validEmails.Any(i => _user.Email.ToLower().Equals(i))) ? "false" : "true";
+                                }
+                                fundsCheckByInputGroup.Visible = false;
+                                break;
+                            case "directorSupervisorSig":
+                                validEmails = signatureRequest.DirectorSupervisor.Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
+                                directorSupervisorBtnDiv.Visible = true;
+                                    if (userInfo.IsAdmin && !userInfo.UserView)
+                                    {
+                                        directorSupervisorBtn.Text = "Sign";
+                                        directorSupervisorBtnDiv.Attributes["readonly"] = "false";
+                                    }
+                                    else
+                                    {
+                                        directorSupervisorBtn.Text = (Request.QueryString["f"] != null || validEmails.Any(i => _user.Email.ToLower().Equals(i))) ? "Sign" : "Awaiting Signature...";
+                                        directorSupervisorBtnDiv.Attributes["readonly"] = (Request.QueryString["f"] != null || validEmails.Any(i => _user.Email.ToLower().Equals(i))) ? "false" : "true";
+                                    }
                                     directorSupervisorInputGroup.Visible = false;
-                                    break;
-                                case "cPASig":
-                                    validEmails = signatureRequest.CityPurchasingAgent.Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
-                                    cPABtnDiv.Visible = true;
-                                    cPABtn.Text = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null || validEmails.Any(i => _user.Email.ToLower().Equals(i))) ? "Sign" : "Awaiting Signature...";
-                                    cPABtnDiv.Attributes["readonly"] = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null || validEmails.Any(i => _user.Email.ToLower().Equals(i))) ? "false" : "true";
+                                break;
+                            case "cPASig":
+                                validEmails = signatureRequest.CityPurchasingAgent.Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
+                                cPABtnDiv.Visible = true;
+                                    if (userInfo.IsAdmin && !userInfo.UserView)
+                                    {
+                                        cPABtn.Text = "Sign";
+                                        cPABtnDiv.Attributes["readonly"] = "false";
+                                    }
+                                    else
+                                    {
+                                        cPABtn.Text = (Request.QueryString["f"] != null || validEmails.Any(i => _user.Email.ToLower().Equals(i))) ? "Sign" : "Awaiting Signature...";
+                                        cPABtnDiv.Attributes["readonly"] = (Request.QueryString["f"] != null || validEmails.Any(i => _user.Email.ToLower().Equals(i))) ? "false" : "true";
+                                    }
                                     cPAInputGroup.Visible = false;
-                                    break;
-                                case "obmDirectorSig":
-                                    validEmails = signatureRequest.OBMDirector.Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
-                                    obmDirectorBtnDiv.Visible = true;
-                                    obmDirectorBtn.Text = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null || validEmails.Any(i => _user.Email.ToLower().Equals(i))) ? "Sign" : "Awaiting Signature...";
-                                    obmDirectorBtnDiv.Attributes["readonly"] = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null || validEmails.Any(i => _user.Email.ToLower().Equals(i))) ? "false" : "true";
+                                break;
+                            case "obmDirectorSig":
+                                validEmails = signatureRequest.OBMDirector.Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
+                                obmDirectorBtnDiv.Visible = true;
+                                    if (userInfo.IsAdmin && !userInfo.UserView)
+                                    {
+                                        obmDirectorBtn.Text = "Sign";
+                                        obmDirectorBtnDiv.Attributes["readonly"] = "false";
+                                    }
+                                    else
+                                    {
+                                        obmDirectorBtn.Text = (Request.QueryString["f"] != null || validEmails.Any(i => _user.Email.ToLower().Equals(i))) ? "Sign" : "Awaiting Signature...";
+                                        obmDirectorBtnDiv.Attributes["readonly"] = (Request.QueryString["f"] != null || validEmails.Any(i => _user.Email.ToLower().Equals(i))) ? "false" : "true";
+                                    }
                                     obmDirectorInputGroup.Visible = false;
-                                    break;
-                                case "budgetSig":
-                                    validEmails = signatureRequest.Budget.Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
-                                    budgetBtnDiv.Visible = true;
-                                    budgetBtn.Text = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null || validEmails.Any(i => _user.Email.ToLower().Equals(i))) ? "Sign" : "Awaiting Signature...";
-                                    budgetBtnDiv.Attributes["readonly"] = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null || validEmails.Any(i => _user.Email.ToLower().Equals(i))) ? "false" : "true";
+                                break;
+                            case "budgetSig":
+                                validEmails = signatureRequest.Budget.Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
+                                budgetBtnDiv.Visible = true;
+                                    if (userInfo.IsAdmin && !userInfo.UserView)
+                                    {
+                                        budgetBtn.Text = "Sign";
+                                        budgetBtnDiv.Attributes["readonly"] = "false";
+                                    }
+                                    else
+                                    {
+                                        budgetBtn.Text = (Request.QueryString["f"] != null || validEmails.Any(i => _user.Email.ToLower().Equals(i))) ? "Sign" : "Awaiting Signature...";
+                                        budgetBtnDiv.Attributes["readonly"] = (Request.QueryString["f"] != null || validEmails.Any(i => _user.Email.ToLower().Equals(i))) ? "false" : "true";
+                                    }
                                     budgetInputGroup.Visible = false;
-                                    break;
-                                case "mayorSig":
-                                    validEmails = signatureRequest.Mayor.Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
-                                    mayorBtnDiv.Visible = true;
-                                    mayorBtn.Text = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null || validEmails.Any(i => _user.Email.ToLower().Equals(i))) ? "Sign" : "Awaiting Signature...";
-                                    mayorBtnDiv.Attributes["readonly"] = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null || validEmails.Any(i => _user.Email.ToLower().Equals(i))) ? "false" : "true";
+                                break;
+                            case "mayorSig":
+                                validEmails = signatureRequest.Mayor.Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
+                                mayorBtnDiv.Visible = true;
+                                    if (userInfo.IsAdmin && !userInfo.UserView)
+                                    {
+                                        mayorBtn.Text = "Sign";
+                                        mayorBtnDiv.Attributes["readonly"] = "false";
+                                    }
+                                    else
+                                    {
+                                        mayorBtn.Text = (Request.QueryString["f"] != null || validEmails.Any(i => _user.Email.ToLower().Equals(i))) ? "Sign" : "Awaiting Signature...";
+                                        mayorBtnDiv.Attributes["readonly"] = (Request.QueryString["f"] != null || validEmails.Any(i => _user.Email.ToLower().Equals(i))) ? "false" : "true";
+                                    }
                                     mayorInputGroup.Visible = false;
-                                    break;
-                                case "ccDirectorSig":
-                                    validEmails = signatureRequest.CCDirector.Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
-                                    ccDirectorBtnDiv.Visible = true;
-                                    ccDirectorBtn.Text = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null || validEmails.Any(i => _user.Email.ToLower().Equals(i))) ? "Sign" : "Awaiting Signature...";
-                                    ccDirectorBtnDiv.Attributes["readonly"] = (userInfo.IsAdmin && !userInfo.UserView || Request.QueryString["f"] != null || validEmails.Any(i => _user.Email.ToLower().Equals(i))) ? "false" : "true";
+                                break;
+                            case "ccDirectorSig":
+                                validEmails = signatureRequest.CCDirector.Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
+                                ccDirectorBtnDiv.Visible = true;
+                                    if (userInfo.IsAdmin && !userInfo.UserView)
+                                    {
+                                        ccDirectorBtn.Text = "Sign";
+                                        ccDirectorBtnDiv.Attributes["readonly"] = "false";
+                                    }
+                                    else
+                                    {
+                                        ccDirectorBtn.Text = (Request.QueryString["f"] != null || validEmails.Any(i => _user.Email.ToLower().Equals(i))) ? "Sign" : "Awaiting Signature...";
+                                        ccDirectorBtnDiv.Attributes["readonly"] = (Request.QueryString["f"] != null || validEmails.Any(i => _user.Email.ToLower().Equals(i))) ? "false" : "true";
+                                    }
                                     ccDirectorInputGroup.Visible = false;
-                                    break;
-                            }
+                                break;
                         }
+                    }
 
                     switch (ord.StatusDescription)
                     {

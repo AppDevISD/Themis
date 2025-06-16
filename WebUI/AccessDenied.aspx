@@ -5,7 +5,7 @@
 <asp:Content ID="MainContent" ContentPlaceHolderID="MainContent" runat="server">
 	<section class="position-relative">
 		<div runat="server" id="errorSection" class="card access-denied-bg" style="min-height: 80vh;">
-			<div class="card-header bg-body">
+			<div class="card-header bg-body-secondary">
 				<h3><span class="placeholder col-md-2"></span></h3>
 			</div>
 			<div class="card-body bg-body-tertiary">

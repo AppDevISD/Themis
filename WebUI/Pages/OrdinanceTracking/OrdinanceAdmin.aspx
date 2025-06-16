@@ -36,7 +36,7 @@
 								<button runat="server" id="defaultEmailsBtn" class="nav-link active" data-toggle="tab" data-target="#defaultEmailsTabPane" type="button" role="tab">Default Emails</button>
 							</li>
 							<li id="adminMoreDD" class="nav-item dropdown">
-								<button class="nav-link dropdown-toggle" data-toggle="dropdown" type="button" role="button">More</button>
+								<button runat="server" id="adminMoreDDBtn" class="nav-link dropdown-toggle" data-toggle="dropdown" type="button" role="button">More</button>
 								<div class="dropdown-menu">
 								</div>
 							</li>
@@ -74,7 +74,7 @@
 															<button runat="server" id="deletedBtn" class="nav-link" data-toggle="tab" data-target="#deletedTabPane" type="button" role="tab">Deleted</button>
 														</li>
 														<li id="statusEmailsMoreDD" class="nav-item dropdown">
-															<button class="nav-link dropdown-toggle" data-toggle="dropdown" type="button" role="button">More</button>
+															<button runat="server" id="statusEmailsMoreDDBtn" class="nav-link dropdown-toggle" data-toggle="dropdown" type="button" role="button">More</button>
 															<div class="dropdown-menu">
 															</div>
 														</li>
@@ -339,7 +339,7 @@
 															<button runat="server" id="ccDirectorBtn" class="nav-link" data-toggle="tab" data-target="#ccDirectorTabPane" type="button" role="tab">Corporation Counsel Director</button>
 														</li>
 														<li id="sigEmailsMoreDD" class="nav-item dropdown">
-															<button class="nav-link dropdown-toggle" data-toggle="dropdown" type="button" role="button">More</button>
+															<button runat="server" id="sigEmailsMoreDDBtn" class="nav-link dropdown-toggle" data-toggle="dropdown" type="button" role="button">More</button>
 															<div class="dropdown-menu">
 															</div>
 														</li>

@@ -11,7 +11,7 @@ namespace WebUI
 {
 
 
-    public partial class GenericError
+    public partial class Error
     {
 
         /// <summary>

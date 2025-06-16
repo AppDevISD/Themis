@@ -72,24 +72,24 @@
 	border-color: var(--active-bg-subtle);
 }
 
-	.btn-home-link:hover {
+	.btn-home-link:hover, .btn-home-link:focus {
 		background-color: var(--active-bg) !important;
 		border-color: var(--active-bg) !important;
 	}
 
-	.btn-home-link:hover .home-link-icon {
-		color: var(--bs-body) !important;
-	}
+		.btn-home-link:hover .home-link-icon, .btn-home-link:focus .home-link-icon {
+			color: var(--bs-body) !important;
+		}
 
-	.btn-home-link:hover .home-link-text-div {
-		color: var(--bs-body) !important;
-		height: 100px;
-	}
+		.btn-home-link:hover .home-link-text-div, .btn-home-link:focus .home-link-text-div {
+			color: var(--bs-body) !important;
+			height: 100px;
+		}
 
-	.btn-home-link:hover .home-link-text {
-		color: var(--bs-body) !important;
-		opacity: 1;
-	}
+		.btn-home-link:hover .home-link-text, .btn-home-link:focus .home-link-text {
+			color: var(--bs-body) !important;
+			opacity: 1;
+		}
 
 .home-link-icon {
 	position: absolute;

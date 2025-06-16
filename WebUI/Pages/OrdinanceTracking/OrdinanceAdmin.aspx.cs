@@ -282,7 +282,8 @@ namespace WebUI
             List<string> lst = ids.Split(',').Where(i => !i.IsNullOrWhiteSpace()).ToList();
             Dictionary<string, Dictionary<HtmlButton, HtmlGenericControl>> tabs = new Dictionary<string, Dictionary<HtmlButton, HtmlGenericControl>>()
             {
-                { "defaultEmailsBtn", new Dictionary<HtmlButton, HtmlGenericControl>() {{defaultEmailsBtn, defaultEmailsTabPane} } },
+                { "defaultEmailsBtn", new Dictionary<HtmlButton, HtmlGenericControl>() {{defaultEmailsBtn, defaultEmailsTabPane}}},
+                { "adminMoreDDBtn", new Dictionary<HtmlButton, HtmlGenericControl>() {{adminMoreDDBtn, null}}},
                 { "pendingBtn", new Dictionary<HtmlButton, HtmlGenericControl>() {{pendingBtn, pendingTabPane}}},
                 { "underReviewBtn", new Dictionary<HtmlButton, HtmlGenericControl>() {{underReviewBtn, underReviewTabPane}}},
                 { "beingHeldBtn", new Dictionary<HtmlButton, HtmlGenericControl>() {{beingHeldBtn, beingHeldTabPane}}},
@@ -290,13 +291,15 @@ namespace WebUI
                 { "approvedBtn", new Dictionary<HtmlButton, HtmlGenericControl>() {{approvedBtn, approvedTabPane}}},
                 { "rejectedBtn", new Dictionary<HtmlButton, HtmlGenericControl>() {{rejectedBtn, rejectedTabPane}}},
                 { "deletedBtn", new Dictionary<HtmlButton, HtmlGenericControl>() {{deletedBtn, deletedTabPane}}},
+                { "statusEmailsMoreDDBtn", new Dictionary<HtmlButton, HtmlGenericControl>() {{statusEmailsMoreDDBtn, null}}},
                 { "fundsCheckByBtn", new Dictionary<HtmlButton, HtmlGenericControl>() {{fundsCheckByBtn, fundsCheckByTabPane}}},
                 { "directorSupervisorBtn", new Dictionary<HtmlButton, HtmlGenericControl>() {{directorSupervisorBtn, directorSupervisorTabPane}}},
                 { "cPABtn", new Dictionary<HtmlButton, HtmlGenericControl>() {{cPABtn, cPATabPane}}},
                 { "obmDirectorBtn", new Dictionary<HtmlButton, HtmlGenericControl>() {{obmDirectorBtn, obmDirectorTabPane}}},
                 { "budgetBtn", new Dictionary<HtmlButton, HtmlGenericControl>() {{budgetBtn, budgetTabPane}}},
                 { "mayorBtn", new Dictionary<HtmlButton, HtmlGenericControl>() {{mayorBtn, mayorTabPane}}},
-                { "ccDirectorBtn", new Dictionary<HtmlButton, HtmlGenericControl>() {{ccDirectorBtn, ccDirectorTabPane}}}
+                { "ccDirectorBtn", new Dictionary<HtmlButton, HtmlGenericControl>() {{ccDirectorBtn, ccDirectorTabPane}}},
+                { "sigEmailsMoreDDBtn", new Dictionary<HtmlButton, HtmlGenericControl>() {{sigEmailsMoreDDBtn, null}}}
             };
 
             foreach (KeyValuePair<string, Dictionary<HtmlButton, HtmlGenericControl>> tab in tabs)
@@ -304,9 +307,9 @@ namespace WebUI
                 Dictionary<HtmlButton, HtmlGenericControl> ctrls = tabs[tab.Key];
                 foreach (KeyValuePair<HtmlButton, HtmlGenericControl> ctrl in ctrls)
                 {
-                    ctrl.Key.Attributes["class"] = "nav-link";
+                    ctrl.Key.Attributes["class"] = ctrl.Key.Attributes["class"].Replace(" active", string.Empty);
                     ctrl.Key.Attributes["aria=selected"] = "false";
-                    ctrl.Value.Attributes["class"] = "tab-pane fade";
+                    ctrl.Value.IfNotNull(val => val.Attributes["class"] = "tab-pane fade");
                 }
             }
             foreach (string id in lst)
@@ -317,7 +320,7 @@ namespace WebUI
 
                     ctrl.Key.Attributes["class"] += " active";
                     ctrl.Key.Attributes["aria=selected"] = "true";
-                    ctrl.Value.Attributes["class"] += " active show";
+                    ctrl.Value.IfNotNull(val => val.Attributes["class"] += " active show");
                 }
             }
         }

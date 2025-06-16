@@ -42,6 +42,15 @@ namespace WebUI
         protected global::System.Web.UI.HtmlControls.HtmlButton defaultEmailsBtn;
 
         /// <summary>
+        /// adminMoreDDBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton adminMoreDDBtn;
+
+        /// <summary>
         /// defaultEmailsTabPane control.
         /// </summary>
         /// <remarks>
@@ -112,6 +121,15 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlButton deletedBtn;
+
+        /// <summary>
+        /// statusEmailsMoreDDBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton statusEmailsMoreDDBtn;
 
         /// <summary>
         /// pendingTabPane control.
@@ -490,6 +508,15 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlButton ccDirectorBtn;
+
+        /// <summary>
+        /// sigEmailsMoreDDBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlButton sigEmailsMoreDDBtn;
 
         /// <summary>
         /// fundsCheckByTabPane control.

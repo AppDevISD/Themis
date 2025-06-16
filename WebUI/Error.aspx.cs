@@ -12,7 +12,7 @@ using System.Data.Common;
 
 namespace WebUI
 {
-    public partial class GenericError : System.Web.UI.Page
+    public partial class Error : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {

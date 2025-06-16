@@ -65,6 +65,7 @@ namespace DataLibrary
                         {
                             adu.IPPhone = EmployeeExt(Convert.ToInt32(adu.EmployeeID)) ?? string.Empty;
                         }
+                        adu.Email = adu.Email.ToLower();
                         //adu.Title = EmployeeTitle(Convert.ToInt32(adu.EmployeeID));
                         break;
 
@@ -98,6 +99,7 @@ namespace DataLibrary
                         {
                             adu.IPPhone = EmployeeExt(Convert.ToInt32(adu.EmployeeID)) ?? string.Empty;
                         }
+                        adu.Email = adu.Email.ToLower();
                         //adu.Title = EmployeeTitle(Convert.ToInt32(adu.EmployeeID));
                         break;
 

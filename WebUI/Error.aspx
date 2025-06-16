@@ -1,11 +1,11 @@
-﻿<%@ Page Title="Error" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="GenericError.aspx.cs" Inherits="WebUI.GenericError" %>
+﻿<%@ Page Title="Error" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Error.aspx.cs" Inherits="WebUI.Error" %>
 
 <asp:Content ID="HeadContent" ContentPlaceHolderID="HeadContent" runat="server"></asp:Content>
 
 <asp:Content ID="MainContent" ContentPlaceHolderID="MainContent" runat="server">
 	<section>
 		<div runat="server" id="errorSection" class="card" style="min-height: 80vh;">
-			<div class="card-header bg-body">
+			<div class="card-header bg-body-secondary">
 				<h1><i class="fas fa-triangle-exclamation text-danger"></i>&nbsp;Error</h1>
 			</div>
 			<div class="card-body bg-body-tertiary text-center">

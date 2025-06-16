@@ -35,7 +35,9 @@ function SetTooltips() {
 			$(this).tooltip();
 		}
 	});
-	$('[data-action-tooltip="true"]').tooltip();
+	$('[data-action-tooltip="true"]').tooltip({
+		delay: {"show": 1500, "hide": 0}
+	});
 }
 
 function HideAllTooltips() {
@@ -214,6 +216,12 @@ function saveTabState() {
 
 			if (currentTabId && !value.includes(currentTabId)) {
 				value.push(currentTabId);
+				if ($(`#${currentTabId}`).parent().parent().hasClass('dropdown')) {
+					let ddID = $(`#${currentTabId}`).parent().parent().find('.dropdown-toggle').attr('id');
+					if (ddID && !value.includes(ddID)) {
+						value.push(ddID);
+					}
+				}
 			}
 
 			$('#hdnActiveTabs').val(value.join(','));

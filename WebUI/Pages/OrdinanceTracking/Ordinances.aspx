@@ -148,9 +148,6 @@
 											</td>
 										</tr>
 									</ItemTemplate>
-									<FooterTemplate>
-								
-									</FooterTemplate>
 								</asp:Repeater>
 							</table>
 						</div>
