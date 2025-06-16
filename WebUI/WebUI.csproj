@@ -32,6 +32,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>..\DataLibrary\Properties\AnalysisSuppression.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -311,6 +312,7 @@
     <Content Include="Reports\OrdinanceTracking\OrdinanceData.xss">
       <DependentUpon>OrdinanceData.xsd</DependentUpon>
     </Content>
+    <Content Include="Scripts\Helpers\Misc\AnalysisSuppression.ruleset" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

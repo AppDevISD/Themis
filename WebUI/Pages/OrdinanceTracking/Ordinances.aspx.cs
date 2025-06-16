@@ -11,28 +11,25 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Security.Cryptography;
 using System.Text;
 using System.Web;
-using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using static DataLibrary.TablePagination;
 using static DataLibrary.Utility;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace WebUI
 {
     public partial class Ordinances : System.Web.UI.Page
     {
+        // GLOBAL VARIABLES //
         private ADUser _user = new ADUser();
         public UserInfo userInfo = new UserInfo();
         private readonly string pendingEmailList = HttpContext.Current.IsDebuggingEnabled ? Factory.Instance.GetByID<DefaultEmails>(110, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID").EmailAddress.Replace(';', ',') : Factory.Instance.GetByID<DefaultEmails>(1, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID").EmailAddress.Replace(';', ',');
         private readonly string underReviewEmailList = HttpContext.Current.IsDebuggingEnabled ? Factory.Instance.GetByID<DefaultEmails>(110, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID").EmailAddress.Replace(';', ',') : Factory.Instance.GetByID<DefaultEmails>(2, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID").EmailAddress.Replace(';', ',');
         public string deptDivColumnType = "RequestDepartment";
         public string BudgetType = string.Empty;
-        
         public readonly List<string> lockedStatus = new List<string>()
         {
             "Pending",
@@ -43,6 +40,9 @@ namespace WebUI
             "Deleted"
         };
 
+
+
+        // PAGE LOADING //
         protected void Page_Load(object sender, EventArgs e)
         {
             Page.Form.Attributes.Add("enctype", "multipart/form-data");
@@ -147,7 +147,7 @@ namespace WebUI
                         mayorBtn,
                         ccDirectorBtn
                     };
-                    foreach (HtmlGenericControl item in signBtnDivs.Where(i => !i.ClientID.Equals($"{ctrl.ToString()}Div")))
+                    foreach (HtmlGenericControl item in signBtnDivs.Where(i => !i.ClientID.Equals($"{ctrl}Div")))
                     {
                         item.Attributes["readonly"] = "true";
                     }
@@ -219,7 +219,7 @@ namespace WebUI
             ordView.Visible = false;
             lblNoItems.Visible = false;
             ddDeptDivision.SelectedValue = "RequestDepartment";
-            filterDepartmentDiv.Visible = !userInfo.IsAdmin || userInfo.UserView ? false : true;
+            filterDepartmentDiv.Visible = userInfo.IsAdmin && !userInfo.UserView;
             if (!userInfo.IsAdmin || userInfo.UserView)
             {
                 filterDivision.Enabled = true;
@@ -1468,7 +1468,7 @@ namespace WebUI
                     contractEndDatePicker.Visible = true;
                     ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
                     ord.StatusDescription = ordStatus.StatusDescription;
-                    bool adminUser = (userInfo.IsAdmin || !userInfo.UserView) ? true : false;
+                    bool adminUser = (userInfo.IsAdmin || !userInfo.UserView);
                     hdnStatusID.Value = ordStatus.StatusID.ToString();
                     if (!adminUser || ord.StatusDescription.Equals("New"))
                     {
@@ -1936,13 +1936,11 @@ namespace WebUI
 
                     viewer.LocalReport.Refresh();
 
-                    Warning[] warnings;
-                    string[] streamIds;
                     string mimeType = string.Empty;
                     string encoding = string.Empty;
                     string extension = string.Empty;
 
-                    byte[] bytes = viewer.LocalReport.Render("PDF", null, out mimeType, out encoding, out extension, out streamIds, out warnings);
+                    byte[] bytes = viewer.LocalReport.Render("PDF", null, out mimeType, out encoding, out extension, out string[] streamIds, out Warning[] warnings);
 
                     string delivery = HttpContext.Current.IsDebuggingEnabled ? "inline" : "attachment";
                     string fileName = ord.OrdinanceNumber.IsNullOrWhiteSpace() ? $"Ordinance_{ord.OrdinanceID}" : ord.OrdinanceNumber;
@@ -3470,14 +3468,14 @@ namespace WebUI
                 emailList = Email.Instance.AddEmailAddress(emailList, item);
             }
 
-            string href = $"apptest/Themis/Ordinances?id={hdnOrdID.Value.ToString()}&v=edit&f={sigBtnTarget.Value.ToString()}";
+            string href = $"apptest/Themis/Ordinances?id={hdnOrdID.Value}&v=edit&f={sigBtnTarget.Value}";
             string formType = "THΣMIS";
 
             Email newEmail = new Email();
 
             newEmail.EmailSubject = $"{formType} Signature Requested";
             newEmail.EmailTitle = $"{formType} Signature Requested";
-            newEmail.EmailText = $"<p style='margin: 0;'><span style='font-size:36.0pt;font-family:\"Times New Roman\",serif;color:#2D71D5;font-weight:bold'>THΣMIS</span></p><div align=center style='text-align:center'><span><hr size='2' width='100%' align='center' style='margin-top: 0;'></span></div><p><span>You are receiving this message because your signature is required in the role of <b>{sigBtnLabel.Value.ToString()}</b> for Ordinance ID #{hdnOrdID.Value.ToString()} on THΣMIS.</span></p><p><span>Please click the button below to review and sign the document</span></p><table border='0' cellpadding='0' cellspacing='0' style='border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;'><tr><td style='font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #198754; border-radius: 5px; text-align: center;' valign='top' bgcolor='#198754' align='center'><a href='{href}' target='_blank' style='display: inline-block; color: #ffffff; background-color: #198754; border: solid 1px #198754; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 15px 25px; text-transform: capitalize; border-color: #198754; '>Sign Ordinance</a></td></tr></table><br /><p><span>Thank you for your prompt attention to this matter.</span></p>";
+            newEmail.EmailText = $"<p style='margin: 0;'><span style='font-size:36.0pt;font-family:\"Times New Roman\",serif;color:#2D71D5;font-weight:bold'>THΣMIS</span></p><div align=center style='text-align:center'><span><hr size='2' width='100%' align='center' style='margin-top: 0;'></span></div><p><span>You are receiving this message because your signature is required in the role of <b>{sigBtnLabel.Value}</b> for Ordinance ID #{hdnOrdID.Value} on THΣMIS.</span></p><p><span>Please click the button below to review and sign the document</span></p><table border='0' cellpadding='0' cellspacing='0' style='border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;'><tr><td style='font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #198754; border-radius: 5px; text-align: center;' valign='top' bgcolor='#198754' align='center'><a href='{href}' target='_blank' style='display: inline-block; color: #ffffff; background-color: #198754; border: solid 1px #198754; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 15px 25px; text-transform: capitalize; border-color: #198754; '>Sign Ordinance</a></td></tr></table><br /><p><span>Thank you for your prompt attention to this matter.</span></p>";
 
             string emailStatus = Email.Instance.SendEmail(newEmail, emailList);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "ShowToastEmail", $"ShowEmailToast('{emailStatus}');", true);
@@ -3616,6 +3614,5 @@ namespace WebUI
         {
             ddStatus.SelectedValue = hdnStatusID.Value;
         }
-
     }
 }

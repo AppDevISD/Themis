@@ -40,7 +40,7 @@
 					this.triggerPostback();
 					this.resetTimer(); // reset after triggering
 				}
-			}, 60000); // every 1 minute
+			}, 60001); // every 1 minute
 		},
 
 		resetTimer: function () {

@@ -33,7 +33,7 @@ namespace DataLibrary
         }
         public static ADUser AuthenticateUser([Optional] string loginID)
         {
-            bool spoofUser = loginID != null ? true : false;
+            bool spoofUser = loginID != null;
             string strLoginID;
             ADUser adu = new ADUser();
             string[] strTemp = { "", "" };

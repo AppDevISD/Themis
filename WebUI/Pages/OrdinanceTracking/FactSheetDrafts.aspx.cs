@@ -2,34 +2,29 @@
 using DataLibrary.OrdinanceTracking;
 using ISD.ActiveDirectory;
 using Microsoft.Ajax.Utilities;
-using Microsoft.Reporting.WebForms;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net.NetworkInformation;
 using System.Reflection;
-using System.Security.Cryptography;
 using System.Text;
 using System.Web;
-using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using static DataLibrary.TablePagination;
 using static DataLibrary.Utility;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace WebUI
 {
     public partial class FactSheetDrafts : System.Web.UI.Page
     {
+        // GLOBAL VARIABLES //
         private ADUser _user = new ADUser();
         public UserInfo userInfo = new UserInfo();
         public string deptDivColumnType = "RequestDepartment";
-
         public readonly List<string> lockedStatus = new List<string>()
         {
             "Pending",
@@ -40,6 +35,9 @@ namespace WebUI
             "Deleted"
         };
 
+
+
+        // PAGE LOADING //
         protected void Page_Load(object sender, EventArgs e)
         {
             Page.Form.Attributes.Add("enctype", "multipart/form-data");
@@ -147,19 +145,6 @@ namespace WebUI
                 dd.Items.Add(newItem);
             }
         }
-        //protected void GetAllStatuses()
-        //{
-        //    Dictionary<string, string> statuses = StatusList();
-        //    foreach (var status in statuses.Keys)
-        //    {
-        //        var value = statuses[status];
-        //        ListItem newItem = new ListItem(status, value);
-        //        if (newItem.Text != "New" && newItem.Text != "Deleted")
-        //        {
-                    
-        //        }
-        //    }
-        //}
         protected void GetAllPurchaseMethods()
         {
             purchaseMethod.Items.Insert(0, new ListItem("Select Purchase Method...", null));
@@ -480,7 +465,43 @@ namespace WebUI
             Session["ordDocs"] = originalOrdDocList;
             rpSupportingDocumentation.DataSource = originalOrdDocList;
             rpSupportingDocumentation.DataBind();
-        }        
+        }
+        protected void AddRequestEmailAddress_Click(object sender, EventArgs e)
+        {
+            SignatureRequest sigRequests = Session["SigRequestEmails"] as SignatureRequest;
+            PropertyInfo sigType = (PropertyInfo)typeof(SignatureRequest).GetProperties().First(i => i.Name.Equals("DirectorSupervisor"));
+
+            List<string> emails = sigType.GetValue(sigRequests).ToString().Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToList();
+            string[] newEmailAddresses = signatureEmailAddress.Text.Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
+            foreach (string item in newEmailAddresses)
+            {
+                emails.Add(item.ToLower());
+            }
+            sigType.SetValue(sigRequests, string.Join(";", emails.OrderBy(i => i)));
+            if (emails.Count > 0)
+            {
+                directorSupervisorEmailAddresses.Text = signatureEmailAddress.Text;
+                emailListDiv.Visible = true;
+                rpEmailList.DataSource = emails.OrderBy(i => i);
+                rpEmailList.DataBind();
+            }
+            else
+            {
+                emailListDiv.Visible = false;
+                rpEmailList.DataSource = null;
+                rpEmailList.DataBind();
+            }
+
+            int updateSigRequest = Factory.Instance.Update(sigRequests, "sp_UpdateOrdinance_SignatureRequest");
+            if (updateSigRequest > 0)
+            {
+                signatureEmailAddress.Text = string.Empty;
+            }
+        }
+        protected void BtnNewFactSheet_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("./NewFactSheet");
+        }
 
 
 
@@ -725,7 +746,7 @@ namespace WebUI
 
             OrdinanceStatus ordStatus = new OrdinanceStatus();
             ordStatus = Factory.Instance.GetByID<OrdinanceStatus>(ord.OrdinanceID, "sp_GetOrdinanceStatusesByOrdinanceID", "OrdinanceID");
-            bool adminUser = (userInfo.IsAdmin || !userInfo.UserView) ? true : false;
+            bool adminUser = (userInfo.IsAdmin || !userInfo.UserView);
             hdnStatusID.Value = ordStatus.StatusID.ToString();
             hdnOrdStatusID.Value = ordStatus.OrdinanceStatusID.ToString();
             fiscalImpact.Attributes["placeholder"] = "$0.00";
@@ -947,6 +968,44 @@ namespace WebUI
                     break;
             }
         }
+        protected void rpRevExpTable_ItemCreated(object sender, RepeaterItemEventArgs e)
+        {
+            Repeater rpTable = (Repeater)sender;
+            string rpType = string.Empty;
+            switch (rpTable.ClientID)
+            {
+                case "rpRevenueTable":
+                    rpType = "revenue";
+                    break;
+                case "rpExpenditureTable":
+                    rpType = "expenditure";
+                    break;
+            }
+            RepeaterItem rpItem = (RepeaterItem)e.Item;
+            List<TextBox> textBoxes = new List<TextBox>()
+            {
+                (TextBox)e.Item.FindControl($"{rpType}FundCode"),
+                (TextBox)e.Item.FindControl($"{rpType}AgencyCode"),
+                (TextBox)e.Item.FindControl($"{rpType}OrgCode"),
+                (TextBox)e.Item.FindControl($"{rpType}ActivityCode"),
+                (TextBox)e.Item.FindControl($"{rpType}ObjectCode")
+            };
+
+            foreach (TextBox box in textBoxes)
+            {
+                box.Attributes.Add("data-validate", $"{box.ID}-{rpItem.ItemIndex}");
+                RequiredFieldValidator rfv = new RequiredFieldValidator()
+                {
+                    ID = $"{box.ID}Valid-{rpItem.ItemIndex}",
+                    ControlToValidate = box.ID,
+                    ValidationGroup = "factSheetMain",
+                    SetFocusOnError = false,
+                    Display = ValidatorDisplay.None
+                };
+                rfv.Attributes.Add("data-table-validator", "true");
+                box.Parent.Controls.Add(rfv);
+            }
+        }
         protected void rpSupportingDocumentation_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
             HiddenField hdnDocID = (HiddenField)e.Item.FindControl("hdnDocID");
@@ -981,6 +1040,43 @@ namespace WebUI
                     rpSupportingDocumentation.DataBind();
                     break;
             }
+        }
+        protected void rpEmailList_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            switch (e.CommandName)
+            {
+                case "remove":
+                    SignatureRequest sigRequests = Session["SigRequestEmails"] as SignatureRequest;
+                    PropertyInfo sigType = (PropertyInfo)typeof(SignatureRequest).GetProperties().First(i => i.Name.Equals("DirectorSupervisor"));
+
+                    List<string> emails = sigType.GetValue(sigRequests).ToString().Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToList();
+                    emails.Remove(e.CommandArgument.ToString());
+                    sigType.SetValue(sigRequests, string.Join(";", emails.OrderBy(i => i)));
+                    if (emails.Count > 0)
+                    {
+                        directorSupervisorEmailAddresses.Text = sigRequests.DirectorSupervisor;
+                        rpEmailList.DataSource = emails.OrderBy(i => i);
+                        rpEmailList.DataBind();
+                    }
+                    else
+                    {
+                        directorSupervisorEmailAddresses.Text = string.Empty;
+                        rpEmailList.DataSource = null;
+                        rpEmailList.DataBind();
+                    }
+
+                    int updateSigRequest = Factory.Instance.Update(sigRequests, "sp_UpdateOrdinance_SignatureRequest");
+                    if (updateSigRequest > 0)
+                    {
+                        signatureEmailAddress.Text = string.Empty;
+                    }
+                    break;
+            }
+        }
+        protected void rpEmailList_ItemCreated(object sender, RepeaterItemEventArgs e)
+        {
+            LinkButton btn = (LinkButton)e.Item.FindControl("removeBtn");
+            ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(btn);
         }
         protected void rpAudit_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
@@ -1493,16 +1589,16 @@ namespace WebUI
                 {
                     string formType = "Ordinance Fact Sheet";
 
-                    string sigHref = $"apptest/Themis/Ordinances?id={hdnOrdID.Value.ToString()}&v=edit&f=directorSupervisorBtn";
+                    string sigHref = $"apptest/Themis/Ordinances?id={hdnOrdID.Value}&v=edit&f=directorSupervisorBtn";
                     sigRequestEmail.EmailSubject = $"THΣMIS Signature Requested";
                     sigRequestEmail.EmailTitle = $"THΣMIS Signature Requested";
-                    sigRequestEmail.EmailText = $"<p style='margin: 0;'><span style='font-size:36.0pt;font-family:\"Times New Roman\",serif;color:#2D71D5;font-weight:bold'>THΣMIS</span></p><div align=center style='text-align:center'><span><hr size='2' width='100%' align='center' style='margin-top: 0;'></span></div><p><span>You are receiving this message because an Ordinance Fact Sheet has been SUBMITTED by <b>{_user.FirstName} {_user.LastName}</b> and your signature is required in the role of <b>Director/Supervisor</b> for Ordinance ID #{hdnOrdID.Value.ToString()} on THΣMIS.</span></p><p><span>Please click the button below to review and sign the document</span></p><table border='0' cellpadding='0' cellspacing='0' style='border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;'><tr><td style='font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #198754; border-radius: 5px; text-align: center;' valign='top' bgcolor='#198754' align='center'><a href='{sigHref}' target='_blank' style='display: inline-block; color: #ffffff; background-color: #198754; border: solid 1px #198754; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 15px 25px; text-transform: capitalize; border-color: #198754; '>Sign Ordinance</a></td></tr></table><br /><p><span>Thank you for your prompt attention to this matter.</span></p>";
+                    sigRequestEmail.EmailText = $"<p style='margin: 0;'><span style='font-size:36.0pt;font-family:\"Times New Roman\",serif;color:#2D71D5;font-weight:bold'>THΣMIS</span></p><div align=center style='text-align:center'><span><hr size='2' width='100%' align='center' style='margin-top: 0;'></span></div><p><span>You are receiving this message because an Ordinance Fact Sheet has been SUBMITTED by <b>{_user.FirstName} {_user.LastName}</b> and your signature is required in the role of <b>Director/Supervisor</b> for Ordinance ID #{hdnOrdID.Value} on THΣMIS.</span></p><p><span>Please click the button below to review and sign the document</span></p><table border='0' cellpadding='0' cellspacing='0' style='border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;'><tr><td style='font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #198754; border-radius: 5px; text-align: center;' valign='top' bgcolor='#198754' align='center'><a href='{sigHref}' target='_blank' style='display: inline-block; color: #ffffff; background-color: #198754; border: solid 1px #198754; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 15px 25px; text-transform: capitalize; border-color: #198754; '>Sign Ordinance</a></td></tr></table><br /><p><span>Thank you for your prompt attention to this matter.</span></p>";
 
 
-                    string submitHref = $"apptest/Themis/Ordinances?id={hdnOrdID.Value.ToString()}&v=view";
+                    string submitHref = $"apptest/Themis/Ordinances?id={hdnOrdID.Value}&v=view";
                     submittedEmail.EmailSubject = $"{formType} SUBMITTED";
                     submittedEmail.EmailTitle = $"{formType} SUBMITTED";
-                    submittedEmail.EmailText = $"<p style='margin: 0;'><span style='font-size:36.0pt;font-family:\"Times New Roman\",serif;color:#2D71D5;font-weight:bold'>THΣMIS</span></p><div align=center style='text-align:center'><span><hr size='2' width='100%' align='center' style='margin-top: 0;'></span></div><p><span>An <b>{formType}</b> has been SUBMITTED by <b>{_user.FirstName} {_user.LastName}</b>.</span></p><br /><p style='margin: 0; line-height: 1.5;'><span>ID: {hdnOrdID.Value.ToString()}</span></p><p style='margin: 0; line-height: 1.5;'><span>Date: {DateTime.Now}</span></p><p style='margin: 0; line-height: 1.5;'><span>Department: {requestDepartment.SelectedItem.Text}</span></p><p style='margin: 0; line-height: 1.5;'><span>Contact: {requestContact.Text}</span></p><p style='margin: 0; line-height: 1.5;'><span>Phone: {ordinance.RequestPhone}</span></p><br /><p><span>Please click the button below to review the document:</span></p><table border='0' cellpadding='0' cellspacing='0' style='border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;'><tr><td style='font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #0d6efd; border-radius: 5px; text-align: center;' valign='top' bgcolor='#0d6efd' align='center'><a href='{submitHref}' target='_blank' style='display: inline-block; color: #ffffff; background-color: #0d6efd; border: solid 1px #0d6efd; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 15px 25px; text-transform: capitalize; border-color: #0d6efd; '>View Ordinance</a></td></tr></table>";
+                    submittedEmail.EmailText = $"<p style='margin: 0;'><span style='font-size:36.0pt;font-family:\"Times New Roman\",serif;color:#2D71D5;font-weight:bold'>THΣMIS</span></p><div align=center style='text-align:center'><span><hr size='2' width='100%' align='center' style='margin-top: 0;'></span></div><p><span>An <b>{formType}</b> has been SUBMITTED by <b>{_user.FirstName} {_user.LastName}</b>.</span></p><br /><p style='margin: 0; line-height: 1.5;'><span>ID: {hdnOrdID.Value}</span></p><p style='margin: 0; line-height: 1.5;'><span>Date: {DateTime.Now}</span></p><p style='margin: 0; line-height: 1.5;'><span>Department: {requestDepartment.SelectedItem.Text}</span></p><p style='margin: 0; line-height: 1.5;'><span>Contact: {requestContact.Text}</span></p><p style='margin: 0; line-height: 1.5;'><span>Phone: {ordinance.RequestPhone}</span></p><br /><p><span>Please click the button below to review the document:</span></p><table border='0' cellpadding='0' cellspacing='0' style='border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;'><tr><td style='font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #0d6efd; border-radius: 5px; text-align: center;' valign='top' bgcolor='#0d6efd' align='center'><a href='{submitHref}' target='_blank' style='display: inline-block; color: #ffffff; background-color: #0d6efd; border: solid 1px #0d6efd; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 18px; font-weight: bold; margin: 0; padding: 15px 25px; text-transform: capitalize; border-color: #0d6efd; '>View Ordinance</a></td></tr></table>";
                 }
 
 
@@ -1596,144 +1692,5 @@ namespace WebUI
                 BindDataRepeaterPagination("no", ord_list);
             }
         }    
-
-        public bool adminUnlockedOrd(string status)
-        {
-            bool unlock = false;
-            if (userInfo.IsAdmin && !userInfo.UserView)
-            {
-                if (status.Equals("Deleted"))
-                {
-                    unlock = false;
-                }
-                else
-                {
-                    unlock = true;
-                }
-            }
-            else if (lockedStatus.Any(i => i.Equals(status)))
-            {
-                unlock = false;
-            }
-            else
-            {
-                unlock = true;
-            }
-            return unlock;
-        }
-        protected void AddRequestEmailAddress_Click(object sender, EventArgs e)
-        {
-            SignatureRequest sigRequests = Session["SigRequestEmails"] as SignatureRequest;
-            PropertyInfo sigType = (PropertyInfo)typeof(SignatureRequest).GetProperties().First(i => i.Name.Equals("DirectorSupervisor"));
-
-            List<string> emails = sigType.GetValue(sigRequests).ToString().Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToList();
-            string[] newEmailAddresses = signatureEmailAddress.Text.Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToArray();
-            foreach (string item in newEmailAddresses)
-            {
-                emails.Add(item.ToLower());
-            }
-            sigType.SetValue(sigRequests, string.Join(";", emails.OrderBy(i => i)));
-            if (emails.Count > 0)
-            {
-                directorSupervisorEmailAddresses.Text = signatureEmailAddress.Text;
-                emailListDiv.Visible = true;
-                rpEmailList.DataSource = emails.OrderBy(i => i);
-                rpEmailList.DataBind();
-            }
-            else
-            {
-                emailListDiv.Visible = false;
-                rpEmailList.DataSource = null;
-                rpEmailList.DataBind();
-            }
-
-            int updateSigRequest = Factory.Instance.Update(sigRequests, "sp_UpdateOrdinance_SignatureRequest");
-            if (updateSigRequest > 0)
-            {
-                signatureEmailAddress.Text = string.Empty;
-            }
-        }
-
-        protected void rpEmailList_ItemCommand(object source, RepeaterCommandEventArgs e)
-        {
-            switch (e.CommandName)
-            {
-                case "remove":
-                    SignatureRequest sigRequests = Session["SigRequestEmails"] as SignatureRequest;
-                    PropertyInfo sigType = (PropertyInfo)typeof(SignatureRequest).GetProperties().First(i => i.Name.Equals("DirectorSupervisor"));
-
-                    List<string> emails = sigType.GetValue(sigRequests).ToString().Split(';').Where(i => !i.IsNullOrWhiteSpace()).ToList();
-                    emails.Remove(e.CommandArgument.ToString());
-                    sigType.SetValue(sigRequests, string.Join(";", emails.OrderBy(i => i)));
-                    if (emails.Count > 0)
-                    {
-                        directorSupervisorEmailAddresses.Text = sigRequests.DirectorSupervisor;
-                        rpEmailList.DataSource = emails.OrderBy(i => i);
-                        rpEmailList.DataBind();
-                    }
-                    else
-                    {
-                        directorSupervisorEmailAddresses.Text = string.Empty;
-                        rpEmailList.DataSource = null;
-                        rpEmailList.DataBind();
-                    }
-
-                    int updateSigRequest = Factory.Instance.Update(sigRequests, "sp_UpdateOrdinance_SignatureRequest");
-                    if (updateSigRequest > 0)
-                    {
-                        signatureEmailAddress.Text = string.Empty;
-                    }
-                    break;
-            }
-        }
-        protected void rpEmailList_ItemCreated(object sender, RepeaterItemEventArgs e)
-        {
-            LinkButton btn = (LinkButton)e.Item.FindControl("removeBtn");
-            ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(btn);
-        }
-
-        protected void rpRevExpTable_ItemCreated(object sender, RepeaterItemEventArgs e)
-        {
-            Repeater rpTable = (Repeater)sender;
-            string rpType = string.Empty;
-            switch (rpTable.ClientID)
-            {
-                case "rpRevenueTable":
-                    rpType = "revenue";
-                    break;
-                case "rpExpenditureTable":
-                    rpType = "expenditure";
-                    break;
-            }
-            RepeaterItem rpItem = (RepeaterItem)e.Item;
-            List<TextBox> textBoxes = new List<TextBox>()
-            {
-                (TextBox)e.Item.FindControl($"{rpType}FundCode"),
-                (TextBox)e.Item.FindControl($"{rpType}AgencyCode"),
-                (TextBox)e.Item.FindControl($"{rpType}OrgCode"),
-                (TextBox)e.Item.FindControl($"{rpType}ActivityCode"),
-                (TextBox)e.Item.FindControl($"{rpType}ObjectCode")
-            };
-
-            foreach (TextBox box in textBoxes)
-            {
-                box.Attributes.Add("data-validate", $"{box.ID}-{rpItem.ItemIndex}");
-                RequiredFieldValidator rfv = new RequiredFieldValidator()
-                {
-                    ID = $"{box.ID}Valid-{rpItem.ItemIndex}",
-                    ControlToValidate = box.ID,
-                    ValidationGroup = "factSheetMain",
-                    SetFocusOnError = false,
-                    Display = ValidatorDisplay.None
-                };
-                rfv.Attributes.Add("data-table-validator", "true");
-                box.Parent.Controls.Add(rfv);
-            }            
-        }
-
-        protected void BtnNewFactSheet_Click(object sender, EventArgs e)
-        {
-            Response.Redirect("./NewFactSheet");
-        }
     }
 }

@@ -5,13 +5,10 @@ using Microsoft.Ajax.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Web;
-using System.Web.Services.Description;
 using System.Web.UI;
-using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using static DataLibrary.Utility;
 
@@ -19,13 +16,16 @@ namespace WebUI
 {
     public partial class SiteMaster : System.Web.UI.MasterPage
     {
+        // GLOBAL VARIABLES //
         private ADUser _user = new ADUser();
         private UserInfo userInfo = new UserInfo();
         public string PageTitle;
         public string toastColor;
         public string toastMessage;
-        public string hideAdmin;
 
+
+
+        // PAGE LOADING //
         protected void Page_Init(object sender, EventArgs e)
         {
             if (Session["CurrentUser"] == null)
@@ -83,6 +83,10 @@ namespace WebUI
 
             SubmitStatus();
         }
+
+
+
+        // STARTUP DATA //
         public void GetUser()
         {
             _user = (ADUser)Session["CurrentUser"];
@@ -103,6 +107,14 @@ namespace WebUI
             lblDepartment.Text = userInfo.UserDepartment.DepartmentName;
             lblDivision.Text = userInfo.UserDivision.DivisionName;
             imgUser.Src = Photo.Instance.Base64ImgSrc(_user.PhotoLocation);
+        }
+        public UserInfo UserView()
+        {
+            UserInfo ret = new UserInfo();
+            userInfo.UserView = adminSwitch.Checked;
+            ordAdmin.Visible = !userInfo.UserView;
+            ret = userInfo;
+            return ret;
         }
         protected void SetPageTitle()
         {
@@ -167,31 +179,6 @@ namespace WebUI
                 rpTestingDefaultList.DataBind();
             }
         }
-        protected void adminSwitch_CheckedChanged(object sender, EventArgs e)
-        {
-            if (Request.Path.ToLower().Contains("/default.aspx"))
-            {
-                Session["UserInformation"] = UserView();
-            }            
-        }
-        public UserInfo UserView()
-        {
-            UserInfo ret = new UserInfo();
-            userInfo.UserView = adminSwitch.Checked;
-            ordAdmin.Visible = !userInfo.UserView;
-            ret = userInfo;
-            return ret;
-        }
-        protected void lnkInactivityRefresh_Click(object sender, EventArgs e)
-        {
-            //FOR INACTIVE REFRESHING - DO NOT REMOVE
-        }
-        protected void TriggerError_Click(object sender, EventArgs e)
-        {
-            int errorCode = Convert.ToInt32(txtErrorCode.Text);
-            throw new HttpException(errorCode, $"Error");
-        }
-
         protected void SubmitStatus()
         {
             if (Session["SubmitStatus"] != null || (string)Session["SubmitStatus"] == "success")
@@ -209,57 +196,16 @@ namespace WebUI
             }
         }
 
-        protected void btnImpersonateUser_Click(object sender, EventArgs e)
+
+
+        // CONTROL CHANGES //
+        protected void adminSwitch_CheckedChanged(object sender, EventArgs e)
         {
-            Session["ImpersonateUser"] = true;
-            Session.Remove("CurrentUser");
-            Session.Remove("UserInformation");
-            ADUser impersonateUser = new ADUser();
-
-            impersonateUser = AuthenticateUser(txtImpersonateUser.Text);
-            imgUser.Src = Photo.Instance.Base64ImgSrc(impersonateUser.PhotoLocation);
-            Session["CurrentUser"] = impersonateUser;
-
-            List<ADGroups> aDGroups = ISDFactory.Instance.GetAllGroupsByLoginName(impersonateUser.Login);
-            int employeeID = Convert.ToInt32(impersonateUser.EmployeeID.TrimStart());
-            if (Session["UserInformation"] == null)
+            if (Request.Path.ToLower().Contains("/default.aspx"))
             {
-                userInfo = new UserInfo()
-                {
-                    UserFirstName = impersonateUser.FirstName,
-                    UserLastName = impersonateUser.LastName,
-                    UserDisplayName = $"{impersonateUser.FirstName} {impersonateUser.LastName}",
-                    UserEmail = impersonateUser.Email,
-                    IsAdmin = aDGroups.Any(i => i.GroupName.Equals("PG-THEMIS-ADMIN")),
-                    UserView = false,
-                    UserDepartment = GetUserDepartment(employeeID.ToString()),
-                    UserDivision = GetUserDivision(employeeID.ToString())
-                };
-                Session["UserInformation"] = userInfo;
-            }
-            Response.Redirect(Request.RawUrl);
-        }
-
-        protected void StopImpersonate_Click(object sender, EventArgs e)
-        {
-            Session["ImpersonateUser"] = false;
-            Session.Remove("CurrentUser");
-            Session.Remove("UserInformation");
-            Response.Redirect(Request.RawUrl);
-        }
-
-        protected void DeleteOrd_Click(object sender, EventArgs e)
-        {
-            int ret = Factory.Instance.Delete<Ordinance>(Convert.ToInt32(txtOrdID.Text), "Ordinance");
-            if (ret > 0)
-            {
-                Session["SubmitStatus"] = "success";
-                Session["ToastColor"] = "text-bg-success";
-                Session["ToastMessage"] = "Entry Deleted!";
-                Response.Redirect(Request.RawUrl);
+                Session["UserInformation"] = UserView();
             }
         }
-
         protected void AddTestingEmailAddress_Click(object sender, EventArgs e)
         {
             DefaultEmails defaultList = Factory.Instance.GetByID<DefaultEmails>(110, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID");
@@ -295,6 +241,67 @@ namespace WebUI
                 }
             }
         }
+
+
+
+        // APPDEV TOOLS //
+        protected void TriggerError_Click(object sender, EventArgs e)
+        {
+            int errorCode = Convert.ToInt32(txtErrorCode.Text);
+            throw new HttpException(errorCode, $"Error");
+        }
+        protected void btnImpersonateUser_Click(object sender, EventArgs e)
+        {
+            Session["ImpersonateUser"] = true;
+            Session.Remove("CurrentUser");
+            Session.Remove("UserInformation");
+            ADUser impersonateUser = new ADUser();
+
+            impersonateUser = AuthenticateUser(txtImpersonateUser.Text);
+            imgUser.Src = Photo.Instance.Base64ImgSrc(impersonateUser.PhotoLocation);
+            Session["CurrentUser"] = impersonateUser;
+
+            List<ADGroups> aDGroups = ISDFactory.Instance.GetAllGroupsByLoginName(impersonateUser.Login);
+            int employeeID = Convert.ToInt32(impersonateUser.EmployeeID.TrimStart());
+            if (Session["UserInformation"] == null)
+            {
+                userInfo = new UserInfo()
+                {
+                    UserFirstName = impersonateUser.FirstName,
+                    UserLastName = impersonateUser.LastName,
+                    UserDisplayName = $"{impersonateUser.FirstName} {impersonateUser.LastName}",
+                    UserEmail = impersonateUser.Email,
+                    IsAdmin = aDGroups.Any(i => i.GroupName.Equals("PG-THEMIS-ADMIN")),
+                    UserView = false,
+                    UserDepartment = GetUserDepartment(employeeID.ToString()),
+                    UserDivision = GetUserDivision(employeeID.ToString())
+                };
+                Session["UserInformation"] = userInfo;
+            }
+            Response.Redirect(Request.RawUrl);
+        }
+        protected void StopImpersonate_Click(object sender, EventArgs e)
+        {
+            Session["ImpersonateUser"] = false;
+            Session.Remove("CurrentUser");
+            Session.Remove("UserInformation");
+            Response.Redirect(Request.RawUrl);
+        }
+        protected void DeleteOrd_Click(object sender, EventArgs e)
+        {
+            int ret = Factory.Instance.Delete<Ordinance>(Convert.ToInt32(txtOrdID.Text), "Ordinance");
+            if (ret > 0)
+            {
+                Session["SubmitStatus"] = "success";
+                Session["ToastColor"] = "text-bg-success";
+                Session["ToastMessage"] = "Entry Deleted!";
+                Response.Redirect(Request.RawUrl);
+            }
+        }
+
+
+
+        // APPDEV TOOLS REPEATER COMMANDS //
         protected void rpTestingList_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
             DefaultEmails defaultList = Factory.Instance.GetByID<DefaultEmails>(110, "sp_GetDefaultEmailByDefaultEmailsID", "DefaultEmailsID");

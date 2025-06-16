@@ -26,10 +26,6 @@ namespace WebUI.Reports.OrdinanceTracking {
         
         private OrdinanceDataTable tableOrdinance;
         
-        private Ordinance_AccountingDataTable tableOrdinance_Accounting;
-        
-        private lkAccountingDataTable tablelkAccounting;
-        
         private Ordinance_StatusDataTable tableOrdinance_Status;
         
         private lkStatusDataTable tablelkStatus;
@@ -38,15 +34,15 @@ namespace WebUI.Reports.OrdinanceTracking {
         
         private Ordinance_SignatureDataTable tableOrdinance_Signature;
         
-        private global::System.Data.DataRelation relationOrdinance_Ordinance_Accounting;
-        
-        private global::System.Data.DataRelation relationOrdinance_Accounting_lkAccounting;
+        private Ordinance_AccountingDataTable tableOrdinance_Accounting;
         
         private global::System.Data.DataRelation relationOrdinance_Ordinance_Status;
         
         private global::System.Data.DataRelation relationOrdinance_Status_lkStatus;
         
         private global::System.Data.DataRelation relationOrdinance_Ordinance_Signature;
+        
+        private global::System.Data.DataRelation relationOrdinance_Ordinance_Accounting;
         
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
@@ -79,12 +75,6 @@ namespace WebUI.Reports.OrdinanceTracking {
                 if ((ds.Tables["Ordinance"] != null)) {
                     base.Tables.Add(new OrdinanceDataTable(ds.Tables["Ordinance"]));
                 }
-                if ((ds.Tables["Ordinance_Accounting"] != null)) {
-                    base.Tables.Add(new Ordinance_AccountingDataTable(ds.Tables["Ordinance_Accounting"]));
-                }
-                if ((ds.Tables["lkAccounting"] != null)) {
-                    base.Tables.Add(new lkAccountingDataTable(ds.Tables["lkAccounting"]));
-                }
                 if ((ds.Tables["Ordinance_Status"] != null)) {
                     base.Tables.Add(new Ordinance_StatusDataTable(ds.Tables["Ordinance_Status"]));
                 }
@@ -96,6 +86,9 @@ namespace WebUI.Reports.OrdinanceTracking {
                 }
                 if ((ds.Tables["Ordinance_Signature"] != null)) {
                     base.Tables.Add(new Ordinance_SignatureDataTable(ds.Tables["Ordinance_Signature"]));
+                }
+                if ((ds.Tables["Ordinance_Accounting"] != null)) {
+                    base.Tables.Add(new Ordinance_AccountingDataTable(ds.Tables["Ordinance_Accounting"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -122,26 +115,6 @@ namespace WebUI.Reports.OrdinanceTracking {
         public OrdinanceDataTable Ordinance {
             get {
                 return this.tableOrdinance;
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        [global::System.ComponentModel.Browsable(false)]
-        [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
-        public Ordinance_AccountingDataTable Ordinance_Accounting {
-            get {
-                return this.tableOrdinance_Accounting;
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        [global::System.ComponentModel.Browsable(false)]
-        [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
-        public lkAccountingDataTable lkAccounting {
-            get {
-                return this.tablelkAccounting;
             }
         }
         
@@ -182,6 +155,16 @@ namespace WebUI.Reports.OrdinanceTracking {
         public Ordinance_SignatureDataTable Ordinance_Signature {
             get {
                 return this.tableOrdinance_Signature;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        [global::System.ComponentModel.Browsable(false)]
+        [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
+        public Ordinance_AccountingDataTable Ordinance_Accounting {
+            get {
+                return this.tableOrdinance_Accounting;
             }
         }
         
@@ -255,12 +238,6 @@ namespace WebUI.Reports.OrdinanceTracking {
                 if ((ds.Tables["Ordinance"] != null)) {
                     base.Tables.Add(new OrdinanceDataTable(ds.Tables["Ordinance"]));
                 }
-                if ((ds.Tables["Ordinance_Accounting"] != null)) {
-                    base.Tables.Add(new Ordinance_AccountingDataTable(ds.Tables["Ordinance_Accounting"]));
-                }
-                if ((ds.Tables["lkAccounting"] != null)) {
-                    base.Tables.Add(new lkAccountingDataTable(ds.Tables["lkAccounting"]));
-                }
                 if ((ds.Tables["Ordinance_Status"] != null)) {
                     base.Tables.Add(new Ordinance_StatusDataTable(ds.Tables["Ordinance_Status"]));
                 }
@@ -272,6 +249,9 @@ namespace WebUI.Reports.OrdinanceTracking {
                 }
                 if ((ds.Tables["Ordinance_Signature"] != null)) {
                     base.Tables.Add(new Ordinance_SignatureDataTable(ds.Tables["Ordinance_Signature"]));
+                }
+                if ((ds.Tables["Ordinance_Accounting"] != null)) {
+                    base.Tables.Add(new Ordinance_AccountingDataTable(ds.Tables["Ordinance_Accounting"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -312,18 +292,6 @@ namespace WebUI.Reports.OrdinanceTracking {
                     this.tableOrdinance.InitVars();
                 }
             }
-            this.tableOrdinance_Accounting = ((Ordinance_AccountingDataTable)(base.Tables["Ordinance_Accounting"]));
-            if ((initTable == true)) {
-                if ((this.tableOrdinance_Accounting != null)) {
-                    this.tableOrdinance_Accounting.InitVars();
-                }
-            }
-            this.tablelkAccounting = ((lkAccountingDataTable)(base.Tables["lkAccounting"]));
-            if ((initTable == true)) {
-                if ((this.tablelkAccounting != null)) {
-                    this.tablelkAccounting.InitVars();
-                }
-            }
             this.tableOrdinance_Status = ((Ordinance_StatusDataTable)(base.Tables["Ordinance_Status"]));
             if ((initTable == true)) {
                 if ((this.tableOrdinance_Status != null)) {
@@ -348,11 +316,16 @@ namespace WebUI.Reports.OrdinanceTracking {
                     this.tableOrdinance_Signature.InitVars();
                 }
             }
-            this.relationOrdinance_Ordinance_Accounting = this.Relations["Ordinance_Ordinance_Accounting"];
-            this.relationOrdinance_Accounting_lkAccounting = this.Relations["Ordinance_Accounting_lkAccounting"];
+            this.tableOrdinance_Accounting = ((Ordinance_AccountingDataTable)(base.Tables["Ordinance_Accounting"]));
+            if ((initTable == true)) {
+                if ((this.tableOrdinance_Accounting != null)) {
+                    this.tableOrdinance_Accounting.InitVars();
+                }
+            }
             this.relationOrdinance_Ordinance_Status = this.Relations["Ordinance_Ordinance_Status"];
             this.relationOrdinance_Status_lkStatus = this.Relations["Ordinance_Status_lkStatus"];
             this.relationOrdinance_Ordinance_Signature = this.Relations["Ordinance_Ordinance_Signature"];
+            this.relationOrdinance_Ordinance_Accounting = this.Relations["Ordinance_Ordinance_Accounting"];
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -365,10 +338,6 @@ namespace WebUI.Reports.OrdinanceTracking {
             this.SchemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
             this.tableOrdinance = new OrdinanceDataTable();
             base.Tables.Add(this.tableOrdinance);
-            this.tableOrdinance_Accounting = new Ordinance_AccountingDataTable();
-            base.Tables.Add(this.tableOrdinance_Accounting);
-            this.tablelkAccounting = new lkAccountingDataTable();
-            base.Tables.Add(this.tablelkAccounting);
             this.tableOrdinance_Status = new Ordinance_StatusDataTable();
             base.Tables.Add(this.tableOrdinance_Status);
             this.tablelkStatus = new lkStatusDataTable();
@@ -377,14 +346,8 @@ namespace WebUI.Reports.OrdinanceTracking {
             base.Tables.Add(this.tableRevExpBool);
             this.tableOrdinance_Signature = new Ordinance_SignatureDataTable();
             base.Tables.Add(this.tableOrdinance_Signature);
-            this.relationOrdinance_Ordinance_Accounting = new global::System.Data.DataRelation("Ordinance_Ordinance_Accounting", new global::System.Data.DataColumn[] {
-                        this.tableOrdinance.OrdinanceIDColumn}, new global::System.Data.DataColumn[] {
-                        this.tableOrdinance_Accounting.OrdinanceIDColumn}, false);
-            this.Relations.Add(this.relationOrdinance_Ordinance_Accounting);
-            this.relationOrdinance_Accounting_lkAccounting = new global::System.Data.DataRelation("Ordinance_Accounting_lkAccounting", new global::System.Data.DataColumn[] {
-                        this.tableOrdinance_Accounting.AccountingIDColumn}, new global::System.Data.DataColumn[] {
-                        this.tablelkAccounting.AccountingIDColumn}, false);
-            this.Relations.Add(this.relationOrdinance_Accounting_lkAccounting);
+            this.tableOrdinance_Accounting = new Ordinance_AccountingDataTable();
+            base.Tables.Add(this.tableOrdinance_Accounting);
             this.relationOrdinance_Ordinance_Status = new global::System.Data.DataRelation("Ordinance_Ordinance_Status", new global::System.Data.DataColumn[] {
                         this.tableOrdinance.OrdinanceIDColumn}, new global::System.Data.DataColumn[] {
                         this.tableOrdinance_Status.OrdinanceIDColumn}, false);
@@ -397,23 +360,15 @@ namespace WebUI.Reports.OrdinanceTracking {
                         this.tableOrdinance.OrdinanceIDColumn}, new global::System.Data.DataColumn[] {
                         this.tableOrdinance_Signature.OrdinanceIDColumn}, false);
             this.Relations.Add(this.relationOrdinance_Ordinance_Signature);
+            this.relationOrdinance_Ordinance_Accounting = new global::System.Data.DataRelation("Ordinance_Ordinance_Accounting", new global::System.Data.DataColumn[] {
+                        this.tableOrdinance.OrdinanceIDColumn}, new global::System.Data.DataColumn[] {
+                        this.tableOrdinance_Accounting.OrdinanceIDColumn}, false);
+            this.Relations.Add(this.relationOrdinance_Ordinance_Accounting);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
         private bool ShouldSerializeOrdinance() {
-            return false;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        private bool ShouldSerializeOrdinance_Accounting() {
-            return false;
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        private bool ShouldSerializelkAccounting() {
             return false;
         }
         
@@ -438,6 +393,12 @@ namespace WebUI.Reports.OrdinanceTracking {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
         private bool ShouldSerializeOrdinance_Signature() {
+            return false;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        private bool ShouldSerializeOrdinance_Accounting() {
             return false;
         }
         
@@ -500,12 +461,6 @@ namespace WebUI.Reports.OrdinanceTracking {
         public delegate void OrdinanceRowChangeEventHandler(object sender, OrdinanceRowChangeEvent e);
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        public delegate void Ordinance_AccountingRowChangeEventHandler(object sender, Ordinance_AccountingRowChangeEvent e);
-        
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        public delegate void lkAccountingRowChangeEventHandler(object sender, lkAccountingRowChangeEvent e);
-        
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
         public delegate void Ordinance_StatusRowChangeEventHandler(object sender, Ordinance_StatusRowChangeEvent e);
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
@@ -516,6 +471,9 @@ namespace WebUI.Reports.OrdinanceTracking {
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
         public delegate void Ordinance_SignatureRowChangeEventHandler(object sender, Ordinance_SignatureRowChangeEvent e);
+        
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        public delegate void Ordinance_AccountingRowChangeEventHandler(object sender, Ordinance_AccountingRowChangeEvent e);
         
         /// <summary>
         ///Represents the strongly named DataTable class.
@@ -535,6 +493,8 @@ namespace WebUI.Reports.OrdinanceTracking {
             private global::System.Data.DataColumn columnOrdinanceFiscalImpact;
             
             private global::System.Data.DataColumn columnRequestDepartment;
+            
+            private global::System.Data.DataColumn columnRequestDivision;
             
             private global::System.Data.DataColumn columnRequestContact;
             
@@ -664,6 +624,14 @@ namespace WebUI.Reports.OrdinanceTracking {
             public global::System.Data.DataColumn RequestDepartmentColumn {
                 get {
                     return this.columnRequestDepartment;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn RequestDivisionColumn {
+                get {
+                    return this.columnRequestDivision;
                 }
             }
             
@@ -910,6 +878,7 @@ namespace WebUI.Reports.OrdinanceTracking {
                         string OrdinanceAnalysis, 
                         decimal OrdinanceFiscalImpact, 
                         string RequestDepartment, 
+                        string RequestDivision, 
                         string RequestContact, 
                         string RequestPhone, 
                         string RequestEmail, 
@@ -943,6 +912,7 @@ namespace WebUI.Reports.OrdinanceTracking {
                         OrdinanceAnalysis,
                         OrdinanceFiscalImpact,
                         RequestDepartment,
+                        RequestDivision,
                         RequestContact,
                         RequestPhone,
                         RequestEmail,
@@ -996,6 +966,7 @@ namespace WebUI.Reports.OrdinanceTracking {
                 this.columnOrdinanceAnalysis = base.Columns["OrdinanceAnalysis"];
                 this.columnOrdinanceFiscalImpact = base.Columns["OrdinanceFiscalImpact"];
                 this.columnRequestDepartment = base.Columns["RequestDepartment"];
+                this.columnRequestDivision = base.Columns["RequestDivision"];
                 this.columnRequestContact = base.Columns["RequestContact"];
                 this.columnRequestPhone = base.Columns["RequestPhone"];
                 this.columnRequestEmail = base.Columns["RequestEmail"];
@@ -1038,6 +1009,8 @@ namespace WebUI.Reports.OrdinanceTracking {
                 base.Columns.Add(this.columnOrdinanceFiscalImpact);
                 this.columnRequestDepartment = new global::System.Data.DataColumn("RequestDepartment", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnRequestDepartment);
+                this.columnRequestDivision = new global::System.Data.DataColumn("RequestDivision", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnRequestDivision);
                 this.columnRequestContact = new global::System.Data.DataColumn("RequestContact", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnRequestContact);
                 this.columnRequestPhone = new global::System.Data.DataColumn("RequestPhone", typeof(string), null, global::System.Data.MappingType.Element);
@@ -1198,761 +1171,6 @@ namespace WebUI.Reports.OrdinanceTracking {
                 global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
                 attribute2.Name = "tableTypeName";
                 attribute2.FixedValue = "OrdinanceDataTable";
-                type.Attributes.Add(attribute2);
-                type.Particle = sequence;
-                global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
-                if (xs.Contains(dsSchema.TargetNamespace)) {
-                    global::System.IO.MemoryStream s1 = new global::System.IO.MemoryStream();
-                    global::System.IO.MemoryStream s2 = new global::System.IO.MemoryStream();
-                    try {
-                        global::System.Xml.Schema.XmlSchema schema = null;
-                        dsSchema.Write(s1);
-                        for (global::System.Collections.IEnumerator schemas = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator(); schemas.MoveNext(); ) {
-                            schema = ((global::System.Xml.Schema.XmlSchema)(schemas.Current));
-                            s2.SetLength(0);
-                            schema.Write(s2);
-                            if ((s1.Length == s2.Length)) {
-                                s1.Position = 0;
-                                s2.Position = 0;
-                                for (; ((s1.Position != s1.Length) 
-                                            && (s1.ReadByte() == s2.ReadByte())); ) {
-                                    ;
-                                }
-                                if ((s1.Position == s1.Length)) {
-                                    return type;
-                                }
-                            }
-                        }
-                    }
-                    finally {
-                        if ((s1 != null)) {
-                            s1.Close();
-                        }
-                        if ((s2 != null)) {
-                            s2.Close();
-                        }
-                    }
-                }
-                xs.Add(dsSchema);
-                return type;
-            }
-        }
-        
-        /// <summary>
-        ///Represents the strongly named DataTable class.
-        ///</summary>
-        [global::System.Serializable()]
-        [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class Ordinance_AccountingDataTable : global::System.Data.TypedTableBase<Ordinance_AccountingRow> {
-            
-            private global::System.Data.DataColumn columnOrdinanceAccountingID;
-            
-            private global::System.Data.DataColumn columnOrdinanceID;
-            
-            private global::System.Data.DataColumn columnAccountingID;
-            
-            private global::System.Data.DataColumn columnEffectiveDate;
-            
-            private global::System.Data.DataColumn columnExpirationDate;
-            
-            private global::System.Data.DataColumn columnLastUpdateBy;
-            
-            private global::System.Data.DataColumn columnLastUpdateDate;
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public Ordinance_AccountingDataTable() {
-                this.TableName = "Ordinance_Accounting";
-                this.BeginInit();
-                this.InitClass();
-                this.EndInit();
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            internal Ordinance_AccountingDataTable(global::System.Data.DataTable table) {
-                this.TableName = table.TableName;
-                if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
-                    this.CaseSensitive = table.CaseSensitive;
-                }
-                if ((table.Locale.ToString() != table.DataSet.Locale.ToString())) {
-                    this.Locale = table.Locale;
-                }
-                if ((table.Namespace != table.DataSet.Namespace)) {
-                    this.Namespace = table.Namespace;
-                }
-                this.Prefix = table.Prefix;
-                this.MinimumCapacity = table.MinimumCapacity;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            protected Ordinance_AccountingDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
-                    base(info, context) {
-                this.InitVars();
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn OrdinanceAccountingIDColumn {
-                get {
-                    return this.columnOrdinanceAccountingID;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn OrdinanceIDColumn {
-                get {
-                    return this.columnOrdinanceID;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn AccountingIDColumn {
-                get {
-                    return this.columnAccountingID;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn EffectiveDateColumn {
-                get {
-                    return this.columnEffectiveDate;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn ExpirationDateColumn {
-                get {
-                    return this.columnExpirationDate;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn LastUpdateByColumn {
-                get {
-                    return this.columnLastUpdateBy;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn LastUpdateDateColumn {
-                get {
-                    return this.columnLastUpdateDate;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            [global::System.ComponentModel.Browsable(false)]
-            public int Count {
-                get {
-                    return this.Rows.Count;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public Ordinance_AccountingRow this[int index] {
-                get {
-                    return ((Ordinance_AccountingRow)(this.Rows[index]));
-                }
-            }
-            
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public event Ordinance_AccountingRowChangeEventHandler Ordinance_AccountingRowChanging;
-            
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public event Ordinance_AccountingRowChangeEventHandler Ordinance_AccountingRowChanged;
-            
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public event Ordinance_AccountingRowChangeEventHandler Ordinance_AccountingRowDeleting;
-            
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public event Ordinance_AccountingRowChangeEventHandler Ordinance_AccountingRowDeleted;
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void AddOrdinance_AccountingRow(Ordinance_AccountingRow row) {
-                this.Rows.Add(row);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public Ordinance_AccountingRow AddOrdinance_AccountingRow(OrdinanceRow parentOrdinanceRowByOrdinance_Ordinance_Accounting, int AccountingID, System.DateTime EffectiveDate, System.DateTime ExpirationDate, string LastUpdateBy, System.DateTime LastUpdateDate) {
-                Ordinance_AccountingRow rowOrdinance_AccountingRow = ((Ordinance_AccountingRow)(this.NewRow()));
-                object[] columnValuesArray = new object[] {
-                        null,
-                        null,
-                        AccountingID,
-                        EffectiveDate,
-                        ExpirationDate,
-                        LastUpdateBy,
-                        LastUpdateDate};
-                if ((parentOrdinanceRowByOrdinance_Ordinance_Accounting != null)) {
-                    columnValuesArray[1] = parentOrdinanceRowByOrdinance_Ordinance_Accounting[0];
-                }
-                rowOrdinance_AccountingRow.ItemArray = columnValuesArray;
-                this.Rows.Add(rowOrdinance_AccountingRow);
-                return rowOrdinance_AccountingRow;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public override global::System.Data.DataTable Clone() {
-                Ordinance_AccountingDataTable cln = ((Ordinance_AccountingDataTable)(base.Clone()));
-                cln.InitVars();
-                return cln;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            protected override global::System.Data.DataTable CreateInstance() {
-                return new Ordinance_AccountingDataTable();
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            internal void InitVars() {
-                this.columnOrdinanceAccountingID = base.Columns["OrdinanceAccountingID"];
-                this.columnOrdinanceID = base.Columns["OrdinanceID"];
-                this.columnAccountingID = base.Columns["AccountingID"];
-                this.columnEffectiveDate = base.Columns["EffectiveDate"];
-                this.columnExpirationDate = base.Columns["ExpirationDate"];
-                this.columnLastUpdateBy = base.Columns["LastUpdateBy"];
-                this.columnLastUpdateDate = base.Columns["LastUpdateDate"];
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            private void InitClass() {
-                this.columnOrdinanceAccountingID = new global::System.Data.DataColumn("OrdinanceAccountingID", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnOrdinanceAccountingID);
-                this.columnOrdinanceID = new global::System.Data.DataColumn("OrdinanceID", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnOrdinanceID);
-                this.columnAccountingID = new global::System.Data.DataColumn("AccountingID", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnAccountingID);
-                this.columnEffectiveDate = new global::System.Data.DataColumn("EffectiveDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnEffectiveDate);
-                this.columnExpirationDate = new global::System.Data.DataColumn("ExpirationDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnExpirationDate);
-                this.columnLastUpdateBy = new global::System.Data.DataColumn("LastUpdateBy", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnLastUpdateBy);
-                this.columnLastUpdateDate = new global::System.Data.DataColumn("LastUpdateDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnLastUpdateDate);
-                this.columnOrdinanceAccountingID.AutoIncrement = true;
-                this.columnOrdinanceAccountingID.AutoIncrementSeed = -1;
-                this.columnOrdinanceAccountingID.AutoIncrementStep = -1;
-                this.columnOrdinanceAccountingID.AllowDBNull = false;
-                this.columnOrdinanceAccountingID.ReadOnly = true;
-                this.columnOrdinanceID.AllowDBNull = false;
-                this.columnAccountingID.AllowDBNull = false;
-                this.columnLastUpdateBy.MaxLength = 50;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public Ordinance_AccountingRow NewOrdinance_AccountingRow() {
-                return ((Ordinance_AccountingRow)(this.NewRow()));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
-                return new Ordinance_AccountingRow(builder);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            protected override global::System.Type GetRowType() {
-                return typeof(Ordinance_AccountingRow);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
-                base.OnRowChanged(e);
-                if ((this.Ordinance_AccountingRowChanged != null)) {
-                    this.Ordinance_AccountingRowChanged(this, new Ordinance_AccountingRowChangeEvent(((Ordinance_AccountingRow)(e.Row)), e.Action));
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
-                base.OnRowChanging(e);
-                if ((this.Ordinance_AccountingRowChanging != null)) {
-                    this.Ordinance_AccountingRowChanging(this, new Ordinance_AccountingRowChangeEvent(((Ordinance_AccountingRow)(e.Row)), e.Action));
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
-                base.OnRowDeleted(e);
-                if ((this.Ordinance_AccountingRowDeleted != null)) {
-                    this.Ordinance_AccountingRowDeleted(this, new Ordinance_AccountingRowChangeEvent(((Ordinance_AccountingRow)(e.Row)), e.Action));
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
-                base.OnRowDeleting(e);
-                if ((this.Ordinance_AccountingRowDeleting != null)) {
-                    this.Ordinance_AccountingRowDeleting(this, new Ordinance_AccountingRowChangeEvent(((Ordinance_AccountingRow)(e.Row)), e.Action));
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void RemoveOrdinance_AccountingRow(Ordinance_AccountingRow row) {
-                this.Rows.Remove(row);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
-                global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
-                global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
-                OrdinanceData ds = new OrdinanceData();
-                global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
-                any1.Namespace = "http://www.w3.org/2001/XMLSchema";
-                any1.MinOccurs = new decimal(0);
-                any1.MaxOccurs = decimal.MaxValue;
-                any1.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
-                sequence.Items.Add(any1);
-                global::System.Xml.Schema.XmlSchemaAny any2 = new global::System.Xml.Schema.XmlSchemaAny();
-                any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
-                any2.MinOccurs = new decimal(1);
-                any2.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
-                sequence.Items.Add(any2);
-                global::System.Xml.Schema.XmlSchemaAttribute attribute1 = new global::System.Xml.Schema.XmlSchemaAttribute();
-                attribute1.Name = "namespace";
-                attribute1.FixedValue = ds.Namespace;
-                type.Attributes.Add(attribute1);
-                global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
-                attribute2.Name = "tableTypeName";
-                attribute2.FixedValue = "Ordinance_AccountingDataTable";
-                type.Attributes.Add(attribute2);
-                type.Particle = sequence;
-                global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
-                if (xs.Contains(dsSchema.TargetNamespace)) {
-                    global::System.IO.MemoryStream s1 = new global::System.IO.MemoryStream();
-                    global::System.IO.MemoryStream s2 = new global::System.IO.MemoryStream();
-                    try {
-                        global::System.Xml.Schema.XmlSchema schema = null;
-                        dsSchema.Write(s1);
-                        for (global::System.Collections.IEnumerator schemas = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator(); schemas.MoveNext(); ) {
-                            schema = ((global::System.Xml.Schema.XmlSchema)(schemas.Current));
-                            s2.SetLength(0);
-                            schema.Write(s2);
-                            if ((s1.Length == s2.Length)) {
-                                s1.Position = 0;
-                                s2.Position = 0;
-                                for (; ((s1.Position != s1.Length) 
-                                            && (s1.ReadByte() == s2.ReadByte())); ) {
-                                    ;
-                                }
-                                if ((s1.Position == s1.Length)) {
-                                    return type;
-                                }
-                            }
-                        }
-                    }
-                    finally {
-                        if ((s1 != null)) {
-                            s1.Close();
-                        }
-                        if ((s2 != null)) {
-                            s2.Close();
-                        }
-                    }
-                }
-                xs.Add(dsSchema);
-                return type;
-            }
-        }
-        
-        /// <summary>
-        ///Represents the strongly named DataTable class.
-        ///</summary>
-        [global::System.Serializable()]
-        [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class lkAccountingDataTable : global::System.Data.TypedTableBase<lkAccountingRow> {
-            
-            private global::System.Data.DataColumn columnAccountingID;
-            
-            private global::System.Data.DataColumn columnAccountingDesc;
-            
-            private global::System.Data.DataColumn columnFundCode;
-            
-            private global::System.Data.DataColumn columnDepartmentCode;
-            
-            private global::System.Data.DataColumn columnUnitCode;
-            
-            private global::System.Data.DataColumn columnActivityCode;
-            
-            private global::System.Data.DataColumn columnObjectCode;
-            
-            private global::System.Data.DataColumn columnAmount;
-            
-            private global::System.Data.DataColumn columnLastUpdateBy;
-            
-            private global::System.Data.DataColumn columnLastUpdateDate;
-            
-            private global::System.Data.DataColumn columnEffectiveDate;
-            
-            private global::System.Data.DataColumn columnExpirationDate;
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public lkAccountingDataTable() {
-                this.TableName = "lkAccounting";
-                this.BeginInit();
-                this.InitClass();
-                this.EndInit();
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            internal lkAccountingDataTable(global::System.Data.DataTable table) {
-                this.TableName = table.TableName;
-                if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
-                    this.CaseSensitive = table.CaseSensitive;
-                }
-                if ((table.Locale.ToString() != table.DataSet.Locale.ToString())) {
-                    this.Locale = table.Locale;
-                }
-                if ((table.Namespace != table.DataSet.Namespace)) {
-                    this.Namespace = table.Namespace;
-                }
-                this.Prefix = table.Prefix;
-                this.MinimumCapacity = table.MinimumCapacity;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            protected lkAccountingDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
-                    base(info, context) {
-                this.InitVars();
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn AccountingIDColumn {
-                get {
-                    return this.columnAccountingID;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn AccountingDescColumn {
-                get {
-                    return this.columnAccountingDesc;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn FundCodeColumn {
-                get {
-                    return this.columnFundCode;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn DepartmentCodeColumn {
-                get {
-                    return this.columnDepartmentCode;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn UnitCodeColumn {
-                get {
-                    return this.columnUnitCode;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn ActivityCodeColumn {
-                get {
-                    return this.columnActivityCode;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn ObjectCodeColumn {
-                get {
-                    return this.columnObjectCode;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn AmountColumn {
-                get {
-                    return this.columnAmount;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn LastUpdateByColumn {
-                get {
-                    return this.columnLastUpdateBy;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn LastUpdateDateColumn {
-                get {
-                    return this.columnLastUpdateDate;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn EffectiveDateColumn {
-                get {
-                    return this.columnEffectiveDate;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataColumn ExpirationDateColumn {
-                get {
-                    return this.columnExpirationDate;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            [global::System.ComponentModel.Browsable(false)]
-            public int Count {
-                get {
-                    return this.Rows.Count;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public lkAccountingRow this[int index] {
-                get {
-                    return ((lkAccountingRow)(this.Rows[index]));
-                }
-            }
-            
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public event lkAccountingRowChangeEventHandler lkAccountingRowChanging;
-            
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public event lkAccountingRowChangeEventHandler lkAccountingRowChanged;
-            
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public event lkAccountingRowChangeEventHandler lkAccountingRowDeleting;
-            
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public event lkAccountingRowChangeEventHandler lkAccountingRowDeleted;
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void AddlkAccountingRow(lkAccountingRow row) {
-                this.Rows.Add(row);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public lkAccountingRow AddlkAccountingRow(string AccountingDesc, string FundCode, string DepartmentCode, string UnitCode, string ActivityCode, string ObjectCode, decimal Amount, string LastUpdateBy, System.DateTime LastUpdateDate, System.DateTime EffectiveDate, System.DateTime ExpirationDate) {
-                lkAccountingRow rowlkAccountingRow = ((lkAccountingRow)(this.NewRow()));
-                object[] columnValuesArray = new object[] {
-                        null,
-                        AccountingDesc,
-                        FundCode,
-                        DepartmentCode,
-                        UnitCode,
-                        ActivityCode,
-                        ObjectCode,
-                        Amount,
-                        LastUpdateBy,
-                        LastUpdateDate,
-                        EffectiveDate,
-                        ExpirationDate};
-                rowlkAccountingRow.ItemArray = columnValuesArray;
-                this.Rows.Add(rowlkAccountingRow);
-                return rowlkAccountingRow;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public override global::System.Data.DataTable Clone() {
-                lkAccountingDataTable cln = ((lkAccountingDataTable)(base.Clone()));
-                cln.InitVars();
-                return cln;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            protected override global::System.Data.DataTable CreateInstance() {
-                return new lkAccountingDataTable();
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            internal void InitVars() {
-                this.columnAccountingID = base.Columns["AccountingID"];
-                this.columnAccountingDesc = base.Columns["AccountingDesc"];
-                this.columnFundCode = base.Columns["FundCode"];
-                this.columnDepartmentCode = base.Columns["DepartmentCode"];
-                this.columnUnitCode = base.Columns["UnitCode"];
-                this.columnActivityCode = base.Columns["ActivityCode"];
-                this.columnObjectCode = base.Columns["ObjectCode"];
-                this.columnAmount = base.Columns["Amount"];
-                this.columnLastUpdateBy = base.Columns["LastUpdateBy"];
-                this.columnLastUpdateDate = base.Columns["LastUpdateDate"];
-                this.columnEffectiveDate = base.Columns["EffectiveDate"];
-                this.columnExpirationDate = base.Columns["ExpirationDate"];
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            private void InitClass() {
-                this.columnAccountingID = new global::System.Data.DataColumn("AccountingID", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnAccountingID);
-                this.columnAccountingDesc = new global::System.Data.DataColumn("AccountingDesc", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnAccountingDesc);
-                this.columnFundCode = new global::System.Data.DataColumn("FundCode", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnFundCode);
-                this.columnDepartmentCode = new global::System.Data.DataColumn("DepartmentCode", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnDepartmentCode);
-                this.columnUnitCode = new global::System.Data.DataColumn("UnitCode", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnUnitCode);
-                this.columnActivityCode = new global::System.Data.DataColumn("ActivityCode", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnActivityCode);
-                this.columnObjectCode = new global::System.Data.DataColumn("ObjectCode", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnObjectCode);
-                this.columnAmount = new global::System.Data.DataColumn("Amount", typeof(decimal), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnAmount);
-                this.columnLastUpdateBy = new global::System.Data.DataColumn("LastUpdateBy", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnLastUpdateBy);
-                this.columnLastUpdateDate = new global::System.Data.DataColumn("LastUpdateDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnLastUpdateDate);
-                this.columnEffectiveDate = new global::System.Data.DataColumn("EffectiveDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnEffectiveDate);
-                this.columnExpirationDate = new global::System.Data.DataColumn("ExpirationDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnExpirationDate);
-                this.columnAccountingID.AutoIncrement = true;
-                this.columnAccountingID.AutoIncrementSeed = -1;
-                this.columnAccountingID.AutoIncrementStep = -1;
-                this.columnAccountingID.AllowDBNull = false;
-                this.columnAccountingID.ReadOnly = true;
-                this.columnAccountingDesc.MaxLength = 50;
-                this.columnFundCode.MaxLength = 50;
-                this.columnDepartmentCode.MaxLength = 50;
-                this.columnUnitCode.MaxLength = 50;
-                this.columnActivityCode.MaxLength = 50;
-                this.columnObjectCode.MaxLength = 50;
-                this.columnLastUpdateBy.MaxLength = 50;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public lkAccountingRow NewlkAccountingRow() {
-                return ((lkAccountingRow)(this.NewRow()));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
-                return new lkAccountingRow(builder);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            protected override global::System.Type GetRowType() {
-                return typeof(lkAccountingRow);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
-                base.OnRowChanged(e);
-                if ((this.lkAccountingRowChanged != null)) {
-                    this.lkAccountingRowChanged(this, new lkAccountingRowChangeEvent(((lkAccountingRow)(e.Row)), e.Action));
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
-                base.OnRowChanging(e);
-                if ((this.lkAccountingRowChanging != null)) {
-                    this.lkAccountingRowChanging(this, new lkAccountingRowChangeEvent(((lkAccountingRow)(e.Row)), e.Action));
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
-                base.OnRowDeleted(e);
-                if ((this.lkAccountingRowDeleted != null)) {
-                    this.lkAccountingRowDeleted(this, new lkAccountingRowChangeEvent(((lkAccountingRow)(e.Row)), e.Action));
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
-                base.OnRowDeleting(e);
-                if ((this.lkAccountingRowDeleting != null)) {
-                    this.lkAccountingRowDeleting(this, new lkAccountingRowChangeEvent(((lkAccountingRow)(e.Row)), e.Action));
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void RemovelkAccountingRow(lkAccountingRow row) {
-                this.Rows.Remove(row);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
-                global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
-                global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
-                OrdinanceData ds = new OrdinanceData();
-                global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
-                any1.Namespace = "http://www.w3.org/2001/XMLSchema";
-                any1.MinOccurs = new decimal(0);
-                any1.MaxOccurs = decimal.MaxValue;
-                any1.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
-                sequence.Items.Add(any1);
-                global::System.Xml.Schema.XmlSchemaAny any2 = new global::System.Xml.Schema.XmlSchemaAny();
-                any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
-                any2.MinOccurs = new decimal(1);
-                any2.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
-                sequence.Items.Add(any2);
-                global::System.Xml.Schema.XmlSchemaAttribute attribute1 = new global::System.Xml.Schema.XmlSchemaAttribute();
-                attribute1.Name = "namespace";
-                attribute1.FixedValue = ds.Namespace;
-                type.Attributes.Add(attribute1);
-                global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
-                attribute2.Name = "tableTypeName";
-                attribute2.FixedValue = "lkAccountingDataTable";
                 type.Attributes.Add(attribute2);
                 type.Particle = sequence;
                 global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
@@ -3280,6 +2498,437 @@ namespace WebUI.Reports.OrdinanceTracking {
         }
         
         /// <summary>
+        ///Represents the strongly named DataTable class.
+        ///</summary>
+        [global::System.Serializable()]
+        [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
+        public partial class Ordinance_AccountingDataTable : global::System.Data.TypedTableBase<Ordinance_AccountingRow> {
+            
+            private global::System.Data.DataColumn columnOrdinanceAccountingID;
+            
+            private global::System.Data.DataColumn columnOrdinanceID;
+            
+            private global::System.Data.DataColumn columnAccountingDesc;
+            
+            private global::System.Data.DataColumn columnFundCode;
+            
+            private global::System.Data.DataColumn columnDepartmentCode;
+            
+            private global::System.Data.DataColumn columnUnitCode;
+            
+            private global::System.Data.DataColumn columnActivityCode;
+            
+            private global::System.Data.DataColumn columnObjectCode;
+            
+            private global::System.Data.DataColumn columnAmount;
+            
+            private global::System.Data.DataColumn columnEffectiveDate;
+            
+            private global::System.Data.DataColumn columnExpirationDate;
+            
+            private global::System.Data.DataColumn columnLastUpdateBy;
+            
+            private global::System.Data.DataColumn columnLastUpdateDate;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public Ordinance_AccountingDataTable() {
+                this.TableName = "Ordinance_Accounting";
+                this.BeginInit();
+                this.InitClass();
+                this.EndInit();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            internal Ordinance_AccountingDataTable(global::System.Data.DataTable table) {
+                this.TableName = table.TableName;
+                if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
+                    this.CaseSensitive = table.CaseSensitive;
+                }
+                if ((table.Locale.ToString() != table.DataSet.Locale.ToString())) {
+                    this.Locale = table.Locale;
+                }
+                if ((table.Namespace != table.DataSet.Namespace)) {
+                    this.Namespace = table.Namespace;
+                }
+                this.Prefix = table.Prefix;
+                this.MinimumCapacity = table.MinimumCapacity;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected Ordinance_AccountingDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+                    base(info, context) {
+                this.InitVars();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn OrdinanceAccountingIDColumn {
+                get {
+                    return this.columnOrdinanceAccountingID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn OrdinanceIDColumn {
+                get {
+                    return this.columnOrdinanceID;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn AccountingDescColumn {
+                get {
+                    return this.columnAccountingDesc;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn FundCodeColumn {
+                get {
+                    return this.columnFundCode;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn DepartmentCodeColumn {
+                get {
+                    return this.columnDepartmentCode;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn UnitCodeColumn {
+                get {
+                    return this.columnUnitCode;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn ActivityCodeColumn {
+                get {
+                    return this.columnActivityCode;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn ObjectCodeColumn {
+                get {
+                    return this.columnObjectCode;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn AmountColumn {
+                get {
+                    return this.columnAmount;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn EffectiveDateColumn {
+                get {
+                    return this.columnEffectiveDate;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn ExpirationDateColumn {
+                get {
+                    return this.columnExpirationDate;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn LastUpdateByColumn {
+                get {
+                    return this.columnLastUpdateBy;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn LastUpdateDateColumn {
+                get {
+                    return this.columnLastUpdateDate;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            [global::System.ComponentModel.Browsable(false)]
+            public int Count {
+                get {
+                    return this.Rows.Count;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public Ordinance_AccountingRow this[int index] {
+                get {
+                    return ((Ordinance_AccountingRow)(this.Rows[index]));
+                }
+            }
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public event Ordinance_AccountingRowChangeEventHandler Ordinance_AccountingRowChanging;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public event Ordinance_AccountingRowChangeEventHandler Ordinance_AccountingRowChanged;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public event Ordinance_AccountingRowChangeEventHandler Ordinance_AccountingRowDeleting;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public event Ordinance_AccountingRowChangeEventHandler Ordinance_AccountingRowDeleted;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void AddOrdinance_AccountingRow(Ordinance_AccountingRow row) {
+                this.Rows.Add(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public Ordinance_AccountingRow AddOrdinance_AccountingRow(OrdinanceRow parentOrdinanceRowByOrdinance_Ordinance_Accounting, string AccountingDesc, string FundCode, string DepartmentCode, string UnitCode, string ActivityCode, string ObjectCode, decimal Amount, System.DateTime EffectiveDate, System.DateTime ExpirationDate, string LastUpdateBy, System.DateTime LastUpdateDate) {
+                Ordinance_AccountingRow rowOrdinance_AccountingRow = ((Ordinance_AccountingRow)(this.NewRow()));
+                object[] columnValuesArray = new object[] {
+                        null,
+                        null,
+                        AccountingDesc,
+                        FundCode,
+                        DepartmentCode,
+                        UnitCode,
+                        ActivityCode,
+                        ObjectCode,
+                        Amount,
+                        EffectiveDate,
+                        ExpirationDate,
+                        LastUpdateBy,
+                        LastUpdateDate};
+                if ((parentOrdinanceRowByOrdinance_Ordinance_Accounting != null)) {
+                    columnValuesArray[1] = parentOrdinanceRowByOrdinance_Ordinance_Accounting[0];
+                }
+                rowOrdinance_AccountingRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowOrdinance_AccountingRow);
+                return rowOrdinance_AccountingRow;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public override global::System.Data.DataTable Clone() {
+                Ordinance_AccountingDataTable cln = ((Ordinance_AccountingDataTable)(base.Clone()));
+                cln.InitVars();
+                return cln;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override global::System.Data.DataTable CreateInstance() {
+                return new Ordinance_AccountingDataTable();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            internal void InitVars() {
+                this.columnOrdinanceAccountingID = base.Columns["OrdinanceAccountingID"];
+                this.columnOrdinanceID = base.Columns["OrdinanceID"];
+                this.columnAccountingDesc = base.Columns["AccountingDesc"];
+                this.columnFundCode = base.Columns["FundCode"];
+                this.columnDepartmentCode = base.Columns["DepartmentCode"];
+                this.columnUnitCode = base.Columns["UnitCode"];
+                this.columnActivityCode = base.Columns["ActivityCode"];
+                this.columnObjectCode = base.Columns["ObjectCode"];
+                this.columnAmount = base.Columns["Amount"];
+                this.columnEffectiveDate = base.Columns["EffectiveDate"];
+                this.columnExpirationDate = base.Columns["ExpirationDate"];
+                this.columnLastUpdateBy = base.Columns["LastUpdateBy"];
+                this.columnLastUpdateDate = base.Columns["LastUpdateDate"];
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            private void InitClass() {
+                this.columnOrdinanceAccountingID = new global::System.Data.DataColumn("OrdinanceAccountingID", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOrdinanceAccountingID);
+                this.columnOrdinanceID = new global::System.Data.DataColumn("OrdinanceID", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnOrdinanceID);
+                this.columnAccountingDesc = new global::System.Data.DataColumn("AccountingDesc", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAccountingDesc);
+                this.columnFundCode = new global::System.Data.DataColumn("FundCode", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnFundCode);
+                this.columnDepartmentCode = new global::System.Data.DataColumn("DepartmentCode", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDepartmentCode);
+                this.columnUnitCode = new global::System.Data.DataColumn("UnitCode", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnUnitCode);
+                this.columnActivityCode = new global::System.Data.DataColumn("ActivityCode", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnActivityCode);
+                this.columnObjectCode = new global::System.Data.DataColumn("ObjectCode", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnObjectCode);
+                this.columnAmount = new global::System.Data.DataColumn("Amount", typeof(decimal), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAmount);
+                this.columnEffectiveDate = new global::System.Data.DataColumn("EffectiveDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnEffectiveDate);
+                this.columnExpirationDate = new global::System.Data.DataColumn("ExpirationDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnExpirationDate);
+                this.columnLastUpdateBy = new global::System.Data.DataColumn("LastUpdateBy", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnLastUpdateBy);
+                this.columnLastUpdateDate = new global::System.Data.DataColumn("LastUpdateDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnLastUpdateDate);
+                this.columnOrdinanceAccountingID.AutoIncrement = true;
+                this.columnOrdinanceAccountingID.AutoIncrementSeed = -1;
+                this.columnOrdinanceAccountingID.AutoIncrementStep = -1;
+                this.columnOrdinanceAccountingID.AllowDBNull = false;
+                this.columnOrdinanceAccountingID.ReadOnly = true;
+                this.columnOrdinanceID.AllowDBNull = false;
+                this.columnAccountingDesc.MaxLength = 50;
+                this.columnFundCode.MaxLength = 50;
+                this.columnDepartmentCode.MaxLength = 50;
+                this.columnUnitCode.MaxLength = 50;
+                this.columnActivityCode.MaxLength = 50;
+                this.columnObjectCode.MaxLength = 50;
+                this.columnLastUpdateBy.MaxLength = 50;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public Ordinance_AccountingRow NewOrdinance_AccountingRow() {
+                return ((Ordinance_AccountingRow)(this.NewRow()));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
+                return new Ordinance_AccountingRow(builder);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override global::System.Type GetRowType() {
+                return typeof(Ordinance_AccountingRow);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanged(e);
+                if ((this.Ordinance_AccountingRowChanged != null)) {
+                    this.Ordinance_AccountingRowChanged(this, new Ordinance_AccountingRowChangeEvent(((Ordinance_AccountingRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanging(e);
+                if ((this.Ordinance_AccountingRowChanging != null)) {
+                    this.Ordinance_AccountingRowChanging(this, new Ordinance_AccountingRowChangeEvent(((Ordinance_AccountingRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleted(e);
+                if ((this.Ordinance_AccountingRowDeleted != null)) {
+                    this.Ordinance_AccountingRowDeleted(this, new Ordinance_AccountingRowChangeEvent(((Ordinance_AccountingRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleting(e);
+                if ((this.Ordinance_AccountingRowDeleting != null)) {
+                    this.Ordinance_AccountingRowDeleting(this, new Ordinance_AccountingRowChangeEvent(((Ordinance_AccountingRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void RemoveOrdinance_AccountingRow(Ordinance_AccountingRow row) {
+                this.Rows.Remove(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
+                global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
+                global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
+                OrdinanceData ds = new OrdinanceData();
+                global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
+                any1.Namespace = "http://www.w3.org/2001/XMLSchema";
+                any1.MinOccurs = new decimal(0);
+                any1.MaxOccurs = decimal.MaxValue;
+                any1.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any1);
+                global::System.Xml.Schema.XmlSchemaAny any2 = new global::System.Xml.Schema.XmlSchemaAny();
+                any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
+                any2.MinOccurs = new decimal(1);
+                any2.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any2);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute1 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute1.Name = "namespace";
+                attribute1.FixedValue = ds.Namespace;
+                type.Attributes.Add(attribute1);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute2.Name = "tableTypeName";
+                attribute2.FixedValue = "Ordinance_AccountingDataTable";
+                type.Attributes.Add(attribute2);
+                type.Particle = sequence;
+                global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
+                if (xs.Contains(dsSchema.TargetNamespace)) {
+                    global::System.IO.MemoryStream s1 = new global::System.IO.MemoryStream();
+                    global::System.IO.MemoryStream s2 = new global::System.IO.MemoryStream();
+                    try {
+                        global::System.Xml.Schema.XmlSchema schema = null;
+                        dsSchema.Write(s1);
+                        for (global::System.Collections.IEnumerator schemas = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator(); schemas.MoveNext(); ) {
+                            schema = ((global::System.Xml.Schema.XmlSchema)(schemas.Current));
+                            s2.SetLength(0);
+                            schema.Write(s2);
+                            if ((s1.Length == s2.Length)) {
+                                s1.Position = 0;
+                                s2.Position = 0;
+                                for (; ((s1.Position != s1.Length) 
+                                            && (s1.ReadByte() == s2.ReadByte())); ) {
+                                    ;
+                                }
+                                if ((s1.Position == s1.Length)) {
+                                    return type;
+                                }
+                            }
+                        }
+                    }
+                    finally {
+                        if ((s1 != null)) {
+                            s1.Close();
+                        }
+                        if ((s2 != null)) {
+                            s2.Close();
+                        }
+                    }
+                }
+                xs.Add(dsSchema);
+                return type;
+            }
+        }
+        
+        /// <summary>
         ///Represents strongly named DataRow class.
         ///</summary>
         public partial class OrdinanceRow : global::System.Data.DataRow {
@@ -3381,6 +3030,22 @@ namespace WebUI.Reports.OrdinanceTracking {
                 }
                 set {
                     this[this.tableOrdinance.RequestDepartmentColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string RequestDivision {
+                get {
+                    try {
+                        return ((string)(this[this.tableOrdinance.RequestDivisionColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'RequestDivision\' in table \'Ordinance\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOrdinance.RequestDivisionColumn] = value;
                 }
             }
             
@@ -3846,6 +3511,18 @@ namespace WebUI.Reports.OrdinanceTracking {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsRequestDivisionNull() {
+                return this.IsNull(this.tableOrdinance.RequestDivisionColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetRequestDivisionNull() {
+                this[this.tableOrdinance.RequestDivisionColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public bool IsRequestContactNull() {
                 return this.IsNull(this.tableOrdinance.RequestContactColumn);
             }
@@ -4146,17 +3823,6 @@ namespace WebUI.Reports.OrdinanceTracking {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public Ordinance_AccountingRow[] GetOrdinance_AccountingRows() {
-                if ((this.Table.ChildRelations["Ordinance_Ordinance_Accounting"] == null)) {
-                    return new Ordinance_AccountingRow[0];
-                }
-                else {
-                    return ((Ordinance_AccountingRow[])(base.GetChildRows(this.Table.ChildRelations["Ordinance_Ordinance_Accounting"])));
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public Ordinance_StatusRow[] GetOrdinance_StatusRows() {
                 if ((this.Table.ChildRelations["Ordinance_Ordinance_Status"] == null)) {
                     return new Ordinance_StatusRow[0];
@@ -4176,532 +3842,16 @@ namespace WebUI.Reports.OrdinanceTracking {
                     return ((Ordinance_SignatureRow[])(base.GetChildRows(this.Table.ChildRelations["Ordinance_Ordinance_Signature"])));
                 }
             }
-        }
-        
-        /// <summary>
-        ///Represents strongly named DataRow class.
-        ///</summary>
-        public partial class Ordinance_AccountingRow : global::System.Data.DataRow {
-            
-            private Ordinance_AccountingDataTable tableOrdinance_Accounting;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            internal Ordinance_AccountingRow(global::System.Data.DataRowBuilder rb) : 
-                    base(rb) {
-                this.tableOrdinance_Accounting = ((Ordinance_AccountingDataTable)(this.Table));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public int OrdinanceAccountingID {
-                get {
-                    return ((int)(this[this.tableOrdinance_Accounting.OrdinanceAccountingIDColumn]));
-                }
-                set {
-                    this[this.tableOrdinance_Accounting.OrdinanceAccountingIDColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public int OrdinanceID {
-                get {
-                    return ((int)(this[this.tableOrdinance_Accounting.OrdinanceIDColumn]));
-                }
-                set {
-                    this[this.tableOrdinance_Accounting.OrdinanceIDColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public int AccountingID {
-                get {
-                    return ((int)(this[this.tableOrdinance_Accounting.AccountingIDColumn]));
-                }
-                set {
-                    this[this.tableOrdinance_Accounting.AccountingIDColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public System.DateTime EffectiveDate {
-                get {
-                    try {
-                        return ((global::System.DateTime)(this[this.tableOrdinance_Accounting.EffectiveDateColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'EffectiveDate\' in table \'Ordinance_Accounting\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableOrdinance_Accounting.EffectiveDateColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public System.DateTime ExpirationDate {
-                get {
-                    try {
-                        return ((global::System.DateTime)(this[this.tableOrdinance_Accounting.ExpirationDateColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'ExpirationDate\' in table \'Ordinance_Accounting\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableOrdinance_Accounting.ExpirationDateColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string LastUpdateBy {
-                get {
-                    try {
-                        return ((string)(this[this.tableOrdinance_Accounting.LastUpdateByColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'LastUpdateBy\' in table \'Ordinance_Accounting\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableOrdinance_Accounting.LastUpdateByColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public System.DateTime LastUpdateDate {
-                get {
-                    try {
-                        return ((global::System.DateTime)(this[this.tableOrdinance_Accounting.LastUpdateDateColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'LastUpdateDate\' in table \'Ordinance_Accounting\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableOrdinance_Accounting.LastUpdateDateColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public OrdinanceRow OrdinanceRow {
-                get {
-                    return ((OrdinanceRow)(this.GetParentRow(this.Table.ParentRelations["Ordinance_Ordinance_Accounting"])));
-                }
-                set {
-                    this.SetParentRow(value, this.Table.ParentRelations["Ordinance_Ordinance_Accounting"]);
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public bool IsEffectiveDateNull() {
-                return this.IsNull(this.tableOrdinance_Accounting.EffectiveDateColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void SetEffectiveDateNull() {
-                this[this.tableOrdinance_Accounting.EffectiveDateColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public bool IsExpirationDateNull() {
-                return this.IsNull(this.tableOrdinance_Accounting.ExpirationDateColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void SetExpirationDateNull() {
-                this[this.tableOrdinance_Accounting.ExpirationDateColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public bool IsLastUpdateByNull() {
-                return this.IsNull(this.tableOrdinance_Accounting.LastUpdateByColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void SetLastUpdateByNull() {
-                this[this.tableOrdinance_Accounting.LastUpdateByColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public bool IsLastUpdateDateNull() {
-                return this.IsNull(this.tableOrdinance_Accounting.LastUpdateDateColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void SetLastUpdateDateNull() {
-                this[this.tableOrdinance_Accounting.LastUpdateDateColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public lkAccountingRow[] GetlkAccountingRows() {
-                if ((this.Table.ChildRelations["Ordinance_Accounting_lkAccounting"] == null)) {
-                    return new lkAccountingRow[0];
+            public Ordinance_AccountingRow[] GetOrdinance_AccountingRows() {
+                if ((this.Table.ChildRelations["Ordinance_Ordinance_Accounting"] == null)) {
+                    return new Ordinance_AccountingRow[0];
                 }
                 else {
-                    return ((lkAccountingRow[])(base.GetChildRows(this.Table.ChildRelations["Ordinance_Accounting_lkAccounting"])));
+                    return ((Ordinance_AccountingRow[])(base.GetChildRows(this.Table.ChildRelations["Ordinance_Ordinance_Accounting"])));
                 }
-            }
-        }
-        
-        /// <summary>
-        ///Represents strongly named DataRow class.
-        ///</summary>
-        public partial class lkAccountingRow : global::System.Data.DataRow {
-            
-            private lkAccountingDataTable tablelkAccounting;
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            internal lkAccountingRow(global::System.Data.DataRowBuilder rb) : 
-                    base(rb) {
-                this.tablelkAccounting = ((lkAccountingDataTable)(this.Table));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public int AccountingID {
-                get {
-                    return ((int)(this[this.tablelkAccounting.AccountingIDColumn]));
-                }
-                set {
-                    this[this.tablelkAccounting.AccountingIDColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string AccountingDesc {
-                get {
-                    try {
-                        return ((string)(this[this.tablelkAccounting.AccountingDescColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'AccountingDesc\' in table \'lkAccounting\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tablelkAccounting.AccountingDescColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string FundCode {
-                get {
-                    try {
-                        return ((string)(this[this.tablelkAccounting.FundCodeColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'FundCode\' in table \'lkAccounting\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tablelkAccounting.FundCodeColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string DepartmentCode {
-                get {
-                    try {
-                        return ((string)(this[this.tablelkAccounting.DepartmentCodeColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'DepartmentCode\' in table \'lkAccounting\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tablelkAccounting.DepartmentCodeColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string UnitCode {
-                get {
-                    try {
-                        return ((string)(this[this.tablelkAccounting.UnitCodeColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'UnitCode\' in table \'lkAccounting\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tablelkAccounting.UnitCodeColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string ActivityCode {
-                get {
-                    try {
-                        return ((string)(this[this.tablelkAccounting.ActivityCodeColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'ActivityCode\' in table \'lkAccounting\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tablelkAccounting.ActivityCodeColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string ObjectCode {
-                get {
-                    try {
-                        return ((string)(this[this.tablelkAccounting.ObjectCodeColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'ObjectCode\' in table \'lkAccounting\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tablelkAccounting.ObjectCodeColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public decimal Amount {
-                get {
-                    try {
-                        return ((decimal)(this[this.tablelkAccounting.AmountColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'Amount\' in table \'lkAccounting\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tablelkAccounting.AmountColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public string LastUpdateBy {
-                get {
-                    try {
-                        return ((string)(this[this.tablelkAccounting.LastUpdateByColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'LastUpdateBy\' in table \'lkAccounting\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tablelkAccounting.LastUpdateByColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public System.DateTime LastUpdateDate {
-                get {
-                    try {
-                        return ((global::System.DateTime)(this[this.tablelkAccounting.LastUpdateDateColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'LastUpdateDate\' in table \'lkAccounting\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tablelkAccounting.LastUpdateDateColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public System.DateTime EffectiveDate {
-                get {
-                    try {
-                        return ((global::System.DateTime)(this[this.tablelkAccounting.EffectiveDateColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'EffectiveDate\' in table \'lkAccounting\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tablelkAccounting.EffectiveDateColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public System.DateTime ExpirationDate {
-                get {
-                    try {
-                        return ((global::System.DateTime)(this[this.tablelkAccounting.ExpirationDateColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'ExpirationDate\' in table \'lkAccounting\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tablelkAccounting.ExpirationDateColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public Ordinance_AccountingRow Ordinance_AccountingRow {
-                get {
-                    return ((Ordinance_AccountingRow)(this.GetParentRow(this.Table.ParentRelations["Ordinance_Accounting_lkAccounting"])));
-                }
-                set {
-                    this.SetParentRow(value, this.Table.ParentRelations["Ordinance_Accounting_lkAccounting"]);
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public bool IsAccountingDescNull() {
-                return this.IsNull(this.tablelkAccounting.AccountingDescColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void SetAccountingDescNull() {
-                this[this.tablelkAccounting.AccountingDescColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public bool IsFundCodeNull() {
-                return this.IsNull(this.tablelkAccounting.FundCodeColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void SetFundCodeNull() {
-                this[this.tablelkAccounting.FundCodeColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public bool IsDepartmentCodeNull() {
-                return this.IsNull(this.tablelkAccounting.DepartmentCodeColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void SetDepartmentCodeNull() {
-                this[this.tablelkAccounting.DepartmentCodeColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public bool IsUnitCodeNull() {
-                return this.IsNull(this.tablelkAccounting.UnitCodeColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void SetUnitCodeNull() {
-                this[this.tablelkAccounting.UnitCodeColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public bool IsActivityCodeNull() {
-                return this.IsNull(this.tablelkAccounting.ActivityCodeColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void SetActivityCodeNull() {
-                this[this.tablelkAccounting.ActivityCodeColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public bool IsObjectCodeNull() {
-                return this.IsNull(this.tablelkAccounting.ObjectCodeColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void SetObjectCodeNull() {
-                this[this.tablelkAccounting.ObjectCodeColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public bool IsAmountNull() {
-                return this.IsNull(this.tablelkAccounting.AmountColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void SetAmountNull() {
-                this[this.tablelkAccounting.AmountColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public bool IsLastUpdateByNull() {
-                return this.IsNull(this.tablelkAccounting.LastUpdateByColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void SetLastUpdateByNull() {
-                this[this.tablelkAccounting.LastUpdateByColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public bool IsLastUpdateDateNull() {
-                return this.IsNull(this.tablelkAccounting.LastUpdateDateColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void SetLastUpdateDateNull() {
-                this[this.tablelkAccounting.LastUpdateDateColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public bool IsEffectiveDateNull() {
-                return this.IsNull(this.tablelkAccounting.EffectiveDateColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void SetEffectiveDateNull() {
-                this[this.tablelkAccounting.EffectiveDateColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public bool IsExpirationDateNull() {
-                return this.IsNull(this.tablelkAccounting.ExpirationDateColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public void SetExpirationDateNull() {
-                this[this.tablelkAccounting.ExpirationDateColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -5336,6 +4486,362 @@ namespace WebUI.Reports.OrdinanceTracking {
         }
         
         /// <summary>
+        ///Represents strongly named DataRow class.
+        ///</summary>
+        public partial class Ordinance_AccountingRow : global::System.Data.DataRow {
+            
+            private Ordinance_AccountingDataTable tableOrdinance_Accounting;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            internal Ordinance_AccountingRow(global::System.Data.DataRowBuilder rb) : 
+                    base(rb) {
+                this.tableOrdinance_Accounting = ((Ordinance_AccountingDataTable)(this.Table));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public int OrdinanceAccountingID {
+                get {
+                    return ((int)(this[this.tableOrdinance_Accounting.OrdinanceAccountingIDColumn]));
+                }
+                set {
+                    this[this.tableOrdinance_Accounting.OrdinanceAccountingIDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public int OrdinanceID {
+                get {
+                    return ((int)(this[this.tableOrdinance_Accounting.OrdinanceIDColumn]));
+                }
+                set {
+                    this[this.tableOrdinance_Accounting.OrdinanceIDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string AccountingDesc {
+                get {
+                    try {
+                        return ((string)(this[this.tableOrdinance_Accounting.AccountingDescColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'AccountingDesc\' in table \'Ordinance_Accounting\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOrdinance_Accounting.AccountingDescColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string FundCode {
+                get {
+                    try {
+                        return ((string)(this[this.tableOrdinance_Accounting.FundCodeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'FundCode\' in table \'Ordinance_Accounting\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOrdinance_Accounting.FundCodeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string DepartmentCode {
+                get {
+                    try {
+                        return ((string)(this[this.tableOrdinance_Accounting.DepartmentCodeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DepartmentCode\' in table \'Ordinance_Accounting\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOrdinance_Accounting.DepartmentCodeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string UnitCode {
+                get {
+                    try {
+                        return ((string)(this[this.tableOrdinance_Accounting.UnitCodeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'UnitCode\' in table \'Ordinance_Accounting\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOrdinance_Accounting.UnitCodeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string ActivityCode {
+                get {
+                    try {
+                        return ((string)(this[this.tableOrdinance_Accounting.ActivityCodeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ActivityCode\' in table \'Ordinance_Accounting\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOrdinance_Accounting.ActivityCodeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string ObjectCode {
+                get {
+                    try {
+                        return ((string)(this[this.tableOrdinance_Accounting.ObjectCodeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ObjectCode\' in table \'Ordinance_Accounting\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOrdinance_Accounting.ObjectCodeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public decimal Amount {
+                get {
+                    try {
+                        return ((decimal)(this[this.tableOrdinance_Accounting.AmountColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Amount\' in table \'Ordinance_Accounting\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOrdinance_Accounting.AmountColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public System.DateTime EffectiveDate {
+                get {
+                    try {
+                        return ((global::System.DateTime)(this[this.tableOrdinance_Accounting.EffectiveDateColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'EffectiveDate\' in table \'Ordinance_Accounting\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOrdinance_Accounting.EffectiveDateColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public System.DateTime ExpirationDate {
+                get {
+                    try {
+                        return ((global::System.DateTime)(this[this.tableOrdinance_Accounting.ExpirationDateColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ExpirationDate\' in table \'Ordinance_Accounting\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOrdinance_Accounting.ExpirationDateColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string LastUpdateBy {
+                get {
+                    try {
+                        return ((string)(this[this.tableOrdinance_Accounting.LastUpdateByColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'LastUpdateBy\' in table \'Ordinance_Accounting\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOrdinance_Accounting.LastUpdateByColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public System.DateTime LastUpdateDate {
+                get {
+                    try {
+                        return ((global::System.DateTime)(this[this.tableOrdinance_Accounting.LastUpdateDateColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'LastUpdateDate\' in table \'Ordinance_Accounting\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableOrdinance_Accounting.LastUpdateDateColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public OrdinanceRow OrdinanceRow {
+                get {
+                    return ((OrdinanceRow)(this.GetParentRow(this.Table.ParentRelations["Ordinance_Ordinance_Accounting"])));
+                }
+                set {
+                    this.SetParentRow(value, this.Table.ParentRelations["Ordinance_Ordinance_Accounting"]);
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsAccountingDescNull() {
+                return this.IsNull(this.tableOrdinance_Accounting.AccountingDescColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetAccountingDescNull() {
+                this[this.tableOrdinance_Accounting.AccountingDescColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsFundCodeNull() {
+                return this.IsNull(this.tableOrdinance_Accounting.FundCodeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetFundCodeNull() {
+                this[this.tableOrdinance_Accounting.FundCodeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsDepartmentCodeNull() {
+                return this.IsNull(this.tableOrdinance_Accounting.DepartmentCodeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetDepartmentCodeNull() {
+                this[this.tableOrdinance_Accounting.DepartmentCodeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsUnitCodeNull() {
+                return this.IsNull(this.tableOrdinance_Accounting.UnitCodeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetUnitCodeNull() {
+                this[this.tableOrdinance_Accounting.UnitCodeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsActivityCodeNull() {
+                return this.IsNull(this.tableOrdinance_Accounting.ActivityCodeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetActivityCodeNull() {
+                this[this.tableOrdinance_Accounting.ActivityCodeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsObjectCodeNull() {
+                return this.IsNull(this.tableOrdinance_Accounting.ObjectCodeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetObjectCodeNull() {
+                this[this.tableOrdinance_Accounting.ObjectCodeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsAmountNull() {
+                return this.IsNull(this.tableOrdinance_Accounting.AmountColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetAmountNull() {
+                this[this.tableOrdinance_Accounting.AmountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsEffectiveDateNull() {
+                return this.IsNull(this.tableOrdinance_Accounting.EffectiveDateColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetEffectiveDateNull() {
+                this[this.tableOrdinance_Accounting.EffectiveDateColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsExpirationDateNull() {
+                return this.IsNull(this.tableOrdinance_Accounting.ExpirationDateColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetExpirationDateNull() {
+                this[this.tableOrdinance_Accounting.ExpirationDateColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsLastUpdateByNull() {
+                return this.IsNull(this.tableOrdinance_Accounting.LastUpdateByColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetLastUpdateByNull() {
+                this[this.tableOrdinance_Accounting.LastUpdateByColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsLastUpdateDateNull() {
+                return this.IsNull(this.tableOrdinance_Accounting.LastUpdateDateColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetLastUpdateDateNull() {
+                this[this.tableOrdinance_Accounting.LastUpdateDateColumn] = global::System.Convert.DBNull;
+            }
+        }
+        
+        /// <summary>
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
@@ -5355,74 +4861,6 @@ namespace WebUI.Reports.OrdinanceTracking {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public OrdinanceRow Row {
-                get {
-                    return this.eventRow;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataRowAction Action {
-                get {
-                    return this.eventAction;
-                }
-            }
-        }
-        
-        /// <summary>
-        ///Row event argument class
-        ///</summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        public class Ordinance_AccountingRowChangeEvent : global::System.EventArgs {
-            
-            private Ordinance_AccountingRow eventRow;
-            
-            private global::System.Data.DataRowAction eventAction;
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public Ordinance_AccountingRowChangeEvent(Ordinance_AccountingRow row, global::System.Data.DataRowAction action) {
-                this.eventRow = row;
-                this.eventAction = action;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public Ordinance_AccountingRow Row {
-                get {
-                    return this.eventRow;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public global::System.Data.DataRowAction Action {
-                get {
-                    return this.eventAction;
-                }
-            }
-        }
-        
-        /// <summary>
-        ///Row event argument class
-        ///</summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-        public class lkAccountingRowChangeEvent : global::System.EventArgs {
-            
-            private lkAccountingRow eventRow;
-            
-            private global::System.Data.DataRowAction eventAction;
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public lkAccountingRowChangeEvent(lkAccountingRow row, global::System.Data.DataRowAction action) {
-                this.eventRow = row;
-                this.eventAction = action;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public lkAccountingRow Row {
                 get {
                     return this.eventRow;
                 }
@@ -5559,6 +4997,40 @@ namespace WebUI.Reports.OrdinanceTracking {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public Ordinance_SignatureRow Row {
+                get {
+                    return this.eventRow;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataRowAction Action {
+                get {
+                    return this.eventAction;
+                }
+            }
+        }
+        
+        /// <summary>
+        ///Row event argument class
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        public class Ordinance_AccountingRowChangeEvent : global::System.EventArgs {
+            
+            private Ordinance_AccountingRow eventRow;
+            
+            private global::System.Data.DataRowAction eventAction;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public Ordinance_AccountingRowChangeEvent(Ordinance_AccountingRow row, global::System.Data.DataRowAction action) {
+                this.eventRow = row;
+                this.eventAction = action;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public Ordinance_AccountingRow Row {
                 get {
                     return this.eventRow;
                 }

@@ -6,23 +6,23 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Net;
-using System.Reflection;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using static DataLibrary.TablePagination;
 using static DataLibrary.Utility;
 
 namespace WebUI
 {
     public partial class OrdinanceAdmin : System.Web.UI.Page
     {
+        // GLOBAL VARIABLES //
         private ADUser _user = new ADUser();
         public UserInfo userInfo = new UserInfo();
         public Dictionary<string, Dictionary<string, object>> defaultListType = new Dictionary<string, Dictionary<string, object>>();
 
+
+
+        // PAGE LOADING //
         protected void Page_Load(object sender, EventArgs e)
         {
             _user = Session["CurrentUser"] as ADUser;
@@ -149,6 +149,9 @@ namespace WebUI
             }
         }
 
+
+
+        // STARTUP DATA //
         protected void GetAllDepartments()
         {
             Dictionary<string, string> departments = DepartmentsList();
@@ -326,6 +329,8 @@ namespace WebUI
         }
 
 
+
+        // CONTROL CHANGES //
         protected void Filter_SelectedIndexChanged(object sender, EventArgs e)
         {
             ActiveTabPanes(hdnActiveTabs.Value);
@@ -499,6 +504,10 @@ namespace WebUI
             }
             ActiveTabPanes(hdnActiveTabs.Value);
         }
+
+
+
+        // REPEATER COMMANDS
         protected void rpDefaultList_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
             Dictionary<string, object> listInfo = defaultListType[e.CommandName];
