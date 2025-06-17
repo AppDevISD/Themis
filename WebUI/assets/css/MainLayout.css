@@ -562,7 +562,7 @@ option:not([selected]):not(:disabled) {
 	}
 
 	.tab-card .card {
-		min-height: 50vh;
+		min-height: 47vh;
 		border: 0;
 		border-radius: 15px;
 		border-top-left-radius: 0;

@@ -99,10 +99,6 @@
 										<span class="fas fa-book-section"></span>
 										<p class="m-0 fs-6 noto-sans-semi-bold">Ordinances</p>
 									</a>
-									<%--<a class='nav-link <%:ActivePage("NewFactSheet")?"activePage":""%>' href="./NewFactSheet" tabindex="-1" hidden>
-										<span class="fas fa-file-circle-plus"></span>
-										<p class="m-0 fs-6 noto-sans-semi-bold">New Fact Sheet</p>
-									</a>--%>
 									<a class='nav-link <%:ActivePage("FactSheetDrafts;NewFactSheet")?"activePage":""%>' href="./FactSheetDrafts" tabindex="-1" data-disable-btn="aspIconBtn" data-disable-btn-symbol="true">
 										<span class="fas fa-file-lines"></span>
 										<p class="m-0 fs-6 noto-sans-semi-bold">Fact Sheets</p>
