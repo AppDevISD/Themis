@@ -3040,9 +3040,6 @@ namespace WebUI
             {
                 emailList = Email.Instance.AddEmailAddress(emailList, item);
             }
-            string formType = "Ordinance Fact Sheet";
-            string href = $"apptest/Themis/Ordinances?id={hdnOrdID.Value}&v=view";
-            string ordinanceNumInfo = !ordinanceNumber.Text.IsNullOrWhiteSpace() ? $"<p style='margin: 0; line-height: 1.5;'><span>Ordinance: {ordinance.OrdinanceNumber}</span></p>" : string.Empty;
 
             Email newEmail = Email.GetEmailType(new Dictionary<string, object>()
             {

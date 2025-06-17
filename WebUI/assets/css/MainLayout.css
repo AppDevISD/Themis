@@ -134,6 +134,7 @@ main {
 
 .user-avatar {
 	margin-right: 20px;
+	pointer-events: none !important;
 }
 
 
