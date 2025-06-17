@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.UI.WebControls;
+using Microsoft.Ajax.Utilities;
 
 namespace DataLibrary
 {
@@ -44,11 +45,11 @@ namespace DataLibrary
                     case true:
                         strLoginID = loginID;
                         adu = ISDFactory.Instance.GetUserInformationByLoginName(strLoginID);
-                        if (adu.EmployeeID.Equals(null) || adu.EmployeeID.Equals(string.Empty))
+                        if (adu.EmployeeID.IsNullOrWhiteSpace())
                         {
                             adu.EmployeeID = GetEmployeeID(adu.Email);
                         }
-                        if (adu.PhotoLocation.Equals(null) || adu.PhotoLocation.Equals(string.Empty))
+                        if (adu.PhotoLocation.IsNullOrWhiteSpace())
                         {
                             adu.PhotoLocation = $"\\\\INTRANET\\Shared$\\HRPhotos\\{adu.EmployeeID}.jpg";
                         }
@@ -78,11 +79,11 @@ namespace DataLibrary
                         }
                         else { }
                         adu = ISDFactory.Instance.GetUserInformationByLoginName(strLoginID);
-                        if (adu.EmployeeID.Equals(null) || adu.EmployeeID.Equals(string.Empty))
+                        if (adu.EmployeeID.IsNullOrWhiteSpace())
                         {
                             adu.EmployeeID = GetEmployeeID(adu.Email);
                         }
-                        if (adu.PhotoLocation.Equals(null) || adu.PhotoLocation.Equals(string.Empty))
+                        if (adu.PhotoLocation.IsNullOrWhiteSpace())
                         {
                             adu.PhotoLocation = $"\\\\INTRANET\\Shared$\\HRPhotos\\{adu.EmployeeID}.jpg";
                         }

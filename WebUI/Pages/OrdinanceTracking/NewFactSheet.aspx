@@ -591,7 +591,7 @@
 											</div>
 										</div>
 									</div>
-									<asp:TextBox runat="server" ID="directorSupervisorEmailAddresses" hidden="true" TabIndex="-1"></asp:TextBox>
+									<asp:TextBox runat="server" ID="directorSupervisorEmailAddresses" hidden="true" TabIndex="-1" CssClass="form-control"></asp:TextBox>
 									<asp:RequiredFieldValidator runat="server" ID="emailListContainerValid" ControlToValidate="directorSupervisorEmailAddresses" ErrorMessage="Please Enter an Email" ValidationGroup="directorSupervisorValidGroup" SetFocusOnError="false" Display="None" CssClass="text-danger invalid-feedback ps-2"></asp:RequiredFieldValidator>
 
 								</div>
