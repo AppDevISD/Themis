@@ -285,9 +285,9 @@ a.activePage, [data-active-page="activePage"] .nav-link, .nav-link.active, .nav-
 		}
 
 #appDevToolsParent {
-	position: absolute;
+	position: sticky;
 	width: 100%;
-	bottom: 0;
+	top: 100%;
 }
 
 #AppDevToolsMenu {

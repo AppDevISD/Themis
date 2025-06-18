@@ -353,11 +353,11 @@
 		<%-- REQUIRED FIELDS INDICATOR / ACTIVE PAGE HELPER / LOADING BUTTONS --%>
 		<script type="text/javascript" src="./Scripts/Helpers/JS/RequiredFieldsAndActivePage.js"></script>
 
-		<%-- LIGHT/DARK MODE SWITCHER --%>
-		<script type="text/javascript" src="./Scripts/Helpers/JS/ColorMode.js"></script>
-
 		<%-- INACTIVE REFRESH TIMER --%>
 		<script type="text/javascript" src="./Scripts/Helpers/JS/InactiveTimer.js"></script>
+
+		<%-- LIGHT/DARK MODE SWITCHER --%>
+		<script type="text/javascript" src="./Scripts/Helpers/JS/ColorMode.js"></script>
 
 		<script>
 			InitialLoad();
