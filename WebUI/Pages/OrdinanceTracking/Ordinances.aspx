@@ -104,7 +104,7 @@
 										<th style="width: 34%; text-align: center"><asp:LinkButton runat="server" ID="sortTitle" data-command="OrdinanceTitle" data-text="Title" OnClick="SortBtn_Click" class="btn btn-sort" TabIndex="-1" data-disable-btn="aspIconBtn" data-disable-btn-symbol="true"><strong>Title<span class="float-end lh-1p5 me-1"></span></strong></asp:LinkButton></th>
 										<th style="width: 25%; text-align: center">
 											<div style="position: relative;">
-												<asp:LinkButton runat="server" ID="sortDepartmentDivision" data-command="RequestDepartment" data-text="Department" OnClick="SortBtn_Click" class="btn-sort btn-dd-sort" TabIndex="-1" data-disable-btn="aspIconBtn" data-disable-btn-symbol="true" data-disable-btn-select="ddDeptDivision"><strong><span class="float-end lh-1p5"></span></strong></span></asp:LinkButton>
+												<asp:LinkButton runat="server" ID="sortDepartmentDivision" data-command="RequestDepartment" data-text="Department" OnClick="SortBtn_Click" class="btn-sort btn-dd-sort" TabIndex="-1" data-disable-btn="aspIconBtn" data-disable-btn-symbol="true" data-disable-btn-select="ddDeptDivision" style="--dd-sort-offset: 1.5rem"><strong><span class="float-end lh-1p5"></span></strong></span></asp:LinkButton>
 												<asp:DropDownList runat="server" ID="ddDeptDivision" CssClass="form-select dd-sort" OnSelectedIndexChanged="ddDeptDivision_SelectedIndexChanged" AutoPostBack="true" TabIndex="-1" >
 													<asp:ListItem Text="Department" Value="RequestDepartment"></asp:ListItem>
 													<asp:ListItem Text="Division" Value="RequestDivision"></asp:ListItem>
@@ -118,7 +118,6 @@
 									</tr>
 								</thead>
 								<asp:Repeater runat="server" ID="rpOrdinanceTable" OnItemCommand="rpOrdinanceTable_ItemCommand">
-									<HeaderTemplate></HeaderTemplate>
 									<ItemTemplate>
 										<tr>
 											<td class="align-middle">
@@ -142,9 +141,9 @@
 												<asp:Label ID="ordTableStatus" Text='<%# DataBinder.Eval(Container.DataItem, "StatusDescription") %>' runat="server" />
 											</td>
 											<td class="align-middle d-flex justify-content-center px-0">
-												<asp:LinkButton runat="server" ID="editOrd" CommandName="edit" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' CssClass="ordActionBtn border-end px-2" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="Edit" Visible='<%# adminUnlockedOrd(DataBinder.Eval(Container.DataItem, "StatusDescription").ToString()) %>' OnClientClick="showLoadingModal();" TabIndex="-1"><i class="fas fa-pen-to-square text-warning-light"></i></asp:LinkButton>
-												<asp:LinkButton runat="server" ID="viewOrd" CommandName="view" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' CssClass="ordActionBtn border-end px-2" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="View" OnClientClick="showLoadingModal();" TabIndex="-1"><i class="fas fa-magnifying-glass text-info"></i></asp:LinkButton>
-												<asp:LinkButton runat="server" ID="downloadOrd" CommandName="download" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' CssClass="ordActionBtn px-2" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="Download" TabIndex="-1"><i class="fas fa-download text-primary"></i></asp:LinkButton>
+												<asp:LinkButton runat="server" ID="editOrd" CommandName="edit" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' CssClass="formActionBtn border-end px-2" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="Edit" Visible='<%# adminUnlockedOrd(DataBinder.Eval(Container.DataItem, "StatusDescription").ToString()) %>' OnClientClick="showLoadingModal();" TabIndex="-1"><i class="fas fa-pen-to-square text-warning-light"></i></asp:LinkButton>
+												<asp:LinkButton runat="server" ID="viewOrd" CommandName="view" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' CssClass="formActionBtn border-end px-2" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="View" OnClientClick="showLoadingModal();" TabIndex="-1"><i class="fas fa-magnifying-glass text-info"></i></asp:LinkButton>
+												<asp:LinkButton runat="server" ID="downloadOrd" CommandName="download" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' CssClass="formActionBtn px-2" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="Download" TabIndex="-1"><i class="fas fa-download text-primary"></i></asp:LinkButton>
 											</td>
 										</tr>
 									</ItemTemplate>
@@ -200,7 +199,7 @@
 								<div class="row h-100 align-items-center">
 									<h1><span class="fas fa-book-section"></span>&nbsp;Ordinance</h1>
 								</div>
-								<asp:Label runat="server" ID="lblOrdID" CssClass="text-primary-emphasis ordID">ID:</asp:Label>
+								<asp:Label runat="server" ID="lblOrdID" CssClass="text-primary-emphasis formID">ID:</asp:Label>
 								<asp:LinkButton runat="server" ID="backBtn" CssClass="btn bg-danger backBtn" OnClick="backBtn_Click" OnClientClick="showLoadingModal();" TabIndex="-1"><span class="fas fa-xmark text-light"></span></asp:LinkButton>
 								<asp:LinkButton runat="server" ID="copyOrd" CssClass="btn btn-primary copyBtn" OnClick="copyOrd_Click" OnClientClick="showLoadingModal();" TabIndex="-1"><span class="fas fa-copy"></span>&nbsp;Copy</asp:LinkButton>
 

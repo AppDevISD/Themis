@@ -81,8 +81,8 @@
 												<asp:Label ID="draftsTableTitle" Text='<%# DataBinder.Eval(Container.DataItem, "OrdinanceTitle") %>' runat="server" />
 											</td>
 											<td class="align-middle d-flex justify-content-center px-0">
-												<asp:LinkButton runat="server" ID="editOrd" CommandName="edit" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' CssClass="ordActionBtn border-end px-2" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="Edit" OnClientClick="showLoadingModal();" CausesValidation="false" TabIndex="-1"><i class="fas fa-pen-to-square text-warning-light"></i></asp:LinkButton>
-												<a href="javascript:void(0);" onclick='<%# $"SetDeleteModal({DataBinder.Eval(Container.DataItem, "OrdinanceID")});" %>' class="ordActionBtn px-2" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="Delete" TabIndex="-1"><i class="fas fa-trash-can text-danger"></i></a>
+												<asp:LinkButton runat="server" ID="editOrd" CommandName="edit" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' CssClass="formActionBtn border-end px-2" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="Edit" OnClientClick="showLoadingModal();" CausesValidation="false" TabIndex="-1"><i class="fas fa-pen-to-square text-warning-light"></i></asp:LinkButton>
+												<a href="javascript:void(0);" onclick='<%# $"SetDeleteModal({DataBinder.Eval(Container.DataItem, "OrdinanceID")});" %>' class="formActionBtn px-2" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="Delete" TabIndex="-1"><i class="fas fa-trash-can text-danger"></i></a>
 											</td>
 										</tr>
 									</ItemTemplate>

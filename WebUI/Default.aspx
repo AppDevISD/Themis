@@ -14,7 +14,7 @@
 				<div class="col-md-12 text-center d-flex align-items-end pb-3">
 					<%-- LOGO --%>
 					<div style="position: relative;">
-						<div class="themis-logo m-0"></div>
+						<div class="site-logo-page m-0"></div>
 					</div>
 					<%-- WELCOME TEXT --%>
 					<h1 class="welcome-text m-0 ms-2">Welcome to <span class="gfs-neohellenic-bold">THΣMIS</span>!</h1>
