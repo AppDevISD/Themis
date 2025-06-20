@@ -1,4 +1,5 @@
-﻿function DisableDDInitialOption(ddIDDict) {
+﻿var pendingFiles = [];
+function DisableDDInitialOption(ddIDDict) {
 	$(ddIDDict).each(function () {
 		const cfg = this || {};
 		const element = document.getElementById(cfg.id);
@@ -49,10 +50,20 @@ function SetUploadActive(uploadID, btnID) {
 	const supportingDocumentation = document.getElementById(uploadID)
 	var UploadDocBtn = document.getElementById(btnID)
 	if (supportingDocumentation.files.length > 0) {
+		pendingFiles = $(`#${uploadID}`)[0].files;
 		UploadDocBtn.disabled = false;
 	}
 	else {
 		UploadDocBtn.disabled = true;
+		pendingFiles = [];
+	}
+}
+
+function GetPendingFiles(uploadID, btnID) {
+	var UploadDocBtn = document.getElementById(btnID)
+	if (pendingFiles.length > 0) {
+		$(`#${uploadID}`).prop('files', pendingFiles);
+		UploadDocBtn.disabled = false;
 	}
 }
 
@@ -117,9 +128,13 @@ function disableSubmitBtns() {
 	});
 }
 
-function clickAspBtn(btnID) {
+function clickAspBtn(btnID, clearPendingFiles) {
 	var btn = document.getElementById(btnID);
 	btn.click();
+
+	if (clearPendingFiles) {
+		pendingFiles = [];
+	}
 }
 
 function enterBtn() {

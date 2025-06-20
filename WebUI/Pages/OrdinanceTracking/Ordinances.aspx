@@ -34,6 +34,7 @@
 				<asp:AsyncPostBackTrigger ControlID="ddStatus" EventName="SelectedIndexChanged" />
 				<asp:AsyncPostBackTrigger ControlID="signatureEmailAddress" EventName="TextChanged" />
 
+				<asp:AsyncPostBackTrigger ControlID="sortID" EventName="Click" />
 				<asp:AsyncPostBackTrigger ControlID="sortDate" EventName="Click" />
 				<asp:AsyncPostBackTrigger ControlID="sortTitle" EventName="Click" />
 				<asp:AsyncPostBackTrigger ControlID="sortDepartmentDivision" EventName="Click" />

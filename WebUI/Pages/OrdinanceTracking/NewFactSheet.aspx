@@ -642,6 +642,7 @@
 				{ id: '<%= requestDivision.ClientID %>', opacity: "35" },
 				{ id: '<%= purchaseMethod.ClientID %>', opacity: "75" },
 			]);
+			GetPendingFiles('<%= supportingDocumentation.ClientID %>', 'uploadBtn');
 		});
 
 		function validateFactSheetDraft(btnID, validationGroups) {

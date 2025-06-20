@@ -994,10 +994,10 @@ namespace WebUI
 
             foreach (TextBox box in textBoxes)
             {
-                box.Attributes.Add("data-validate", $"{box.ID}-{rpItem.ItemIndex}");
+                box.Attributes.Add("data-validate", $"{box.ID}r{rpItem.ItemIndex}");
                 RequiredFieldValidator rfv = new RequiredFieldValidator()
                 {
-                    ID = $"{box.ID}Valid-{rpItem.ItemIndex}",
+                    ID = $"{box.ID}Validr{rpItem.ItemIndex}",
                     ControlToValidate = box.ID,
                     ValidationGroup = "factSheetMain",
                     SetFocusOnError = false,
@@ -1078,140 +1078,6 @@ namespace WebUI
         {
             LinkButton btn = (LinkButton)e.Item.FindControl("removeBtn");
             ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(btn);
-        }
-        protected void rpAudit_ItemDataBound(object sender, RepeaterItemEventArgs e)
-        {
-            HiddenField hdnAuditItem = (HiddenField)e.Item.FindControl("hdnAuditItem");
-            int auditID = Convert.ToInt32(hdnAuditItem.Value);
-            Repeater rpAuditDesc = (Repeater)e.Item.FindControl("rpAuditDesc");
-
-
-
-            List<OrdinanceAudit> ordAudits = Session["ordAudit"] as List<OrdinanceAudit>;
-            List<Audit> audits = Factory.Instance.GetAllLookup<Audit>(auditID, "sp_GetAuditDescriptionByID", "OrdinanceAuditID");
-            if (audits.Count > 0)
-            {
-                List<string> descList = new List<string>();
-                foreach (Audit item in audits)
-                {
-                    List<string> longTexts = new List<string>()
-                    {
-                        "EmergencyPassageReason",
-                        "OrdinanceTitle",
-                        "OrdinanceAnalysis"
-                    };
-                    string label = FieldLabels(item.Label);
-                    string oldValue = item.OldValue;
-                    string symbol = AuditSymbol(item.Type);
-                    string newValue = item.NewValue;
-                    string itemString = string.Empty;
-
-                    StringBuilder sb = new StringBuilder();
-
-                    string headerBegin = "<thead><tr class='h-50'>";
-                    string fundHeader = "<th style='width: 13%; text-align: center;'>Fund</th>";
-                    string agencyHeader = "<th style='width: 15%; text-align: center;'>Agency</th>";
-                    string orgHeader = "<th style='width: 15%; text-align: center;'>Org</th>";
-                    string activityHeader = "<th style='width: 16%; text-align: center;'>Activity</th>";
-                    string objectHeader = "<th style='width: 15%; text-align: center;'>Object</th>";
-                    string amountHeader = "<th style='width: 18%; text-align: center;'>Amount</th>";
-                    string headerEnd = "</tr></thead>";
-                    List<string> HeaderCells = new List<string>()
-                    {
-                        headerBegin,
-                        fundHeader,
-                        agencyHeader,
-                        orgHeader,
-                        activityHeader,
-                        objectHeader,
-                        amountHeader,
-                        headerEnd
-                    };
-
-
-                    if (oldValue == "-1.00" || oldValue == "-1")
-                    {
-                    }
-                    if (newValue == "-1.00" || newValue == "-1")
-                    {
-                        newValue = null;
-                    }
-                    switch (item.Type)
-                    {
-                        case "add":
-                            switch (!longTexts.Any(i => i.Equals(item.Label)))
-                            {
-                                case true:
-                                    itemString = $"{label}: <span class='change-bg'>{symbol} <span data-type='{item.DataType}'>{newValue}</span> </span>";
-                                    break;
-                                case false:
-                                    itemString = $"<p class='m-0'>{label}:</p> <div class='d-flex change-bg w-100 lh-1p5'> {symbol} <div class='w-100 ps-2'>{newValue}</div> </div>";
-                                    break;
-                            }
-                            break;
-                        case "update":
-                            switch (!longTexts.Any(i => i.Equals(item.Label)))
-                            {
-                                case true:
-                                    itemString = $"{label}: <span class='change-bg'><span data-type='{item.DataType}'>{oldValue}</span> {symbol} <span data-type='{item.DataType}'>{newValue}</span></span>";
-                                    break;
-                                case false:
-                                    itemString = $"<p class='m-0'>{label}:</p> <div class='d-flex change-bg mw-100 lh-1p5'> <div class='w-50 pe-2 text-center'>{oldValue}</div> {symbol} <div class='w-50 ps-2 text-center'>{newValue}</div> </div>";
-                                    break;
-                            }
-                            break;
-                        case "remove":
-                            switch (!longTexts.Any(i => i.Equals(item.Label)))
-                            {
-                                case true:
-                                    itemString = $"{label}: <span class='change-bg'>{symbol} <span data-type='{item.DataType}'>{oldValue}</span></span>";
-                                    break;
-                                case false:
-                                    itemString = $"<p class='m-0'>{label}:</p> <div class='d-flex change-bg w-100 lh-1p5'> {symbol} <div class='w-100 ps-2'>{oldValue}</div> </div>";
-                                    break;
-                            }
-                            break;
-                        case "rejected":
-                            itemString = $"<div class='change-bg lh-1p5'> {newValue} </div>";
-                            break;
-                        case "revenue":
-                        case "expenditure":
-                            sb.Append("<table class='table table-bordered table-hover table-standard text-center w-75' style='padding: 0px; margin: 0px'>");
-                            foreach (string header in HeaderCells)
-                            {
-                                sb.Append(header);
-                            }
-                            sb.Append("<tbody>");
-
-                            List<AccountingAudit> acctAudits = Factory.Instance.GetAllLookup<AccountingAudit>(item.AuditID, "sp_GetAccountingAuditDescriptionByID", "AuditID");
-                            foreach (AccountingAudit acctAudit in acctAudits)
-                            {
-
-                                sb.Append("<tr>");
-                                sb.Append($"<td style='vertical-align: middle; padding: 0 !important;'>{acctAudit.FundCode}</td>");
-                                sb.Append($"<td style='vertical-align: middle; padding: 0 !important;'>{acctAudit.DepartmentCode}</td>");
-                                sb.Append($"<td style='vertical-align: middle; padding: 0 !important;'>{acctAudit.UnitCode}</td>");
-                                sb.Append($"<td style='vertical-align: middle; padding: 0 !important;'>{acctAudit.ActivityCode}</td>");
-                                sb.Append($"<td style='vertical-align: middle; padding: 0 !important;'>{acctAudit.ObjectCode}</td>");
-                                sb.Append($"<td style='vertical-align: middle; padding: 0 !important;'>{acctAudit.Amount}</td>");
-                                sb.Append("</tr>");
-                            }
-                            sb.Append("</tbody></table>");
-
-
-                            itemString = $"<p class='m-0'>{label}:</p> {sb}";
-                            break;
-                    }
-                    descList.Add(itemString);
-                }
-                rpAuditDesc.DataSource = descList;
-                rpAuditDesc.DataBind();
-            }
-            else
-            {
-                rpAuditDesc.DataSource = null;
-                rpAuditDesc.DataBind();
-            }
         }
 
 

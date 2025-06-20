@@ -654,7 +654,7 @@
 												</ul>
 												<div id="supportingDocumentationGroup" class="d-flex mb-2">
 													<asp:FileUpload runat="server" ID="supportingDocumentation" CssClass="form-control mt-3" AllowMultiple="true" onchange="SetUploadActive(this.id, 'uploadBtn');" onfocus="showFileWaiting();" TabIndex="-1" />
-													<button id="uploadBtn" class="btn btn-success mt-3 ms-3 w-25" onclick="clickAspBtn('UploadDocBtn');" type="button" data-disable-btn="htmlIconBtn" data-disable-btn-icon="fa-upload" data-disable-btn-text="Uploading" disabled TabIndex="-1"><span>Upload</span></button>
+													<button id="uploadBtn" class="btn btn-success mt-3 ms-3 w-25" onclick="clickAspBtn('UploadDocBtn', true);" type="button" data-disable-btn="htmlIconBtn" data-disable-btn-icon="fa-upload" data-disable-btn-text="Uploading" disabled TabIndex="-1"><span>Upload</span></button>
 													<asp:Button runat="server" ID="UploadDocBtn" UseSubmitBehavior="false" Width="25%" OnClick="UploadDocBtn_Click" hidden="hidden" TabIndex="-1" />
 												</div>
 												<div id="fileWaiting" class="mt-2" hidden>
@@ -779,6 +779,7 @@
 				{ id: '<%= purchaseMethod.ClientID %>', opacity: "75" },
 			]);
 			HideAllTooltips();
+			GetPendingFiles('<%= supportingDocumentation.ClientID %>', 'uploadBtn');
 		});
 
 		function validateFactSheetDraft(btnID, validationGroups) {
