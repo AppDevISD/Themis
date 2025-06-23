@@ -399,25 +399,20 @@ namespace WebUI
         }
         protected void UploadDocBtn_Click(object sender, EventArgs e)
         {
-            List<OrdinanceDocument> ordDocList = (Session["ordDocs"] != null) ? Session["ordDocs"] as List<OrdinanceDocument> : new List<OrdinanceDocument>();
-
-            for (int i = 0; i < supportingDocumentation.PostedFiles.Count; i++)
+            List<OrdinanceDocument> originalOrdDocList = new List<OrdinanceDocument>();
+            List<OrdinanceDocument> ordDocList = new List<OrdinanceDocument>();
+            if (Session["ordDocs"] != null)
             {
-                OrdinanceDocument ordDoc = new OrdinanceDocument();
-                ordDoc.DocumentName = supportingDocumentation.PostedFiles[i].FileName;
-                Stream stream = supportingDocumentation.PostedFiles[i].InputStream;
-                using (var fileBytes = new BinaryReader(stream))
-                {
-                    ordDoc.DocumentData = fileBytes.ReadBytes((int)stream.Length);
-                }
-                ordDoc.LastUpdateBy = _user.Login;
-                ordDoc.LastUpdateDate = DateTime.Now;
-                ordDoc.EffectiveDate = DateTime.Now;
-                ordDoc.ExpirationDate = DateTime.MaxValue;
-                ordDocList.Add(ordDoc);
+                originalOrdDocList = Session["ordDocs"] as List<OrdinanceDocument>;
             }
-            Session["ordDocs"] = ordDocList;
-            rpSupportingDocumentation.DataSource = ordDocList;
+            if (Session["addOrdDocs"] != null)
+            {
+                ordDocList = Session["addOrdDocs"] as List<OrdinanceDocument>;
+            }
+
+            originalOrdDocList.AddRange(ordDocList);
+            Session["ordDocs"] = originalOrdDocList;
+            rpSupportingDocumentation.DataSource = originalOrdDocList;
             rpSupportingDocumentation.DataBind();
         }
         protected void AddRequestEmailAddress_Click(object sender, EventArgs e)
@@ -576,7 +571,6 @@ namespace WebUI
         }
         protected void rpSupportingDocumentation_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
-            //HiddenField hdnDocID = (HiddenField)e.Item.FindControl("hdnDocID");
             HiddenField hdnDocIndex = (HiddenField)e.Item.FindControl("hdnDocIndex");
             List<OrdinanceDocument> ordDocList = Session["ordDocs"] as List<OrdinanceDocument>;
             OrdinanceDocument ordDocItem = ordDocList[Convert.ToInt32(hdnDocIndex.Value)];
@@ -597,6 +591,11 @@ namespace WebUI
                     rpSupportingDocumentation.DataBind();
                     break;
             }
+        }
+        protected void rpSupportingDocumentation_ItemCreated(object sender, RepeaterItemEventArgs e)
+        {
+            LinkButton btn = (LinkButton)e.Item.FindControl("deleteFile");
+            ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(btn);
         }
         protected void rpEmailList_ItemCommand(object source, RepeaterCommandEventArgs e)
         {

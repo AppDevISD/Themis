@@ -205,8 +205,6 @@ namespace WebUI
             if (Session["addOrdDocs"] != null && Session["ordDocs"] != null)
             {
                 List<OrdinanceDocument> originalOrdDocList = Session["ordDocs"] as List<OrdinanceDocument>;
-                //List<OrdinanceDocument> ordDocList = Session["addOrdDocs"] as List<OrdinanceDocument>;
-                //originalOrdDocList.AddRange(ordDocList);
                 rpSupportingDocumentation.DataSource = originalOrdDocList;
                 rpSupportingDocumentation.DataBind();
             }
@@ -444,25 +442,15 @@ namespace WebUI
                 ordDocList = Session["addOrdDocs"] as List<OrdinanceDocument>;
             }
 
+            
+            originalOrdDocList.AddRange(ordDocList.Where(i => i.OrdinanceID.Equals(-1)));
+            //Session["ordDocs"] = originalOrdDocList;
 
-            for (int i = 0; i < supportingDocumentation.PostedFiles.Count; i++)
+            foreach (OrdinanceDocument item in ordDocList)
             {
-                OrdinanceDocument ordDoc = new OrdinanceDocument();
-                ordDoc.DocumentName = supportingDocumentation.PostedFiles[i].FileName;
-                Stream stream = supportingDocumentation.PostedFiles[i].InputStream;
-                using (var fileBytes = new BinaryReader(stream))
-                {
-                    ordDoc.DocumentData = fileBytes.ReadBytes((int)stream.Length);
-                }
-                ordDoc.LastUpdateBy = _user.Login;
-                ordDoc.LastUpdateDate = DateTime.Now;
-                ordDoc.EffectiveDate = DateTime.Now;
-                ordDoc.ExpirationDate = DateTime.MaxValue;
-                ordDocList.Add(ordDoc);
+                item.OrdinanceID = Convert.ToInt32(hdnOrdID.Value);
             }
-            Session["addOrdDocs"] = ordDocList;
-            originalOrdDocList.AddRange(ordDocList);
-            Session["ordDocs"] = originalOrdDocList;
+            //Session["addOrdDocs"] = ordDocList;
             rpSupportingDocumentation.DataSource = originalOrdDocList;
             rpSupportingDocumentation.DataBind();
         }
@@ -1012,6 +1000,11 @@ namespace WebUI
             HiddenField hdnDocID = (HiddenField)e.Item.FindControl("hdnDocID");
             HiddenField hdnDocIndex = (HiddenField)e.Item.FindControl("hdnDocIndex");
             List<OrdinanceDocument> ordDocList = Session["ordDocs"] as List<OrdinanceDocument>;
+            List<OrdinanceDocument> addOrdDocList = new List<OrdinanceDocument>();
+            if (Session["addOrdDocs"] != null)
+            {
+                addOrdDocList = Session["addOrdDocs"] as List<OrdinanceDocument>;
+            }
             OrdinanceDocument ordDocItem = ordDocList[Convert.ToInt32(hdnDocIndex.Value)];
 
             switch (e.CommandName)
@@ -1033,14 +1026,27 @@ namespace WebUI
                     {
                         removeDocs = Session["RemoveDocs"] as List<OrdinanceDocument>;
                     }
-                    removeDocs.Add(ordDocItem);
-                    Session["RemoveDocs"] = removeDocs;
+                    if (addOrdDocList.Any(i => i.Equals(ordDocItem)))
+                    {
+                        addOrdDocList.Remove(ordDocItem);
+                        Session["addOrdDocs"] = addOrdDocList;
+                    }
+                    else
+                    {
+                        removeDocs.Add(ordDocItem);
+                        Session["RemoveDocs"] = removeDocs;
+                    }
                     ordDocList.Remove(ordDocItem);
                     Session["ordDocs"] = ordDocList;
-                    rpSupportingDocumentation.DataSource = ordDocList.OrderBy(i => i.DocumentID);
+                    rpSupportingDocumentation.DataSource = ordDocList;
                     rpSupportingDocumentation.DataBind();
                     break;
             }
+        }
+        protected void rpSupportingDocumentation_ItemCreated(object sender, RepeaterItemEventArgs e)
+        {
+            LinkButton btn = (LinkButton)e.Item.FindControl("deleteFile");
+            ScriptManager.GetCurrent(Page).RegisterAsyncPostBackControl(btn);
         }
         protected void rpEmailList_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
@@ -1252,21 +1258,25 @@ namespace WebUI
 
                 int addDocsVal = new int();
                 int addUploadedDocsVal = new int();
-                List<OrdinanceDocument> ordDocs = Session["addOrdDocs"] as List<OrdinanceDocument>;
+                
                 List<string> addDocNames = new List<string>();
                 if (Session["addOrdDocs"] != null)
                 {
-                    foreach (OrdinanceDocument ordDoc in ordDocs)
+                    List<OrdinanceDocument> ordDocs = Session["addOrdDocs"] as List<OrdinanceDocument>;
+                    if (ordDocs.Count > 0)
                     {
-                        ordDoc.OrdinanceID = Convert.ToInt32(hdnOrdID.Value);
-                        addUploadedDocsVal = Factory.Instance.Insert(ordDoc, "sp_InsertOrdinance_Document", Skips("ordDocumentInsert"));
-                        if (addUploadedDocsVal > 0)
+                        foreach (OrdinanceDocument ordDoc in ordDocs)
                         {
-                            addDocNames.Add(ordDoc.DocumentName);
-                        }
-                        else if (addUploadedDocsVal < 1)
-                        {
-                            break;
+                            ordDoc.OrdinanceID = Convert.ToInt32(hdnOrdID.Value);
+                            addUploadedDocsVal = Factory.Instance.Insert(ordDoc, "sp_InsertOrdinance_Document", Skips("ordDocumentInsert"));
+                            if (addUploadedDocsVal > 0)
+                            {
+                                addDocNames.Add(ordDoc.DocumentName);
+                            }
+                            else if (addUploadedDocsVal < 1)
+                            {
+                                break;
+                            }
                         }
                     }
                 }
@@ -1556,6 +1566,6 @@ namespace WebUI
                 ord_list = (List<Ordinance>)Session["ord_list"];
                 BindDataRepeaterPagination("no", ord_list);
             }
-        }    
+        }
     }
 }

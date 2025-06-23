@@ -130,6 +130,7 @@ function disableSubmitBtns() {
 
 function clickAspBtn(btnID, clearPendingFiles) {
 	var btn = document.getElementById(btnID);
+	const clearPending = clearPendingFiles || false;
 	btn.click();
 
 	if (clearPendingFiles) {

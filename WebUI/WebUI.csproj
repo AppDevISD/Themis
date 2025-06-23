@@ -142,10 +142,11 @@
     <Content Include="Pages\OrdinanceTracking\NewFactSheet.aspx" />
     <Content Include="Pages\OrdinanceTracking\OrdinanceAdmin.aspx" />
     <Content Include="Pages\Templates\Sandbox.aspx" />
-    <Content Include="Scripts\Helpers\CSharp\FileUploadSaving.asmx" />
+    <Content Include="Scripts\Helpers\CSharp\FileUploadService.asmx" />
     <Content Include="Pages\OrdinanceTracking\Ordinances.aspx" />
     <Content Include="Scripts\ChartCode\chart-utils.min.js" />
     <Content Include="Scripts\ChartCode\ChartOptions.js" />
+    <Content Include="Scripts\Helpers\JS\AsyncFileUpload.js" />
     <Content Include="Scripts\Helpers\JS\ChartHelpers.js" />
     <Content Include="Scripts\Helpers\JS\ChartPrism.js" />
     <Content Include="Scripts\Helpers\JS\ColorTheme.js" />
@@ -244,8 +245,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>OrdinanceData.xsd</DependentUpon>
     </Compile>
-    <Compile Include="Scripts\Helpers\CSharp\FileUploadSaving.asmx.cs">
-      <DependentUpon>FileUploadSaving.asmx</DependentUpon>
+    <Compile Include="Scripts\Helpers\CSharp\FileUploadService.asmx.cs">
+      <DependentUpon>FileUploadService.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Pages\OrdinanceTracking\Ordinances.aspx.cs">
