@@ -25,6 +25,7 @@ namespace WebUI
         // PAGE LOADING //
         protected void Page_Load(object sender, EventArgs e)
         {
+            Page.Form.Attributes.Add("enctype", "multipart/form-data");
             _user = Session["CurrentUser"] as ADUser;
             userInfo = Session["UserInformation"] as UserInfo;
             defaultListType = new Dictionary<string, Dictionary<string, object>>()

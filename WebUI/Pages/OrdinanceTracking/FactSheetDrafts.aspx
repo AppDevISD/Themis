@@ -651,13 +651,14 @@
 															</li>
 														</ItemTemplate>
 													</asp:Repeater>
+
+													<li id="supportingDocumentationGroup" class="list-group-item">
+														<asp:FileUpload runat="server" ID="supportingDocumentation" CssClass="form-control bg-body-secondary" AllowMultiple="true" onchange="asyncFileUpload(this.id, 'UploadDocBtn');" onclick="showFileWaiting();" TabIndex="-1" />
+														<asp:Button runat="server" ID="UploadDocBtn" UseSubmitBehavior="false" Width="25%" OnClick="UploadDocBtn_Click" hidden="hidden" TabIndex="-1" />
+													</li>
 												</ul>
-												<div id="supportingDocumentationGroup" class="d-flex mb-2">
-													<asp:FileUpload runat="server" ID="supportingDocumentation" CssClass="form-control mt-3" AllowMultiple="true" onchange="asyncFileUpload(this.id, 'UploadDocBtn');" onfocus="showFileWaiting();" TabIndex="-1" />
-													<%--<button id="uploadBtn" class="btn btn-success mt-3 ms-3 w-25" onclick="clickAspBtn('UploadDocBtn', true);" type="button" data-disable-btn="htmlIconBtn" data-disable-btn-icon="fa-upload" data-disable-btn-text="Uploading" disabled TabIndex="-1"><span>Upload</span></button>--%>
-													<asp:Button runat="server" ID="UploadDocBtn" UseSubmitBehavior="false" Width="25%" OnClick="UploadDocBtn_Click" hidden="hidden" TabIndex="-1" />
-												</div>
-												<div id="fileWaiting" class="mt-2" hidden>
+												
+												<div id="fileWaiting" class="mt-2 ms-2" hidden>
 													<strong class="text-warning fa-fade"><span class="fa-solid fa-hourglass-end fa-flip"></span>&nbsp;Waiting for file...</strong>
 												</div>
 											</div>

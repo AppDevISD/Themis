@@ -26,6 +26,7 @@ namespace WebUI
                 int httpCode = httpException?.GetHttpCode() ?? 500;
 
                 Response.Redirect(httpCode != 403 ? $"./Error?err={httpCode}" : $"./AccessDenied?err={httpCode}");
+
             }
             catch (Exception ex)
             {

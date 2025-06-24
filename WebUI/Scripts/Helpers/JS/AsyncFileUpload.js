@@ -18,16 +18,18 @@ function asyncFileUpload(uploadID, uploadBtn) {
 		formData.append("uploadedFiles", files[i]);
 	}
 
-	fetch("./Scripts/Helpers/CSharp/FileUploadService.asmx/UploadFile", {
-		method: "POST",
-		body: formData
-	})
-		.then(response => response.text())
-		.then(data => {
+	$.ajax({
+		url: "./Scripts/Helpers/CSharp/FileUploadHandler.ashx/UploadFile",
+		type: "POST",
+		data: formData,
+		contentType: false,
+		processData: false,
+		success: function (data) {
 			clickAspBtn(uploadBtn);
 			pendingFiles = [];
-		})
-		.catch(error => {
+		},
+		error: function (xhr, status, error) {
 			console.warn("Upload failed:", error);
-		});
+		}
+	});
 }

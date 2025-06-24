@@ -52,7 +52,7 @@
 				
 				<asp:PostBackTrigger ControlID="btnSendRejection" />
 
-				<asp:PostBackTrigger ControlID="UploadDocBtn" />
+				<asp:AsyncPostBackTrigger ControlID="UploadDocBtn" EventName="Click" />
 				<asp:PostBackTrigger ControlID="SaveFactSheet" />
 
 				<asp:AsyncPostBackTrigger ControlID="lnkInactivityRefresh" EventName="Click" />
@@ -734,7 +734,7 @@
 												<div class="form-group">
 													<label for="supportingDocumentationGroup">Supporting Documentation (Ex: Contract, Agreement, Change Order, Bid Book)</label>
 													<ul class="list-group mt-1">
-														<asp:Repeater runat="server" ID="rpSupportingDocumentation" OnItemCommand="rpSupportingDocumentation_ItemCommand">
+														<asp:Repeater runat="server" ID="rpSupportingDocumentation" OnItemCommand="rpSupportingDocumentation_ItemCommand" OnItemCreated="rpSupportingDocumentation_ItemCreated">
 															<ItemTemplate>
 																<li class="list-group-item" style="line-height: 2.25;">
 																	<asp:HiddenField runat="server" ID="hdnDocID" Value='<%# DataBinder.Eval(Container.DataItem, "DocumentID") %>' />
@@ -747,13 +747,12 @@
 																</li>
 															</ItemTemplate>
 														</asp:Repeater>
+														<li runat="server" id="supportingDocumentationGroup" class="list-group-item">
+															<asp:FileUpload runat="server" ID="supportingDocumentation" CssClass="form-control bg-body-secondary" AllowMultiple="true" onchange="asyncFileUpload(this.id, 'UploadDocBtn');" onclick="showFileWaiting();" TabIndex="-1" />
+															<asp:Button runat="server" ID="UploadDocBtn" UseSubmitBehavior="false" Width="25%" OnClick="UploadDocBtn_Click" hidden="hidden" TabIndex="-1" />
+														</li>
 													</ul>
-													<div id="supportingDocumentationGroup" class="d-flex mb-2">
-														<asp:FileUpload runat="server" ID="supportingDocumentation" CssClass="form-control mt-3" AllowMultiple="true" onchange="SetUploadActive(this.id, 'uploadBtn');" onfocus="showFileWaiting();" TabIndex="-1" />
-														<button runat="server" id="uploadBtn" class="btn btn-success mt-3 ms-3 w-25" onclick="clickAspBtn('UploadDocBtn');" type="button" data-disable-btn="htmlIconBtn" data-disable-btn-icon="fa-upload" data-disable-btn-text="Uploading" disabled TabIndex="-1"><span>Upload</span></button>
-														<asp:Button runat="server" ID="UploadDocBtn" UseSubmitBehavior="false" Width="25%" OnClick="UploadDocBtn_Click" hidden="hidden" TabIndex="-1" />
-													</div>
-													<div id="fileWaiting" class="mt-2" hidden>
+													<div id="fileWaiting" class="mt-2 ms-2" hidden>
 														<strong class="text-warning fa-fade"><span class="fa-solid fa-hourglass-end fa-flip"></span>&nbsp;Waiting for file...</strong>
 													</div>
 												</div>

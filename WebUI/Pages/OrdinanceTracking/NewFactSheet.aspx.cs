@@ -27,6 +27,7 @@ namespace WebUI
         // PAGE LOADING //
         protected void Page_Load(object sender, EventArgs e)
         {
+            Page.Form.Attributes.Add("enctype", "multipart/form-data");
             _user = Session["CurrentUser"] as ADUser;
             userInfo = Session["UserInformation"] as UserInfo;
             if (!Page.IsPostBack && !Response.IsRequestBeingRedirected)
@@ -399,20 +400,9 @@ namespace WebUI
         }
         protected void UploadDocBtn_Click(object sender, EventArgs e)
         {
-            List<OrdinanceDocument> originalOrdDocList = new List<OrdinanceDocument>();
-            List<OrdinanceDocument> ordDocList = new List<OrdinanceDocument>();
-            if (Session["ordDocs"] != null)
-            {
-                originalOrdDocList = Session["ordDocs"] as List<OrdinanceDocument>;
-            }
-            if (Session["addOrdDocs"] != null)
-            {
-                ordDocList = Session["addOrdDocs"] as List<OrdinanceDocument>;
-            }
+            List<OrdinanceDocument> ordDocList = Session["ordDocs"] as List<OrdinanceDocument>;
 
-            originalOrdDocList.AddRange(ordDocList);
-            Session["ordDocs"] = originalOrdDocList;
-            rpSupportingDocumentation.DataSource = originalOrdDocList;
+            rpSupportingDocumentation.DataSource = ordDocList;
             rpSupportingDocumentation.DataBind();
         }
         protected void AddRequestEmailAddress_Click(object sender, EventArgs e)
@@ -876,7 +866,6 @@ namespace WebUI
                                     finishSubmit = false;
                                 }
                             }
-
                             break;
                     }
 

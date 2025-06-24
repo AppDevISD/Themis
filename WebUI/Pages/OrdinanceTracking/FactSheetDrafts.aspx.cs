@@ -51,6 +51,7 @@ namespace WebUI
                 Session.Remove("expenditure");
                 Session.Remove("ordDocs");
                 Session.Remove("addOrdDocs");
+                Session.Remove("RemoveDocs");
                 Session["sortBtn"] = "sortDate";
                 Session["sortDir"] = "desc";
                 Session["curCmd"] = "LastUpdateDate";
@@ -431,27 +432,9 @@ namespace WebUI
         }
         protected void UploadDocBtn_Click(object sender, EventArgs e)
         {
-            List<OrdinanceDocument> originalOrdDocList = new List<OrdinanceDocument>();
-            List<OrdinanceDocument> ordDocList = new List<OrdinanceDocument>();
-            if (Session["ordDocs"] != null)
-            {
-                originalOrdDocList = Session["ordDocs"] as List<OrdinanceDocument>;
-            }
-            if (Session["addOrdDocs"] != null)
-            {
-                ordDocList = Session["addOrdDocs"] as List<OrdinanceDocument>;
-            }
+            List<OrdinanceDocument> ordDocs = Session["ordDocs"] as List<OrdinanceDocument>;
 
-            
-            originalOrdDocList.AddRange(ordDocList.Where(i => i.OrdinanceID.Equals(-1)));
-            //Session["ordDocs"] = originalOrdDocList;
-
-            foreach (OrdinanceDocument item in ordDocList)
-            {
-                item.OrdinanceID = Convert.ToInt32(hdnOrdID.Value);
-            }
-            //Session["addOrdDocs"] = ordDocList;
-            rpSupportingDocumentation.DataSource = originalOrdDocList;
+            rpSupportingDocumentation.DataSource = ordDocs;
             rpSupportingDocumentation.DataBind();
         }
         protected void AddRequestEmailAddress_Click(object sender, EventArgs e)
@@ -1278,6 +1261,10 @@ namespace WebUI
                                 break;
                             }
                         }
+                    }
+                    else
+                    {
+                        addUploadedDocsVal = 1;
                     }
                 }
                 else

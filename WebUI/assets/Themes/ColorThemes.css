@@ -818,12 +818,14 @@ input[type=range]:focus::-webkit-slider-thumb {
   fill: var(--active-bg-subtle);
 }
 
-.form-switch .form-check-input:not([name=colorThemeRadio]), .form-switch .setting-form-check-input input {
+.form- .form-switch .form-check-input,
+.form-switch .setting-form-check-input input {
   background-color: var(--active-bg-subtle) !important;
 }
 
-.form-switch .form-check-input:not([name=colorThemeRadio]):checked, .form-switch .setting-form-check-input input:checked {
+.form-switch .form-check-input:checked, .form-switch .setting-form-check-input input:checked {
   background-color: var(--active-bg) !important;
+  border-color: var(--active-bg) !important;
 }
 
 .form-switch.theme-switch .form-check-input:checked {
@@ -924,9 +926,14 @@ button[readonly=readonly], button[readonly=true] {
   max-width: 0;
 }
 
+.list-group-item {
+  border-color: var(--custom-theme-border-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease !important;
+}
+
 /* --------------- Prism Code Blocks --------------- */
 [data-bs-theme=dark] pre[class*=language-] {
-  background: var(--bs-body-bg) !important;
+  background: var(--bs-secondary-bg) !important;
 }
 
 [data-bs-theme=dark] .language-javascript,

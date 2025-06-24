@@ -1,39 +1,25 @@
 ﻿using DataLibrary;
 using ISD.ActiveDirectory;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Net;
-using System.Net.Mail;
+using System.Linq;
 using System.Web;
-using System.Web.Services;
-using System.Web.SessionState;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace WebUI
 {
     /// <summary>
-    /// Used to get pending upload files and save them on postback
+    /// Summary description for FileUploadHandler
     /// </summary>
-    /// 
-    [WebService(Namespace = "http://tempuri.org/")]
-    [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
-    //[System.Web.Script.Services.ScriptService]
-    public class FileUploadService : System.Web.Services.WebService
+    public class FileUploadHandler : IHttpHandler, System.Web.SessionState.IRequiresSessionState
     {
-        [WebMethod(EnableSession = true)]
-        public void UploadFile()
+        public void ProcessRequest(HttpContext context)
         {
-            HttpContext context = HttpContext.Current;
-            ADUser _user = Session["CurrentUser"] as ADUser;
-
+            ADUser _user = context.Session["CurrentUser"] as ADUser;
             if (_user == null)
             {
                 context.Response.StatusCode = 401;
-                context.Response.Write("User session missing");
+                context.Response.Write("Not logged in.");
                 return;
             }
 
@@ -44,7 +30,8 @@ namespace WebUI
                 return;
             }
 
-            List<OrdinanceDocument> ordDocs = Session["addOrdDocs"] as List<OrdinanceDocument> ?? new List<OrdinanceDocument>();
+            List<OrdinanceDocument> ordDocs = context.Session["ordDocs"] as List<OrdinanceDocument> ?? new List<OrdinanceDocument>();
+            List<OrdinanceDocument> addOrdDocs = context.Session["addOrdDocs"] as List<OrdinanceDocument> ?? new List<OrdinanceDocument>();
 
             for (int i = 0; i < context.Request.Files.Count; i++)
             {
@@ -56,7 +43,6 @@ namespace WebUI
                     {
                         OrdinanceDocument doc = new OrdinanceDocument()
                         {
-                            OrdinanceID = -1,
                             DocumentName = Path.GetFileName(uploadedFile.FileName),
                             DocumentData = reader.ReadBytes(uploadedFile.ContentLength),
                             EffectiveDate = DateTime.Now,
@@ -66,14 +52,18 @@ namespace WebUI
                         };
 
                         ordDocs.Add(doc);
+                        addOrdDocs.Add(doc);
                     }
                 }
             }
 
-            Session["addOrdDocs"] = ordDocs;
+            context.Session["ordDocs"] = ordDocs;
+            context.Session["addOrdDocs"] = addOrdDocs;
 
             context.Response.ContentType = "text/plain";
             context.Response.Write($"{context.Request.Files.Count} files processed and stored");
         }
+
+        public bool IsReusable => false;
     }
 }

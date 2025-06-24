@@ -996,6 +996,15 @@ namespace WebUI
         protected global::System.Web.UI.WebControls.Repeater rpSupportingDocumentation;
 
         /// <summary>
+        /// supportingDocumentationGroup control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl supportingDocumentationGroup;
+
+        /// <summary>
         /// supportingDocumentation control.
         /// </summary>
         /// <remarks>
@@ -1003,15 +1012,6 @@ namespace WebUI
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.FileUpload supportingDocumentation;
-
-        /// <summary>
-        /// uploadBtn control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlButton uploadBtn;
 
         /// <summary>
         /// UploadDocBtn control.
