@@ -1,5 +1,4 @@
 ﻿using DataLibrary;
-using DataLibrary.OrdinanceTracking;
 using ISD.ActiveDirectory;
 using Microsoft.Ajax.Utilities;
 using Microsoft.Reporting.WebForms;
@@ -321,8 +320,6 @@ namespace WebUI
             if (Session["addOrdDocs"] != null && Session["ordDocs"] != null)
             {
                 List<OrdinanceDocument> originalOrdDocList = Session["ordDocs"] as List<OrdinanceDocument>;
-                //List<OrdinanceDocument> ordDocList = Session["addOrdDocs"] as List<OrdinanceDocument>;
-                //originalOrdDocList.AddRange(ordDocList);
                 rpSupportingDocumentation.DataSource = originalOrdDocList;
                 rpSupportingDocumentation.DataBind();
             }

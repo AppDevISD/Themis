@@ -16,7 +16,6 @@ using System.Xml.Linq;
 using System.Web.UI;
 using System.Linq;
 using System.Runtime.InteropServices;
-using DataLibrary.OrdinanceTracking;
 
 namespace DataLibrary
 {
@@ -258,7 +257,6 @@ namespace DataLibrary
             }
             return lOrdinance;
         }
-
         public DefaultEmails GetDefaultEmailsByDepartmentDivision(string dept, string division)
         {
             PropertyInfo[] classType = typeof(DefaultEmails).GetProperties();
