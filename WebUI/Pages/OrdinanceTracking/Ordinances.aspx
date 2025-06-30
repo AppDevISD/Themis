@@ -112,7 +112,6 @@
 												</asp:DropDownList>
 											</div>
 										</th>
-										
 										<th style="width: 15%; text-align: center"><asp:LinkButton runat="server" ID="sortContact" data-command="RequestContact" data-text="Contact" OnClick="SortBtn_Click" class="btn btn-sort" TabIndex="-1" data-disable-btn="aspIconBtn" data-disable-btn-symbol="true"><strong>Contact<span class="float-end lh-1p5"></span></strong></asp:LinkButton></th>
 										<th style="width: 10%; text-align: center"><asp:LinkButton runat="server" ID="sortStatus" data-command="StatusDescription" data-text="Status" OnClick="SortBtn_Click" class="btn btn-sort" TabIndex="-1" data-disable-btn="aspIconBtn" data-disable-btn-symbol="true"><strong>Status<span class="float-end lh-1p5"></span></strong></asp:LinkButton></th>
 										<th style="width: 6%; text-align: center"><strong>Action</strong></th>
