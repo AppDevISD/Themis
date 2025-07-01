@@ -65,7 +65,7 @@
 					</div>
 					<div class="card-body bg-body-tertiary">
 						<%-- FILTERS & SORTING --%>
-						<div class="row mb-4">
+						<div class="row mb-5">
 							<div class="col-md-3" runat="server" id="filterDepartmentDiv">
 								<div class="form-group">
 									<label for="filterDepartment">Filter by Department</label>
