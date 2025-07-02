@@ -371,6 +371,7 @@
 				enterBtn();
 				multiValidation();
 				showDatePicker();
+				clearFilterBtn();
 				addSignatureEmails([
 					{ addressID: '<%= testingEmailAddress.ClientID %>', btnID: '<%= TestingAddEmailAddress.ClientID %>' }
 				]);
@@ -381,6 +382,7 @@
 				enterBtn();
 				multiValidation();
 				showDatePicker();
+				clearFilterBtn();
 				addSignatureEmails([
 					{ addressID: '<%= testingEmailAddress.ClientID %>', btnID: '<%= TestingAddEmailAddress.ClientID %>' }
 				]);

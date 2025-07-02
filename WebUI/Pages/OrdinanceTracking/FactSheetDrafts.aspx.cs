@@ -1511,7 +1511,7 @@ namespace WebUI
         }
         protected void mdlDeleteSubmit_ServerClick(object sender, EventArgs e)
         {
-            int ordID = Convert.ToInt32(hdnDeleteID.Value);
+            int ordID = Convert.ToInt32(hdnDeleteID.Value ?? hdnOrdID.Value);
             int ret = Factory.Instance.Delete<Ordinance>(ordID, "Ordinance");
             if (ret > 0)
             {
@@ -1537,8 +1537,8 @@ namespace WebUI
             else
             {
                 draftsTable.Visible = true;
-
                 ordView.Visible = false;
+                hdnDeleteID.Value = "-1";
 
                 Dictionary<string, LinkButton> pageBtns = new Dictionary<string, LinkButton>()
                 {

@@ -931,6 +931,30 @@ button[readonly=readonly], button[readonly=true] {
   transition: background-color 0.3s ease, border-color 0.3s ease !important;
 }
 
+.search-control {
+  position: relative;
+}
+
+.btn-clear {
+  position: absolute;
+  font-size: 0.8rem;
+  background: transparent !important;
+  border: 0 !important;
+  right: 0;
+  bottom: 0;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.1s;
+}
+
+.btn-clear.clear-search {
+  right: 3rem;
+}
+
+.btn-clear:hover {
+  opacity: 0.75;
+}
+
 /* --------------- Prism Code Blocks --------------- */
 [data-bs-theme=dark] pre[class*=language-] {
   background: var(--bs-secondary-bg) !important;

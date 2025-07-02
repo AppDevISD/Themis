@@ -336,10 +336,10 @@ main {
 	color: var(--color-theme-text);
 }
 
-.list-group-item input[type="file"]::file-selector-button {
-	border-radius: var(--bs-border-radius) !important;
-	width: 30%;
-}
+	.list-group-item input[type="file"]::file-selector-button {
+		border-radius: var(--bs-border-radius) !important;
+		width: 30%;
+	}
 
 .list-group-item:not(:first-child) input[type="file"] {
 	border-top: none;

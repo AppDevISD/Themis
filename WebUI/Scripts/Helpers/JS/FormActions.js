@@ -1,4 +1,6 @@
-﻿var pendingFiles = [];
+﻿var searchActive = false;
+var validEmails = ["@cwlp.com", "@springfield.il.us", "@lincolnlibrary.info"];
+var pendingFiles = [];
 function DisableDDInitialOption(ddIDDict) {
 	$(ddIDDict).each(function () {
 		const cfg = this || {};
@@ -145,6 +147,10 @@ function enterBtn() {
 				var id = $(this).attr('data-enter-btn');
 				const searchBtn = document.getElementById(id);
 				searchBtn.click();
+
+				if (id.toLowerCase().includes("search")) {
+					searchActive = true;
+				}
 			}
 		});
 	});
@@ -169,11 +175,26 @@ function addSignatureEmails(controls) {
 	
 }
 
-function SetDeleteModal(ordID) {
+function SetDeleteModal(ordID, showModal) {
 	const hdnDeleteID = $('#hdnDeleteID');
 	$(hdnDeleteID).attr("value", ordID);
-	$('#deleteModal').modal('show');
+	if (showModal) {
+		$('#deleteModal').modal('show');
+	}
 
+}
+
+function DeleteModalCancel(config) {
+	const cfg = config || {};
+	const btns = cfg.btnIDs;
+	const hdnID = cfg.hdnID;
+
+	$(btns).each(function () {
+		$(`#${this}`).on('click', function () {
+			$(`#${hdnID}`).val("");
+		})
+	});
+	
 }
 
 function showDatePicker() {
@@ -241,6 +262,50 @@ function saveTabState() {
 			}
 
 			$('#hdnActiveTabs').val(value.join(','));
+		});
+	});
+}
+
+function clearFilterBtn() {
+	$('[data-clear-control]').each(function () {
+		const clearBtn = $(this);
+		var id = $(this).attr('data-clear-control');
+		const control = $(`#${id}`);
+		switch ($(control).val().length > 0) {
+			case true:
+				$(clearBtn).show();
+				break;
+			case false:
+				$(clearBtn).hide();
+				break;
+		}
+		control.on('change keydown', function () {
+			switch ($(control).val().length > 0) {
+				case true:
+					clearBtn.show();
+					break;
+				case false:
+					clearBtn.hide();
+					break;
+			}
+		})
+		$(this).on('click', function () {
+			$(control).val('');
+			$(clearBtn).hide();
+
+			if ($(clearBtn).hasAttr('data-clear-unique')) {
+				var postBackID = $(this).attr('data-clear-unique');
+				__doPostBack(postBackID, '');
+				showLoadingModal();
+			}
+
+			if ($(control).hasAttr('data-enter-btn') && searchActive) {
+				var btnID = $(control).attr('data-enter-btn');
+				const btn = document.getElementById(btnID);
+				btn.click();
+
+				searchActive = false;
+			}
 		});
 	});
 }

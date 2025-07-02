@@ -47,10 +47,10 @@
 					</div>
 					<div class="card-body bg-body-tertiary">
 						<%-- FILTERS & SORTING --%>
-						<div class="row mb-4">
+						<div class="row mb-5">
 							<div class="col-md-3" id="filterSearchTitleDiv">
 								<div class="form-group">
-									<label for="filterSearchTitleGroup">Search Title</label>
+									<label for="filterSearchTitleGroup" class="position-relative w-100">Search Title <a id="btnClearSearchTitle" class="text-danger btn-clear clear-search" data-clear-control="filterSearchTitle">Clear Search</a></label>
 									<div id="filterSearchTitleGroup" class="input-group">
 										<asp:TextBox runat="server" ID="filterSearchTitle" CssClass="form-control" TextMode="SingleLine" placeholder="Search..." AutoCompleteType="Disabled" data-enter-btn="btnFilterSearchTitle"></asp:TextBox>
 										<asp:LinkButton runat="server" ID="btnFilterSearchTitle" CssClass="btn input-group-text" OnClick="Filter_SelectedIndexChanged" OnClientClick="showLoadingModal();" TabIndex="-1"><span class="fas fa-magnifying-glass"></span></asp:LinkButton>
@@ -81,8 +81,8 @@
 												<asp:Label ID="draftsTableTitle" Text='<%# DataBinder.Eval(Container.DataItem, "OrdinanceTitle") %>' runat="server" />
 											</td>
 											<td class="align-middle d-flex justify-content-center px-0">
-												<asp:LinkButton runat="server" ID="editOrd" CommandName="edit" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' CssClass="formActionBtn border-end px-2" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="Edit" OnClientClick="showLoadingModal();" CausesValidation="false" TabIndex="-1"><i class="fas fa-pen-to-square text-warning-light"></i></asp:LinkButton>
-												<a href="javascript:void(0);" onclick='<%# $"SetDeleteModal({DataBinder.Eval(Container.DataItem, "OrdinanceID")});" %>' class="formActionBtn px-2" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="Delete" TabIndex="-1"><i class="fas fa-trash-can text-danger"></i></a>
+												<asp:LinkButton runat="server" ID="editOrd" CommandName="edit" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' CssClass="formActionBtn border-end px-2" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="Edit" OnClientClick="showLoadingModal();" onclick='<%# $"SetDeleteModal({DataBinder.Eval(Container.DataItem, "OrdinanceID")}, false);" %>' CausesValidation="false" TabIndex="-1"><i class="fas fa-pen-to-square text-warning-light"></i></asp:LinkButton>
+												<a href="javascript:void(0);" onclick='<%# $"SetDeleteModal({DataBinder.Eval(Container.DataItem, "OrdinanceID")}, true);" %>' class="formActionBtn px-2" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="Delete" TabIndex="-1"><i class="fas fa-trash-can text-danger"></i></a>
 											</td>
 										</tr>
 									</ItemTemplate>
@@ -746,7 +746,7 @@
 					<asp:Label runat="server" ID="deleteLabel" Style="font-size: 18px; font-weight: bold" CssClass="text-danger" Text="Are you sure you want to delete this ordinance fact sheet? (This cannot be undone)" />
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal" tabindex="-1">Cancel</button>
+					<button id="btnCancelDelete" type="button" class="btn btn-secondary" data-dismiss="modal" tabindex="-1">Cancel</button>
 					<asp:Button ID="btnDelete" runat="server" Text="Delete" CssClass="btn btn-danger" CausesValidation="false" UseSubmitBehavior="false" Visible="true" OnClick="mdlDeleteSubmit_ServerClick" OnClientClick="ShowSubmitToast();" data-disable-btn="htmlBtn" data-disable-btn-text="Deleting" TabIndex="-1" />
 					<asp:HiddenField runat="server" ID="hdnDeleteID" />
 				</div>
@@ -768,6 +768,10 @@
 				{ id: '<%= requestDivision.ClientID %>', opacity: "35" },
 				{ id: '<%= purchaseMethod.ClientID %>', opacity: "75" },
 			]);
+			DeleteModalCancel({
+				btnIDs: ['btnCancelDelete', '<%= backBtn.ClientID %>'],
+				hdnID: '<%= hdnDeleteID.ClientID %>'
+			})
 		}
 
 		Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
@@ -779,6 +783,10 @@
 				{ id: '<%= requestDivision.ClientID %>', opacity: "35" },
 				{ id: '<%= purchaseMethod.ClientID %>', opacity: "75" },
 			]);
+			DeleteModalCancel({
+				btnIDs: ['btnCancelDelete', '<%= backBtn.ClientID %>'],
+				hdnID: '<%= hdnDeleteID.ClientID %>'
+			})
 			HideAllTooltips();
 			GetPendingFiles('<%= supportingDocumentation.ClientID %>', 'uploadBtn');
 		});
