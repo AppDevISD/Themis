@@ -50,7 +50,7 @@
 						<div class="row mb-5">
 							<div class="col-md-3" id="filterSearchTitleDiv">
 								<div class="form-group">
-									<label for="filterSearchTitleGroup" class="position-relative w-100">Search Title <a id="btnClearSearchTitle" class="text-danger btn-clear clear-search" data-clear-control="filterSearchTitle">Clear Search</a></label>
+									<label for="filterSearchTitleGroup" class="position-relative w-100">Search Title <a id="btnClearSearchTitle" class="text-danger btn-clear clear-search" data-clear-control="filterSearchTitle" style="display: none;">Clear Search</a></label>
 									<div id="filterSearchTitleGroup" class="input-group">
 										<asp:TextBox runat="server" ID="filterSearchTitle" CssClass="form-control" TextMode="SingleLine" placeholder="Search..." AutoCompleteType="Disabled" data-enter-btn="btnFilterSearchTitle"></asp:TextBox>
 										<asp:LinkButton runat="server" ID="btnFilterSearchTitle" CssClass="btn input-group-text" OnClick="Filter_SelectedIndexChanged" OnClientClick="showLoadingModal();" TabIndex="-1"><span class="fas fa-magnifying-glass"></span></asp:LinkButton>

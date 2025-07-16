@@ -68,25 +68,25 @@
 						<div class="row mb-5">
 							<div class="col-md-3" runat="server" id="filterDepartmentDiv">
 								<div class="form-group">
-									<label for="filterDepartment" class="position-relative w-100">Filter by Department <a id="btnClearDepartment" class="text-danger btn-clear" data-clear-control="filterDepartment" data-clear-unique='<%# filterDepartment.UniqueID %>'>Clear Department</a></label>
+									<label for="filterDepartment" class="position-relative w-100">Filter by Department <a id="btnClearDepartment" class="text-danger btn-clear" data-clear-control="filterDepartment" data-clear-unique='<%# filterDepartment.UniqueID %>' style="display: none;">Clear Department</a></label>
 									<asp:DropDownList ID="filterDepartment" runat="server" AutoPostBack="true" CssClass="form-select" OnSelectedIndexChanged="Filter_SelectedIndexChanged" data-command="department" onchange="showLoadingModal();" data-filter="true" ></asp:DropDownList>
 								</div>
 							</div>
 							<div class="col-md-3" runat="server" id="filterDivisionDiv">
 								<div class="form-group">
-									<label for="filterDivision" class="position-relative w-100">Filter by Division <a id="btnClearDivision" class="text-danger btn-clear" data-clear-control="filterDivision" data-clear-unique='<%# filterDivision.UniqueID %>'>Clear Division</a></label>
+									<label for="filterDivision" class="position-relative w-100">Filter by Division <a id="btnClearDivision" class="text-danger btn-clear" data-clear-control="filterDivision" data-clear-unique='<%# filterDivision.UniqueID %>' style="display: none;">Clear Division</a></label>
 									<asp:DropDownList ID="filterDivision" runat="server" AutoPostBack="true" CssClass="form-select" OnSelectedIndexChanged="Filter_SelectedIndexChanged" data-command="division" onchange="showLoadingModal();" data-filter="true" ></asp:DropDownList>
 								</div>
 							</div>
 							<div class="col-md-3" id="filterStatusDiv">
 								<div class="form-group">
-									<label for="filterStatus" class="position-relative w-100">Filter by Status <a id="btnClearStatus" class="text-danger btn-clear" data-clear-control="filterStatus" data-clear-unique='<%# filterStatus.UniqueID %>'>Clear Status</a></label>
+									<label for="filterStatus" class="position-relative w-100">Filter by Status <a id="btnClearStatus" class="text-danger btn-clear" data-clear-control="filterStatus" data-clear-unique='<%# filterStatus.UniqueID %>' style="display: none;">Clear Status</a></label>
 									<asp:DropDownList ID="filterStatus" runat="server" AutoPostBack="true" CssClass="form-select" OnSelectedIndexChanged="Filter_SelectedIndexChanged" data-command="status" onchange="showLoadingModal();" data-filter="true" ></asp:DropDownList>
 								</div>
 							</div>
 							<div class="col-md-3" id="filterSearchTitleDiv">
 								<div class="form-group">
-									<label for="filterSearchTitleGroup" class="position-relative w-100">Search Title <a id="btnClearSearchTitle" class="text-danger btn-clear clear-search" data-clear-control="filterSearchTitle">Clear Search</a></label>
+									<label for="filterSearchTitleGroup" class="position-relative w-100">Search Title <a id="btnClearSearchTitle" class="text-danger btn-clear clear-search" data-clear-control="filterSearchTitle" style="display: none;">Clear Search</a></label>
 									<div id="filterSearchTitleGroup" class="input-group">
 										<asp:TextBox runat="server" ID="filterSearchTitle" CssClass="form-control" TextMode="SingleLine" placeholder="Search..." AutoCompleteType="Disabled" data-enter-btn="btnFilterSearchTitle"></asp:TextBox>
 										<asp:LinkButton runat="server" ID="btnFilterSearchTitle" CssClass="btn input-group-text" OnClick="Filter_SelectedIndexChanged" OnClientClick="showLoadingModal();" TabIndex="-1"><span class="fas fa-magnifying-glass"></span></asp:LinkButton>
