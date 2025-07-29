@@ -1437,6 +1437,8 @@ namespace WebUI
                         signatureRequest.DirectorSupervisor += $";{deptDivDefaultList}";
                     }
 
+                    signatureRequest.DirectorSupervisor = string.Join(";", signatureRequest.DirectorSupervisor.Split(';').Distinct());
+
                     signatureRequest.LastUpdateBy = _user.Login;
                     signatureRequest.LastUpdateDate = DateTime.Now;
                     updateSigRequest = Factory.Instance.Update(signatureRequest, "sp_UpdateOrdinance_SignatureRequest");

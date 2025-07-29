@@ -500,10 +500,10 @@
 												<thead>
 													<tr>
 														<th style="width: 13%; text-align: center">Fund</th>
-														<th style="width: 15%; text-align: center">Agency</th>
-														<th style="width: 15%; text-align: center">Org</th>
+														<th style="width: 15%; text-align: center">Dept</th>
+														<th style="width: 15%; text-align: center">Unit</th>
 														<th style="width: 16%; text-align: center">Activity</th>
-														<th style="width: 15%; text-align: center">Object</th>
+														<th style="width: 15%; text-align: center">Source</th>
 														<th style="width: 18%; text-align: center">Amount</th>
 													</tr>
 												</thead>
@@ -562,10 +562,10 @@
 												<thead>
 													<tr>
 														<th style="width: 13%; text-align: center">Fund</th>
-														<th style="width: 15%; text-align: center">Agency</th>
-														<th style="width: 15%; text-align: center">Org</th>
+														<th style="width: 15%; text-align: center">Dept</th>
+														<th style="width: 15%; text-align: center">Unit</th>
 														<th style="width: 16%; text-align: center">Activity</th>
-														<th style="width: 15%; text-align: center">Object</th>
+														<th style="width: 15%; text-align: center">Class</th>
 														<th style="width: 18%; text-align: center">Amount</th>
 													</tr>
 												</thead>

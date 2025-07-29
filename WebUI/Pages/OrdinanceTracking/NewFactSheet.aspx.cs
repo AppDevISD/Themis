@@ -978,6 +978,8 @@ namespace WebUI
                         }
                     }
 
+                    signatureRequest.DirectorSupervisor = string.Join(";", signatureRequest.DirectorSupervisor.Split(';').Distinct());
+
                     int signatureRequestRet = Factory.Instance.Insert(signatureRequest, "sp_InsertOrdinance_SignatureRequest", Skips("ordSignatureRequestInsert"));
 
 

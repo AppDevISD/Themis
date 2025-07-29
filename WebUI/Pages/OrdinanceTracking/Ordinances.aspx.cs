@@ -707,9 +707,31 @@ namespace WebUI
                     break;
             }
         }
-        public bool adminUnlockedOrd(string status)
+        public bool adminUnlockedOrd(string status, string requestEmail, int ordID)
         {
             bool unlock = false;
+
+            List<string> emails = new List<string>();
+            bool isLocked = true;
+            List<Ordinance> lst = Session["ord_list"] as List<Ordinance>;
+            SignatureRequest signatureRequest = Factory.Instance.GetByID<SignatureRequest>(Convert.ToInt32(ordID), "sp_GetOrdinanceSignatureRequestByOrdinanceID", "OrdinanceID");
+
+            emails.AddRange(signatureRequest.FundsCheckBy.Split(';').Where(i => !i.IsNullOrWhiteSpace()));
+            if (status.Equals("New"))
+            {
+                emails.AddRange(signatureRequest.DirectorSupervisor.Split(';').Where(i => !i.IsNullOrWhiteSpace()));
+            }
+            emails.AddRange(signatureRequest.CityPurchasingAgent.Split(';').Where(i => !i.IsNullOrWhiteSpace()));
+            emails.AddRange(signatureRequest.OBMDirector.Split(';').Where(i => !i.IsNullOrWhiteSpace()));
+            emails.AddRange(signatureRequest.Budget.Split(';').Where(i => !i.IsNullOrWhiteSpace()));
+            emails.AddRange(signatureRequest.Mayor.Split(';').Where(i => !i.IsNullOrWhiteSpace()));
+            emails.AddRange(signatureRequest.CCDirector.Split(';').Where(i => !i.IsNullOrWhiteSpace()));
+
+            if (emails.Any(i => i.Equals(_user.Email.Replace("@i", "@"))))
+            {
+                isLocked = false;
+            }
+
             if (userInfo.IsAdmin && !userInfo.UserView)
             {
                 if (status.Equals("Deleted"))
@@ -721,34 +743,13 @@ namespace WebUI
                     unlock = true;
                 }
             }
-            else if (lockedStatus.Any(i => i.Equals(status)))
+            else if (lockedStatus.Any(i => i.Equals(status)) && isLocked)
             {
-                bool isLocked = true;
-                List<Ordinance> lst = Session["ord_list"] as List<Ordinance>;
-                foreach (Ordinance item in lst)
-                {
-                    SignatureRequest signatureRequest = Factory.Instance.GetByID<SignatureRequest>(Convert.ToInt32(item.OrdinanceID), "sp_GetOrdinanceSignatureRequestByOrdinanceID", "OrdinanceID");
-                    List<string> emails = new List<string>();
-                    emails.AddRange(signatureRequest.FundsCheckBy.Split(';').Where(i => !i.IsNullOrWhiteSpace()));
-                    emails.AddRange(signatureRequest.CityPurchasingAgent.Split(';').Where(i => !i.IsNullOrWhiteSpace()));
-                    emails.AddRange(signatureRequest.OBMDirector.Split(';').Where(i => !i.IsNullOrWhiteSpace()));
-                    emails.AddRange(signatureRequest.Budget.Split(';').Where(i => !i.IsNullOrWhiteSpace()));
-                    emails.AddRange(signatureRequest.Mayor.Split(';').Where(i => !i.IsNullOrWhiteSpace()));
-                    emails.AddRange(signatureRequest.CCDirector.Split(';').Where(i => !i.IsNullOrWhiteSpace()));
-
-                    if (emails.Any(i => i.Equals(_user.Email)))
-                    {
-                        isLocked = false;
-                    }
-                }
-                if (isLocked)
-                {
-                    unlock = false;
-                }
-                else
-                {
-                    unlock = true;
-                }
+                unlock = false;
+            }
+            else if (status.Equals("New") && !requestEmail.Equals(_user.Email.Replace("@i", "@")) && isLocked)
+            {
+                unlock = false;
             }
             else
             {
@@ -2341,15 +2342,25 @@ namespace WebUI
                     string symbol = AuditSymbol(item.Type);
                     string newValue = item.NewValue;
                     string itemString = string.Empty;
+                    string objectHeaderTxt = string.Empty;
+                    switch (item.Type)
+                    {
+                        case "revenue":
+                            objectHeaderTxt = "Source";
+                            break;
+                        case "expenditure":
+                            objectHeaderTxt = "Class";
+                            break;
+                    }
 
                     StringBuilder sb = new StringBuilder();
 
                     string headerBegin = "<thead><tr class='h-50'>";
                     string fundHeader = "<th style='width: 13%; text-align: center;'>Fund</th>";
-                    string agencyHeader = "<th style='width: 15%; text-align: center;'>Agency</th>";
-                    string orgHeader = "<th style='width: 15%; text-align: center;'>Org</th>";
+                    string agencyHeader = "<th style='width: 15%; text-align: center;'>Dept</th>";
+                    string orgHeader = "<th style='width: 15%; text-align: center;'>Unit</th>";
                     string activityHeader = "<th style='width: 16%; text-align: center;'>Activity</th>";
-                    string objectHeader = "<th style='width: 15%; text-align: center;'>Object</th>";
+                    string objectHeader = $"<th style='width: 15%; text-align: center;'>{objectHeaderTxt}</th>";
                     string amountHeader = "<th style='width: 18%; text-align: center;'>Amount</th>";
                     string headerEnd = "</tr></thead>";
                     List<string> HeaderCells = new List<string>()

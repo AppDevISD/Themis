@@ -141,7 +141,7 @@
 												<asp:Label ID="ordTableStatus" Text='<%# DataBinder.Eval(Container.DataItem, "StatusDescription") %>' runat="server" />
 											</td>
 											<td class="align-middle d-flex justify-content-center px-0">
-												<asp:LinkButton runat="server" ID="editOrd" CommandName="edit" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' CssClass="formActionBtn border-end px-2" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="Edit" Visible='<%# adminUnlockedOrd(DataBinder.Eval(Container.DataItem, "StatusDescription").ToString()) %>' OnClientClick="showLoadingModal();" TabIndex="-1"><i class="fas fa-pen-to-square text-warning-light"></i></asp:LinkButton>
+												<asp:LinkButton runat="server" ID="editOrd" CommandName="edit" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' CssClass="formActionBtn border-end px-2" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="Edit" Visible='<%# adminUnlockedOrd(DataBinder.Eval(Container.DataItem, "StatusDescription").ToString(), DataBinder.Eval(Container.DataItem, "RequestEmail").ToString(), (int)DataBinder.Eval(Container.DataItem, "OrdinanceID")) %>' OnClientClick="showLoadingModal();" TabIndex="-1"><i class="fas fa-pen-to-square text-warning-light"></i></asp:LinkButton>
 												<asp:LinkButton runat="server" ID="viewOrd" CommandName="view" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' CssClass="formActionBtn border-end px-2" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="View" OnClientClick="showLoadingModal();" TabIndex="-1"><i class="fas fa-magnifying-glass text-info"></i></asp:LinkButton>
 												<asp:LinkButton runat="server" ID="downloadOrd" CommandName="download" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "OrdinanceID") %>' CssClass="formActionBtn px-2" data-action-tooltip="true" data-tooltip="tooltip" data-placement="top" title="Download" TabIndex="-1"><i class="fas fa-download text-primary"></i></asp:LinkButton>
 											</td>
@@ -595,10 +595,10 @@
 													<thead>
 														<tr>
 															<th style="width: 13%; text-align: center">Fund</th>
-															<th style="width: 15%; text-align: center">Agency</th>
-															<th style="width: 15%; text-align: center">Org</th>
+															<th style="width: 15%; text-align: center">Dept</th>
+															<th style="width: 15%; text-align: center">Unit</th>
 															<th style="width: 16%; text-align: center">Activity</th>
-															<th style="width: 15%; text-align: center">Object</th>
+															<th style="width: 15%; text-align: center">Source</th>
 															<th style="width: 18%; text-align: center">Amount</th>
 														</tr>
 													</thead>
@@ -657,10 +657,10 @@
 													<thead>
 														<tr>
 															<th style="width: 13%; text-align: center">Fund</th>
-															<th style="width: 15%; text-align: center">Agency</th>
-															<th style="width: 15%; text-align: center">Org</th>
+															<th style="width: 15%; text-align: center">Dept</th>
+															<th style="width: 15%; text-align: center">Unit</th>
 															<th style="width: 16%; text-align: center">Activity</th>
-															<th style="width: 15%; text-align: center">Object</th>
+															<th style="width: 15%; text-align: center">Class</th>
 															<th style="width: 18%; text-align: center">Amount</th>
 														</tr>
 													</thead>

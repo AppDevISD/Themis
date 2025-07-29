@@ -121,7 +121,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>Agency</Value>
+                                      <Value>Dept</Value>
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
                                         <Color>White</Color>
@@ -157,7 +157,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>Org</Value>
+                                      <Value>Unit</Value>
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
                                         <Color>White</Color>
@@ -229,7 +229,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>Object</Value>
+                                      <Value>Source</Value>
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
                                         <Color>White</Color>
@@ -667,7 +667,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>Agency</Value>
+                                      <Value>Dept</Value>
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
                                         <Color>White</Color>
@@ -703,7 +703,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>Org</Value>
+                                      <Value>Unit</Value>
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
                                         <Color>White</Color>
@@ -775,7 +775,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>Object</Value>
+                                      <Value>Class</Value>
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
                                         <Color>White</Color>
@@ -4287,7 +4287,7 @@
 	Fields!SignatureType.Value = "budgetOBM", "OBM Budget",
 	Fields!SignatureType.Value = "budgetCWLP", "CWLP Budget",
 	Fields!SignatureType.Value = "mayor", "Mayor",
-	Fields!SignatureType.Value = "ccDirector", "Coporation Counsel Director"
+	Fields!SignatureType.Value = "ccDirector", "Corporation Counsel Director"
 )</Value>
                                     <Style>
                                       <FontSize>12pt</FontSize>
