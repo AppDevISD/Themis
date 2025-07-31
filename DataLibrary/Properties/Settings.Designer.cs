@@ -44,19 +44,8 @@ namespace DataLibrary.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=gthintdbt6\\sqltest2017;Initial Catalog=THEMIS;Integrated Security=Tru" +
-            "e")]
-        public string ThemisDBPROD {
-            get {
-                return ((string)(this["ThemisDBPROD"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=gthintdbt6\\sqltest2017;Initial Catalog=THEMIS;Integrated Security=Tru" +
-            "e")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=mcwintdb14\\sqlinternal;Initial Catalog=THEMIS;User ID=SA-Themis;Passw" +
+            "ord=Ticket15204!;TrustServerCertificate=True")]
         public string ThemisDB {
             get {
                 return ((string)(this["ThemisDB"]));
@@ -71,6 +60,17 @@ namespace DataLibrary.Properties {
         public string EmployeeDirectoryDB {
             get {
                 return ((string)(this["EmployeeDirectoryDB"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=mcwintdb14\\sqlinternal;Initial Catalog=THEMIS;Integrated Security=Tru" +
+            "e")]
+        public string ThemisDBTEST {
+            get {
+                return ((string)(this["ThemisDBTEST"]));
             }
         }
     }

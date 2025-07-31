@@ -299,6 +299,7 @@
     <None Include="packages.config" />
     <Content Include="Scripts\ChartCode\ChartHTMLJS.json" />
     <Content Include="Scripts\ChartCode\DataOptions.json" />
+    <None Include="Properties\PublishProfiles\PROD.pubxml" />
     <None Include="Properties\PublishProfiles\TEST.pubxml" />
     <Content Include="Reports\OrdinanceTracking\OrdinanceData.xsc">
       <DependentUpon>OrdinanceData.xsd</DependentUpon>
