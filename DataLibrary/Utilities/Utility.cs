@@ -38,6 +38,7 @@ namespace DataLibrary
             string strLoginID;
             ADUser adu = new ADUser();
             string[] strTemp = { "", "" };
+            bool nullID = false;
             if (HttpContext.Current.User.Identity.IsAuthenticated)
             {
                 switch (spoofUser)
@@ -48,10 +49,15 @@ namespace DataLibrary
                         if (adu.EmployeeID.IsNullOrWhiteSpace())
                         {
                             adu.EmployeeID = GetEmployeeID(adu.Email);
+                            nullID = true;
                         }
+
                         if (adu.PhotoLocation.IsNullOrWhiteSpace())
                         {
-                            adu.PhotoLocation = $"\\\\INTRANET\\Shared$\\HRPhotos\\{adu.EmployeeID}.jpg";
+                            if (!nullID)
+                            {
+                                adu.PhotoLocation = $"\\\\INTRANET\\Shared$\\HRPhotos\\{adu.EmployeeID}.jpg";
+                            }
                         }
                         adu.Telephone = EmployeePhone(Convert.ToInt32(adu.EmployeeID)) ?? adu.Telephone;
                         if (adu.Telephone.Length > 0 && !adu.Telephone.StartsWith("217") && !adu.Telephone.StartsWith("(217)"))
@@ -82,10 +88,15 @@ namespace DataLibrary
                         if (adu.EmployeeID.IsNullOrWhiteSpace())
                         {
                             adu.EmployeeID = GetEmployeeID(adu.Email);
+                            nullID = true;
                         }
+
                         if (adu.PhotoLocation.IsNullOrWhiteSpace())
                         {
-                            adu.PhotoLocation = $"\\\\INTRANET\\Shared$\\HRPhotos\\{adu.EmployeeID}.jpg";
+                            if (!nullID)
+                            {
+                                adu.PhotoLocation = $"\\\\INTRANET\\Shared$\\HRPhotos\\{adu.EmployeeID}.jpg";
+                            }
                         }
                         adu.Telephone = EmployeePhone(Convert.ToInt32(adu.EmployeeID)) ?? adu.Telephone;
                         if (adu.Telephone.Length > 0 && !adu.Telephone.StartsWith("217") && !adu.Telephone.StartsWith("(217)"))

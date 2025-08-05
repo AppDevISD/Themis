@@ -135,6 +135,7 @@
     <Content Include="assets\css\Site.css" />
     <Content Include="assets\images\icons\theme-dark.svg" />
     <Content Include="assets\images\icons\theme-light.svg" />
+    <Content Include="assets\images\misc\NoProfilePhoto.png" />
     <Content Include="assets\js\Site.js" />
     <Content Include="Error.aspx" />
     <Content Include="AccessDenied.aspx" />

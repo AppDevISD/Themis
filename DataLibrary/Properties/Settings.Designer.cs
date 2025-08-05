@@ -44,8 +44,8 @@ namespace DataLibrary.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=mcwintdb14\\sqlinternal;Initial Catalog=THEMIS;User ID=SA-Themis;Passw" +
-            "ord=Ticket15204!;TrustServerCertificate=True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=gthintdbt6\\sqltest2017;Initial Catalog=THEMIS;Integrated Security=Tru" +
+            "e")]
         public string ThemisDB {
             get {
                 return ((string)(this["ThemisDB"]));

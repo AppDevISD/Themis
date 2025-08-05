@@ -32,7 +32,7 @@ namespace DataLibrary
             }
             catch
             {
-                return "\\assets\\images\\ImageNotAvailable.png";
+                return "./assets/images/misc/NoProfilePhoto.png";
             }
         }
     }
